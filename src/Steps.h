@@ -64,6 +64,10 @@ public:
 	void TidyUpData();
 	void CalculateRadarValues( float fMusicLengthSeconds );
 
+	TimingData m_StepsTiming;	
+	void AddBPMSegment( const BPMSegment &seg ) { m_StepsTiming.AddBPMSegment( seg ); }
+	void AddStopSegment( const StopSegment &seg ) { m_StepsTiming.AddStopSegment( seg ); }
+
 	// Lua
 	void PushSelf( lua_State *L );
 
