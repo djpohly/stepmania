@@ -9,6 +9,7 @@
 #include "RadarValues.h"
 #include "Difficulty.h"
 #include "RageUtil_AutoPtr.h"
+#include "TimingData.h"
 #include "RageUtil_CachedObject.h"
 class Profile;
 class NoteData;
@@ -67,6 +68,11 @@ public:
 	TimingData m_StepsTiming;	
 	void AddBPMSegment( const BPMSegment &seg ) { m_StepsTiming.AddBPMSegment( seg ); }
 	void AddStopSegment( const StopSegment &seg ) { m_StepsTiming.AddStopSegment( seg ); }
+	float GetBPMAtBeat( float fBeat ) const { return m_StepsTiming.GetBPMAtBeat( fBeat ); }
+	void SetBPMAtBeat( float fBeat, float fBPM ) { m_StepsTiming.SetBPMAtBeat( fBeat, fBPM ); }
+	BPMSegment& GetBPMSegmentAtBeat( float fBeat ) { return m_StepsTiming.GetBPMSegmentAtBeat( fBeat ); }
+	float GetBeatFromElapsedTime( float fElapsedTime ) const { return m_StepsTiming.GetBeatFromElapsedTime( fElapsedTime ); }
+	float GetElapsedTimeFromBeat( float fBeat ) const { return m_StepsTiming.GetElapsedTimeFromBeat( fBeat ); }
 
 	// Lua
 	void PushSelf( lua_State *L );

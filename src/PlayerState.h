@@ -74,6 +74,15 @@ public:
 	void RemoveAllInventory();
 	Attack	m_Inventory[NUM_INVENTORY_SLOTS];
 
+	//The necessary timing variables to pull off PlayerTiming
+	float		m_fSongBeat;
+	float		m_fSongBeatNoOffset;
+	float		m_fCurBPS;
+	bool		m_bFreeze;	// in the middle of a freeze
+	bool		m_bDelay;	// in the middle of a delay
+	int			m_iWarpBeginRow;
+	float		m_fWarpLength;
+
 	// Lua
 	void PushSelf( lua_State *L );
 };
