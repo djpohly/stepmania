@@ -189,6 +189,35 @@ int PlayerState::GetSumOfActiveAttackLevels() const
 	return iSum;
 }
 
+void PlayerState::UpdateSongPosition( float fPositionSeconds, const TimingData &timing, const RageTimer &timestamp )
+{
+	if( !timestamp.IsZero() )
+		m_LastBeatUpdate = timestamp;
+	else
+		m_LastBeatUpdate.Touch();
+
+	timing.GetBeatAndBPSFromElapsedTime( fPositionSeconds, m_fSongBeat, m_fCurBPS, m_bFreeze, m_bDelay, m_iWarpBeginRow, m_fWarpLength );
+	// "Crash reason : -243478.890625 -48695.773438"
+	ASSERT_M( m_fSongBeat > -2000, ssprintf("m_fSongBeat %f at %f seconds < beat -2000", m_fSongBeat, fPositionSeconds) );
+
+	//if( m_iWarpBeginRow != -1 || m_iWarpEndRow == -1 )
+	if( m_iWarpBeginRow != -1 && m_fWarpLength > 0.f )
+	{
+		// we got a warp in this section.
+		LOG->Trace("warp at %i lasts for %f, jumps to %i",m_iWarpBeginRow,m_fWarpLength,m_iWarpBeginRow+BeatToNoteRow(m_fWarpLength));
+		//fPositionSeconds += (m_fWarpLength * m_fCurBPS);
+	}
+
+	m_fSongBeatNoOffset = timing.GetBeatFromElapsedTimeNoOffset( fPositionSeconds );
+
+	m_fMusicSecondsVisible = fPositionSeconds - g_fVisualDelaySeconds.Get();
+	float fThrowAway, fThrowAway2;
+	bool bThrowAway;
+	int iThrowAway;
+	timing.GetBeatAndBPSFromElapsedTime( m_fMusicSecondsVisible, m_fSongBeatVisible, fThrowAway, bThrowAway, bThrowAway, iThrowAway, fThrowAway2 );
+
+}
+
 // lua start
 #include "LuaBinding.h"
 
@@ -260,4 +289,5 @@ LUA_REGISTER_CLASS( PlayerState )
  * OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
  * OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  * PERFORMANCE OF THIS SOFTWARE.
+
  */

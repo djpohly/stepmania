@@ -11,6 +11,8 @@
 #include "SampleHistory.h"
 struct lua_State;
 
+class TimingData;
+
 class PlayerState
 {
 public:
@@ -82,6 +84,10 @@ public:
 	bool		m_bDelay;	// in the middle of a delay
 	int			m_iWarpBeginRow;
 	float		m_fWarpLength;
+
+	float		m_fMusicSecondsVisible;
+	float		m_fSongBeatVisible;
+
 
 	// Lua
 	void PushSelf( lua_State *L );
