@@ -88,6 +88,7 @@ public:
 	float		m_fMusicSecondsVisible;
 	float		m_fSongBeatVisible;
 
+	void UpdateSongPosition( float fPositionSeconds, const TimingData &timing, const RageTimer &timestamp = RageZeroTimer );
 
 	// Lua
 	void PushSelf( lua_State *L );
