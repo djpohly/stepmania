@@ -1473,6 +1473,12 @@ void ScreenGameplay::UpdateSongPosition( float fDeltaTime )
 	const float fSeconds = m_pSoundMusic->GetPositionSeconds( NULL, &tm );
 	const float fAdjust = SOUND->GetFrameTimingAdjustment( fDeltaTime );
 	GAMESTATE->UpdateSongPosition( fSeconds+fAdjust, GAMESTATE->m_pCurSong->m_Timing, tm+fAdjust );
+	FOREACH_EnabledPlayer(p)
+	{
+		p->GetPlayerState()->UpdateSongPosition( fSeconds+fAdjust, GAMESTATE->m_pCurSong->m_Timing, tm+fAdjust );
+		//right now, this is used for nothing, nor does it load timing data from the Steps.	
+	}	
+	
 }
 
 void ScreenGameplay::BeginScreen()
