@@ -72,7 +72,8 @@ local function PercentScore(pn)
 			end;
 			self:settext(text);
 		end;
-		CurrentSongChangesMessageCommand=cmd(playcommand,"Set");
+		CurrentSongChangedMessageCommand=cmd(playcommand,"Set");
+		CurrentCourseChangedMessageCommand=cmd(playcommand,"Set");
 	};
 
 	if pn == PLAYER_1 then
@@ -114,6 +115,8 @@ t[#t+1] = StandardDecorationFromFileOptional("DifficultyList","DifficultyList");
 t[#t+1] = StandardDecorationFromFileOptional("CourseContentsList","CourseContentsList");
 t[#t+1] = StandardDecorationFromFileOptional("BPMDisplay","BPMDisplay");
 t[#t+1] = StandardDecorationFromFileOptional("BPMLabel","BPMLabel");
+--[[ t[#t+1] = StandardDecorationFromFileOptional("NegativeDisplay","NegativeDisplay") .. {
+}; --]]
 
 t[#t+1] = StandardDecorationFromFileOptional("SongTime","SongTime") .. {
 	SetCommand=function(self)
@@ -206,17 +209,6 @@ if GAMESTATE:IsCourseMode() then
 end
 
 t[#t+1] = StandardDecorationFromFileOptional("DifficultyDisplay","DifficultyDisplay");
-
-t[#t+1] = StandardDecorationFromFileOptional("SortOrder","SortOrderText") .. {
-	BeginCommand=cmd(playcommand,"Set");
-	SortOrderChangedMessageCommand=cmd(playcommand,"Set";);
-	SetCommand=function(self)
-		local s = SortOrderToLocalizedString( GAMESTATE:GetSortOrder() );
-		self:settext( s );
-		self:playcommand("Sort");
-	end;
-};
-
 t[#t+1] = StandardDecorationFromFileOptional("SortOrderFrame","SortOrderFrame") .. {
 --[[ 	BeginCommand=cmd(playcommand,"Set");
 	SortOrderChangedMessageCommand=cmd(playcommand,"Set";);
@@ -225,6 +217,15 @@ t[#t+1] = StandardDecorationFromFileOptional("SortOrderFrame","SortOrderFrame") 
 		self:settext( s );
 		self:playcommand("Sort");
 	end; --]]
+};
+t[#t+1] = StandardDecorationFromFileOptional("SortOrder","SortOrderText") .. {
+	BeginCommand=cmd(playcommand,"Set");
+	SortOrderChangedMessageCommand=cmd(playcommand,"Set";);
+	SetCommand=function(self)
+		local s = SortOrderToLocalizedString( GAMESTATE:GetSortOrder() );
+		self:settext( s );
+		self:playcommand("Sort");
+	end;
 };
 t[#t+1] = StandardDecorationFromFileOptional("SongOptionsFrame","SongOptionsFrame") .. {
 	ShowPressStartForOptionsCommand=THEME:GetMetric(Var "LoadingScreen","SongOptionsFrameShowCommand");

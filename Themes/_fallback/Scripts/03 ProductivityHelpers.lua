@@ -23,6 +23,47 @@ function IsFreePlay()
 	end
 end
 
+function Center1Player()
+	if GAMESTATE:GetCurrentStyle():GetStyleType() == "StyleType_OnePlayerTwoSides" then
+		return true
+	elseif PREFSMAN:GetPreference("Center1Player") then
+		if GAMESTATE:GetCurrentStyle():GetStyleType() == "StyleType_OnePlayerOneSide" then
+			return true
+		else
+			return false
+		end
+	else
+		return false
+	end
+--[[ 	return PREFSMAN:GetPreference("Center1Player") and
+	THEME:GetMetric("ScreenGameplay","AllowCenter1Player") and 
+	not GAMESTATE:GetPlayMode("PlayMode_Battle") and 
+	not GAMESTATE:GetPlayMode("PlayMode_Rave") and 
+	GAMESTATE:GetCurrentStyle():GetStyleType() == "StyleType_OnePlayerOneSide"; --]]
+end
+
+--[[ 3.9 Conditionals ]]
+Condition = {
+	Hour = function()
+		return Hour()
+	end,
+	IsDemonstration = function()
+		return GAMESTATE:IsDemonstration()
+	end,
+	CurSong = function(sSongName)
+		return GAMESTATE:GetCurrentSong():GetDisplayMainTitle() == sSongName
+	end,
+	DayOfMonth = function()
+		return DayOfMonth()
+	end,
+	MonthOfYear = function()
+		return MonthOfYear()
+	end,
+	UsingModifier = function(pnPlayer, sModifier)
+		return GAMESTATE:PlayerIsUsingModifier( pnPlayer, sModifier );
+	end,
+}
+
 --[[ Aliases ]]
 
 -- Blend Modes
