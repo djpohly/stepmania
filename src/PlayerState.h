@@ -87,6 +87,7 @@ public:
 
 	float		m_fMusicSecondsVisible;
 	float		m_fSongBeatVisible;
+	RageTimer	m_LastBeatUpdate;
 
 	void UpdateSongPosition( float fPositionSeconds, const TimingData &timing, const RageTimer &timestamp = RageZeroTimer );
 
