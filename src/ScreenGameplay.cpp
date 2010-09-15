@@ -1475,7 +1475,7 @@ void ScreenGameplay::UpdateSongPosition( float fDeltaTime )
 	GAMESTATE->UpdateSongPosition( fSeconds+fAdjust, GAMESTATE->m_pCurSong->m_Timing, tm+fAdjust );
 	FOREACH_EnabledPlayer(p)
 	{
-		p->GetPlayerState()->UpdateSongPosition( fSeconds+fAdjust, GAMESTATE->m_pCurSong->m_Timing, tm+fAdjust );
+		GAMESTATE->m_pPlayerState[p]->UpdateSongPosition( fSeconds+fAdjust, GAMESTATE->m_pCurSong->m_Timing, tm+fAdjust );
 		//right now, this is used for nothing, nor does it load timing data from the Steps.	
 	}	
 	
