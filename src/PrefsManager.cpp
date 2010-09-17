@@ -273,7 +273,7 @@ PrefsManager::PrefsManager() :
 	m_sMachineName			( "MachineName",			"" ),
 	m_sCoursesToShowRanking		( "CoursesToShowRanking",		"" ),
 
-	m_bQuirksMode		( "QuirksMode",		false ),
+	m_bQuirksMode		( "QuirksMode",		true ),
 
 	/* Debug: */
 	m_bLogToDisk			( "LogToDisk",		true ),

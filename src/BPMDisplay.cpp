@@ -117,8 +117,9 @@ void BPMDisplay::SetBPMRange( const DisplayBpms &bpms )
 		int MaxBPM = INT_MIN;
 		for( unsigned i = 0; i < BPMS.size(); ++i )
 		{
-			MinBPM = min( MinBPM, (int)lrintf(BPMS[i]) );
-			MaxBPM = max( MaxBPM, (int)lrintf(BPMS[i]) );
+			// NEW: Clamp BPM ( Shows 001 instead of 99999 etc )
+			MinBPM = min( MinBPM, clamp( (int)lrintf(BPMS[i] ),-99999 , 99999 ) );
+			MaxBPM = max( MaxBPM, clamp( (int)lrintf(BPMS[i]) ,-99999 , 99999 ) );
 		}
 		if( MinBPM == MaxBPM )
 		{

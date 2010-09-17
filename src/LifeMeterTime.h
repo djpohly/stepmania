@@ -18,6 +18,8 @@ class LifeMeterTime : public LifeMeter
 public:
 	LifeMeterTime();
 
+	// virtual Preference1D<float> g_fTimeMeterSecondsChange( TimeMeterSecondsChangeInit, NUM_ScoreEvent );
+
 	virtual void Load( const PlayerState *pPlayerState, PlayerStageStats *pPlayerStageStats );
 
 	virtual void Update( float fDeltaTime );

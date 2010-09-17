@@ -278,7 +278,7 @@ public:
 	Preference<RString>	m_sMachineName;
 	Preference<RString>	m_sCoursesToShowRanking;
 
-	Preference<bool>	m_bQuirksMode; // enable quirky behavior desired by users of microsoft stepmania explorer 6.9
+	Preference<bool>	m_bQuirksMode; // Enables Negatives
 
 	// Debug:
 	Preference<bool>	m_bLogToDisk;
