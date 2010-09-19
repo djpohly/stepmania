@@ -34,12 +34,12 @@ struct StopSegment
 	StopSegment() : m_iStartRow(-1), m_fStopSeconds(-1.0f), m_bDelay(false)  { }
 	StopSegment( int s, float f ) {
 		m_iStartRow = max( 0, s );
-		m_fStopSeconds = PREFSMAN->m_bQuirksMode ? f : max( 0.0f, f );
+		m_fStopSeconds = f;
 		m_bDelay = false; // no delay by default
 	}
 	StopSegment( int s, float f, bool d ) {
 		m_iStartRow = max( 0, s );
-		m_fStopSeconds = PREFSMAN->m_bQuirksMode ? f : max( 0.0f, f );
+		m_fStopSeconds = f;
 		m_bDelay = d;
 	}
 	int m_iStartRow;

@@ -728,29 +728,12 @@ static void ReadGlobalTags( const NameToData_t &mapNameToData, Song &out, Measur
 	{
 		const float fBPM = StringToFloat( sData );
 
-		if( PREFSMAN->m_bQuirksMode )
-		{
-			BPMSegment newSeg( 0, fBPM );
-			out.AddBPMSegment( newSeg );
-			if( fBPM > 0.0f )
-				LOG->Trace( "Inserting new positive BPM change at beat %f, BPM %f", NoteRowToBeat(0), fBPM );
-			else
-				LOG->Trace( "Inserting new negative BPM change at beat %f, BPM %f", NoteRowToBeat(0), fBPM );
-		}
+		BPMSegment newSeg( 0, fBPM );
+		out.AddBPMSegment( newSeg );
+		if( fBPM > 0.0f )
+			LOG->Trace( "Inserting new positive BPM change at beat %f, BPM %f", NoteRowToBeat(0), fBPM );
 		else
-		{
-			if( fBPM > 0.0f )
-			{
-				BPMSegment newSeg( 0, fBPM );
-				out.AddBPMSegment( newSeg );
-				LOG->Trace( "Inserting new BPM change at beat %f, BPM %f", NoteRowToBeat(0), fBPM );
-			}
-			else
-			{
-				LOG->UserLog( "Song file", out.GetSongDir(), "has an invalid BPM change at beat %f, BPM %f.",
-						  NoteRowToBeat(0), fBPM );
-			}
-		}
+			LOG->Trace( "Inserting new negative BPM change at beat %f, BPM %f", NoteRowToBeat(0), fBPM );
 	}
 
 	NameToData_t::const_iterator it;
@@ -843,29 +826,12 @@ static void ReadGlobalTags( const NameToData_t &mapNameToData, Song &out, Measur
 				{
 					float fBPM = StringToFloat( sBPM );
 
-					if( PREFSMAN->m_bQuirksMode )
-					{
-						BPMSegment newSeg( BeatToNoteRow(fBeat), fBPM );
-						out.AddBPMSegment( newSeg );
-						if( fBPM > 0.0f )
-							LOG->Trace( "Inserting new positive BPM change at beat %f, BPM %f", fBeat, newSeg.GetBPM() );
-						else
-							LOG->Trace( "Inserting new negative BPM change at beat %f, BPM %f", fBeat, newSeg.GetBPM() );
-					}
+					BPMSegment newSeg( BeatToNoteRow(fBeat), fBPM );
+					out.AddBPMSegment( newSeg );
+					if( fBPM > 0.0f )
+						LOG->Trace( "Inserting new positive BPM change at beat %f, BPM %f", fBeat, newSeg.GetBPM() );
 					else
-					{
-						if( fBPM > 0.0f )
-						{
-							BPMSegment newSeg( BeatToNoteRow(fBeat), fBPM );
-							out.AddBPMSegment( newSeg );
-							LOG->Trace( "Inserting new BPM change at beat %f, BPM %f", fBeat, newSeg.GetBPM() );
-						}
-						else
-						{
-							LOG->UserLog( "Song file", out.GetSongDir(), "has an invalid BPM change at beat %f, BPM %f",
-									  fBeat, fBPM );
-						}
-					}
+						LOG->Trace( "Inserting new negative BPM change at beat %f, BPM %f", fBeat, newSeg.GetBPM() );
 				}
 				else
 				{
@@ -911,30 +877,12 @@ static void ReadGlobalTags( const NameToData_t &mapNameToData, Song &out, Measur
 				{
 					float fBPM = StringToFloat( sBPM );
 
-					if( PREFSMAN->m_bQuirksMode )
-					{
-						BPMSegment newSeg( iStepIndex, fBPM );
-						out.AddBPMSegment( newSeg );
-						if( fBPM > 0.0f )
-							LOG->Trace( "Inserting new positive BPM change at beat %f, BPM %f", NoteRowToBeat(newSeg.m_iStartRow), newSeg.GetBPM() );
-						else
-							LOG->Trace( "Inserting new negative BPM change at beat %f, BPM %f", NoteRowToBeat(newSeg.m_iStartRow), newSeg.GetBPM() );
-					}
+					BPMSegment newSeg( iStepIndex, fBPM );
+					out.AddBPMSegment( newSeg );
+					if( fBPM > 0.0f )
+						LOG->Trace( "Inserting new positive BPM change at beat %f, BPM %f", NoteRowToBeat(newSeg.m_iStartRow), newSeg.GetBPM() );
 					else
-					{
-						if( fBPM > 0.0f )
-						{
-							BPMSegment newSeg( iStepIndex, fBPM );
-							out.AddBPMSegment( newSeg );
-							LOG->Trace( "Inserting new BPM change at beat %f, BPM %f", NoteRowToBeat(newSeg.m_iStartRow), newSeg.GetBPM() );
-
-						}
-						else
-						{
-							LOG->UserLog( "Song file", out.GetSongDir(), "has an invalid BPM change at beat %f, BPM %f.",
-									  NoteRowToBeat(iStepIndex), fBPM );
-						}
-					}
+						LOG->Trace( "Inserting new negative BPM change at beat %f, BPM %f", NoteRowToBeat(newSeg.m_iStartRow), newSeg.GetBPM() );
 				}
 				else
 				{

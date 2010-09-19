@@ -2503,8 +2503,6 @@ void Player::UpdateTapNotesMissedOlderThan( float fMissIfOlderThanSeconds )
 		{
 			// warp hackery: don't score notes within the warp region.
 			// (Only useful when QuirksMode is enabled.) -aj
-			if( iter.Row() >= GAMESTATE->m_iWarpBeginRow && iter.Row() <= (GAMESTATE->m_iWarpBeginRow + BeatToNoteRow(GAMESTATE->m_fWarpLength)) )
-				continue;
 
 			tn.result.tns = TNS_Miss;
 		}

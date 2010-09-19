@@ -436,17 +436,7 @@ bool DWILoader::LoadFromDir( const RString &sPath_, Song &out, set<RString> &Bla
 		{
 			const float fBPM = StringToFloat( sParams[1] );
 			
-			if( PREFSMAN->m_bQuirksMode )
-			{
-				out.AddBPMSegment( BPMSegment(0, fBPM) );
-			}
-			else{
-				if( fBPM > 0.0f )
-					out.AddBPMSegment( BPMSegment(0, fBPM) );
-				else
-					LOG->UserLog( "Song file", sPath, "has an invalid BPM change at beat %f, BPM %f.",
-							  NoteRowToBeat(0), fBPM );
-			}
+			out.AddBPMSegment( BPMSegment(0, fBPM) );
 		}
 		else if( 0==stricmp(sValueName,"DISPLAYBPM") )
 		{

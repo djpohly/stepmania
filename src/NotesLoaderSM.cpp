@@ -129,22 +129,7 @@ void SMLoader::LoadTimingFromSMFile( const MsdFile &msd, TimingData &out )
 				const float fFreezeSeconds = StringToFloat( arrayFreezeValues[1] );
 				StopSegment new_seg( BeatToNoteRow(fFreezeBeat), fFreezeSeconds );
 
-				if(fFreezeSeconds > 0.0f)
-				{
-					// LOG->Trace( "Adding a freeze segment: beat: %f, seconds = %f", new_seg.m_fStartBeat, new_seg.m_fStopSeconds );
-					out.AddStopSegment( new_seg );
-				}
-				else
-				{
-					// negative stops (hi JS!) -aj
-					if( PREFSMAN->m_bQuirksMode )
-					{
-						// LOG->Trace( "Adding a negative freeze segment: beat: %f, seconds = %f", new_seg.m_fStartBeat, new_seg.m_fStopSeconds );
-						out.AddStopSegment( new_seg );
-					}
-					else
-						LOG->UserLog( "Song file", "(UNKNOWN)", "has an invalid stop at beat %f, length %f.", fFreezeBeat, fFreezeSeconds );
-				}
+				out.AddStopSegment( new_seg );
 			}
 		}
 		else if( sValueName=="DELAYS" )
@@ -250,11 +235,8 @@ void SMLoader::LoadTimingFromSMFile( const MsdFile &msd, TimingData &out )
 				else
 				{
 					out.m_bHasNegativeBpms = true;
-					// only add Negative BPMs in quirks mode -aj
-					if( PREFSMAN->m_bQuirksMode )
-						out.AddBPMSegment( BPMSegment(BeatToNoteRow(fBeat), fNewBPM) );
-					else
-						LOG->UserLog( "Song file", "(UNKNOWN)", "has an invalid BPM change at beat %f, BPM %f.", fBeat, fNewBPM );
+
+					out.AddBPMSegment( BPMSegment(BeatToNoteRow(fBeat), fNewBPM) );
 				}
 			}
 		}
