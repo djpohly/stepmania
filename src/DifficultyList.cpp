@@ -55,6 +55,14 @@ void StepsDisplayList::LoadFromNode( const XNode* pNode )
 	m_Lines.resize( MAX_METERS );
 	m_CurSong = NULL;
 
+	for( unsigned m = 0; m < m_Lines.size(); ++m )
+	{
+		m_Lines[m].m_Meter.SetName( "Row" );
+		m_Lines[m].m_Meter.Load( "StepsDisplayListRow", NULL );
+		this->AddChild( &m_Lines[m].m_Meter );
+	}
+
+	
 	FOREACH_ENUM( PlayerNumber, pn )
 	{
 		const XNode *pChild = pNode->GetChild( ssprintf("CursorP%i",pn+1) );
@@ -74,13 +82,6 @@ void StepsDisplayList::LoadFromNode( const XNode* pNode )
 		m_CursorFrames[pn].LoadFromNode( pChild );
 		m_CursorFrames[pn].AddChild( m_Cursors[pn] );
 		this->AddChild( &m_CursorFrames[pn] );
-	}
-
-	for( unsigned m = 0; m < m_Lines.size(); ++m )
-	{
-		m_Lines[m].m_Meter.SetName( "Row" );
-		m_Lines[m].m_Meter.Load( "StepsDisplayListRow", NULL );
-		this->AddChild( &m_Lines[m].m_Meter );
 	}
 
 	UpdatePositions();
