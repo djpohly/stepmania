@@ -8,6 +8,15 @@ Not all changes are documented, for various reasons.
 (Some changes were later reverted, other changes relate to things that aren't
 supported but exist anyways.)
 _____________________________________________________________________________
+sm-ssc v2.0: Real Stepping Roots
+
+20100927
+--------
+* [DifficultyList] Cursors draw over items [Midiman]
+
+20100917
+--------
+* [BPMDisplay] Clamp BPM output [Midiman]
 
 ================================================================================
 sm-ssc v1.0 "final" | 20100910
