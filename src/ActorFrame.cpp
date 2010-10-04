@@ -564,8 +564,8 @@ public:
 			lua_pushnil( L );
 		return 1;
 	}
-	static int RemoveAllChildren( T* p, lua_State *L )				{ p->RemoveAllChildren( ); return 0; }
 	*/
+	static int RemoveAllChildren( T* p, lua_State *L )	{ p->RemoveAllChildren(); return 0; }
 
 	LunaActorFrame()
 	{
@@ -594,8 +594,8 @@ public:
 		/*
 		ADD_METHOD( AddChild );
 		ADD_METHOD( RemoveChild );
-		ADD_METHOD( RemoveAllChildren );
 		*/
+		ADD_METHOD( RemoveAllChildren );
 	}
 };
 

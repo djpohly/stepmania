@@ -1530,6 +1530,33 @@ public:
 		LUA->UnyieldLua();
 		return 0;
 	}
+	static int LoadShaders( T* p, lua_State *L )
+	{
+		// shakesoda: loadshaders,"1.vert","2.frag" -> gets file contents as
+		// an rstring or something, or as const char**. if I can get the file
+		// contents as one of those two I can handle the rest.
+		RString sVertShaderPath = SArg(1);
+		RString sFragShaderPath = SArg(2);
+
+		// load files
+		RageFile fVertShader;
+		RageFile fFragShader;
+
+		// unsafe and I don't give a fuck right now, this is not for human
+		// consumption -aj
+		fVertShader.Open(sVertShaderPath);
+		RString sVertBuffer;
+		fVertShader.Read(sVertBuffer, fVertShader.GetFileSize());
+
+		fFragShader.Open(sVertShaderPath);
+		RString sFragBuffer;
+		fFragShader.Read(sFragBuffer, fFragShader.GetFileSize());
+
+		// I've zeroed the sights, the rest is up to you.
+		// (there should be some sanity checking added for production) -aj
+
+		return 0;
+	}
 
 	LunaActor()
 	{
@@ -1691,6 +1718,7 @@ public:
 		ADD_METHOD( GetParent );
 
 		ADD_METHOD( Draw );
+		//ADD_METHOD( LoadShaders );
 	}
 };
 
