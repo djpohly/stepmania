@@ -15,6 +15,7 @@
 #include "ActorUtil.h"
 #include "Preference.h"
 #include <typeinfo>
+#include "RageFile.h"
 
 static Preference<bool> g_bShowMasks("ShowMasks", false);
 
