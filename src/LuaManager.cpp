@@ -10,6 +10,7 @@
 #include "XmlFile.h"
 #include "Command.h"
 #include "RageTypes.h"
+#include "arch/ArchHooks/ArchHooks.h" // GetArchName()
 
 #include <sstream>
 #include <csetjmp>
@@ -970,19 +971,7 @@ LuaFunction( VersionTime, (RString) version_time );
 
 static RString GetOSName()
 {
-	RString system;
-	#if defined(XBOX)
-		system = "Xbox";
-	#elif defined(WIN32) && !defined(XBOX)
-		system = "Windows";
-	#elif defined(LINUX)
-		system = "Linux";
-	#elif defined(DARWIN)
-		system = "Mac";
-	#else
-		system = "Unknown";
-	#endif
-	return system;
+	return ArchHooks::GetArchName();
 }
 LuaFunction( GetOSName, GetOSName() );
 

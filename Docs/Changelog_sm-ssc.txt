@@ -10,6 +10,18 @@ supported but exist anyways.)
 _____________________________________________________________________________
 sm-ssc v2.0: Real Stepping Roots
 
+20101015
+--------
+* GetOSName Lua binding changed to use ArchHooks::GetArchName() instead.
+  New possible values:
+	"Mac OS X (i386)" - Intel Macs
+	"Mac OS X (ppc)"  - PowerPC Macs
+	"Unix"            - *nix
+	"Windows"         - Microsoft Windows
+	"Xbox"            - clearly this is for the PlayStation 2 :p
+	"generic"         - any architecture that is undefined.
+	If you get this, let us know what you're running so we can fix it.
+
 20100927
 --------
 * [DifficultyList] Cursors draw over items [Midiman]
