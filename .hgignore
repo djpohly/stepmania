@@ -18,15 +18,23 @@ Thumbs.db
 *.pbxuser
 *.mode1v3
 *.exe
+*.lnk
 *.vdi
 PBProject/build
 Xcode/build
 ver.cpp
 lib*_link.a
+Program/*.exp
+Program/*.lib
+src/Release*/*
+src/libtomcrypt/Release*/*
+src/libtommath/Release*/*
 Data/UserPrefs
 PBProject/Hardware.plist
 Themes/pump
 Themes/optical-release
+Logs/*
+Save/*
 
 syntax: regexp
 .*\#.*\#$
