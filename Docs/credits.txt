@@ -23,7 +23,7 @@ shakesoda
 (in no particular order, aside from having SM team at the top)
 
 StepMania Team
- * Keeping StepMania 5 alive with changes, and providing a nice codebase for
+ * Keeping StepMania alive with changes, and providing a nice codebase for
    us to work with.
 
 Aldo_MX
