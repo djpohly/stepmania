@@ -121,7 +121,7 @@ LoadingWindow_Win32::LoadingWindow_Win32()
 	m_hIcon = NULL;
 	hwnd = CreateDialog( handle.Get(), MAKEINTRESOURCE(IDD_LOADING_DIALOG), NULL, WndProc );
 	for( unsigned i = 0; i < 3; ++i )
-		text[i] = "ABC"; /* always set on first call */
+		text[i] = "ABC"; // always set on first call
 	SetText( "" );
 	Paint();
 }
@@ -138,8 +138,8 @@ void LoadingWindow_Win32::Paint()
 {
 	SendMessage( hwnd, WM_PAINT, 0, 0 );
 
-	/* Process all queued messages since the last paint.  This allows the window to
-	 * come back if it loses focus during load. */
+	/* Process all queued messages since the last paint. This allows the window
+	 * to come back if it loses focus during load. */
 	MSG msg;
 	while( PeekMessage( &msg, hwnd, 0, 0, PM_NOREMOVE ) )
 	{
@@ -154,7 +154,7 @@ void LoadingWindow_Win32::SetText( RString sText )
 	split( sText, "\n", asMessageLines, false );
 	while( asMessageLines.size() < 3 )
 		asMessageLines.push_back( "" );
-	
+
 	const int msgid[] = { IDC_STATIC_MESSAGE1, IDC_STATIC_MESSAGE2, IDC_STATIC_MESSAGE3 };
 	for( unsigned i = 0; i < 3; ++i )
 	{
@@ -163,7 +163,7 @@ void LoadingWindow_Win32::SetText( RString sText )
 		text[i] = asMessageLines[i];
 
 		HWND hwndItem = ::GetDlgItem( hwnd, msgid[i] );
-		
+
 		::SetWindowText( hwndItem, ConvertUTF8ToACP(asMessageLines[i]).c_str() );
 	}
 }

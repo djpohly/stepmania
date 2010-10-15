@@ -13,7 +13,7 @@ public:
 	WorkoutGraph();
 	~WorkoutGraph();
 	virtual WorkoutGraph *Copy() const;
-	
+
 	void Load();
 	void LoadFromNode( const XNode* pNode );
 	void SetFromCurrentWorkout();

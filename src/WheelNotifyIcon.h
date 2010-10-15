@@ -12,7 +12,10 @@ public:
 
 	struct Flags
 	{
-		Flags() { bHasBeginnerOr1Meter = bEdits = false; iPlayersBestNumber = iStagesForSong = 0; }
+		Flags() {
+			bHasBeginnerOr1Meter = bEdits = false;
+			iPlayersBestNumber = iStagesForSong = 0;
+		}
 		bool bHasBeginnerOr1Meter;
 		int iPlayersBestNumber;
 		bool bEdits;

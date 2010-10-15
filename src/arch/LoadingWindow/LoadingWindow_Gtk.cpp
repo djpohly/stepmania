@@ -19,7 +19,7 @@ LoadingWindow_Gtk::LoadingWindow_Gtk()
 RString LoadingWindow_Gtk::Init()
 {
 	ASSERT( Handle == NULL );
-	
+
 	Handle = dlopen( RageFileManagerUtil::sDirOfExecutable + "/" + "GtkModule.so", RTLD_NOW );
 	if( Handle == NULL )
 		return ssprintf( "dlopen(): %s", dlerror() );
