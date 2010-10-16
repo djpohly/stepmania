@@ -971,7 +971,7 @@ LuaFunction( VersionTime, (RString) version_time );
 
 static RString GetOSName()
 {
-	return ArchHooks::GetArchName();
+	return HOOKS->GetArchName();
 }
 LuaFunction( GetOSName, GetOSName() );
 

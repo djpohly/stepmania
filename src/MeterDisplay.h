@@ -17,10 +17,6 @@ public:
 
 	void SetPercent( float fPercent );
 	void SetStreamWidth( float fStreamWidth );
-	
-	// Lua
-	// HACK: not linking right now.
-	// void PushSelf( lua_State *L );
 
 private:
 	float	m_fStreamWidth;
