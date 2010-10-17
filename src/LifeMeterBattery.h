@@ -5,6 +5,7 @@
 
 #include "LifeMeter.h"
 #include "Sprite.h"
+#include "AutoActor.h"
 #include "BitmapText.h"
 #include "RageSound.h"
 #include "PercentageDisplay.h"
@@ -47,8 +48,10 @@ private:
 	//ThemeMetric<> METRIC_NAME;
 	ThemeMetric<float> BATTERY_BLINK_TIME;
 
-	Sprite		m_sprFrame;
+	AutoActor		m_sprUnder;
+	AutoActor		m_sprDanger;
 	Sprite		m_sprBattery;
+	AutoActor		m_sprOver;
 	BitmapText	m_textNumLives;
 
 	PercentageDisplay	m_Percent;

@@ -30,8 +30,15 @@ void LifeMeterBattery::Load( const PlayerState *pPlayerState, PlayerStageStats *
 
 	bool bPlayerEnabled = GAMESTATE->IsPlayerEnabled( pPlayerState );
 
-	m_sprFrame.Load( THEME->GetPathG(sType,"frame") );
-	this->AddChild( &m_sprFrame );
+	m_sprUnder.Load( THEME->GetPathG(sType,"Under") );
+	m_sprUnder->SetName( "Under" );
+	ActorUtil::LoadAllCommandsAndSetXY( m_sprUnder, sType );
+	this->AddChild( m_sprUnder );
+
+	m_sprDanger.Load( THEME->GetPathG(sType,"Danger") );
+	m_sprDanger->SetName( "Danger" );
+	ActorUtil::LoadAllCommandsAndSetXY( m_sprDanger, sType );
+	this->AddChild( m_sprDanger );
 
 	m_sprBattery.Load( THEME->GetPathG(sType,"lives 1x4") );
 	m_sprBattery.SetName( ssprintf("BatteryP%i",int(pn+1)) );
@@ -43,6 +50,11 @@ void LifeMeterBattery::Load( const PlayerState *pPlayerState, PlayerStageStats *
 		ActorUtil::LoadAllCommandsAndSetXY( m_sprBattery, sType );
 		this->AddChild( &m_sprBattery );
 	}
+
+	m_sprOver.Load( THEME->GetPathG(sType,"Over") );
+	m_sprOver->SetName( "Over" );
+	ActorUtil::LoadAllCommandsAndSetXY( m_sprOver, sType );
+	this->AddChild( m_sprOver );
 
 	m_textNumLives.LoadFromFont( THEME->GetPathF(sType, "lives") );
 	m_textNumLives.SetName( ssprintf("NumLivesP%i",int(pn+1)) );
