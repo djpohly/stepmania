@@ -33,10 +33,12 @@ local t = Def.ActorFrame {
 		LoadFont( "Combo", "numbers" ) .. {
 			Name="Number";
 			OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
+			OffCommand = THEME:GetMetric("Combo", "NumberOffCommand");
 		};
 		LoadFont("Common Normal") .. {
 			Name="Label";
 			OnCommand = THEME:GetMetric("Combo", "LabelOnCommand");
+			OffCommand = THEME:GetMetric("Combo", "LabelOffCommand");
 		};
 	};
 	InitCommand = function(self)

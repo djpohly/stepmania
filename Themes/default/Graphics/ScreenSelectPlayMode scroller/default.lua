@@ -45,19 +45,19 @@ t[#t+1] = Def.ActorFrame {
 	Def.Quad {
 		InitCommand=cmd(horizalign,left;y,20;zoomto,320,2;diffuse,colors[gc:GetName()];diffusealpha,0;fadeleft,0.35;faderight,0.35);
 		GainFocusCommand=cmd(stoptweening;linear,0.2;diffusealpha,1);
-		LoseFocusCommand=cmd(stoptweening;linear,0.2;diffusealpha,0);
+		LoseFocusCommand=cmd(stoptweening;linear,0.0375;diffusealpha,0);
 	};
 	LoadFont("_helveticaneuelt std extblk cn 42px") .. {
 		Text=gc:GetName();
 		InitCommand=cmd(horizalign,left;diffuse,colors[gc:GetName()];shadowcolor,ColorDarkTone(colors[gc:GetName()]);shadowlength,2;diffusealpha,0;skewx,-0.125);
 		GainFocusCommand=cmd(stoptweening;x,-16;decelerate,0.25;diffusealpha,1;x,0);
-		LoseFocusCommand=cmd(stoptweening;x,0;accelerate,0.25;diffusealpha,0;x,16;diffusealpha,0);
+		LoseFocusCommand=cmd(stoptweening;x,0;accelerate,0.0375;diffusealpha,0;x,16;diffusealpha,0);
 	};
 	LoadFont("_helveticaneuelt std extblk cn 42px") .. {
 		Text=THEME:GetString(Var "LoadingScreen", gc:GetName() .. "Explanation");
 		InitCommand=cmd(horizalign,right;x,320;y,30;shadowlength,1;diffusealpha,0;skewx,-0.125;zoom,0.5);
 		GainFocusCommand=cmd(stoptweening;x,320-16;decelerate,0.25;diffusealpha,1;x,320);
-		LoseFocusCommand=cmd(stoptweening;x,320;accelerate,0.25;diffusealpha,0;x,320+16;diffusealpha,0);
+		LoseFocusCommand=cmd(stoptweening;x,320;accelerate,0.0375;diffusealpha,0;x,320+16;diffusealpha,0);
 	};
 };
 -- t.GainFocusCommand=cmd(visible,true);
