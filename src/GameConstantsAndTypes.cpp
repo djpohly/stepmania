@@ -465,6 +465,7 @@ XToString( MultiPlayerStatus );
 static const char *CourseTypeNames[] = {
 	"Nonstop",
 	"Oni",
+	"Gauntlet",
 	"Endless",
 	"Survival",
 };
