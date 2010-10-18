@@ -136,9 +136,8 @@ CourseType Course::GetCourseType() const
 {
 	if( m_bRepeat )
 		return COURSE_TYPE_ENDLESS;
-	if( m_iLives > 0 )
-		return COURSE_TYPE_ONI;
-	/*
+	//	if( m_iLives > 0 )
+	//		return COURSE_TYPE_ONI;
 	if( m_iLives > 0 && m_iLives < 10 ) 
 		return COURSE_TYPE_ONI;
 	if( m_iLives > 10 )
