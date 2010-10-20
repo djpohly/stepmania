@@ -136,12 +136,10 @@ CourseType Course::GetCourseType() const
 {
 	if( m_bRepeat )
 		return COURSE_TYPE_ENDLESS;
-	//	if( m_iLives > 0 )
-	//		return COURSE_TYPE_ONI;
-	if( m_iLives > 0 && m_iLives < 10 ) 
+	if( m_iLives > 0 )
 		return COURSE_TYPE_ONI;
-	if( m_iLives > 10 )
-		return COURSE_TYPE_GAUNTLET; */
+	if( !m_vEntries.empty() && m_vEntries[0].iGainLives > -1)
+		return COURSE_TYPE_GAUNTLET;
 	if( !m_vEntries.empty()  &&  m_vEntries[0].fGainSeconds > 0 )
 		return COURSE_TYPE_SURVIVAL;
 	return COURSE_TYPE_NONSTOP;
@@ -165,10 +163,8 @@ void Course::SetCourseType( CourseType ct )
 	case COURSE_TYPE_ONI:
 		m_iLives = 4;
 		break;
-	/* I would love to know what to do here.
 	case COURSE_TYPE_GAUNTLET:
-		m_iLives = 25;
-	*/
+		break;
 	case COURSE_TYPE_ENDLESS:
 		m_bRepeat = true;
 		break;
@@ -185,7 +181,7 @@ PlayMode Course::GetPlayMode() const
 	{
 	case COURSE_TYPE_ENDLESS:	return PLAY_MODE_ENDLESS;
 	case COURSE_TYPE_ONI:		return PLAY_MODE_ONI;
-	// case COURSE_TYPE_GAUNTLET:	return PLAY_MODE_ONI;
+	case COURSE_TYPE_GAUNTLET:	return PLAY_MODE_ONI;
 	case COURSE_TYPE_SURVIVAL:	return PLAY_MODE_ONI;
 	case COURSE_TYPE_NONSTOP:	return PLAY_MODE_NONSTOP;
 	default: ASSERT(0);		return PlayMode_Invalid;

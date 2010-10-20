@@ -187,7 +187,6 @@ end;
 
 if GAMESTATE:IsCourseMode() then
 	t[#t+1] = StandardDecorationFromFileOptional("NumCourseSongs","NumCourseSongs")..{
-		InitCommand=cmd(horizalign,right);
 		SetCommand=function(self)
 			local curSelection= nil;
 			local sAppend = "";
@@ -197,6 +196,23 @@ if GAMESTATE:IsCourseMode() then
 					sAppend = (curSelection:GetEstimatedNumStages() == 1) and "Stage" or "Stages";
 					self:visible(true);
 					self:settext( curSelection:GetEstimatedNumStages() .. " " .. sAppend);
+				else
+					self:visible(false);
+				end;
+			else
+				self:visible(false);
+			end;
+		end;
+		CurrentCourseChangedMessageCommand=cmd(playcommand,"Set");
+	};
+	t[#t+1] = StandardDecorationFromFileOptional("CourseType","CourseType") .. {
+		SetCommand=function(self)
+			local curSelection= nil;
+			if GAMESTATE:IsCourseMode() then
+				curSelection = GAMESTATE:GetCurrentCourse();
+				if curSelection then
+					self:visible(true);
+					self:settext( ToEnumShortString( curSelection:GetCourseType() ) );
 				else
 					self:visible(false);
 				end;

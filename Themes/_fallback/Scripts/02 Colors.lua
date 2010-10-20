@@ -50,6 +50,7 @@ GameColor = {
 		Edit		= color("0.8,0.8,0.8,1"),	-- gray
 		Couple		= color("#ed0972"),			-- hot pink
 		Routine		= color("#ff9a00"),			-- orange
+		Gauntlet	= color("#bd733d"),			-- tan
 		--[[ These are for courses, so let's slap them here in case someone
 		wanted to use Difficulty in Course and Step regions. ]]
 		Difficulty_Beginner	= color("#ff32f8"),		-- purple
