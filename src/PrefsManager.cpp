@@ -126,6 +126,7 @@ StringToX( CourseSortOrders );
 LuaXType( CourseSortOrders );
 
 static const char *ScoringTypeNames[] = {
+	"SN2",
 	"New",
 	"Old",
 	"Custom",

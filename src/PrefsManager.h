@@ -108,6 +108,7 @@ enum CourseSortOrders
 };
 enum ScoringType
 {
+	SCORING_SN2,
 	SCORING_NEW,
 	SCORING_OLD,
 	SCORING_CUSTOM,

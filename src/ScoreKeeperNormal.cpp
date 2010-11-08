@@ -180,6 +180,9 @@ void ScoreKeeperNormal::Load(
 	memset( m_ComboBonusFactor, 0, sizeof(m_ComboBonusFactor) );
 	switch( PREFSMAN->m_ScoringType )
 	{
+	case SCORING_SN2:
+		m_iRoundTo = 10;
+		break;
 	case SCORING_NEW:
 	case SCORING_CUSTOM:
 		m_iRoundTo = 1;
@@ -252,6 +255,9 @@ void ScoreKeeperNormal::OnNextSong( int iSongInCourseIndex, const Steps* pSteps,
 		int iLengthMultiplier = GameState::GetNumStagesMultiplierForSong( GAMESTATE->m_pCurSong );
 		switch( PREFSMAN->m_ScoringType )
 		{
+		case SCORING_SN2:
+			m_iMaxPossiblePoints = 1000000;
+			break;
 		case SCORING_NEW:
 			m_iMaxPossiblePoints = iMeter * 10000000 * iLengthMultiplier;
 			break;
@@ -408,7 +414,7 @@ void ScoreKeeperNormal::AddScoreInternal( TapNoteScore score )
   Note: if you got all W2s on this song, you would get (p=10)*Z, which is 80,000,000. In fact, the maximum possible
   score for any song is the number of feet difficulty X 10,000,000.
 */
-	if( PREFSMAN->m_ScoringType != SCORING_CUSTOM || GAMESTATE->IsCourseMode() )
+	if( ( PREFSMAN->m_ScoringType != SCORING_CUSTOM || GAMESTATE->IsCourseMode() ) && PREFSMAN->m_ScoringType != SCORING_SN2 )
 	{
 		int p = 0;	// score multiplier
 
@@ -466,7 +472,7 @@ void ScoreKeeperNormal::AddScoreInternal( TapNoteScore score )
 		}
 	}
 	// Custom Scoring
-	else
+	else if ( PREFSMAN->m_ScoringType == SCORING_CUSTOM)
 	{
 		int p = 0; // score value
 
@@ -507,6 +513,84 @@ void ScoreKeeperNormal::AddScoreInternal( TapNoteScore score )
 		// Because the score can drop below 0 if you miss a bunch of notes, cap it off at zero
 		if( iScore <= 0 )
 			iScore = 0;
+	}
+
+	if (PREFSMAN->m_ScoringType == SCORING_SN2 )
+	{
+		int p = 0;	// score multiplier
+
+		switch( score )
+		{
+		case TNS_W1:	p = 10;	break;
+		case TNS_W2:	p = 10; break;
+		case TNS_W3:	p = 5;	break;
+		default:		p = 0;	break;
+		}
+
+		m_iTapNotesHit++;
+
+		const int N = m_iNumTapsAndHolds;
+		const int sum = (N * (N + 1)) / 2;
+		const int Z = m_iMaxPossiblePoints/10;
+
+		// Don't use a multiplier if the player has failed
+		if( m_pPlayerStageStats->m_bFailed )
+		{
+			iScore += p;
+			// make score evenly divisible by 5
+			// only update this on the next step, to make it less *obvious*
+			/* Round to the nearest 5, instead of always rounding down, so a base score
+			* of 9 will round to 10, not 5. */
+			if (p > 0)
+				iScore = ((iScore+2) / 5) * 5;
+		}
+		else
+		{
+			if (score == TNS_W1)
+				iScore += (m_iMaxPossiblePoints / m_iNumTapsAndHolds);
+			else if (score == TNS_W2)
+				iScore += (m_iMaxPossiblePoints / m_iNumTapsAndHolds) - 10;
+			else if (score == TNS_W3)
+				iScore += ((m_iMaxPossiblePoints / m_iNumTapsAndHolds) - 10)/2;
+			//if (GAMESTATE->ShowW1() && score == TNS_W2)
+			//	iScore += (GetScore(p, Z, sum, m_iTapNotesHit) - 10);
+			//else
+			//	iScore += GetScore(p, Z, sum, m_iTapNotesHit);
+			
+			//const int &iCurrentCombo = m_pPlayerStageStats->m_iCurCombo;
+			//iScore += m_ComboBonusFactor[score] * iCurrentCombo;
+		}
+
+		// Subtract the maximum this step could have been worth from the bonus.
+		//m_iPointBonus -= GetScore(10, Z, sum, m_iTapNotesHit);
+		// And add the maximum this step could have been worth to the max score up to now.
+		//iCurMaxScore += GetScore(10, Z, sum, m_iTapNotesHit);
+
+		/*if ( m_iTapNotesHit == m_iNumTapsAndHolds && score >= TNS_W2 )
+		{
+			if( !m_pPlayerStageStats->m_bFailed )
+				iScore += m_iPointBonus;
+			if ( m_bIsLastSongInCourse )
+			{
+				iScore += 100000000 - m_iMaxScoreSoFar;
+				iCurMaxScore += 100000000 - m_iMaxScoreSoFar;
+
+				// If we're in Endless mode, we'll come around here again, so reset
+				// the bonus counter.
+				m_iMaxScoreSoFar = 0;
+			}
+			iCurMaxScore += m_iPointBonus;
+		}*/
+
+		// handle Perfect Full Combo
+		//if( m_pPlayerStageStats->m_iCurCombo == m_pPlayerStageStats->m_iMaxCombo ){
+			//if ( m_pPlayerStageStats->FullComboOfScore(TNS_W2) )
+			//if (iScore >= 990000)
+			if ( m_iTapNotesHit == m_iNumTapsAndHolds && score >= TNS_W2 )
+			{
+				iScore = 1000000 - (100 * m_pPlayerStageStats->m_iTapNoteScores[TNS_W2] );
+			}
+		//}
 	}
 
 	ASSERT( iScore >= 0 );
@@ -574,6 +658,15 @@ void ScoreKeeperNormal::HandleHoldCheckpointScore( const NoteData &nd, int iRow,
 			iScore += m_CustomTNS_CheckpointHit;
 		else
 			iScore += m_CustomTNS_CheckpointMiss;
+	}
+
+		/* I'm not sure if this actually impacts the scoring.
+			Does "ThisRow" mean holds starting on the same row, or holds ending on the same row?
+			(Game still shows two judgments for jump holds.)*/
+	if( m_ComboIsPerRow )
+	{
+		iNumHoldsMissedThisRow = min( iNumHoldsMissedThisRow, 1);
+		iNumHoldsHeldThisRow = min( iNumHoldsHeldThisRow, 1) - iNumHoldsMissedThisRow;
 	}
 
 	HandleTapNoteScoreInternal( iNumHoldsMissedThisRow == 0? TNS_CheckpointHit:TNS_CheckpointMiss, TNS_CheckpointHit );
