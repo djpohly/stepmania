@@ -551,7 +551,7 @@ void ScoreKeeperNormal::AddScoreInternal( TapNoteScore score )
 			else if (score == TNS_W2)
 				iScore += (m_iMaxPossiblePoints / m_iNumTapsAndHolds) - 10;
 			else if (score == TNS_W3)
-				iScore += ((m_iMaxPossiblePoints / m_iNumTapsAndHolds) - 10)/2;
+				iScore += ((m_iMaxPossiblePoints / m_iNumTapsAndHolds) / 2) - 10;
 			//if (GAMESTATE->ShowW1() && score == TNS_W2)
 			//	iScore += (GetScore(p, Z, sum, m_iTapNotesHit) - 10);
 			//else
