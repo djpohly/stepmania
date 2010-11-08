@@ -552,45 +552,15 @@ void ScoreKeeperNormal::AddScoreInternal( TapNoteScore score )
 				iScore += (m_iMaxPossiblePoints / m_iNumTapsAndHolds) - 10;
 			else if (score == TNS_W3)
 				iScore += ((m_iMaxPossiblePoints / m_iNumTapsAndHolds) / 2) - 10;
-			//if (GAMESTATE->ShowW1() && score == TNS_W2)
-			//	iScore += (GetScore(p, Z, sum, m_iTapNotesHit) - 10);
-			//else
-			//	iScore += GetScore(p, Z, sum, m_iTapNotesHit);
-			
-			//const int &iCurrentCombo = m_pPlayerStageStats->m_iCurCombo;
-			//iScore += m_ComboBonusFactor[score] * iCurrentCombo;
 		}
 
-		// Subtract the maximum this step could have been worth from the bonus.
-		//m_iPointBonus -= GetScore(10, Z, sum, m_iTapNotesHit);
-		// And add the maximum this step could have been worth to the max score up to now.
-		//iCurMaxScore += GetScore(10, Z, sum, m_iTapNotesHit);
-
-		/*if ( m_iTapNotesHit == m_iNumTapsAndHolds && score >= TNS_W2 )
-		{
-			if( !m_pPlayerStageStats->m_bFailed )
-				iScore += m_iPointBonus;
-			if ( m_bIsLastSongInCourse )
-			{
-				iScore += 100000000 - m_iMaxScoreSoFar;
-				iCurMaxScore += 100000000 - m_iMaxScoreSoFar;
-
-				// If we're in Endless mode, we'll come around here again, so reset
-				// the bonus counter.
-				m_iMaxScoreSoFar = 0;
-			}
-			iCurMaxScore += m_iPointBonus;
-		}*/
-
 		// handle Perfect Full Combo
-		//if( m_pPlayerStageStats->m_iCurCombo == m_pPlayerStageStats->m_iMaxCombo ){
-			//if ( m_pPlayerStageStats->FullComboOfScore(TNS_W2) )
-			//if (iScore >= 990000)
-			if ( m_iTapNotesHit == m_iNumTapsAndHolds && score >= TNS_W2 )
+		if ( m_pPlayerStageStats->FullComboOfScore(TNS_W2) ){
+			if ( m_iTapNotesHit == m_iNumTapsAndHolds )
 			{
 				iScore = 1000000 - (100 * m_pPlayerStageStats->m_iTapNoteScores[TNS_W2] );
 			}
-		//}
+		}
 	}
 
 	ASSERT( iScore >= 0 );
