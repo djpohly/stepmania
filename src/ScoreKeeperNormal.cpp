@@ -529,10 +529,6 @@ void ScoreKeeperNormal::AddScoreInternal( TapNoteScore score )
 
 		m_iTapNotesHit++;
 
-		const int N = m_iNumTapsAndHolds;
-		const int sum = (N * (N + 1)) / 2;
-		const int Z = m_iMaxPossiblePoints/10;
-
 		// Don't use a multiplier if the player has failed
 		if( m_pPlayerStageStats->m_bFailed )
 		{
@@ -558,7 +554,7 @@ void ScoreKeeperNormal::AddScoreInternal( TapNoteScore score )
 		if ( m_pPlayerStageStats->FullComboOfScore(TNS_W2) ){
 			if ( m_iTapNotesHit == m_iNumTapsAndHolds )
 			{
-				iScore = 1000000 - (100 * m_pPlayerStageStats->m_iTapNoteScores[TNS_W2] );
+				iScore = 1000000 - (10 * m_pPlayerStageStats->m_iTapNoteScores[TNS_W2] );
 			}
 		}
 	}
