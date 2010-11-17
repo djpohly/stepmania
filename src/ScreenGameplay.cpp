@@ -2577,10 +2577,45 @@ void ScreenGameplay::HandleScreenMessage( const ScreenMessage SM )
 			if( !m_Toasty.IsTransitioning()  &&  !m_Toasty.IsFinished() )	// don't play if we've already played it once
 				m_Toasty.StartTransitioning();
 	}
-	else if( SM >= SM_100Combo && SM <= SM_1000Combo )
+	else if( SM == SM_100Combo )
 	{
-		int iCombo = ((SM - 100) + 1)*100;
-		PlayAnnouncer( ssprintf("gameplay %d combo",iCombo), 2 );
+		PlayAnnouncer( "gameplay 100 combo", 2 );
+	}
+	else if( SM == SM_200Combo )
+	{
+		PlayAnnouncer( "gameplay 200 combo", 2 );
+	}
+	else if( SM == SM_300Combo )
+	{
+		PlayAnnouncer( "gameplay 300 combo", 2 );
+	}
+	else if( SM == SM_400Combo )
+	{
+		PlayAnnouncer( "gameplay 400 combo", 2 );
+	}
+	else if( SM == SM_500Combo )
+	{
+		PlayAnnouncer( "gameplay 500 combo", 2 );
+	}
+	else if( SM == SM_600Combo )
+	{
+		PlayAnnouncer( "gameplay 600 combo", 2 );
+	}
+	else if( SM == SM_700Combo )
+	{
+		PlayAnnouncer( "gameplay 700 combo", 2 );
+	}
+	else if( SM == SM_800Combo )
+	{
+		PlayAnnouncer( "gameplay 800 combo", 2 );
+	}
+	else if( SM == SM_900Combo )
+	{
+		PlayAnnouncer( "gameplay 900 combo", 2 );
+	}
+	else if( SM == SM_1000Combo )
+	{
+		PlayAnnouncer( "gameplay 1000 combo", 2 );
 	}
 	else if( SM == SM_ComboStopped )
 	{

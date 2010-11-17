@@ -138,8 +138,6 @@ CourseType Course::GetCourseType() const
 		return COURSE_TYPE_ENDLESS;
 	if( m_iLives > 0 )
 		return COURSE_TYPE_ONI;
-	if( !m_vEntries.empty() && m_vEntries[0].iGainLives > -1)
-		return COURSE_TYPE_GAUNTLET;
 	if( !m_vEntries.empty()  &&  m_vEntries[0].fGainSeconds > 0 )
 		return COURSE_TYPE_SURVIVAL;
 	return COURSE_TYPE_NONSTOP;
@@ -163,8 +161,6 @@ void Course::SetCourseType( CourseType ct )
 	case COURSE_TYPE_ONI:
 		m_iLives = 4;
 		break;
-	case COURSE_TYPE_GAUNTLET:
-		break;
 	case COURSE_TYPE_ENDLESS:
 		m_bRepeat = true;
 		break;
@@ -181,7 +177,6 @@ PlayMode Course::GetPlayMode() const
 	{
 	case COURSE_TYPE_ENDLESS:	return PLAY_MODE_ENDLESS;
 	case COURSE_TYPE_ONI:		return PLAY_MODE_ONI;
-	case COURSE_TYPE_GAUNTLET:	return PLAY_MODE_ONI;
 	case COURSE_TYPE_SURVIVAL:	return PLAY_MODE_ONI;
 	case COURSE_TYPE_NONSTOP:	return PLAY_MODE_NONSTOP;
 	default: ASSERT(0);		return PlayMode_Invalid;
