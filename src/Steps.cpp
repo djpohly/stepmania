@@ -162,6 +162,9 @@ void Steps::TidyUpData()
 
 	if( GetMeter() < 1) // meter is invalid
 		SetMeter( int(PredictMeter()) );
+	
+	//XXX: make it better than this hack
+	m_StepsTiming = SONGMAN->GetSongFromSteps( this )->m_Timing;
 }
 
 void Steps::CalculateRadarValues( float fMusicLengthSeconds )
