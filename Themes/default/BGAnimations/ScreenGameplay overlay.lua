@@ -1,18 +1,24 @@
 local t = Def.ActorFrame {};
 local function UpdateTime(self)
 	local c = self:GetChildren();
+	local bOni = GAMESTATE:GetCurrentCourse():GetCourseType() == "CourseType_Oni" and true or false;
 	for pn in ivalues(PlayerNumber) do
 		local vStats = STATSMAN:GetCurStageStats():GetPlayerStageStats( pn );
 		local vTime;
-		local obj = self:GetChild( string.format("RemainingTime" .. PlayerNumberToString(pn) ) );
+		local aTotalTime = self:GetChild( string.format("RemainingTime" .. PlayerNumberToString(pn) ) );
+		--
 		if vStats then
-			vTime = vStats:GetLifeRemainingSeconds()
-			obj:settext( SecondsToMMSSMsMs( vTime ) );
+			if bOni then
+				vTime = vStats:GetAliveSeconds();
+			else
+				vTime = vStats:GetLifeRemainingSeconds();
+			end;
+			aTotalTime:settext( SecondsToMMSSMsMs( vTime ) );
 		end;
 	end;
 end
 if GAMESTATE:GetCurrentCourse() then
-	if GAMESTATE:GetCurrentCourse():GetCourseType() == "CourseType_Survival" then
+	if GAMESTATE:GetCurrentCourse():GetCourseType() == "CourseType_Survival" or "CourseType_Oni" then
 		-- RemainingTime
 		for pn in ivalues(PlayerNumber) do
 			local MetricsName = "RemainingTime" .. PlayerNumberToString(pn);
