@@ -198,7 +198,7 @@ void PlayerState::UpdateSongPosition( float fPositionSeconds, const TimingData &
 
 	timing.GetBeatAndBPSFromElapsedTime( fPositionSeconds, m_fSongBeat, m_fCurBPS, m_bFreeze, m_bDelay, m_iWarpBeginRow, m_fWarpLength );
 	// "Crash reason : -243478.890625 -48695.773438"
-	ASSERT_M( m_fSongBeat > -2000, ssprintf("m_fSongBeat %f at %f seconds < beat -2000", m_fSongBeat, fPositionSeconds) );
+	ASSERT_M( m_fSongBeat > -2000, ssprintf("m_fSongBeat %f at %f seconds < beat -2000.", m_fSongBeat, fPositionSeconds) );
 
 	//if( m_iWarpBeginRow != -1 || m_iWarpEndRow == -1 )
 	if( m_iWarpBeginRow != -1 && m_fWarpLength > 0.f )
@@ -210,7 +210,7 @@ void PlayerState::UpdateSongPosition( float fPositionSeconds, const TimingData &
 
 	m_fSongBeatNoOffset = timing.GetBeatFromElapsedTimeNoOffset( fPositionSeconds );
 
-	m_fMusicSecondsVisible = fPositionSeconds - g_fVisualDelaySeconds.Get();
+	m_fMusicSecondsVisible = fPositionSeconds - GAMESTATE->g_fVisualDelaySeconds.Get();
 	float fThrowAway, fThrowAway2;
 	bool bThrowAway;
 	int iThrowAway;

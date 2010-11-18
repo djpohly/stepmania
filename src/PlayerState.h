@@ -9,6 +9,7 @@
 #include "PlayerOptions.h"
 #include "RageTimer.h"
 #include "SampleHistory.h"
+#include "GameState.h"
 struct lua_State;
 
 class TimingData;

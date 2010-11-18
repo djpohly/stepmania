@@ -11,6 +11,7 @@
 #include "RageUtil_AutoPtr.h"
 #include "TimingData.h"
 #include "RageUtil_CachedObject.h"
+#include "SongManager.h"
 class Profile;
 class NoteData;
 struct lua_State;

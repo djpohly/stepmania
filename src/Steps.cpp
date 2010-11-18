@@ -164,7 +164,7 @@ void Steps::TidyUpData()
 		SetMeter( int(PredictMeter()) );
 	
 	//XXX: make it better than this hack
-	m_StepsTiming = SONGMAN->GetSongFromSteps( this )->m_Timing;
+	m_StepsTiming = SONGMAN->GetSongFromSteps( *this )->m_Timing;
 }
 
 void Steps::CalculateRadarValues( float fMusicLengthSeconds )
