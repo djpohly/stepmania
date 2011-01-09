@@ -33,6 +33,7 @@
 #include "Style.h"
 #include "ThemeManager.h"
 #include "ThemeMetric.h"
+#include "TimingData.h"
 #include "Game.h"
 #include "RageSoundReader.h"
 
@@ -55,10 +56,6 @@ const float RECORD_HOLD_SECONDS = 0.3f;
 
 #define PLAY_RECORD_HELP_TEXT	THEME->GetString(m_sName,"PlayRecordHelpText")
 #define EDIT_HELP_TEXT		THEME->GetString(m_sName,"EditHelpText")
-
-// FIXME: Remove hard-coded beat values and instead look at the time signature in the song.
-static const int BEATS_PER_MEASURE = 4;
-static const int ROWS_PER_MEASURE = ROWS_PER_BEAT * BEATS_PER_MEASURE;
 
 AutoScreenMessage( SM_UpdateTextInfo );
 AutoScreenMessage( SM_BackFromMainMenu );
@@ -89,6 +86,7 @@ static const char *EditStateNames[] = {
 	"Playing"
 };
 XToString( EditState );
+LuaXType( EditState );
 
 #if defined(XBOX)
 void ScreenEdit::InitEditMappings()
@@ -141,7 +139,9 @@ void ScreenEdit::InitEditMappings()
 	}
 
 	m_EditMappingsDeviceInput.button[EDIT_BUTTON_SCROLL_UP_PAGE][0] = DeviceInput(DEVICE_KEYBOARD, KEY_PGUP);
+	m_EditMappingsDeviceInput.button[EDIT_BUTTON_SCROLL_UP_PAGE][1] = DeviceInput(DEVICE_KEYBOARD, KEY_SEMICOLON);
 	m_EditMappingsDeviceInput.button[EDIT_BUTTON_SCROLL_DOWN_PAGE][0] = DeviceInput(DEVICE_KEYBOARD, KEY_PGDN);
+	m_EditMappingsDeviceInput.button[EDIT_BUTTON_SCROLL_DOWN_PAGE][1] = DeviceInput(DEVICE_KEYBOARD, KEY_SQUOTE);
 	m_EditMappingsDeviceInput.button[EDIT_BUTTON_SCROLL_HOME][0] = DeviceInput(DEVICE_KEYBOARD, KEY_HOME);
 	m_EditMappingsDeviceInput.button[EDIT_BUTTON_SCROLL_END][0] = DeviceInput(DEVICE_KEYBOARD, KEY_END);
 	m_EditMappingsDeviceInput.button[EDIT_BUTTON_SCROLL_NEXT][0] = DeviceInput(DEVICE_KEYBOARD, KEY_PERIOD);
@@ -1196,7 +1196,8 @@ void ScreenEdit::InputEdit( const InputEventPlus &input, EditButton EditB )
 			m_iShiftAnchor = -1;
 		return;
 	}
-
+	int beatsPerMeasure = GAMESTATE->m_pCurSong->m_Timing.GetTimeSignatureSegmentAtBeat( GAMESTATE->m_fSongBeat ).m_iNumerator;
+	
 	switch( EditB )
 	{
 	case EDIT_BUTTON_COLUMN_0:
@@ -1345,7 +1346,7 @@ void ScreenEdit::InputEdit( const InputEventPlus &input, EditButton EditB )
 				break;
 			case EDIT_BUTTON_SCROLL_UP_PAGE:
 			case EDIT_BUTTON_SCROLL_DOWN_PAGE:
-				fBeatsToMove = BEATS_PER_MEASURE;
+				fBeatsToMove = beatsPerMeasure;
 				if( EditB == EDIT_BUTTON_SCROLL_UP_PAGE )	
 					fBeatsToMove *= -1;
 				break;
@@ -1362,15 +1363,15 @@ void ScreenEdit::InputEdit( const InputEventPlus &input, EditButton EditB )
 		break;
 	case EDIT_BUTTON_SCROLL_NEXT_MEASURE:
 		{
-			float fDestinationBeat = GAMESTATE->m_fSongBeat + BEATS_PER_MEASURE;
-			fDestinationBeat = ftruncf( fDestinationBeat, (float)BEATS_PER_MEASURE );
+			float fDestinationBeat = GAMESTATE->m_fSongBeat + beatsPerMeasure;
+			fDestinationBeat = ftruncf( fDestinationBeat, (float)beatsPerMeasure );
 			ScrollTo( fDestinationBeat );
 			break;
 		}
 	case EDIT_BUTTON_SCROLL_PREV_MEASURE:
 		{
-			float fDestinationBeat = QuantizeUp( GAMESTATE->m_fSongBeat, (float)BEATS_PER_MEASURE );
-			fDestinationBeat -= (float)BEATS_PER_MEASURE;
+			float fDestinationBeat = QuantizeUp( GAMESTATE->m_fSongBeat, (float)beatsPerMeasure );
+			fDestinationBeat -= (float)beatsPerMeasure;
 			ScrollTo( fDestinationBeat );
 			break;
 		}
@@ -3707,11 +3708,14 @@ void ScreenEdit::CheckNumberOfNotesAndUndo()
 {
 	if( EDIT_MODE.GetValue() != EditMode_Home )
 		return;
+	
+	TimeSignatureSegment curTime = GAMESTATE->m_pCurSong->m_Timing.GetTimeSignatureSegmentAtBeat( GAMESTATE->m_fSongBeat );
+	int rowsPerMeasure = curTime.m_iDenominator * curTime.m_iNumerator;
 
-	for( int row=0; row<=m_NoteDataEdit.GetLastRow(); row+=ROWS_PER_MEASURE )
+	for( int row=0; row<=m_NoteDataEdit.GetLastRow(); row+=rowsPerMeasure )
 	{
 		int iNumNotesThisMeasure = 0;
-		FOREACH_NONEMPTY_ROW_ALL_TRACKS_RANGE( m_NoteDataEdit, r, row, row+ROWS_PER_MEASURE )
+		FOREACH_NONEMPTY_ROW_ALL_TRACKS_RANGE( m_NoteDataEdit, r, row, row+rowsPerMeasure )
 			iNumNotesThisMeasure += m_NoteDataEdit.GetNumTapNonEmptyTracks( r );
 		if( iNumNotesThisMeasure > MAX_NOTES_PER_MEASURE )
 		{
@@ -3757,8 +3761,9 @@ float ScreenEdit::GetMaximumBeatForNewNote() const
 			/* Round up to the next measure end.  Some songs end on weird beats 
 			 * mid-measure, and it's odd to have movement capped to these weird
 			 * beats. */
-			fEndBeat += BEATS_PER_MEASURE;
-			fEndBeat = ftruncf( fEndBeat, (float)BEATS_PER_MEASURE );
+			int beatsPerMeasure = GAMESTATE->m_pCurSong->m_Timing.GetTimeSignatureSegmentAtBeat( GAMESTATE->m_fSongBeat ).m_iNumerator;
+			fEndBeat += beatsPerMeasure;
+			fEndBeat = ftruncf( fEndBeat, (float)beatsPerMeasure );
 
 			return fEndBeat;
 		}
@@ -3843,6 +3848,7 @@ static const EditHelpLine g_EditHelpLines[] =
 	EditHelpLine( "Lay mine",					EDIT_BUTTON_LAY_MINE_OR_ROLL ),
 	EditHelpLine( "Lay lift",					EDIT_BUTTON_LAY_LIFT ),
 	EditHelpLine( "Add to/remove from right half",			EDIT_BUTTON_RIGHT_SIDE ),
+	EditHelpLine( "Switch player (Routine only)",	EDIT_BUTTON_SWITCH_PLAYERS ),
 };
 
 static bool IsMapped( EditButton eb, const MapEditToDI &editmap )
@@ -3918,6 +3924,21 @@ void ScreenEdit::DoHelp()
 
 	EditMiniMenu( &g_EditHelp );
 }
+
+// lua start
+#include "LuaBinding.h"
+
+class LunaScreenEdit: public Luna<ScreenEdit>
+{
+public:
+	DEFINE_METHOD( GetEditState, GetEditState() )
+	LunaScreenEdit()
+	{
+		ADD_METHOD( GetEditState );
+	}
+};
+
+LUA_REGISTER_DERIVED_CLASS( ScreenEdit, ScreenWithMenuElements )
 
 /*
  * (c) 2001-2004 Chris Danford

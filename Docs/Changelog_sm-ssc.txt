@@ -1,7 +1,7 @@
 sm-ssc Changelog
 ________________________________________________________________________________
 The sm-ssc changelog mostly deals with source code-related changes,
-as theme changes happen at a rapid pace.
+as theme changes happen at a faster pace.
 
 Changes are grouped by date.
 Not all changes are documented, for various reasons.
@@ -10,12 +10,119 @@ supported but exist anyways.)
 _____________________________________________________________________________
 
 ================================================================================
-sm-ssc v1.2 | 201012xx
+sm-ssc in development | 20110???
 --------------------------------------------------------------------------------
+
+20110109
+--------
+* Add the semicolon and apostrophe keys as alternatives to the Page Up and Page
+  Down keys in the editor, mainly for laptop users. [Wolfman2000]
+* Removed Song sample length limitations. [freem]
+* Removed hard-coded values from the Step Editor. Now TimeSignatures are used
+  in place of these former constants. [Wolfman2000]
+* [RoomWheel] Various metrics changes: [freem]
+  * Removed TextWidth/DescWidth metrics.
+  * "Desc" is now "Description". (DescX -> DescriptionX)
+  * Removed hardcoded commands (shadowlength,0;maxwidth,[max width metric];halign,0).
+
+================================================================================
+sm-ssc v1.2 | 20110107
+--------------------------------------------------------------------------------
+
+20110107
+--------
+* Fix PrefsManager init list not being in order [vyhd]
+* Add hack to ThemeManager to make GetThemeName() work intuitively for Scripts dirs [vyhd]
+* [SongManager] Check the root Songs/ folder for extra stage course files. [freem]
+* Make routine mode use ScreenGameplayShared instead of ScreenGameplay. [freem]
+* Make pump-routine spacing the same as pump-double spacing. [FSX] 
+
+20110106
+--------
+* [SpecialScoring] Fix some minor issues [FSX]
+* New pump routine noteskins [cesarmades]
+
+20110102
+--------
+* Fix routine mode saving in the editor. [Wolfman2000]
+
+20110101
+--------
+* [Screen] Added HandleBackButton metric; useful for custom menus that need to
+  use the Back button for more user-friendly canceling. [freem]
+
+20101230
+--------
+* [StepsDisplay] Make the StepsType react to SetMessage as well. [freem]
+
+20101229
+--------
+* [ScreenHowToPlay] Replaced LOAD_ALL_COMMANDS_AND_SET_XY_AND_ON_COMMAND macro
+  calls with ActorUtil::LoadAllCommandsAndSetXY(). Fixes an odd bug I ran into
+  during the porting of DDR 5th Mix. [freem]
+* [ScreenInstallOverlay] Added bare DownloadFinished message. [freem]
+
+20101228
+--------
+* [ScreenHowToPlay] Have Character ignore the Miss steps instead of trying to
+  hit them. [freem]
+
+20101227
+--------
+* [ScreenHowToPlay] Added CharacterName metric, which will force the Character
+  that shows up. [freem]
+
+20101226
+--------
+* [ScreenEdit] Added GetEditState Lua binding. [freem]
+* [ScreenNetSelectMusic] StepsDisplay changed to load from StepsDisplayNet. [freem]
+* [RoomWheelItem] Added OverPart (just like in MusicWheelItem). [freem]
+* [SongManager] Added GetSongRank(Song) Lua binding. [freem]
+* Changed Steps picking logic in ScreenGameplaySyncMachine; now playable Steps
+  are chosen, instead of whatever NoteData happens to be first.
+  Also added pump-single data to ScreenGameplaySyncMachine music.sm. [freem]
+* [Banner, FadingBanner] Various changes: [freem]
+  * Removed (now unused) All Music banner.
+  * Fixed swapped ScrollRandom and ScrollRoulette metrics.
+* [Banner] Added GetScrolling(), GetPercentScrolling() and
+  SetScrolling(bool,float) Lua bindings.
+* [FadingBanner] Added GetLatestIndex() Lua binding. [freem]
+
+20101225
+--------
+* Fixed Life difficulty scale being 0. [Daisuke Master]
+
+20101223
+--------
+* Added Banners for most SortOrders. (Group is excluded (song group banners
+  still work), as is Recent (which has no sections).) [freem]
+
+20101222
+--------
+* Added Shift+Ctrl+F2 shortcut for reloading overlay screens (and metrics) [freem]
+
+20101221
+--------
+* SM5SVN r28586: Only unload fonts if not used by the next screen. [shakesoda]
+* [ScreenSelectMaster] Fix DoSwitchAnyways to actually work again.
+* [ScreenInstallOverlay] Installs won't jump to SelMusic on Gameplay or System
+  Menus (e.g. Edit Mode) anymore on download completion. [freem]
+
+20101220
+--------
+* [Actor] Add bezier. (_fallback/02 Actor.lua) [FSX]
+* [MessageManager] Added MenuStartP1 and MenuStartP2 messages. [freem]
+* [ScreenSelectMaster] Broadcast MenuStartP# messages; allow themers to handle
+  the MenuStartP# messageitems. [freem]
 
 20101219
 --------
-* [WheelNotifyIcon] add BlinkPlayersBest metric [freem]
+* [WheelNotifyIcon] add BlinkPlayersBest metric. [freem]
+* [GameCommand] Add GetScreen, GetSteps, GetCourse, GetTrail, and GetCharacter
+  Lua bindings. [freem]
+* [StreamDisplay] Remove UseThreePartMethod.
+* [Style] Add ColumnsPerPlayer and NeedsZoomOutWith2Players bindings. [freem]
+* [Profile] Add GetLastUsedHighScoreName Lua binding. [freem]
 
 20101218
 --------

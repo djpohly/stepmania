@@ -5,6 +5,7 @@
 
 #include "Sprite.h"
 #include "RageTextureID.h"
+#include "GameConstantsAndTypes.h"
 class Song;
 class Course;
 class Character;
@@ -24,7 +25,6 @@ public:
 	virtual void Update( float fDeltaTime );
 
 	void LoadFromSong( Song* pSong );		// NULL means no song
-	void LoadAllMusic();
 	void LoadMode();
 	void LoadFromSongGroup( RString sSongGroup );
 	void LoadFromCourse( const Course *pCourse );
@@ -34,12 +34,14 @@ public:
 	void LoadBackgroundFromUnlockEntry( const UnlockEntry* pUE );
 	void LoadRoulette();
 	void LoadRandom();
+	void LoadFromSortOrder( SortOrder so );
 	void LoadFallback();
 	void LoadFallbackBG();
 	void LoadCourseFallback();
 	void LoadFallbackCharacterIcon();
 
 	void SetScrolling( bool bScroll, float Percent = 0 );
+	bool GetScrolling() const { return m_bScrolling; }
 	float ScrollingPercent() const { return m_fPercentScrolling; }
 
 	// Lua

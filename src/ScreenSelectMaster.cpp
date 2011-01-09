@@ -392,7 +392,7 @@ try_again:
 		return false; // went full circle and none found
 	seen.insert( iSwitchToIndex );
 
-	if( !m_aGameCommands[iSwitchToIndex].IsPlayable() )
+	if( !m_aGameCommands[iSwitchToIndex].IsPlayable() && !DO_SWITCH_ANYWAYS )
 		goto try_again;
 
 	return ChangeSelection( pn, dir, iSwitchToIndex );
@@ -785,7 +785,6 @@ void ScreenSelectMaster::MenuStart( const InputEventPlus &input )
 		return;
 	}
 
-
 	const GameCommand &mc = m_aGameCommands[m_iChoice[pn]];
 
 	/* If no options are playable, then we're just waiting for one to become available.
@@ -802,6 +801,11 @@ void ScreenSelectMaster::MenuStart( const InputEventPlus &input )
 	if( mc.m_sScreen.empty() )
 	{
 		mc.ApplyToAllPlayers();
+		// We want to be able to broadcast a Start message to the theme, in
+		// case a themer wants to handle something. -aj
+		// TODO: Find a way to differentiate this from the message below, for
+		// less ambiguousness?
+		MESSAGEMAN->Broadcast( (MessageID)(Message_MenuStartP1+pn) );
 		return;
 	}
 
@@ -825,7 +829,11 @@ void ScreenSelectMaster::MenuStart( const InputEventPlus &input )
 	}
 
 	if( bAllDone )
+	{
+		// broadcast MenuStart just like MenuLeft/Right/etc.
+		MESSAGEMAN->Broadcast( (MessageID)(Message_MenuStartP1+pn) );
 		this->PostScreenMessage( SM_BeginFadingOut, fSecs );// tell our owner it's time to move on
+	}
 }
 
 /* We want all items to always run OnCommand and either GainFocus or LoseFocus
@@ -930,7 +938,7 @@ float ScreenSelectMaster::GetCursorY( PlayerNumber pn )
 class LunaScreenSelectMaster: public Luna<ScreenSelectMaster>
 {
 public:
-	static int GetSelectionIndex( T* p, lua_State *L ) { lua_pushnumber( L, p->GetSelectionIndexOfPlayer(Enum::Check<PlayerNumber>(L, 1)) ); return 1; }
+	static int GetSelectionIndex( T* p, lua_State *L ) { lua_pushnumber( L, p->GetPlayerSelectionIndex(Enum::Check<PlayerNumber>(L, 1)) ); return 1; }
 	// should I even bother adding this? -aj
 	// would have to make a public function to get this in ssmaster.h:
 	// m_aGameCommands[i].m_sName
