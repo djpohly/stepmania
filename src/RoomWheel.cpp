@@ -63,7 +63,6 @@ RoomWheelItem::RoomWheelItem( const RoomWheelItem &cpy ):
 
 void RoomWheelItem::Load( RString sType )
 {
-
 	// colorpart gets added first in MusicWheelItem, so follow that here.
 	m_sprColorPart.Load( THEME->GetPathG(sType,"ColorPart") );
 	this->AddChild( m_sprColorPart );
@@ -77,7 +76,6 @@ void RoomWheelItem::Load( RString sType )
 	this->AddChild( &m_text );
 
 	m_Desc.SetName( "Description" );
-	ActorUtil::LoadAllCommands( m_Desc, "RoomWheelItem" );
 	m_Desc.LoadFromFont( THEME->GetPathF("RoomWheel","text") );
 	LOAD_ALL_COMMANDS_AND_SET_XY( m_Desc );
 	this->AddChild( &m_Desc );
@@ -142,7 +140,6 @@ void RoomWheel::RemoveItem( int index )
 	RebuildWheelItems();
 }
 
-
 static LocalizedString ENTER_ROOM_NAME( "RoomWheel", "Enter room name" );
 bool RoomWheel::Select()
 {
@@ -194,7 +191,6 @@ unsigned int RoomWheel::GetNumItems() const
 {
 	return m_CurWheelItemData.size() - m_offset;
 }
-
 
 /*
  * (c) 2004 Josh Allen

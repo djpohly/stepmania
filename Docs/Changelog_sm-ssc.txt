@@ -10,8 +10,13 @@ supported but exist anyways.)
 _____________________________________________________________________________
 
 ================================================================================
-sm-ssc in development | 20110???
+sm-ssc v1.2.1 | 20110???
 --------------------------------------------------------------------------------
+
+20110110
+--------
+* [Character] Added GetDisplayName Lua binding. [freem]
+* Make sure that DELAYS come first if STOPS share the same beat. [Wolfman2000]
 
 20110109
 --------
