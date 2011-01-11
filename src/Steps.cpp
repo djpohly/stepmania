@@ -32,6 +32,10 @@ Steps::Steps()
 	m_iHash = 0;
 	m_Difficulty = Difficulty_Invalid;
 	m_iMeter = 0;
+	
+	m_fFirstBeat = -1;
+	m_fLastBeat = -1;
+	m_fSpecifiedLastBeat = -1;
 
 	m_pNoteData = new NoteData;
 	m_bNoteDataIsFilled = false;

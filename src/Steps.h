@@ -7,6 +7,7 @@
 #include "PlayerNumber.h"
 #include "Grade.h"
 #include "RadarValues.h"
+#include "TimingData.h"
 #include "Difficulty.h"
 #include "RageUtil_AutoPtr.h"
 #include "RageUtil_CachedObject.h"
@@ -66,10 +67,29 @@ public:
 
 	// Lua
 	void PushSelf( lua_State *L );
-
+	
 	StepsType			m_StepsType;
 
 	CachedObject<Steps> m_CachedObject;
+	
+	// Split BPM information below.
+	
+	float	m_fFirstBeat;	// beat of first note
+	float	m_fLastBeat;	// beat of last note
+	float	m_fSpecifiedLastBeat;	// specified last beat of the song
+	
+	TimingData m_Timing;
+	
+	void AddBPMSegment( const BPMSegment &seg ) { m_Timing.AddBPMSegment( seg ); }
+	void AddStopSegment( const StopSegment &seg ) { m_Timing.AddStopSegment( seg ); }
+	//void AddWarpSegment( const WarpSegment &seg ) { m_Timing.AddWarpSegment( seg ); }
+	
+	float GetBPMAtBeat( float fBeat ) const { return m_Timing.GetBPMAtBeat( fBeat ); }
+	void SetBPMAtBeat( float fBeat, float fBPM ) { m_Timing.SetBPMAtBeat( fBeat, fBPM ); }
+	BPMSegment& GetBPMSegmentAtBeat( float fBeat ) { return m_Timing.GetBPMSegmentAtBeat( fBeat ); }
+	float GetBeatFromElapsedTime( float fElapsedTime ) const { return m_Timing.GetBeatFromElapsedTime( fElapsedTime ); }
+	float GetElapsedTimeFromBeat( float fBeat ) const { return m_Timing.GetElapsedTimeFromBeat( fBeat ); }
+	bool HasSignificantBpmChangesOrStops() const;
 
 private:
 	inline const Steps *Real() const		{ return parent ? parent : this; }
