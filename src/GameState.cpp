@@ -903,6 +903,7 @@ void GameState::ResetMusicStatistics()
 	FOREACH_PlayerNumber( p )
 	{
 		m_pPlayerState[p]->m_fSongBeat = 0;
+		m_pPlayerState[p]->m_fSongBeatVisible = 0;
 		m_pPlayerState[p]->m_fSongBeatNoOffset = 0;
 		m_pPlayerState[p]->m_fCurBPS = 10;
 		m_pPlayerState[p]->m_bFreeze = false;

@@ -198,6 +198,11 @@ public:
 	DEFINE_METHOD( GetPlayerNumber, m_PlayerNumber );
 	DEFINE_METHOD( GetMultiPlayerNumber, m_mp );
 	DEFINE_METHOD( GetPlayerController, m_PlayerController );
+	DEFINE_METHOD( GetSongBeat, m_fSongBeat )
+	DEFINE_METHOD( GetSongBeatVisible, m_fSongBeatVisible )
+	DEFINE_METHOD( GetSongBPS, m_fCurBPS )
+	DEFINE_METHOD( GetSongFreeze, m_bFreeze )
+	DEFINE_METHOD( GetSongDelay, m_bDelay )
 	static int SetPlayerOptions( T* p, lua_State *L )
 	{
 		ModsLevel m = Enum::Check<ModsLevel>( L, 1 );
@@ -227,10 +232,16 @@ public:
 	{
 		ADD_METHOD( GetPlayerNumber );
 		ADD_METHOD( GetMultiPlayerNumber );
+		ADD_METHOD( GetSongBeat );
+		ADD_METHOD( GetSongBeatVisible );
+		ADD_METHOD( GetSongBPS );
+		ADD_METHOD( GetSongFreeze );
+		ADD_METHOD( GetSongDelay );
 		ADD_METHOD( SetPlayerOptions );
 		ADD_METHOD( GetPlayerOptions );
 		ADD_METHOD( GetPlayerOptionsArray );
 		ADD_METHOD( GetHealthState );
+		
 	}
 };
 

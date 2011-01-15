@@ -76,6 +76,7 @@ public:
 
 	// Used for Split BPM purposes.
 	float		m_fSongBeat;
+	float		m_fSongBeatVisible;
 	float		m_fSongBeatNoOffset;
 	float		m_fCurBPS;
 	bool		m_bFreeze;
