@@ -74,6 +74,16 @@ public:
 	void RemoveAllInventory();
 	Attack	m_Inventory[NUM_INVENTORY_SLOTS];
 
+	// Used for Split BPM purposes.
+	float		m_fSongBeat;
+	float		m_fSongBeatNoOffset;
+	float		m_fCurBPS;
+	bool		m_bFreeze;
+	bool		m_bDelay;
+	int		m_iWarpBeginRow;
+	float		m_fWarpLength;
+	RageTimer	m_LastBeatUpdate; // time of last m_fSongBeat, etc.
+	
 	// Lua
 	void PushSelf( lua_State *L );
 };
