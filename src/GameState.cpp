@@ -888,7 +888,6 @@ const float GameState::MUSIC_SECONDS_INVALID = -5000.0f;
 void GameState::ResetMusicStatistics()
 {
 	m_fMusicSeconds = 0; // MUSIC_SECONDS_INVALID;
-	// todo: move me to FOREACH_EnabledPlayer( p ) after [NUM_PLAYERS]ing
 	m_fSongBeat = 0;
 	m_fSongBeatNoOffset = 0;
 	m_fCurBPS = 10;
@@ -902,7 +901,20 @@ void GameState::ResetMusicStatistics()
 	Actor::SetBGMTime( 0, 0, 0, 0 );
 
 	FOREACH_PlayerNumber( p )
+	{
+		m_pPlayerState[p]->m_fSongBeat = 0;
+		m_pPlayerState[p]->m_fSongBeatNoOffset = 0;
+		m_pPlayerState[p]->m_fCurBPS = 10;
+		m_pPlayerState[p]->m_bFreeze = false;
+		m_pPlayerState[p]->m_bDelay = false;
+		/* 
+		 For the warps, set the default to -1 because some songs may wish
+		 to warp to row 0. -aj
+		 */
+		m_pPlayerState[p]->m_iWarpBeginRow = -1;
+		m_pPlayerState[p]->m_fWarpLength = -1;
 		m_pPlayerState[p]->ClearHopoState();
+	}
 }
 
 void GameState::ResetStageStatistics()
