@@ -90,6 +90,8 @@ public:
 	float GetBeatFromElapsedTime( float fElapsedTime ) const { return m_Timing.GetBeatFromElapsedTime( fElapsedTime ); }
 	float GetElapsedTimeFromBeat( float fBeat ) const { return m_Timing.GetElapsedTimeFromBeat( fBeat ); }
 	bool HasSignificantBpmChangesOrStops() const;
+	
+	bool IsEasy() const;
 
 private:
 	inline const Steps *Real() const		{ return parent ? parent : this; }

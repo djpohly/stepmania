@@ -392,6 +392,22 @@ void Steps::SetCachedRadarValues( const RadarValues v[NUM_PLAYERS] )
 	copy( v, v + NUM_PLAYERS, m_CachedRadarValues );
 }
 
+bool Steps::IsEasy() const
+{
+	// TODO: Get highest BPM and lowest BPM to fully replicate.
+	Difficulty diff = this->GetDifficulty();
+	if( diff == Difficulty_Beginner )
+	{
+		return true;
+	}
+	if( diff == Difficulty_Easy && this->GetMeter() == 1 )
+	{
+		return true;
+	}
+	
+	return false;
+}
+
 
 // lua start
 #include "LuaBinding.h"
