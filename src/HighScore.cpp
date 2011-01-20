@@ -91,7 +91,7 @@ XNode *HighScoreImpl::CreateNode() const
 	pNode->AppendChild( "Grade",			GradeToString(grade) );
 	pNode->AppendChild( "Score",			iScore );
 	pNode->AppendChild( "PercentDP",		fPercentDP );
-	pNode->AppendChild( "SurviveSeconds",	fSurviveSeconds );
+	pNode->AppendChild( "SurviveSeconds",		fSurviveSeconds );
 	pNode->AppendChild( "Modifiers",		sModifiers );
 	pNode->AppendChild( "DateTime",			dateTime.GetString() );
 	pNode->AppendChild( "PlayerGuid",		sPlayerGuid );
@@ -351,7 +351,7 @@ void HighScoreList::LoadFromNode( const XNode* pHighScoreList )
 		{
 			vHighScores.resize( vHighScores.size()+1 );
 			vHighScores.back().LoadFromNode( p );
-
+			
 			// ignore all high scores that are 0
 			if( vHighScores.back().GetScore() == 0 )
 				vHighScores.pop_back();

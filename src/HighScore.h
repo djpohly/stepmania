@@ -107,7 +107,6 @@ public:
 private:
 	int iNumTimesPlayed;
 	DateTime dtLastPlayed;	// meaningless if iNumTimesPlayed == 0
-
 };
 
 struct Screenshot
