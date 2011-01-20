@@ -56,7 +56,12 @@ public:
 	void LoadCurrentSettingsFromProfile( PlayerNumber pn );
 	void SaveCurrentSettingsToProfile( PlayerNumber pn ); // called at the beginning of each stage
 	Song* GetDefaultSong() const;
+	
+	bool PlayerIsUsingProfile( PlayerNumber pn );
 
+	bool HasSongAttacks();
+
+	float IsUsingReverseGrade( PlayerNumber pn );
 	void Update( float fDelta );
 
 	// Main state info

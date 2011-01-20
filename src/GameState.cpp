@@ -1899,6 +1899,10 @@ bool GameState::OneIsHot() const
 	return false;
 }
 
+bool GameState::HasSongAttacks()
+{
+	return m_pCurSong->m_bHasSongAttacks;
+}
 bool GameState::IsTimeToPlayAttractSounds() const
 {
 	// m_iNumTimesThroughAttract will be -1 from the first attract screen after
@@ -2118,7 +2122,20 @@ bool GameState::PlayerIsUsingModifier( PlayerNumber pn, const RString &sModifier
 
 	return po == m_pPlayerState[pn]->m_PlayerOptions.GetCurrent()  &&  so == m_SongOptions.GetCurrent();
 }
+float GameState::IsUsingReverseGrade( PlayerNumber pn)
+{
+	float ReverseGrade = m_pPlayerState[pn]->m_PlayerOptions.GetCurrent().m_fReverseGrade;
 
+	return ReverseGrade;
+}
+
+bool GameState::PlayerIsUsingProfile( PlayerNumber pn )
+{
+	if( PROFILEMAN->IsPersistentProfile( pn ) )
+		return PROFILEMAN->GetProfile(pn)->IsMachine() ? false : true;
+
+	return false;
+}
 Profile* GameState::GetEditLocalProfile()
 {
 	if( m_sEditLocalProfileID.Get().empty() )
