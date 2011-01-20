@@ -38,8 +38,12 @@ const char *CodeNames[] = {
 	"HoldNotes",
 	"Mines",
 	"Dark",
+	"ReverseGrade",
 	"Hidden",
 	"RandomVanish",
+	"NXMode",
+	"Rise",
+	"Sink",
 	"CancelAll",
 	"NextTheme",
 	"NextTheme2",
@@ -192,7 +196,7 @@ bool CodeDetector::DetectAndAdjustMusicOptions( GameController controller )
 	for( int c=CODE_MIRROR; c<=CODE_CANCEL_ALL; c++ )
 	{
 		Code code = (Code)c;
-
+		
 		PlayerOptions po = GAMESTATE->m_pPlayerState[pn]->m_PlayerOptions.GetPreferred();
 
 		if( EnteredCode(controller,code) )
@@ -214,7 +218,12 @@ bool CodeDetector::DetectAndAdjustMusicOptions( GameController controller )
 			case CODE_REVERSE:			po.NextScroll();					break;
 			case CODE_HOLDS:			TOGGLE( po.m_bTransforms[PlayerOptions::TRANSFORM_NOHOLDS], true, false );	break;
 			case CODE_MINES:			TOGGLE( po.m_bTransforms[PlayerOptions::TRANSFORM_NOMINES], true, false );	break;
-			case CODE_DARK:				FLOAT_TOGGLE( po.m_fDark );				break;
+			case CODE_DARK:				FLOAT_TOGGLE( po.m_fDark );
+			case CODE_REVERSE_GRADE:		TOGGLE( po.m_fReverseGrade, 0, 1 );		break;
+			case CODE_NX_MODE:			FLOAT_TOGGLE( po.m_fEffects[PlayerOptions::EFFECT_BUMPY] ); break;
+			case CODE_RISE:				FLOAT_TOGGLE( po.m_fEffects[PlayerOptions::EFFECT_RISE] ); break;
+			case CODE_SINK:				FLOAT_TOGGLE( po.m_fEffects[PlayerOptions::EFFECT_SINK] ); break;
+			
 			case CODE_CANCEL_ALL:			GAMESTATE->GetDefaultPlayerOptions( po );		break;
 			case CODE_HIDDEN:
 				ZERO(po.m_fAppearances);
