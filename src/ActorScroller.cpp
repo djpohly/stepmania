@@ -279,10 +279,12 @@ void ActorScroller::PositionItemsAndDrawPrimitives( bool bDrawPrimitives )
 		else if( iIndex < 0 || iIndex >= (int)m_SubActors.size() )
 			continue;
 
-		// Optimization: Zero out unused parameters so that they don't create new,
-		// unnecessary  entries in the position cache. On scrollers with lots of
-		// items, especially with Subdivisions > 1, m_exprTransformFunction uses
-		// too much memory.
+		/*
+		 * Optimization: Zero out unused parameters so that they don't create new,
+		 * unnecessary  entries in the position cache. On scrollers with lots of
+		 * items, especially with Subdivisions > 1, m_exprTransformFunction uses
+		 * too much memory.
+		 */
 		if( !m_bFunctionDependsOnPositionOffset )
 			fPosition = 0;
 		if( !m_bFunctionDependsOnItemIndex )
