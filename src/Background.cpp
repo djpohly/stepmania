@@ -79,7 +79,7 @@ public:
 
 	void FadeToActualBrightness() { m_Brightness.FadeToActualBrightness(); }
 	void SetBrightness( float fBrightness ) { m_Brightness.Set(fBrightness); } /* overrides pref and Cover */
-
+	
 	DancingCharacters* GetDancingCharacters() { return m_pDancingCharacters; };
 
 	void GetLoadedBackgroundChanges( vector<BackgroundChange> *pBackgroundChangesOut[NUM_BackgroundLayer] );
@@ -90,10 +90,10 @@ protected:
 	const Song *m_pSong;
 	map<RString,BackgroundTransition> m_mapNameToTransition;
 	deque<BackgroundDef> m_RandomBGAnimations;	// random background to choose from.  These may or may not be loaded into m_BGAnimations.
-
+	
 	void LoadFromRandom( float fFirstBeat, float fEndBeat, const BackgroundChange &change );
 	bool IsDangerAllVisible();
-
+	
 	class Layer
 	{
 	public:
@@ -276,7 +276,7 @@ bool BackgroundImpl::Layer::CreateBackground( const Song *pSong, const Backgroun
 	for( unsigned i=0; i<vsToResolve.size(); i++ )
 	{
 		const RString &sToResolve = vsToResolve[i];
-
+		
 		if( sToResolve.empty() )
 		{
 			if( i == 0 )
@@ -314,7 +314,7 @@ bool BackgroundImpl::Layer::CreateBackground( const Song *pSong, const Backgroun
 			else
 				sResolved = "../"+ThemeManager::GetBlankGraphicPath();
 		}
-
+		
 		ASSERT( !sResolved.empty() );
 
 		vsResolvedRef[i] = new LuaThreadVariable( ssprintf("File%d",i+1), sResolved );
@@ -520,7 +520,7 @@ void BackgroundImpl::LoadFromSong( const Song* pSong )
 			m_RandomBGAnimations.push_back( bd );
 		}
 	}
-		
+	
 	/* Song backgrounds (even just background stills) can get very big; never keep them
 	 * in memory. */
 	RageTextureID::TexPolicy OldPolicy = TEXTUREMAN->GetDefaultTexturePolicy();
