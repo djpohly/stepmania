@@ -60,7 +60,7 @@ RString BackgroundChange::GetTextDescription() const
 	if( !m_def.m_sEffect.empty() )	vsParts.push_back( m_def.m_sEffect );
 	if( !m_def.m_sColor1.empty() )	vsParts.push_back( m_def.m_sColor1 );
 	if( !m_def.m_sColor2.empty() )	vsParts.push_back( m_def.m_sColor2 );
-
+	
 	if( vsParts.empty() )
 		vsParts.push_back( "(empty)" );
 
@@ -118,7 +118,7 @@ void BackgroundUtil::GetBackgroundEffects( const RString &_sName, vector<RString
 
 	vsPathsOut.clear();
 	GetDirListing( BACKGROUND_EFFECTS_DIR+sName+".lua", vsPathsOut, false, true );
-
+	
 	vsNamesOut.clear();
 	FOREACH_CONST( RString, vsPathsOut, s )
 		vsNamesOut.push_back( GetFileNameWithoutExtension(*s) );
@@ -135,7 +135,7 @@ void BackgroundUtil::GetBackgroundTransitions( const RString &_sName, vector<RSt
 	vsPathsOut.clear();
 	GetDirListing( BACKGROUND_TRANSITIONS_DIR+sName+".xml", vsPathsOut, false, true );
 	GetDirListing( BACKGROUND_TRANSITIONS_DIR+sName+".lua", vsPathsOut, false, true );
-
+	
 	vsNamesOut.clear();
 	FOREACH_CONST( RString, vsPathsOut, s )
 		vsNamesOut.push_back( GetFileNameWithoutExtension(*s) );
@@ -154,7 +154,7 @@ void BackgroundUtil::GetSongBGAnimations( const Song *pSong, const RString &sMat
 	{
 		GetDirListing( pSong->GetSongDir()+sMatch, vsPathsOut, true, true );
 	}
-
+	
 	vsNamesOut.clear();
 	FOREACH_CONST( RString, vsPathsOut, s )
 		vsNamesOut.push_back( Basename(*s) );
@@ -217,7 +217,7 @@ static void GetFilterToFileNames( const RString sBaseDir, const Song *pSong, set
 	IniFile ini;
 	RString sPath = sBaseDir+pSong->m_sGroupName+"/"+"BackgroundMapping.ini";
 	ini.ReadFile( sPath );
-
+	
 	RString sSection;
 	bool bSuccess = ini.GetValue( "GenreToSection", pSong->m_sGenre, sSection );
 	if( !bSuccess )
@@ -269,7 +269,7 @@ void BackgroundUtil::GetGlobalRandomMovies(
 		GetDirListing( RANDOMMOVIES_DIR+sMatch, vsPathsOut, false, true );
 		if( !vsPathsOut.empty() )
 			goto found_files;
-
+		
 		if( sMatch != NO_SONG_BG_FILE )
 			LOG->Warn( "Background missing: %s", sMatch.c_str() );
 		return;
