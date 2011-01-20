@@ -48,10 +48,12 @@ struct DateTime
 	bool operator>( const DateTime& other ) const;
 	bool operator==( const DateTime& other ) const;
 	bool operator!=( const DateTime& other ) const { return !operator==(other); }
+	bool operator<=( const DateTime& other ) const { return ( operator<(other) || operator==(other) ); }
+	bool operator>=( const DateTime& other ) const { return ( operator>(other) || operator==(other) ); }
 
 	static DateTime GetNowDateTime();
 	static DateTime GetNowDate();	// GetNowDateTime() with time chopped off
-
+	
 	void StripTime();
 
 	RString GetString() const;
