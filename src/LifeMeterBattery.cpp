@@ -223,7 +223,7 @@ void LifeMeterBattery::Update( float fDeltaTime )
 		m_fBatteryBlinkTime -= fDeltaTime;
 		int iFrame1 = m_iLivesLeft-1;
 		int iFrame2 = m_iTrailingLivesLeft-1;
-
+		
 		int iFrameNo = (int(m_fBatteryBlinkTime*15)%2) ? iFrame1 : iFrame2;
 		CLAMP( iFrameNo, 0, 3 );
 		m_sprBattery.SetState( iFrameNo );
