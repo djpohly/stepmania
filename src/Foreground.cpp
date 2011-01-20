@@ -34,7 +34,7 @@ void Foreground::LoadFromSong( const Song *pSong )
 	{
 		const BackgroundChange &change = *bgc;
 		RString sBGName = change.m_def.m_sFile1;
-
+		
 		LoadedBGA bga;
 		bga.m_bga = ActorUtil::MakeActor( pSong->GetSongDir() + sBGName, this );
 		bga.m_bga->PlayCommand( "On" );
