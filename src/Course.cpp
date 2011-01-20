@@ -152,7 +152,7 @@ void Course::SetCourseType( CourseType ct )
 	m_iLives = -1;
 	if( !m_vEntries.empty() )
 		m_vEntries[0].fGainSeconds = 0;
-
+	
 	switch( ct )
 	{
 	default:	ASSERT(0);
@@ -238,7 +238,7 @@ bool Course::IsPlayableIn( StepsType st ) const
 	FOREACH_CONST( CourseEntry, m_vEntries, e )
 	{
 		SongCriteria soc = e->songCriteria;
-
+		
 		Song *pSong = e->songID.ToSong();
 		if( pSong )
 		{
@@ -249,14 +249,14 @@ bool Course::IsPlayableIn( StepsType st ) const
 		soc.m_Locked = SongCriteria::Locked_Unlocked;
 		if( !soc.m_bUseSongAllowedList )
 			soc.m_iMaxStagesForSong = 1;
-
+		
 		StepsCriteria stc = e->stepsCriteria;
 		stc.m_st = st;
 		stc.m_Locked = StepsCriteria::Locked_Unlocked;
-
+		
 		const bool bSameSongCriteria  = e != m_vEntries.begin() && (e-1)->songCriteria == soc;
 		const bool bSameStepsCriteria = e != m_vEntries.begin() && (e-1)->stepsCriteria == stc;
-
+		
 		if( pSong )
 		{
 			if( StepsUtil::HasMatching(pSong, stc) )
@@ -267,9 +267,9 @@ bool Course::IsPlayableIn( StepsType st ) const
 			if( StepsUtil::HasMatching(soc, stc) )
 				return true;
 		}
-
+		
 	}
-
+	
 	return false;
 }
 
@@ -498,7 +498,7 @@ bool Course::GetTrailUnsorted( StepsType st, CourseDifficulty cd, Trail &trail )
 	{
 		SongAndSteps resolved;	// fill this in
 		SongCriteria soc = e->songCriteria;
-
+		
 		Song *pSong = e->songID.ToSong();
 		if( pSong )
 		{
@@ -513,7 +513,7 @@ bool Course::GetTrailUnsorted( StepsType st, CourseDifficulty cd, Trail &trail )
 		StepsCriteria stc = e->stepsCriteria;
 		stc.m_st = st;
 		stc.m_Locked = StepsCriteria::Locked_Unlocked;
-
+		
 		const bool bSameSongCriteria  = e != entries.begin() && (e-1)->songCriteria == soc;
 		const bool bSameStepsCriteria = e != entries.begin() && (e-1)->stepsCriteria == stc;
 
@@ -546,14 +546,14 @@ bool Course::GetTrailUnsorted( StepsType st, CourseDifficulty cd, Trail &trail )
 		FOREACH_CONST( SongAndSteps, vSongAndSteps, sas )
 		{
 			StepsVector &v = mapSongToSteps[sas->pSong];
-
+			
 			v.push_back( sas->pSteps );
 			if( v.size() == 1 )
 				vpSongs.push_back( sas->pSong );
 		}
 
 		CourseSortSongs( e->songSort, vpSongs, rnd );
-
+		
 		ASSERT( e->iChooseIndex >= 0 );
 		if( e->iChooseIndex < int(vSongAndSteps.size()) )
 		{
@@ -832,7 +832,7 @@ RageColor Course::GetColor() const
 {
 	// FIXME: Calculate the meter.
 	int iMeter = 5;
-
+	
 	switch( PREFSMAN->m_CourseSortOrder )
 	{
 	case COURSE_SORT_PREFERRED:
@@ -954,7 +954,7 @@ void Course::UpdateCourseStats( StepsType st )
 bool Course::IsRanking() const
 {
 	vector<RString> rankingsongs;
-
+	
 	split(THEME->GetMetric("ScreenRanking", "CoursesToShow"), ",", rankingsongs);
 
 	for(unsigned i=0; i < rankingsongs.size(); i++)

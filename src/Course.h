@@ -47,13 +47,13 @@ public:
 	SongCriteria songCriteria;
 	StepsCriteria stepsCriteria;
 	bool bNoDifficult;		// if true, CourseDifficulty doesn't affect this entry
-
+	
 	SongSort songSort;		// sort by this after filtering
 	int iChooseIndex;		// 
 
 	RString sModifiers;		// set player and song options using these
-	AttackArray attacks;	// timed sModifiers
-	float fGainSeconds;	// time gained back at the beginning of the song.  LifeMeterTime only.
+	AttackArray attacks;		// timed sModifiers
+	float fGainSeconds;		// time gained back at the beginning of the song.  LifeMeterTime only.
 	int iGainLives;			// lives gained back at the beginning of the next song
 
 	CourseEntry()
