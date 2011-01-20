@@ -61,6 +61,9 @@ public:
 		EFFECT_XMODE,
 		EFFECT_TWIRL,
 		EFFECT_ROLL,
+		EFFECT_RISE,
+		EFFECT_SINK,
+		EFFECT_NXMODE,
 		NUM_EFFECTS
 	};
 	enum Appearance {
@@ -146,6 +149,9 @@ public:
 
 	float	m_fRandomSpeed,			m_SpeedfRandomSpeed;
 
+	// Reverse grade mod: W1s become misses, etc.
+	float m_fReverseGrade,			m_SpeedfReverseGrade;
+	
 	/* If this is > 0, then the player must have life above this value at the end of
 	 * the song to pass.  This is independent of SongOptions::m_FailType. */
 	float		m_fPassmark,			m_SpeedfPassmark;

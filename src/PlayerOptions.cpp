@@ -41,6 +41,9 @@ void PlayerOptions::Init()
 	m_FailType = FAIL_IMMEDIATE;
 	m_ScoreDisplay = SCORING_ADD;
 	m_sNoteSkin = "";
+	
+	m_fReverseGrade = 0;
+	m_SpeedfReverseGrade = 1;
 }
 
 void PlayerOptions::Approach( const PlayerOptions& other, float fDeltaSeconds )
@@ -63,6 +66,7 @@ void PlayerOptions::Approach( const PlayerOptions& other, float fDeltaSeconds )
 		APPROACH( fScrolls[i] );
 	APPROACH( fDark );
 	APPROACH( fBlind );
+	APPROACH( fReverseGrade );
 	APPROACH( fCover );
 	APPROACH( fRandAttack );
 	APPROACH( fSongAttack );
@@ -134,24 +138,27 @@ void PlayerOptions::GetMods( vector<RString> &AddTo, bool bForceNoteSkin ) const
 
 	AddPart( AddTo, m_fAccels[ACCEL_BOOST],		"Boost" );
 	AddPart( AddTo, m_fAccels[ACCEL_BRAKE],		"Brake" );
-	AddPart( AddTo, m_fAccels[ACCEL_WAVE],			"Wave" );
-	AddPart( AddTo, m_fAccels[ACCEL_EXPAND],		"Expand" );
+	AddPart( AddTo, m_fAccels[ACCEL_WAVE],		"Wave" );
+	AddPart( AddTo, m_fAccels[ACCEL_EXPAND],	"Expand" );
 	AddPart( AddTo, m_fAccels[ACCEL_BOOMERANG],	"Boomerang" );
 
-	AddPart( AddTo, m_fEffects[EFFECT_DRUNK],		"Drunk" );
-	AddPart( AddTo, m_fEffects[EFFECT_DIZZY],		"Dizzy" );
+	AddPart( AddTo, m_fEffects[EFFECT_DRUNK],	"Drunk" );
+	AddPart( AddTo, m_fEffects[EFFECT_DIZZY],	"Dizzy" );
 	AddPart( AddTo, m_fEffects[EFFECT_CONFUSION],	"Confusion" );
-	AddPart( AddTo, m_fEffects[EFFECT_MINI],		"Mini" );
-	AddPart( AddTo, m_fEffects[EFFECT_TINY],		"Tiny" );
-	AddPart( AddTo, m_fEffects[EFFECT_FLIP],		"Flip" );
-	AddPart( AddTo, m_fEffects[EFFECT_INVERT],		"Invert" );
+	AddPart( AddTo, m_fEffects[EFFECT_MINI],	"Mini" );
+	AddPart( AddTo, m_fEffects[EFFECT_TINY],	"Tiny" );
+	AddPart( AddTo, m_fEffects[EFFECT_FLIP],	"Flip" );
+	AddPart( AddTo, m_fEffects[EFFECT_INVERT],	"Invert" );
 	AddPart( AddTo, m_fEffects[EFFECT_TORNADO],	"Tornado" );
-	AddPart( AddTo, m_fEffects[EFFECT_TIPSY],		"Tipsy" );
-	AddPart( AddTo, m_fEffects[EFFECT_BUMPY],		"Bumpy" );
-	AddPart( AddTo, m_fEffects[EFFECT_BEAT],		"Beat" );
-	AddPart( AddTo, m_fEffects[EFFECT_XMODE],		"XMode" );
-	AddPart( AddTo, m_fEffects[EFFECT_TWIRL],		"Twirl" );
-	AddPart( AddTo, m_fEffects[EFFECT_ROLL],		"Roll" );
+	AddPart( AddTo, m_fEffects[EFFECT_TIPSY],	"Tipsy" );
+	AddPart( AddTo, m_fEffects[EFFECT_BUMPY],	"Bumpy" );
+	AddPart( AddTo, m_fEffects[EFFECT_BEAT],	"Beat" );
+	AddPart( AddTo, m_fEffects[EFFECT_XMODE],	"XMode" );
+	AddPart( AddTo, m_fEffects[EFFECT_TWIRL],	"Twirl" );
+	AddPart( AddTo, m_fEffects[EFFECT_ROLL],	"Roll" );
+	AddPart( AddTo, m_fEffects[EFFECT_RISE],	"Rise" );
+	AddPart( AddTo, m_fEffects[EFFECT_SINK],	"Sink" );
+	AddPart( AddTo, m_fEffects[EFFECT_NXMODE],	"NXMode" );
 
 	AddPart( AddTo, m_fAppearances[APPEARANCE_HIDDEN],			"Hidden" );
 	AddPart( AddTo, m_fAppearances[APPEARANCE_HIDDEN_OFFSET],	"HiddenOffset" );
@@ -168,6 +175,8 @@ void PlayerOptions::GetMods( vector<RString> &AddTo, bool bForceNoteSkin ) const
 	AddPart( AddTo, m_fScrolls[SCROLL_CENTERED],	"Centered" );
 
 	AddPart( AddTo, m_fDark,	"Dark" );
+
+	AddPart( AddTo, m_fReverseGrade, "ReverseGrade" );
 
 	AddPart( AddTo, m_fBlind,	"Blind" );
 	AddPart( AddTo, m_fCover,	"Cover" );
@@ -359,6 +368,10 @@ bool PlayerOptions::FromOneModString( const RString &sOneMod, RString &sErrorOut
 	else if( sBit == "xmode" )				SET_FLOAT( fEffects[EFFECT_XMODE] )
 	else if( sBit == "twirl" )				SET_FLOAT( fEffects[EFFECT_TWIRL] )
 	else if( sBit == "roll" )				SET_FLOAT( fEffects[EFFECT_ROLL] )
+	else if( sBit == "sink" )				SET_FLOAT( fEffects[EFFECT_SINK] )
+	else if( sBit == "rise" )				SET_FLOAT( fEffects[EFFECT_RISE] )
+	else if( sBit == "nxmode" )				SET_FLOAT( fEffects[EFFECT_NXMODE] )
+
 	else if( sBit == "hidden" )				SET_FLOAT( fAppearances[APPEARANCE_HIDDEN] )
 	else if( sBit == "hiddenoffset" )			SET_FLOAT( fAppearances[APPEARANCE_HIDDEN_OFFSET] )
 	else if( sBit == "sudden" )				SET_FLOAT( fAppearances[APPEARANCE_SUDDEN] )
@@ -401,6 +414,7 @@ bool PlayerOptions::FromOneModString( const RString &sOneMod, RString &sErrorOut
 	else if( sBit == "nostretch" )				m_bTransforms[TRANSFORM_NOSTRETCH] = on;
 	else if( sBit == "dark" )				SET_FLOAT( fDark )
 	else if( sBit == "blind" )				SET_FLOAT( fBlind )
+	else if( sBit == "reversegrade" )			SET_FLOAT( fReverseGrade )//modificado por mi, reversegrade
 	else if( sBit == "cover" )				SET_FLOAT( fCover )
 	else if( sBit == "randomattacks" )			SET_FLOAT( fRandAttack )
 	else if( sBit == "songattacks" )			SET_FLOAT( fSongAttack )
@@ -614,18 +628,18 @@ float PlayerOptions::GetReversePercentForColumn( int iCol ) const
 	int iNumCols = GAMESTATE->GetCurrentStyle()->m_iColsPerPlayer;
 
 	f += m_fScrolls[SCROLL_REVERSE];
-
+	
 	if( iCol >= iNumCols/2 )
 		f += m_fScrolls[SCROLL_SPLIT];
 
 	if( (iCol%2)==1 )
 		f += m_fScrolls[SCROLL_ALTERNATE];
-
+	
 	int iFirstCrossCol = iNumCols/4;
 	int iLastCrossCol = iNumCols-1-iFirstCrossCol;
 	if( iCol>=iFirstCrossCol && iCol<=iLastCrossCol )
 		f += m_fScrolls[SCROLL_CROSS];
-
+	
 	if( f > 2 )
 		f = fmodf( f, 2 );
 	if( f > 1 )
@@ -652,6 +666,7 @@ bool PlayerOptions::operator==( const PlayerOptions &other ) const
 	COMPARE(m_fPerspectiveTilt);
 	COMPARE(m_fSkew);
 	COMPARE(m_sNoteSkin);
+	COMPARE(m_fReverseGrade);
 	for( int i = 0; i < PlayerOptions::NUM_ACCELS; ++i )
 		COMPARE(m_fAccels[i]);
 	for( int i = 0; i < PlayerOptions::NUM_EFFECTS; ++i )
@@ -797,6 +812,7 @@ void PlayerOptions::ResetPrefs( ResetPrefsType type )
 		CPY( m_fTimeSpacing );
 		CPY( m_fScrollSpeed );
 		CPY( m_fScrollBPM );
+		CPY( m_fScrolls[SCROLL_REVERSE] );
 		break;
 	case saved_prefs_invalid_for_course:
 		break;
