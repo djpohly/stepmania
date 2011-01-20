@@ -37,9 +37,9 @@ private:
 
 	AutoActor		m_sprBackground;
 	Quad			m_quadDangerGlow;
-	StreamDisplay*	m_pStream;
+	StreamDisplay*		m_pStream;
 	AutoActor		m_sprFrame;
-
+	
 	float		m_fLifeTotalGainedSeconds;
 	float		m_fLifeTotalLostSeconds;
 
