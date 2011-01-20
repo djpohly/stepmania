@@ -42,7 +42,7 @@ namespace
 	PerPlayerData g_EffectData[NUM_PLAYERS];
 };
 
-void ArrowEffects::Update()
+void ArrowEffects::Update( const PlayerState* pPlayerState )//modificado por mi, playertiming
 {
 	const Style* pStyle = GAMESTATE->GetCurrentStyle();
 
@@ -140,7 +140,7 @@ void ArrowEffects::Update()
 		// Update Beat
 		do {
 			float fAccelTime = 0.2f, fTotalTime = 0.5f;
-			float fBeat = GAMESTATE->m_fSongBeatVisible + fAccelTime;
+			float fBeat = pPlayerState->m_fSongBeatVisible + fAccelTime;
 
 			const bool bEvenBeat = ( int(fBeat) % 2 ) != 0;
 
@@ -195,7 +195,7 @@ float ArrowEffects::GetYOffset( const PlayerState* pPlayerState, int iCol, float
 	if( pPlayerState->m_PlayerOptions.GetCurrent().m_fTimeSpacing != 0.0f )
 	{
 		float fSongSeconds = GAMESTATE->m_fMusicSecondsVisible;
-		float fNoteSeconds = GAMESTATE->m_pCurSong->GetElapsedTimeFromBeat(fNoteBeat);
+		float fNoteSeconds = pPlayerState->m_TimingState.GetElapsedTimeFromBeat(fNoteBeat);
 		float fSecondsUntilStep = fNoteSeconds - fSongSeconds;
 		float fBPM = pPlayerState->m_PlayerOptions.GetCurrent().m_fScrollBPM;
 		float fBPS = fBPM/60.f;
@@ -633,7 +633,7 @@ float ArrowEffects::GetBrightness( const PlayerState* pPlayerState, float fNoteB
 	if( GAMESTATE->IsEditing() )
 		return 1;
 
-	float fSongBeat = GAMESTATE->m_fSongBeatVisible;
+	float fSongBeat = pPlayerState->m_fSongBeatVisible;
 	float fBeatsUntilStep = fNoteBeat - fSongBeat;
 
 	float fBrightness = SCALE( fBeatsUntilStep, 0, -1, 1.f, 0.f );
@@ -650,6 +650,12 @@ float ArrowEffects::GetZPos( const PlayerState* pPlayerState, int iCol, float fY
 	if( fEffects[PlayerOptions::EFFECT_BUMPY] != 0 )
 		fZPos += fEffects[PlayerOptions::EFFECT_BUMPY] * 40*RageFastSin( fYOffset/16.0f );
 
+	if( fEffects[PlayerOptions::EFFECT_RISE] != 0 ) // The arrows are inflated.
+		fZPos += (fEffects[PlayerOptions::EFFECT_RISE] * 40*RageFastSin( fYOffset/128.0f ))*5.5f;//default 16.0
+
+	if( fEffects[PlayerOptions::EFFECT_SINK] != 0 ) // The arrows are deflated.
+		fZPos += (fEffects[PlayerOptions::EFFECT_SINK] * 40*RageFastSin( fYOffset/128.0f ))*-(5.5f);//default 16.0
+
 	return fZPos;
 }
 
@@ -659,7 +665,9 @@ bool ArrowEffects::NeedZBuffer( const PlayerState* pPlayerState )
 	// We also need to use the Z buffer if twirl is in play, because of
 	// hold modulation. -vyhd (OpenITG r623)
 	if( fEffects[PlayerOptions::EFFECT_BUMPY] != 0 ||
-		fEffects[PlayerOptions::EFFECT_TWIRL] != 0 )
+		fEffects[PlayerOptions::EFFECT_TWIRL] != 0 || 
+		fEffects[PlayerOptions::EFFECT_RISE] != 0 ||
+		fEffects[PlayerOptions::EFFECT_SINK] != 0 )
 		return true;
 
 	return false;

@@ -8,11 +8,13 @@ class PlayerState;
 class ArrowEffects
 {
 public:
-	static void Update();
-
-	// fYOffset is a vertical position in pixels relative to the center
-	// (positive if has not yet been stepped on, negative if has already passed).
-	// The ArrowEffect and ScrollSpeed is applied in this stage.
+	static void Update( const PlayerState* pPlayerState);
+	
+	/*
+	 * fYOffset is a vertical position in pixels relative to the center
+	 * (positive if has not yet been stepped on, negative if has already passed).
+	 * The ArrowEffect and ScrollSpeed is applied in this stage.
+	 */
 	static float GetYOffset( const PlayerState* pPlayerState, int iCol, float fNoteBeat, float &fPeakYOffsetOut, bool &bIsPastPeakYOffset, bool bAbsolute=false );
 	static float GetYOffset( const PlayerState* pPlayerState, int iCol, float fNoteBeat, bool bAbsolute=false )
 	{
@@ -28,9 +30,11 @@ public:
 	// Inverse of ArrowGetYPos (YPos -> fYOffset).
 	static float GetYOffsetFromYPos( const PlayerState* pPlayerState, int iCol, float YPos, float fYReverseOffsetPixels );
 
-	// fRotation is Z rotation of an arrow.  This will depend on the column of 
-	// the arrow and possibly the Arrow effect and the fYOffset (in the case of 
-	// EFFECT_DIZZY).
+	/*
+	 * fRotation is Z rotation of an arrow.  This will depend on the column of 
+	 * the arrow and possibly the Arrow effect and the fYOffset (in the case of 
+	 * EFFECT_DIZZY).
+	 */
 	static float GetRotationZ(	const PlayerState* pPlayerState, float fNoteBeat, bool bIsHoldHead );
 	static float ReceptorGetRotationZ(	const PlayerState* pPlayerState );
 
