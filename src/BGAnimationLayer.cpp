@@ -476,7 +476,7 @@ void BGAnimationLayer::LoadFromNode( const XNode* pNode )
 			RString sFile;
 			ActorUtil::GetAttrPath( pNode, "File", sFile );
 			FixSlashesInPlace( sFile );
-
+			
 			CollapsePath( sFile );
 
 			for( int i=0; i<iNumParticles; i++ )
@@ -505,7 +505,7 @@ void BGAnimationLayer::LoadFromNode( const XNode* pNode )
 			RString sFile;
 			ActorUtil::GetAttrPath( pNode, "File", sFile );
 			FixSlashesInPlace( sFile );
-
+			
 			CollapsePath( sFile );
 
 			AutoActor s;
@@ -610,7 +610,7 @@ void BGAnimationLayer::UpdateInternal( float fDeltaTime )
 			float fSecs = RageTimer::GetTimeSinceStartFast();
 			float fTotalWidth = m_iNumTilesWide * m_fTilesSpacingX;
 			float fTotalHeight = m_iNumTilesHigh * m_fTilesSpacingY;
-
+			
 			ASSERT( int(m_SubActors.size()) == m_iNumTilesWide * m_iNumTilesHigh );
 
 			for( int x=0; x<m_iNumTilesWide; x++ )
@@ -633,7 +633,7 @@ void BGAnimationLayer::UpdateInternal( float fDeltaTime )
 
 					fX -= m_fTilesSpacingX/2;
 					fY -= m_fTilesSpacingY/2;
-
+					
 					m_SubActors[i]->SetX( fX );
 					m_SubActors[i]->SetY( fY );
 				}
