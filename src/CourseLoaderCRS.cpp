@@ -121,7 +121,7 @@ bool CourseLoaderCRS::LoadFromMsd( const RString &sPath, const MsdFile &msd, Cou
 				else if( !sBits[0].CompareNoCase("MODS") )
 				{
 					attack.sModifiers = sBits[1];
-
+					
 					if( end != -9999 )
 					{
 						attack.fSecsRemaining = end - attack.fStartSecond;
@@ -133,7 +133,7 @@ bool CourseLoaderCRS::LoadFromMsd( const RString &sPath, const MsdFile &msd, Cou
 						LOG->UserLog( "Course file", sPath, "has an attack with a nonpositive length: %s", sBits[1].c_str() );
 						attack.fSecsRemaining = 0.0f;
 					}
-
+					
 					// warn on invalid so we catch typos on load
 					CourseUtil::WarnOnInvalidMods( attack.sModifiers );
 
@@ -284,7 +284,7 @@ bool CourseLoaderCRS::LoadFromMsd( const RString &sPath, const MsdFile &msd, Cou
 			new_entry.attacks = attacks;
 			new_entry.fGainSeconds = fGainSeconds;
 			attacks.clear();
-
+			
 			out.m_vEntries.push_back( new_entry );
 		}
 		else if( !stricmp(sValueName, "DISPLAYCOURSE") || !stricmp(sValueName, "COMBO") ||
@@ -292,7 +292,7 @@ bool CourseLoaderCRS::LoadFromMsd( const RString &sPath, const MsdFile &msd, Cou
 		{
 			// Ignore
 		}
-
+		
 		else if( bFromCache && !stricmp(sValueName, "RADAR") )
 		{
 			StepsType st = (StepsType) atoi(sParams[1]);
@@ -437,7 +437,7 @@ bool CourseLoaderCRS::LoadEditFromFile( const RString &sEditFilePath, ProfileSlo
 		return false;
 	}
 	Course *pCourse = new Course;
-
+	
 	pCourse->m_sPath = sEditFilePath;
 	LoadFromMsd( sEditFilePath, msd, *pCourse, true );
 
