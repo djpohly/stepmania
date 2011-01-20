@@ -52,6 +52,11 @@ void TimingData::AddTickcountSegment( const TickcountSegment &seg )
 	m_TickcountSegments.insert( upper_bound(m_TickcountSegments.begin(), m_TickcountSegments.end(), seg), seg );
 }
 
+void TimingData::AddComboSegment( const ComboSegment &seg )
+{
+	m_ComboSegments.insert( upper_bound(m_ComboSegments.begin(), m_ComboSegments.end(), seg), seg );
+}
+
 /* Change an existing BPM segment, merge identical segments together or insert a new one. */
 void TimingData::SetBPMAtRow( int iNoteRow, float fBPM )
 {
@@ -229,6 +234,18 @@ int TimingData::GetWarpToRow( int iWarpBeginRow ) const
 		if( m_WarpSegments[i].m_iStartRow == iWarpBeginRow )
 		{
 			return iWarpBeginRow + BeatToNoteRow(m_WarpSegments[i].m_fWarpBeats);
+		}
+	}
+	return 0;
+}
+
+int TimingData::GetComboAtRow( int iRow ) const
+{
+	for( unsigned i=0; i<m_ComboSegments.size(); i++ )
+	{
+		if( m_ComboSegments[i].m_iStartRow == iRow )
+		{
+			return m_ComboSegments[i].m_iStartRow;
 		}
 	}
 	return 0;
@@ -490,16 +507,19 @@ void TimingData::GetBeatAndBPSFromElapsedTimeNoOffset( float fElapsedTime, float
 	vector<WarpSegment> vWS = m_WarpSegments;
 	vector<TimeSignatureSegment> vTSS = m_vTimeSignatureSegments;
 	vector<TickcountSegment> vTS = m_TickcountSegments;
+	vector<ComboSegment> vCS = m_ComboSegments;
 	sort( vBPMS.begin(), vBPMS.end() );
 	sort( vSS.begin(), vSS.end() );
 	sort( vWS.begin(), vWS.end() );
 	sort( vTSS.begin(), vTSS.end() );
 	sort( vTS.begin(), vTS.end() );
+	sort( vCS.begin(), vCS.end() );
 	ASSERT_M( vBPMS == m_BPMSegments, "The BPM segments were not sorted!" );
 	ASSERT_M( vSS == m_StopSegments, "The Stop segments were not sorted!" );
 	ASSERT_M( vWS == m_WarpSegments, "The Warp segments were not sorted!" );
 	ASSERT_M( vTSS == m_vTimeSignatureSegments, "The Time Signature segments were not sorted!" );
 	ASSERT_M( vTS == m_TickcountSegments, "The Tickcount segments were not sorted!" );
+	ASSERT_M( vCS == m_ComboSegments, "The Combo segments were not sorted!" );
 	FAIL_M( ssprintf("Failed to find the appropriate segment for elapsed time %f.", fTime) );
 }
 

@@ -84,6 +84,31 @@ struct StopSegment
 	}
 };
 
+/*
+ * The combo segments are used to allow the combo to increment by an arbitrary amount whenever a note is
+ * successfully hit. Many songs may not need this (the default is 1, as it normally is), but it is
+ * available when required.
+ */
+struct ComboSegment
+{
+	ComboSegment() : m_iStartRow(0), m_iComboFactor(1) { }
+	ComboSegment( float s, int t ) { m_iStartRow = max(0, s); m_iComboFactor = max(0, t); }
+	float m_iStartRow;
+	int m_iComboFactor;
+
+	bool operator==( const ComboSegment &other ) const
+	{
+		COMPARE( m_iStartRow );
+		COMPARE( m_iComboFactor );
+		return true;
+	}
+	bool operator!=( const ComboSegment &other ) const { return !operator==(other); }
+	bool operator<( const ComboSegment &other ) const { return m_iStartRow < other.m_iStartRow; }
+	bool operator<=( const ComboSegment &other ) const { return ( operator<(other) || operator==(other) ); }
+	bool operator>( const ComboSegment &other ) const { return m_iStartRow > other.m_iStartRow; }
+	bool operator>=( const ComboSegment &other ) const { return ( operator>(other) || operator==(other) ); }
+};
+
 /* This only supports simple time signatures. The upper number (called the numerator here, though this isn't
  * properly a fraction) is the number of beats per measure. The lower number (denominator here)
  * is the note value representing one beat. */
@@ -93,12 +118,12 @@ struct TimeSignatureSegment
 	TimeSignatureSegment( int r, int n ) {
 		m_iStartRow = max( 0, r );
 		m_iNumerator = n;
-		m_iDenominator = 64; // Hope we don't need this many.
+		m_iDenominator = 2; // Pro 2 default.
 	}
 	TimeSignatureSegment( int r, int n, int d ) {
 		m_iStartRow = max( 0, r );
-		m_iNumerator = n;
-		m_iDenominator = d;
+		m_iNumerator = max( 1, n );
+		m_iDenominator = max( 1, min( d, 48 ) );
 	}
 	
 	int m_iStartRow;
@@ -211,14 +236,19 @@ public:
 	float GetStopAtBeat( float fBeat ) const { return GetStopAtRow( BeatToNoteRow(fBeat) ); }
 	float GetDelayAtRow( int iRow ) const;
 	float GetDelayAtBeat( float fBeat ) const { return GetDelayAtRow( BeatToNoteRow(fBeat) ); }
+	int GetComboAtRow( int iRow ) const;
+	int GetComboAtBeat( float fBeat ) const { return GetComboAtRow( BeatToNoteRow(fBeat) ); }
 	void SetTimeSignatureAtRow( int iRow, int iNumerator, int iDenominator );
 	void SetTimeSignatureAtBeat( float fBeat, int iNumerator, int iDenominator ) { SetTimeSignatureAtRow( BeatToNoteRow(fBeat), iNumerator, iDenominator ); }
 	void SetTimeSignatureNumeratorAtRow( int iRow, int iNumerator );
 	void SetTimeSignatureNumeratorAtBeat( float fBeat, int iNumerator ) { SetTimeSignatureNumeratorAtRow( BeatToNoteRow(fBeat), iNumerator); }
 	void SetTimeSignatureDenominatorAtRow( int iRow, int iDenominator );
 	void SetTimeSignatureDenominatorAtBeat( float fBeat, int iDenominator ) { SetTimeSignatureDenominatorAtRow( BeatToNoteRow(fBeat), iDenominator); }
+	void SetComboAtRow( int iRow, int iCombo ) const;
+	void SetComboAtBeat( float fBeat, int iCombo ) const { SetComboAtRow( BeatToNoteRow(fBeat), iCombo ); }
 	int GetWarpToRow( int iWarpBeginRow ) const;
 	void SetDelayAtRow( int iNoteRow, float fSeconds ); // sm-ssc
+	void SetDelayAtBeat( float fBeat, float fSeconds ) { SetDelayAtRow( BeatToNoteRow(fBeat), fSeconds ); }
 	void SetTickcountAtRow( int iRow, int iTicks );
 	void SetTickcountAtBeat( float fBeat, int iTicks ) { SetTickcountAtRow( BeatToNoteRow( fBeat ), iTicks ); }
 	int GetTickcountAtRow( int iRow ) const;
@@ -229,6 +259,7 @@ public:
 	void AddTimeSignatureSegment( const TimeSignatureSegment &seg );
 	void AddWarpSegment( const WarpSegment &seg );
 	void AddTickcountSegment( const TickcountSegment &seg );
+	void AddComboSegment( const ComboSegment &seg );
 	int GetBPMSegmentIndexAtBeat( float fBeat ) const;
 	int GetTimeSignatureSegmentIndexAtRow( int iRow ) const;
 	int GetTimeSignatureSegmentIndexAtBeat( float fBeat ) const { return GetTimeSignatureSegmentIndexAtRow( BeatToNoteRow(fBeat) ); }
@@ -243,6 +274,10 @@ public:
 	int GetTickcountSegmentIndexAtBeat( float fBeat ) const { return GetTickcountSegmentIndexAtRow( BeatToNoteRow(fBeat) ); }
 	TickcountSegment& GetTickcountSegmentAtRow( int iRow );
 	TickcountSegment& GetTickcountSegmentAtBeat( float fBeat ) { return GetTickcountSegmentAtRow( BeatToNoteRow(fBeat) ); }
+	ComboSegment& GetComboSegmentAtRow( int iRow );
+	ComboSegment& GetComboSegmentAtBeat( float fBeat ) { return GetComboSegmentAtRow( BeatToNoteRow(fBeat) ); }
+	int GetComboSegmentIndexAtRow( int iRow );
+	int GetComboSegmentIndexAtBeat( float fBeat ) { return GetComboSegmentIndexAtRow( BeatToNoteRow(fBeat) ); }
 	void NoteRowToMeasureAndBeat( int iNoteRow, int &iMeasureIndexOut, int &iBeatIndexOut, int &iRowsRemainder ) const;
 
 	void GetBeatAndBPSFromElapsedTime( float fElapsedTime, float &fBeatOut, float &fBPSOut, bool &bFreezeOut, bool &bDelayOut, int &iWarpBeginOut, float &fWarpLengthOut ) const;
@@ -307,6 +342,7 @@ public:
 	vector<TimeSignatureSegment>	m_vTimeSignatureSegments;
 	vector<WarpSegment>		m_WarpSegments;
 	vector<TickcountSegment>	m_TickcountSegments;
+	vector<ComboSegment>		m_ComboSegments;
 	float	m_fBeat0OffsetInSeconds;
 	bool	m_bHasNegativeBpms; // only used for Lua bindings in Song (to be moved to TimingData later)
 };
