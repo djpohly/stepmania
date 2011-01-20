@@ -27,7 +27,7 @@ public:
 
 	void Load( int iIndex, const Commands& cmds );
 	void LoadOne( const Command& cmd );
-
+	
 	void ApplyToAllPlayers() const;
 	void Apply( PlayerNumber pn ) const;
 private:
@@ -39,7 +39,7 @@ public:
 	bool DescribesCurrentModeForAllPlayers() const;
 	bool IsPlayable( RString *why = NULL ) const;
 	bool IsZero() const;
-
+	
 	/* If true, Apply() will apply m_sScreen. If false, it won't, and you need
 	 * to do it yourself. */
 	void ApplyCommitsScreens( bool bOn ) { m_bApplyCommitsScreens = bOn; }

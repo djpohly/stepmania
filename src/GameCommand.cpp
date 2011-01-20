@@ -97,7 +97,7 @@ bool GameCommand::DescribesCurrentMode( PlayerNumber pn ) const
 			if( GAMESTATE->m_PreferredDifficulty[pn] != m_dc )
 				return false;
 	}
-
+	
 	if( m_sAnnouncer != "" && m_sAnnouncer != ANNOUNCER->GetCurAnnouncerName() )
 		return false;
 
@@ -167,7 +167,7 @@ void GameCommand::LoadOne( const Command& cmd )
 	RString sName = cmd.GetName();
 	if( sName.empty() )
 		return;
-
+	
 	RString sValue;
 	for( unsigned i = 1; i < cmd.m_vsArgs.size(); ++i )
 	{
@@ -207,7 +207,7 @@ void GameCommand::LoadOne( const Command& cmd )
 	{
 		m_sAnnouncer = sValue;
 	}
-
+	
 	else if( sName == "name" )
 	{
 		m_sName = sValue;
@@ -231,18 +231,18 @@ void GameCommand::LoadOne( const Command& cmd )
 			m_sStageModifiers += ",";
 		m_sStageModifiers += sValue;
 	}
-
+	
 	else if( sName == "lua" )
 	{
 		m_LuaFunction.SetFromExpression( sValue );
 		ASSERT_M( !m_LuaFunction.IsNil(), ssprintf("\"%s\" evaluated to nil", sValue.c_str()) );
 	}
-
+	
 	else if( sName == "screen" )
 	{
 		m_sScreen = sValue;
 	}
-
+	
 	else if( sName == "song" )
 	{
 		m_pSong = SONGMAN->FindSong( sValue );
@@ -332,7 +332,7 @@ void GameCommand::LoadOne( const Command& cmd )
 			m_bInvalid |= true;
 		}
 	}
-
+	
 	else if( sName == "weight" )
 	{
 		m_iWeightPounds = atoi( sValue );
@@ -358,7 +358,7 @@ void GameCommand::LoadOne( const Command& cmd )
 		m_sUrl = sValue;
 		m_bUrlExits = true;
 	}
-
+	
 	else if( sName == "sound" )
 	{
 		m_sSoundPath = sValue;
@@ -368,7 +368,7 @@ void GameCommand::LoadOne( const Command& cmd )
 	{
 		m_vsScreensToPrepare.push_back( sValue );
 	}
-
+	
 	else if( sName == "insertcredit" )
 	{
 		m_bInsertCredit = true;
@@ -395,7 +395,7 @@ void GameCommand::LoadOne( const Command& cmd )
 		m_sUrl = sValue;
 		m_bUrlExits = false;
 	}
-
+	
 	else if( sName == "setpref" )
 	{
 		if( cmd.m_vsArgs.size() == 3 )
@@ -409,7 +409,7 @@ void GameCommand::LoadOne( const Command& cmd )
 			pPref->FromString(cmd.m_vsArgs[2]);
 		}
 	}
-
+	
 	else if( sName == "fademusic" )
 	{
 		// todo: parse things correctly. -aj
@@ -420,7 +420,7 @@ void GameCommand::LoadOne( const Command& cmd )
 			m_fMusicFadeOutSeconds = atof( cmd.m_vsArgs[2] );
 		}
 	}
-
+	
 	else
 	{
 		RString sWarning = ssprintf( "Command '%s' is not valid.", cmd.GetOriginalCommandString().c_str() );
@@ -474,7 +474,7 @@ static bool AreStyleAndPlayModeCompatible( const Style *style, PlayMode pm )
 		// Techno Motion scales down versus arrows, though, so allow this.
 		if( style->m_iColsPerPlayer >= 6 && RString(GAMESTATE->m_pCurGame->m_szName) != "techno" )
 			return false;
-
+		
 		// Don't allow battle modes if the style takes both sides.
 		if( style->m_StyleType==StyleType_OnePlayerTwoSides ||
 			style->m_StyleType==StyleType_TwoPlayersSharedSides )
@@ -498,14 +498,14 @@ bool GameCommand::IsPlayable( RString *why ) const
 		int iCredits = GAMESTATE->m_iCoins / PREFSMAN->m_iCoinsPerCredit;
 		const int iNumCreditsPaid = GetNumCreditsPaid();
 		const int iNumCreditsRequired = GetCreditsRequiredToPlayStyle(m_pStyle);
-
+		
 		switch( GAMESTATE->GetCoinMode() )
 		{
 		case CoinMode_Home:
 		case CoinMode_Free:
 			iCredits = NUM_PLAYERS; // not iNumCreditsPaid
 		}
-
+		
 		/* With PREFSMAN->m_bDelayedCreditsReconcile disabled, enough credits must
 		 * be paid. (This means that enough sides must be joined.)  Enabled, simply
 		 * having enough credits lying in the machine is sufficient; we'll deduct the
