@@ -433,14 +433,18 @@ static void SongsPerPlayOrEventMode( int &sel, bool ToSel, const ConfOption *pCo
 // Machine options
 static void TimingWindowScale( int &sel, bool ToSel, const ConfOption *pConfOption )
 {
+	// StepMania 5 values (implemented 2008/03/12)
 	//const float mapping[] = { 2.0f,1.66f,1.33f,1.00f,0.75f,0.50f,0.25f };
+	// StepMania 3.9 and 4.0 values:
 	const float mapping[] = { 1.50f,1.33f,1.16f,1.00f,0.84f,0.66f,0.50f,0.33f,0.20f };
 	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
 }
 
 static void LifeDifficulty( int &sel, bool ToSel, const ConfOption *pConfOption )
 {
+	// StepMania 5 values (implemented 2008/03/12)
 	//const float mapping[] = { 2.0f,1.50f,1.00f,0.66f,0.33f };
+	// StepMania 3.9 and 4.0 values:
 	const float mapping[] = { 1.60f,1.40f,1.20f,1.00f,0.80f,0.60f,0.40f };
 	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
 }
@@ -610,7 +614,7 @@ static void SoundVolumeAttract( int &sel, bool ToSel, const ConfOption *pConfOpt
 
 static void VisualDelaySeconds( int &sel, bool ToSel, const ConfOption *pConfOption )
 {
-	const float mapping[] = { -0.125f,-0.1f,-0.075f,-0.05f,0.025f,0.0f,0.025f,0.05f,0.075f,0.1f,0.125f };
+	const float mapping[] = { -0.125f,-0.1f,-0.075f,-0.05f,-0.025f,0.0f,0.025f,0.05f,0.075f,0.1f,0.125f };
 	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
 }
 

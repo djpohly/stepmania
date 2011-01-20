@@ -47,6 +47,11 @@ void TimingData::AddWarpSegment( const WarpSegment &seg )
 	m_WarpSegments.insert( upper_bound(m_WarpSegments.begin(), m_WarpSegments.end(), seg), seg );
 }
 
+void TimingData::AddTickcountSegment( const TickcountSegment &seg )
+{
+	m_TickcountSegments.insert( upper_bound(m_TickcountSegments.begin(), m_TickcountSegments.end(), seg), seg );
+}
+
 /* Change an existing BPM segment, merge identical segments together or insert a new one. */
 void TimingData::SetBPMAtRow( int iNoteRow, float fBPM )
 {
@@ -84,7 +89,7 @@ void TimingData::SetStopAtRow( int iRow, float fSeconds, bool bDelay )
 		if( m_StopSegments[i].m_iStartRow == iRow )
 			break;
 
-	if( i == m_StopSegments.size() )	// there is no BPMSegment at the current beat
+	if( i == m_StopSegments.size() )	// there is no StopSegment at the current beat
 	{
 		// create a new StopSegment
 		if( fSeconds > 0 || PREFSMAN->m_bQuirksMode )
@@ -109,12 +114,77 @@ void TimingData::SetDelayAtRow( int iRow, float fSeconds )
 	SetStopAtRow(iRow,fSeconds,true);
 }
 
+void TimingData::SetTimeSignatureAtRow( int iRow, int iNumerator, int iDenominator )
+{
+	unsigned i;
+	for( i = 0; i < m_vTimeSignatureSegments.size(); i++ )
+	{
+		if( m_vTimeSignatureSegments[i].m_iStartRow >= iRow)
+			break; // We found our segment.
+	}
+	TimeSignatureSegment &ts = m_vTimeSignatureSegments[i];
+	TimeSignatureSegment &prev = m_vTimeSignatureSegments[i-1];
+	if( i == m_vTimeSignatureSegments.size() || ts.m_iStartRow != iRow )
+	{
+		// There is no TimeSignatureSegment at the specified beat.
+		// If the TimeSignatureSegment being set differs
+		// from the last TimeSignature, create a new TimeSignatureSegment.
+		if( i == 0 || ( prev.m_iNumerator != iNumerator || prev.m_iDenominator != iDenominator ) )
+			AddTimeSignatureSegment( TimeSignatureSegment(iRow, iNumerator, iDenominator) );
+	}
+	else	// TimeSignatureSegment being modified is m_vTimeSignatureSegments[i]
+	{
+		if( i > 0  && prev.m_iNumerator == iNumerator
+		   && prev.m_iDenominator == iDenominator )
+			m_vTimeSignatureSegments.erase( m_vTimeSignatureSegments.begin()+i,
+						        m_vTimeSignatureSegments.begin()+i+1 );
+		else
+		{
+			ts.m_iNumerator = iNumerator;
+			ts.m_iDenominator = iDenominator;
+		}
+	}
+}
+
+void TimingData::SetTimeSignatureNumeratorAtRow( int iRow, int iNumerator )
+{
+	SetTimeSignatureAtRow( iRow, iNumerator, GetTimeSignatureSegmentAtBeat( NoteRowToBeat( iRow ) ).m_iDenominator );
+}
+
+void TimingData::SetTimeSignatureDenominatorAtRow( int iRow, int iDenominator )
+{
+	SetTimeSignatureAtRow( iRow, GetTimeSignatureSegmentAtBeat( NoteRowToBeat( iRow ) ).m_iNumerator, iDenominator );
+}
+
 /*
 void TimingData::SetWarpAtRow( int iRowAt, float fLengthBeats )
 {
 	// todo: code this -aj
 }
 */
+
+/* Change an existing Tickcount segment, merge identical segments together or insert a new one. */
+void TimingData::SetTickcountAtRow( int iRow, int iTicks )
+{
+	unsigned i;
+	for( i=0; i<m_TickcountSegments.size(); i++ )
+		if( m_TickcountSegments[i].m_iStartRow >= iRow )
+			break;
+	
+	if( i == m_TickcountSegments.size() || m_TickcountSegments[i].m_iStartRow != iRow )
+	{
+		// No TickcountSegment here. Make a new segment if required.
+		if( i == 0 || m_TickcountSegments[i-1].m_iTicks != iTicks )
+			AddTickcountSegment( TickcountSegment(iRow, iTicks ) );
+	}
+	else	// TickcountSegment being modified is m_TickcountSegments[i]
+	{
+		if( i > 0  && m_TickcountSegments[i-1].m_iTicks == iTicks )
+			m_TickcountSegments.erase( m_TickcountSegments.begin()+i, m_TickcountSegments.begin()+i+1 );
+		else
+			m_TickcountSegments[i].m_iTicks = iTicks;
+	}
+}
 
 float TimingData::GetStopAtRow( int iNoteRow, bool &bDelayOut ) const
 {
@@ -128,6 +198,27 @@ float TimingData::GetStopAtRow( int iNoteRow, bool &bDelayOut ) const
 		}
 	}
 
+	return 0;
+}
+
+float TimingData::GetStopAtRow( int iRow ) const
+{
+	for( unsigned i = 0; i < m_StopSegments.size(); i++ )
+	{
+		if ( !m_StopSegments[i].m_bDelay && m_StopSegments[i].m_iStartRow == iRow )
+			return m_StopSegments[i].m_fStopSeconds;
+	}
+	return 0;
+}
+
+
+float TimingData::GetDelayAtRow( int iRow ) const
+{
+	for( unsigned i = 0; i < m_StopSegments.size(); i++ )
+	{
+		if ( m_StopSegments[i].m_bDelay && m_StopSegments[i].m_iStartRow == iRow )
+			return m_StopSegments[i].m_fStopSeconds;
+	}
 	return 0;
 }
 
@@ -193,7 +284,7 @@ float TimingData::GetBPMAtBeat( float fBeat ) const
 	return m_BPMSegments[i].GetBPM();
 }
 
-int TimingData::GetBPMSegmentIndexAtBeat( float fBeat )
+int TimingData::GetBPMSegmentIndexAtBeat( float fBeat ) const
 {
 	int iIndex = BeatToNoteRow( fBeat );
 	int i;
@@ -203,14 +294,32 @@ int TimingData::GetBPMSegmentIndexAtBeat( float fBeat )
 	return i;
 }
 
-const TimeSignatureSegment& TimingData::GetTimeSignatureSegmentAtBeat( float fBeat ) const
+int TimingData::GetTimeSignatureSegmentIndexAtRow( int iRow ) const
 {
-	int iIndex = BeatToNoteRow( fBeat );
+	int i;
+	for (i=0; i < (int)(m_vTimeSignatureSegments.size()) - 1; i++ )
+		if( m_vTimeSignatureSegments[i+1].m_iStartRow > iRow )
+			break;
+	return i;
+}
+
+TimeSignatureSegment& TimingData::GetTimeSignatureSegmentAtRow( int iRow )
+{
 	unsigned i;
 	for( i=0; i<m_vTimeSignatureSegments.size()-1; i++ )
-		if( m_vTimeSignatureSegments[i+1].m_iStartRow > iIndex )
+		if( m_vTimeSignatureSegments[i+1].m_iStartRow > iRow )
 			break;
 	return m_vTimeSignatureSegments[i];
+}
+
+int TimingData::GetTimeSignatureNumeratorAtRow( int iRow )
+{
+	return GetTimeSignatureSegmentAtRow( iRow ).m_iNumerator;
+}
+
+int TimingData::GetTimeSignatureDenominatorAtRow( int iRow )
+{
+	return GetTimeSignatureSegmentAtRow( iRow ).m_iDenominator;
 }
 
 BPMSegment& TimingData::GetBPMSegmentAtBeat( float fBeat )
@@ -221,6 +330,30 @@ BPMSegment& TimingData::GetBPMSegmentAtBeat( float fBeat )
 
 	int i = GetBPMSegmentIndexAtBeat( fBeat );
 	return m_BPMSegments[i];
+}
+
+int TimingData::GetTickcountSegmentIndexAtRow( int iRow ) const
+{
+	int i;
+	for (i=0; i < (int)(m_TickcountSegments.size()) - 1; i++ )
+		if( m_TickcountSegments[i+1].m_iStartRow > iRow )
+			break;
+	return i;
+}
+
+TickcountSegment& TimingData::GetTickcountSegmentAtRow( int iRow )
+{
+	static TickcountSegment empty;
+	if( m_TickcountSegments.empty() )
+		return empty;
+	
+	int i = GetTickcountSegmentIndexAtBeat( iRow );
+	return m_TickcountSegments[i];
+}
+
+int TimingData::GetTickcountAtRow( int iRow ) const
+{
+	return m_TickcountSegments[GetTickcountSegmentIndexAtRow( iRow )].m_iTicks;
 }
 
 void TimingData::GetBeatAndBPSFromElapsedTime( float fElapsedTime, float &fBeatOut, float &fBPSOut, bool &bFreezeOut, bool &bDelayOut, int &iWarpBeginOut, float &fWarpLengthOut ) const
@@ -355,12 +488,18 @@ void TimingData::GetBeatAndBPSFromElapsedTimeNoOffset( float fElapsedTime, float
 	vector<BPMSegment> vBPMS = m_BPMSegments;
 	vector<StopSegment> vSS = m_StopSegments;
 	vector<WarpSegment> vWS = m_WarpSegments;
+	vector<TimeSignatureSegment> vTSS = m_vTimeSignatureSegments;
+	vector<TickcountSegment> vTS = m_TickcountSegments;
 	sort( vBPMS.begin(), vBPMS.end() );
 	sort( vSS.begin(), vSS.end() );
 	sort( vWS.begin(), vWS.end() );
+	sort( vTSS.begin(), vTSS.end() );
+	sort( vTS.begin(), vTS.end() );
 	ASSERT_M( vBPMS == m_BPMSegments, "The BPM segments were not sorted!" );
 	ASSERT_M( vSS == m_StopSegments, "The Stop segments were not sorted!" );
 	ASSERT_M( vWS == m_WarpSegments, "The Warp segments were not sorted!" );
+	ASSERT_M( vTSS == m_vTimeSignatureSegments, "The Time Signature segments were not sorted!" );
+	ASSERT_M( vTS == m_TickcountSegments, "The Tickcount segments were not sorted!" );
 	FAIL_M( ssprintf("Failed to find the appropriate segment for elapsed time %f.", fTime) );
 }
 
@@ -467,6 +606,22 @@ void TimingData::InsertRows( int iStartRow, int iRowsToAdd )
 			continue;
 		stop.m_iStartRow += iRowsToAdd;
 	}
+	
+	for( unsigned i = 0; i < m_vTimeSignatureSegments.size(); i++ )
+	{
+		TimeSignatureSegment &time = m_vTimeSignatureSegments[i];
+		if( time.m_iStartRow < iStartRow )
+			continue;
+		time.m_iStartRow += iRowsToAdd;
+	}
+	
+	for( unsigned i = 0; i < m_TickcountSegments.size(); i++ )
+	{
+		TickcountSegment &tick = m_TickcountSegments[i];
+		if( tick.m_iStartRow < iStartRow )
+			continue;
+		tick.m_iStartRow += iRowsToAdd;
+	}
 
 	if( iStartRow == 0 )
 	{
@@ -523,6 +678,50 @@ void TimingData::DeleteRows( int iStartRow, int iRowsToDelete )
 
 		// After deleted region:
 		stop.m_iStartRow -= iRowsToDelete;
+	}
+	
+	for( unsigned i = 0; i < m_vTimeSignatureSegments.size(); i++ )
+	{
+		TimeSignatureSegment &time = m_vTimeSignatureSegments[i];
+		
+		// Before deleted region:
+		if( time.m_iStartRow < iStartRow )
+			continue;
+		
+		// Inside deleted region:
+		if( time.m_iStartRow < iStartRow+iRowsToDelete )
+		{
+			m_vTimeSignatureSegments.erase( 
+				m_vTimeSignatureSegments.begin()+i, 
+				m_vTimeSignatureSegments.begin()+i+1 );
+			--i;
+			continue;
+		}
+		
+		// After deleted region:
+		
+		
+		time.m_iStartRow -= iRowsToDelete;
+	}
+	
+	for( unsigned i = 0; i < m_TickcountSegments.size(); i++ )
+	{
+		TickcountSegment &tick = m_TickcountSegments[i];
+		
+		// Before deleted region:
+		if( tick.m_iStartRow < iStartRow )
+			continue;
+		
+		// Inside deleted region:
+		if( tick.m_iStartRow < iStartRow+iRowsToDelete )
+		{
+			m_TickcountSegments.erase( m_TickcountSegments.begin()+i, m_TickcountSegments.begin()+i+1 );
+			--i;
+			continue;
+		}
+		
+		// After deleted region:
+		tick.m_iStartRow -= iRowsToDelete;
 	}
 
 	this->SetBPMAtRow( iStartRow, fNewBPM );

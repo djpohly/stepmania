@@ -16,6 +16,13 @@
 
 static ThemeMetric<float>	ARROW_SPACING( "ArrowEffects", "ArrowSpacing" );
 static ThemeMetric<bool>	HIDDEN_SUDDEN_PAST_RECEPTOR( "ArrowEffects", "DrawHiddenNotesAfterReceptor");
+static ThemeMetric<float>	BLINK_MOD_FREQUENCY( "ArrowEffects", "BlinkModFrequency" );
+static ThemeMetric<float>	BOOST_MOD_MIN_CLAMP( "ArrowEffects", "BoostModMinClamp" );
+static ThemeMetric<float>	BOOST_MOD_MAX_CLAMP( "ArrowEffects", "BoostModMaxClamp" );
+static ThemeMetric<float>	BRAKE_MOD_MIN_CLAMP( "ArrowEffects", "BrakeModMinClamp" );
+static ThemeMetric<float>	BRAKE_MOD_MAX_CLAMP( "ArrowEffects", "BrakeModMaxClamp" );
+static ThemeMetric<float>	WAVE_MOD_MAGNITUDE( "ArrowEffects", "WaveModMagnitude" );
+static ThemeMetric<float>	WAVE_MOD_HEIGHT( "ArrowEffects", "WaveModHeight" );
 
 static float GetNoteFieldHeight( const PlayerState* pPlayerState )
 {
@@ -213,7 +220,7 @@ float ArrowEffects::GetYOffset( const PlayerState* pPlayerState, int iCol, float
 		float fNewYOffset = fYOffset * 1.5f / ((fYOffset+fEffectHeight/1.2f)/fEffectHeight); 
 		float fAccelYAdjust =	fAccels[PlayerOptions::ACCEL_BOOST] * (fNewYOffset - fYOffset);
 		// TRICKY: Clamp this value, or else BOOST+BOOMERANG will draw a ton of arrows on the screen.
-		CLAMP( fAccelYAdjust, -400.f, 400.f );
+		CLAMP( fAccelYAdjust, BOOST_MOD_MIN_CLAMP, BOOST_MOD_MAX_CLAMP );
 		fYAdjust += fAccelYAdjust;
 	}
 	if( fAccels[PlayerOptions::ACCEL_BRAKE] != 0 )
@@ -223,11 +230,11 @@ float ArrowEffects::GetYOffset( const PlayerState* pPlayerState, int iCol, float
 		float fNewYOffset = fYOffset * fScale; 
 		float fBrakeYAdjust = fAccels[PlayerOptions::ACCEL_BRAKE] * (fNewYOffset - fYOffset);
 		// TRICKY: Clamp this value the same way as BOOST so that in BOOST+BRAKE, BRAKE doesn't overpower BOOST
-		CLAMP( fBrakeYAdjust, -400.f, 400.f );
+		CLAMP( fBrakeYAdjust, BRAKE_MOD_MIN_CLAMP, BRAKE_MOD_MAX_CLAMP );
 		fYAdjust += fBrakeYAdjust;
 	}
 	if( fAccels[PlayerOptions::ACCEL_WAVE] != 0 )
-		fYAdjust +=	fAccels[PlayerOptions::ACCEL_WAVE] * 20.0f*RageFastSin( fYOffset/38.0f );
+		fYAdjust +=	fAccels[PlayerOptions::ACCEL_WAVE] * WAVE_MOD_MAGNITUDE *RageFastSin( fYOffset/WAVE_MOD_HEIGHT );
 
 	fYOffset += fYAdjust;
 
@@ -572,7 +579,7 @@ float ArrowGetPercentVisible( const PlayerState* pPlayerState, float fYPosWithou
 	if( fAppearances[PlayerOptions::APPEARANCE_BLINK] != 0 )
 	{
 		float f = RageFastSin(RageTimer::GetTimeSinceStartFast()*10);
-		f = Quantize( f, 0.3333f );
+		f = Quantize( f, BLINK_MOD_FREQUENCY );
 		fVisibleAdjust += SCALE( f, 0, 1, -1, 0 );
 	}
 	if( fAppearances[PlayerOptions::APPEARANCE_RANDOMVANISH] != 0 )
