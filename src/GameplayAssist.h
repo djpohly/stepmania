@@ -6,12 +6,14 @@
 #include "RageSound.h"
 
 class NoteData;
+class TimingData;
+class PlayerState;
 
 class GameplayAssist
 {
 public:
 	void Init();
-	void PlayTicks( const NoteData &nd );
+	void PlayTicks( const NoteData &nd, const TimingData &timing, const PlayerState &playerstate );//modifiado por mi
 	void StopPlaying();
 private:
 	RageSound	m_soundAssistClap;

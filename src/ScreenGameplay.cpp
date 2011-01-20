@@ -151,7 +151,7 @@ void PlayerInfo::Load( PlayerNumber pn, MultiPlayer mp, bool bShowNoteField, int
 			ASSERT(0);
 		}
 	}
-
+	
 	PlayerState *const pPlayerState = GetPlayerState();
 	PlayerStageStats *const pPlayerStageStats = GetPlayerStageStats();
 
@@ -355,7 +355,7 @@ void ScreenGameplay::Init()
 	USE_ALTERNATIVE_INPUT.Load(		m_sName, "UseAlternativeInput");
 	// configurable:
 	UNPAUSE_WITH_START.Load(		m_sName, "UnpauseWithStart");
-
+	
 	if( UseSongBackgroundAndForeground() )
 	{
 		m_pSongBackground = new Background;
@@ -431,7 +431,7 @@ void ScreenGameplay::Init()
 
 	// Set this in LoadNextSong()
 	//m_fTimeLeftBeforeDancingComment = SECONDS_BETWEEN_COMMENTS;
-
+	
 	m_bZeroDeltaOnNextUpdate = false;
 
 
@@ -457,7 +457,7 @@ void ScreenGameplay::Init()
 		m_BeginnerHelper.SetXY( SCREEN_CENTER_X, SCREEN_CENTER_Y );
 		this->AddChild( &m_BeginnerHelper );
 	}
-
+	
 	if( !GAMESTATE->m_bDemonstrationOrJukebox )	// only load if we're going to use it
 	{
 		m_Toasty.Load( THEME->GetPathB(m_sName,"toasty") );
@@ -489,7 +489,7 @@ void ScreenGameplay::Init()
 		this->AddChild( pi->m_pPlayer );
 		pi->m_pPlayer->PlayCommand( "On" );
 	}
-
+	
 	FOREACH_EnabledPlayerInfoNotDummy( m_vPlayerInfo, pi )
 	{
 		if( pi->m_pPlayer->HasVisibleParts() )
@@ -591,7 +591,7 @@ void ScreenGameplay::Init()
 			this->AddChild( pi->m_pSecondaryScoreDisplay );
 		}
 	}
-
+	
 	// Add stage / SongNumber
 	FOREACH_EnabledPlayerNumberInfo( m_vPlayerInfo, pi )
 	{
@@ -918,7 +918,7 @@ ScreenGameplay::~ScreenGameplay()
 
 	SAFE_DELETE( m_pSongBackground );
 	SAFE_DELETE( m_pSongForeground );
-
+	
 	if( !GAMESTATE->m_bDemonstrationOrJukebox )
 		MEMCARDMAN->UnPauseMountingThread();
 
@@ -1054,6 +1054,7 @@ void ScreenGameplay::LoadNextSong()
 	FOREACH_EnabledPlayerInfo( m_vPlayerInfo, pi )
 	{
 		pi->GetPlayerStageStats()->m_iSongsPlayed++;
+		pi->GetPlayerState()->ResetPlayerMusicStatistics(); // Split BPM here.
 		if( pi->m_ptextCourseSongNumber )
 			pi->m_ptextCourseSongNumber->SetText( ssprintf("%d", pi->GetPlayerStageStats()->m_iSongsPassed+1) );
 	}
@@ -1152,7 +1153,7 @@ void ScreenGameplay::LoadNextSong()
 			}
 		} 
 	}
-
+	
 	bool bAllReverse = true;
 	bool bAtLeastOneReverse = false;
 	FOREACH_EnabledPlayerInfo( m_vPlayerInfo, pi )
@@ -1179,9 +1180,9 @@ void ScreenGameplay::LoadNextSong()
 	if( GAMESTATE->m_pCurSong->HasLyrics()  )
 		LL.LoadFromLRCFile(GAMESTATE->m_pCurSong->GetLyricsPath(), *GAMESTATE->m_pCurSong);
 
-
-	/* Set up song-specific graphics. */
-
+	
+	// Set up song-specific graphics.
+	
 	// Check to see if any players are in beginner mode.
 	// Note: steps can be different if turn modifiers are used.
 	if( PREFSMAN->m_bShowBeginnerHelper )
@@ -1432,12 +1433,15 @@ void ScreenGameplay::PauseGame( bool bPause, GameController gc )
 	}
 }
 
-// play assist ticks
+// play assist ticks. With multiple players, use first player only.
 void ScreenGameplay::PlayTicks()
 {
-	Player &player = *m_vPlayerInfo[0].m_pPlayer;
+	Player &player = *m_vPlayerInfo[GAMESTATE->GetFirstHumanPlayer()].m_pPlayer;
 	const NoteData &nd = player.GetNoteData();
-	m_GameplayAssist.PlayTicks( nd );
+	const TimingData &tm = GAMESTATE->m_pPlayerState[GAMESTATE->GetFirstHumanPlayer()]->m_TimingState;
+	const PlayerState *ps = GAMESTATE->m_pPlayerState[GAMESTATE->GetFirstHumanPlayer()];
+
+	m_GameplayAssist.PlayTicks( nd, tm, *ps );
 }
 
 /* Play announcer "type" if it's been at least fSeconds since the last announcer. */
@@ -1473,6 +1477,11 @@ void ScreenGameplay::UpdateSongPosition( float fDeltaTime )
 	const float fSeconds = m_pSoundMusic->GetPositionSeconds( NULL, &tm );
 	const float fAdjust = SOUND->GetFrameTimingAdjustment( fDeltaTime );
 	GAMESTATE->UpdateSongPosition( fSeconds+fAdjust, GAMESTATE->m_pCurSong->m_Timing, tm+fAdjust );
+	
+	FOREACH_EnabledPlayerInfo( m_vPlayerInfo, pi )
+	{
+		pi->GetPlayerState()->UpdateSongPosition( fSeconds+fAdjust, pi->GetPlayerState()->m_TimingState, tm+fAdjust );
+	}
 }
 
 void ScreenGameplay::BeginScreen()
@@ -1529,7 +1538,18 @@ bool ScreenGameplay::AllAreFailing()
 
 void ScreenGameplay::GetMusicEndTiming( float &fSecondsToStartFadingOutMusic, float &fSecondsToStartTransitioningOut )
 {
-	float fLastStepSeconds = GAMESTATE->m_pCurSong->GetElapsedTimeFromBeat( GAMESTATE->m_pCurSong->m_fLastBeat );
+	float fLastStepSeconds = 0;
+	{
+		float Steps[NUM_PLAYERS];
+		ZERO( Steps );
+		FOREACH_EnabledPlayerInfo( m_vPlayerInfo, pi )
+		{
+			fLastStepSeconds = pi->GetPlayerState()->m_TimingState.GetElapsedTimeFromBeat( GAMESTATE->m_pCurSong->m_fLastBeat );
+			Steps[pi->GetStepsAndTrailIndex()] = fLastStepSeconds;
+		}
+		fLastStepSeconds = max( Steps[0], Steps[1] );
+	}
+
 	fLastStepSeconds += Player::GetMaxStepDistanceSeconds();
 
 	float fTransitionLength;
@@ -1629,7 +1649,7 @@ void ScreenGameplay::Update( float fDeltaTime )
 			msg.SetParam( "OldHealthState", OldHealthState );
 			MESSAGEMAN->Broadcast( msg );
 		}
-
+		
 		pi->m_SoundEffectControl.Update( fDeltaTime );
 	}
 
@@ -1660,13 +1680,13 @@ void ScreenGameplay::Update( float fDeltaTime )
 
 			if( ft == PlayerOptions::FAIL_OFF || ft == PlayerOptions::FAIL_AT_END )
 				continue;
-
+			
 			// check for individual fail
 			if( pi->m_pLifeMeter == NULL || !pi->m_pLifeMeter->IsFailing() )
 				continue; /* isn't failing */
 			if( pi->GetPlayerStageStats()->m_bFailed )
 				continue; /* failed and is already dead */
-
+			
 			LOG->Trace("Player %d failed", (int)pn);
 			pi->GetPlayerStageStats()->m_bFailed = true;	// fail
 
@@ -1747,6 +1767,8 @@ void ScreenGameplay::Update( float fDeltaTime )
 			}
 		}
 
+		if( GAMESTATE->m_fMusicSeconds*GAMESTATE->m_SongOptions.GetCurrent().m_fMusicRate > (GAMESTATE->m_pCurSong->m_fMusicLengthSeconds*GAMESTATE->m_SongOptions.GetCurrent().m_fMusicRate) )
+			this->PostScreenMessage( SM_NotesEnded, 1.5 );
 		// Check for end of song
 		{
 			float fSecondsToStartFadingOutMusic, fSecondsToStartTransitioningOut;
@@ -1769,7 +1791,7 @@ void ScreenGameplay::Update( float fDeltaTime )
 			if( pCharacter != NULL )
 			{
 				TapNoteScore tns = pi->m_pPlayer->GetLastTapNoteScore();
-
+				
 				ANIM_STATES_2D state = AS2D_MISS;
 
 				switch( tns )
@@ -1819,7 +1841,15 @@ void ScreenGameplay::Update( float fDeltaTime )
 				}
 			}
 		}
+		
+		// Adjust the miss combo.
+		int iRealMissCombo = INT_MAX;
+		FOREACH_EnabledPlayerInfo( m_vPlayerInfo, pi )
+		{
+			int iDiv = STATSMAN->m_CurStageStats.GetMinimumMissCombo()/pi->GetPlayerState()->m_iComboFactor;
 
+			iRealMissCombo = min(iRealMissCombo,iDiv);
+		}
 		// update give up
 		bool bGiveUpTimerFired = !m_GiveUpTimer.IsZero() && m_GiveUpTimer.Ago() > 2.5f;
 		bool bAllHumanHaveBigMissCombo = FAIL_ON_MISS_COMBO.GetValue() != -1 && STATSMAN->m_CurStageStats.GetMinimumMissCombo() >= FAIL_ON_MISS_COMBO;
@@ -2125,12 +2155,12 @@ void ScreenGameplay::BeginBackingOutFromGameplay()
 {
 	m_DancingState = STATE_OUTRO;
 	AbortGiveUp( false );
-
+	
 	m_pSoundMusic->StopPlaying();
 	m_GameplayAssist.StopPlaying(); // Stop any queued assist ticks.
 
 	this->ClearMessageQueue();
-
+	
 	// If this is the final stage, don't allow extra stage
 	if( GAMESTATE->GetSmallestNumStagesLeftForAnyHumanPlayer() == 0 )
 		GAMESTATE->m_bBackedOutOfFinalStage = true;
@@ -2194,7 +2224,7 @@ void ScreenGameplay::Input( const InputEventPlus &input )
 			bHoldingGiveUp |= ( START_GIVES_UP && input.MenuI == GAME_BUTTON_START );
 			bHoldingGiveUp |= ( BACK_GIVES_UP && input.MenuI == GAME_BUTTON_BACK );
 		}
-
+		
 		if( bHoldingGiveUp )
 		{
 			// No PREFSMAN->m_bDelayedEscape; always delayed.
@@ -2298,11 +2328,11 @@ void ScreenGameplay::Input( const InputEventPlus &input )
 		if( GAMESTATE->IsHumanPlayer( input.pn ) )
 		{
 			AbortGiveUp( true );
-
+			
 			if( GamePreferences::m_AutoPlay == PC_HUMAN && GAMESTATE->m_pPlayerState[PLAYER_1]->m_PlayerOptions.GetCurrent().m_fPlayerAutoPlay == 0 )
 			{
 				PlayerInfo& pi = GetPlayerInfoForInput( input );
-
+				
 				ASSERT( input.GameI.IsValid() );
 
 				GameButtonType gbt = GAMESTATE->m_pCurGame->GetPerButtonInfo(input.GameI.button)->m_gbt;
@@ -2357,7 +2387,7 @@ void ScreenGameplay::SaveStats()
 		RadarValues rv;
 		PlayerStageStats &pss = *pi->GetPlayerStageStats();
 		const NoteData &nd = pi->m_pPlayer->GetNoteData();
-
+		
 		NoteDataUtil::CalculateRadarValues( nd, fMusicLen, rv );
 		pss.m_radarPossible += rv;
 
@@ -2368,6 +2398,7 @@ void ScreenGameplay::SaveStats()
 
 void ScreenGameplay::SongFinished()
 {
+	// StepNXA couldn't handle this. Will check why soon. -Wolfman2000
 	AdjustSync::HandleSongEnd();
 	SaveStats(); // Let subclasses save the stats.
 	/* Extremely important: if we don't remove attacks before moving on to the next
@@ -2654,7 +2685,7 @@ void ScreenGameplay::HandleScreenMessage( const ScreenMessage SM )
 			m_textSurviveTime.SetText( "TIME: " + SecondsToMMSSMsMs(fMaxAliveSeconds) );
 			ON_COMMAND( m_textSurviveTime );
 		}
-
+		
 		if( GAMESTATE->IsCourseMode() )
 		{
 			if( GAMESTATE->GetCourseSongIndex() >= int(m_apSongsQueue.size() / 2) )

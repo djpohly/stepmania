@@ -20,6 +20,7 @@
 #include "InputEventPlus.h"
 #include "SoundEffectControl.h"
 #include "GameplayAssist.h"
+#include "TimingData.h"
 
 class LyricsLoader;
 class ActiveAttackList;

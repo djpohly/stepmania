@@ -14,7 +14,7 @@ void GameplayAssist::Init()
 	m_soundAssistMetronomeBeat.Load(	THEME->GetPathS("GameplayAssist","metronome beat"), true );
 }
 
-void GameplayAssist::PlayTicks( const NoteData &nd )
+void GameplayAssist::PlayTicks( const NoteData &nd, const TimingData &timing, const PlayerState &playerstate )
 {
 	bool bClap = GAMESTATE->m_SongOptions.GetCurrent().m_bAssistClap;
 	bool bMetronome = GAMESTATE->m_SongOptions.GetCurrent().m_bAssistMetronome;
@@ -27,7 +27,6 @@ void GameplayAssist::PlayTicks( const NoteData &nd )
 	 * come out on time; the actual precise timing is handled by SetStartTime. */
 	float fPositionSeconds = GAMESTATE->m_fMusicSeconds;
 	fPositionSeconds += SOUNDMAN->GetPlayLatency() + (float)CommonMetrics::TICK_EARLY_SECONDS + 0.250f;
-	const TimingData &timing = GAMESTATE->m_pCurSong->m_Timing;
 	const float fSongBeat = timing.GetBeatFromElapsedTimeNoOffset( fPositionSeconds );
 
 	const int iSongRow = max( 0, BeatToNoteRowNotRounded( fSongBeat ) );
@@ -51,7 +50,7 @@ void GameplayAssist::PlayTicks( const NoteData &nd )
 			fSecondsUntil /= GAMESTATE->m_SongOptions.GetCurrent().m_fMusicRate; /* 2x music rate means the time until the tick is halved */
 
 			RageSoundParams p;
-			p.m_StartTime = GAMESTATE->m_LastBeatUpdate  + (fSecondsUntil - (float)CommonMetrics::TICK_EARLY_SECONDS);
+			p.m_StartTime = playerstate.m_LastBeatUpdate  + (fSecondsUntil - (float)CommonMetrics::TICK_EARLY_SECONDS);
 			m_soundAssistClap.Play( &p );
 		}
 	}
@@ -87,7 +86,7 @@ void GameplayAssist::PlayTicks( const NoteData &nd )
 			fSecondsUntil /= GAMESTATE->m_SongOptions.GetCurrent().m_fMusicRate; /* 2x music rate means the time until the tick is halved */
 
 			RageSoundParams p;
-			p.m_StartTime = GAMESTATE->m_LastBeatUpdate  + (fSecondsUntil - (float)CommonMetrics::TICK_EARLY_SECONDS);
+			p.m_StartTime = playerstate.m_LastBeatUpdate  + (fSecondsUntil - (float)CommonMetrics::TICK_EARLY_SECONDS);
 			if( bIsMeasure )
 				m_soundAssistMetronomeMeasure.Play( &p );
 			else
