@@ -60,7 +60,7 @@ bool Character::Load( RString sCharDir )
 
 	// get optional display name
 	ini.GetValue( "Character", "DisplayName", m_sDisplayName );
-
+	
 	// get optional InitCommand
 	RString s;
 	ini.GetValue( "Character", "InitCommand", s );
