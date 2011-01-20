@@ -226,7 +226,7 @@ protected:
 	Song*			m_pSong;
 	Steps*			m_pSteps;
 
-	PlayerNumber	m_InputPlayerNumber;
+	PlayerNumber		m_InputPlayerNumber;
 	PlayerState		m_PlayerStateEdit;
 	NoteField		m_NoteFieldEdit;
 	NoteData		m_NoteDataEdit;
@@ -286,12 +286,12 @@ protected:
 	bool			m_bReturnToRecordMenuAfterPlay;
 
 // for MODE_RECORD and MODE_PLAY
-	int				m_iStartPlayingAt, m_iStopPlayingAt;
+	int			m_iStartPlayingAt, m_iStopPlayingAt;
 	float			m_fBeatToReturnTo;
 
-	AutoKeysounds	m_AutoKeysounds;
+	AutoKeysounds		m_AutoKeysounds;
 	RageSound		*m_pSoundMusic;
-	GameplayAssist	m_GameplayAssist;
+	GameplayAssist		m_GameplayAssist;
 
 	ThemeMetric<EditMode> EDIT_MODE;
 
