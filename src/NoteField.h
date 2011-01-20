@@ -21,7 +21,7 @@ public:
 	~NoteField();
 	virtual void Update( float fDeltaTime );
 	virtual void DrawPrimitives();
-
+	
 	virtual void Init( const PlayerState* pPlayerState, float fYReverseOffsetPixels );
 	virtual void Load( 
 		const NoteData* pNoteData, 
@@ -59,6 +59,7 @@ protected:
 	void DrawAreaHighlight( int iStartBeat, int iEndBeat );
 	void DrawBPMText( const float fBeat, const float fBPM );
 	void DrawFreezeText( const float fBeat, const float fBPM, const float bDelay );
+	void DrawComboText( const float fBeat, const int iCombo );
 	void DrawTimeSignatureText( const float fBeat, int iNumerator, int iDenominator );
 	void DrawTickcountText( const float fBeat, int iTicks );
 	void DrawAttackText( const float fBeat, const Attack &attack );

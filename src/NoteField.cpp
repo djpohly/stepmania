@@ -86,7 +86,7 @@ void NoteField::CacheNoteSkin( const RString &sNoteSkin_ )
 		return;
 
 	LockNoteSkin l( sNoteSkinLower );
-
+	
 	LOG->Trace("NoteField::CacheNoteSkin: cache %s", sNoteSkinLower.c_str() );
 	NoteDisplayCols *nd = new NoteDisplayCols( GAMESTATE->GetCurrentStyle()->m_iColsPerPlayer );
 
@@ -241,7 +241,7 @@ void NoteField::Update( float fDeltaTime )
 	ActorFrame::Update( fDeltaTime );
 
 	// update m_fBoardOffsetPixels, m_fCurrentBeatLastUpdate, m_fYPosCurrentBeatLastUpdate
-	const float fCurrentBeat = GAMESTATE->m_fSongBeat;
+	const float fCurrentBeat = m_pPlayerState->m_fSongBeat;
 	bool bTweeningOn = m_sprBoard->GetCurrentDiffuseAlpha() >= 0.98  &&  m_sprBoard->GetCurrentDiffuseAlpha() < 1.00;	// HACK
 	if( !bTweeningOn  &&  m_fCurrentBeatLastUpdate != -1 )
 	{
@@ -417,16 +417,19 @@ static ThemeMetric<RageColor> STOP_COLOR ( "NoteField", "StopColor" );
 static ThemeMetric<RageColor> DELAY_COLOR ( "NoteField", "DelayColor" );
 static ThemeMetric<RageColor> TIME_SIGNATURE_COLOR ( "NoteField", "TimeSignatureColor" );
 static ThemeMetric<RageColor> TICKCOUNT_COLOR ( "NoteField", "TickcountColor" );
+static ThemeMetric<RageColor> COMBO_COLOR ( "NoteField", "ComboColor" );
 static ThemeMetric<bool> BPM_IS_LEFT_SIDE ( "NoteField", "BPMIsLeftSide" );
 static ThemeMetric<bool> STOP_IS_LEFT_SIDE ( "NoteField", "StopIsLeftSide" );
 static ThemeMetric<bool> DELAY_IS_LEFT_SIDE ( "NoteField", "DelayIsLeftSide" );
 static ThemeMetric<bool> TIME_SIGNATURE_IS_LEFT_SIDE ( "NoteField", "TimeSignatureIsLeftSide" );
 static ThemeMetric<bool> TICKCOUNT_IS_LEFT_SIDE ( "NoteField", "TickcountIsLeftSide" );
+static ThemeMetric<bool> COMBO_IS_LEFT_SIDE ( "NoteField", "ComboIsLeftSide" );
 static ThemeMetric<float> BPM_OFFSETX ( "NoteField", "BPMOffsetX" );
 static ThemeMetric<float> STOP_OFFSETX ( "NoteField", "StopOffsetX" );
 static ThemeMetric<float> DELAY_OFFSETX ( "NoteField", "DelayOffsetX" );
 static ThemeMetric<float> TIME_SIGNATURE_OFFSETX ( "NoteField", "TimeSignatureOffsetX" );
 static ThemeMetric<float> TICKCOUNT_OFFSETX ( "NoteField", "TickcountOffsetX" );
+static ThemeMetric<float> COMBO_OFFSETX ( "NoteField", "ComboOffsetX" );
 
 void NoteField::DrawBPMText( const float fBeat, const float fBPM )
 {
@@ -445,6 +448,22 @@ void NoteField::DrawBPMText( const float fBeat, const float fBPM )
 	m_textMeasureNumber.Draw();
 }
 
+void NoteField::DrawComboText( const float fBeat, const int iCombo )
+{
+	const float fYOffset	= ArrowEffects::GetYOffset( m_pPlayerState, 0, fBeat );
+	const float fYPos	= ArrowEffects::GetYPos(    m_pPlayerState, 0, fYOffset, m_fYReverseOffsetPixels );
+	const float fZoom	= ArrowEffects::GetZoom(    m_pPlayerState );
+	const float xBase	= GetWidth()/2.f;
+	const float xOffset	= COMBO_OFFSETX * fZoom;
+
+	m_textMeasureNumber.SetZoom( fZoom );
+	m_textMeasureNumber.SetHorizAlign( COMBO_IS_LEFT_SIDE ? align_right : align_left );
+	m_textMeasureNumber.SetDiffuse( COMBO_COLOR );
+	m_textMeasureNumber.SetGlow( RageColor(1,1,1,RageFastCos(RageTimer::GetTimeSinceStartFast()*2)/2+0.5f) );
+	m_textMeasureNumber.SetText( ssprintf("%d", iCombo) );
+	m_textMeasureNumber.SetXY( (COMBO_IS_LEFT_SIDE ? -xBase - xOffset : xBase + xOffset), fYPos );
+	m_textMeasureNumber.Draw();
+}
 void NoteField::DrawFreezeText( const float fBeat, const float fSecs, const float bDelay )
 {
 	const float fYOffset	= ArrowEffects::GetYOffset( m_pPlayerState, 0, fBeat );
@@ -539,7 +558,7 @@ void NoteField::DrawBGChangeText( const float fBeat, const RString sNewBGName )
 // change this probing to binary search
 float FindFirstDisplayedBeat( const PlayerState* pPlayerState, int iDrawDistanceAfterTargetsPixels )
 {
-	float fFirstBeatToDraw = GAMESTATE->m_fSongBeat-4;	// Adjust to balance off performance and showing enough notes.
+	float fFirstBeatToDraw = pPlayerState->m_fSongBeat-4;	// Adjust to balance off performance and showing enough notes.
 
 	/* In Boomerang, we'll usually have two sections of notes: before and after
 	 * the peak.  We always start drawing before the peak, and end after it, or
@@ -551,7 +570,7 @@ float FindFirstDisplayedBeat( const PlayerState* pPlayerState, int iDrawDistance
 		bBoomerang = (fAccels[PlayerOptions::ACCEL_BOOMERANG] != 0);
 	}
 
-	while( fFirstBeatToDraw < GAMESTATE->m_fSongBeat )
+	while( fFirstBeatToDraw < pPlayerState->m_fSongBeat )
 	{
 		bool bIsPastPeakYOffset;
 		float fPeakYOffset;
@@ -574,7 +593,7 @@ float FindLastDisplayedBeat( const PlayerState* pPlayerState, int iDrawDistanceB
 	// worst case is 0.25x + boost.  Adjust search distance to 
 	// so that notes don't pop onto the screen.
 	float fSearchDistance = 10;
-	float fLastBeatToDraw = GAMESTATE->m_fSongBeat+fSearchDistance;	
+	float fLastBeatToDraw = pPlayerState->m_fSongBeat+fSearchDistance;	
 
 	const int NUM_ITERATIONS = 20;
 
@@ -624,7 +643,7 @@ void NoteField::DrawPrimitives()
 	// This should be filled in on the first update.
 	ASSERT( m_pCurDisplay != NULL );
 
-	ArrowEffects::Update();
+	ArrowEffects::Update( m_pPlayerState );
 
 	NoteDisplayCols *cur = m_pCurDisplay;
 
@@ -639,11 +658,16 @@ void NoteField::DrawPrimitives()
 		current_po.m_fAccels[PlayerOptions::ACCEL_BOOMERANG];
 	iDrawDistanceAfterTargetsPixels += int(SCALE( fCenteredTimesBoomerang, 0.f, 1.f, 0.f, -SCREEN_HEIGHT/2 ));
 	int iDrawDistanceBeforeTargetsPixels = m_iDrawDistanceBeforeTargetsPixels;
-
+	
 	float fDrawScale = 1;
-	fDrawScale *= 1 + 0.5f * fabsf( current_po.m_fPerspectiveTilt );
-	fDrawScale *= 1 + fabsf( current_po.m_fEffects[PlayerOptions::EFFECT_TINY] );
 
+	if( current_po.m_fEffects[PlayerOptions::EFFECT_NXMODE] != 0 ) // TODO: Metric to disable this?
+		fDrawScale *= 1 + 0.5f * fabsf( 1.5f );
+	else
+		fDrawScale *= 1 + 0.5f * fabsf( current_po.m_fPerspectiveTilt );
+
+	fDrawScale *= 1 + fabsf( current_po.m_fEffects[PlayerOptions::EFFECT_TINY] );
+	
 	iDrawDistanceAfterTargetsPixels = (int)(iDrawDistanceAfterTargetsPixels * fDrawScale);
 	iDrawDistanceBeforeTargetsPixels = (int)(iDrawDistanceBeforeTargetsPixels * fDrawScale);
 
@@ -676,7 +700,7 @@ void NoteField::DrawPrimitives()
 	// Draw beat bars
 	if( GAMESTATE->IsEditing() || SHOW_BEAT_BARS )
 	{
-		const vector<TimeSignatureSegment> &vTimeSignatureSegments = GAMESTATE->m_pCurSong->m_Timing.m_vTimeSignatureSegments;
+		const vector<TimeSignatureSegment> &vTimeSignatureSegments = m_pPlayerState->m_TimingState.m_vTimeSignatureSegments;
 		int iMeasureIndex = 0;
 		FOREACH_CONST( TimeSignatureSegment, vTimeSignatureSegments, iter )
 		{
@@ -720,7 +744,7 @@ void NoteField::DrawPrimitives()
 		ASSERT(GAMESTATE->m_pCurSong);
 
 		// BPM text
-		const vector<BPMSegment> &aBPMSegments = GAMESTATE->m_pCurSong->m_Timing.m_BPMSegments;
+		const vector<BPMSegment> &aBPMSegments = m_pPlayerState->m_TimingState.m_BPMSegments;
 		for( unsigned i=0; i<aBPMSegments.size(); i++ )
 		{
 			if( aBPMSegments[i].m_iStartRow >= iFirstRowToDraw &&
@@ -732,8 +756,21 @@ void NoteField::DrawPrimitives()
 			}
 		}
 
+		// Combo text
+		const vector<ComboSegment> &aComboSegments = m_pPlayerState->m_TimingState.m_ComboSegments;
+		for( unsigned i=0; i<aComboSegments.size(); i++ )
+		{
+			if( aComboSegments[i].m_iStartRow >= iFirstRowToDraw && 
+				aComboSegments[i].m_iStartRow <= iLastRowToDraw)
+			{
+				float fBeat = NoteRowToBeat(aComboSegments[i].m_iStartRow);
+				if( IS_ON_SCREEN(fBeat) )
+				DrawComboText( fBeat, aComboSegments[i].m_iComboFactor );
+			}
+		}
+
 		// Freeze text
-		const vector<StopSegment> &aStopSegments = GAMESTATE->m_pCurSong->m_Timing.m_StopSegments;
+		const vector<StopSegment> &aStopSegments = m_pPlayerState->m_TimingState.m_StopSegments;
 		for( unsigned i=0; i<aStopSegments.size(); i++ )
 		{
 			if( aStopSegments[i].m_iStartRow >= iFirstRowToDraw &&
@@ -746,7 +783,7 @@ void NoteField::DrawPrimitives()
 		}
 
 		// Time Signature text
-		const vector<TimeSignatureSegment> &vTimeSignatureSegments = GAMESTATE->m_pCurSong->m_Timing.m_vTimeSignatureSegments;
+		const vector<TimeSignatureSegment> &vTimeSignatureSegments = m_pPlayerState->m_TimingState.m_vTimeSignatureSegments;
 		for( unsigned i=0; i<vTimeSignatureSegments.size(); i++ )
 		{
 			if( vTimeSignatureSegments[i].m_iStartRow >= iFirstRowToDraw &&
@@ -759,7 +796,7 @@ void NoteField::DrawPrimitives()
 		}
 		
 		// Tickcount text
-		const vector<TickcountSegment> &tTickcountSegments = GAMESTATE->m_pCurSong->m_Timing.m_TickcountSegments;
+		const vector<TickcountSegment> &tTickcountSegments = m_pPlayerState->m_TimingState.m_TickcountSegments;
 		for( unsigned i=0; i<tTickcountSegments.size(); i++ )
 		{
 			if( tTickcountSegments[i].m_iStartRow >= iFirstRowToDraw &&
@@ -996,7 +1033,7 @@ void NoteField::DrawPrimitives()
 			if( !IsOnScreen( NoteRowToBeat(i), c, iDrawDistanceAfterTargetsPixels, iDrawDistanceBeforeTargetsPixels ) )
 				continue;	// skip
 
-			ASSERT_M( NoteRowToBeat(i) > -2000, ssprintf("%i %i %i, %f %f", i, iLastRowToDraw, iFirstRowToDraw, GAMESTATE->m_fSongBeat, GAMESTATE->m_fMusicSeconds) );
+			ASSERT_M( NoteRowToBeat(i) > -2000, ssprintf("%i %i %i, %f %f", i, iLastRowToDraw, iFirstRowToDraw, m_pPlayerState->m_fSongBeat, GAMESTATE->m_fMusicSeconds) );
 
 			// See if there is a hold step that begins on this index.
 			// Only do this if the noteskin cares.
