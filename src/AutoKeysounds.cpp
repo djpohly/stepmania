@@ -288,7 +288,7 @@ void AutoKeysounds::FinishLoading()
 		m_pPlayerSounds[0] = new RageSoundReader_Pan( m_pPlayerSounds[0] );
 		apSounds.push_back( m_pPlayerSounds[0] );
 	}
-
+	
 	if( m_pPlayerSounds[1] != NULL )
 	{
 		m_pPlayerSounds[1] = new RageSoundReader_PitchChange( m_pPlayerSounds[1] );
