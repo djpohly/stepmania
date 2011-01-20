@@ -39,7 +39,7 @@ ReceptorArrowRow::~ReceptorArrowRow()
 void ReceptorArrowRow::Update( float fDeltaTime )
 {
 	ActorFrame::Update( fDeltaTime );
-	ArrowEffects::Update();
+	ArrowEffects::Update( m_pPlayerState );
 
 	for( unsigned c=0; c<m_ReceptorArrow.size(); c++ )
 	{
