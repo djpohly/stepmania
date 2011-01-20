@@ -57,10 +57,10 @@ public:
 		int		length;
 		RageColor	diffuse[4];
 		RageColor	glow;
-
+		
 		void FromStack( lua_State *L, int iPos );
 	};
-
+	
 	Attribute GetDefaultAttribute() const;
 	void AddAttribute( size_t iPos, const Attribute &attr );
 	void ClearAttributes();
@@ -86,7 +86,7 @@ protected:
 	vector<FontPageTextures*>	m_vpFontPageTextures;
 	map<size_t, Attribute>		m_mAttributes;
 	bool				m_bHasGlowAttribute;
-
+	
 	RageColor		m_StrokeColor;
 	TextGlowMode	m_TextGlowMode;
 

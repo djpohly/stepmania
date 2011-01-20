@@ -342,18 +342,18 @@ void BitmapText::DrawChars( bool bUseStrokeTexture )
 				DISPLAY->SetTexture( TextureUnit_1, m_vpFontPageTextures[start]->m_pTextureStroke->GetTexHandle() );
 			else
 				DISPLAY->SetTexture( TextureUnit_1, m_vpFontPageTextures[start]->m_pTextureMain->GetTexHandle() );
-
+			
 			/* Don't bother setting texture render states for text. We never go outside of 0..1. */
 			/* We should call SetTextureRenderStates because it does more than just setting 
 			 * the texture wrapping state. If setting the wrapping state is found to be slow, 
 			 * there should probably be a "don't care" texture wrapping mode set in Actor. -Chris */
 			Actor::SetTextureRenderStates();
-
+			
 			RageSpriteVertex &start_vertex = m_aVertices[start*4];
 			int iNumVertsToDraw = (end-start)*4;
 			DISPLAY->DrawQuads( &start_vertex, iNumVertsToDraw );
 		}
-
+		
 		start = end;
 	}
 }
@@ -755,7 +755,7 @@ void BitmapText::Attribute::FromStack( lua_State *L, int iPos )
 {
 	if( lua_type(L, iPos) != LUA_TTABLE )
 		return;
-
+	
 	lua_pushvalue( L, iPos );
 	const int iTab = lua_gettop( L );
 
@@ -763,7 +763,7 @@ void BitmapText::Attribute::FromStack( lua_State *L, int iPos )
 	lua_getfield( L, iTab, "Length" );
 	length = lua_tointeger( L, -1 );
 	lua_settop( L, iTab );
-
+	
 	// Get the diffuse colors.
 	lua_getfield( L, iTab, "Diffuses" );
 	if( !lua_isnil(L, -1) )
@@ -775,7 +775,7 @@ void BitmapText::Attribute::FromStack( lua_State *L, int iPos )
 		}
 	}
 	lua_settop( L, iTab );
-
+	
 	// Get a single diffuse color.
 	lua_getfield( L, iTab, "Diffuse" );
 	if( !lua_isnil(L, -1) )
@@ -784,11 +784,11 @@ void BitmapText::Attribute::FromStack( lua_State *L, int iPos )
 		diffuse[1] = diffuse[2] = diffuse[3] = diffuse[0];
 	}
 	lua_settop( L, iTab );
-
+	
 	// Get the glow color.
 	lua_getfield( L, iTab, "Glow" );
 	glow.FromStack( L, -1 );
-
+	
 	lua_settop( L, iTab - 1 );
 }
 
@@ -830,7 +830,7 @@ public:
 	{
 		size_t iPos = IArg(1);
 		BitmapText::Attribute attr = p->GetDefaultAttribute();
-
+		
 		attr.FromStack( L, 2 );
 		p->AddAttribute( iPos, attr );
 		return 0;
