@@ -48,7 +48,7 @@ protected:
 	ThemeMetric<RString> VARIOUS_TEXT;
 	ThemeMetric<RString> RANDOM_TEXT;
 	ThemeMetric<RString> QUESTIONMARKS_TEXT;
-
+	
 	float m_fBPMFrom, m_fBPMTo;
 	int m_iCurrentBPM;
 	vector<float> m_BPMS;
