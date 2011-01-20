@@ -32,6 +32,7 @@ enum RadarCategory
 	RadarCategory_Hands,
 	RadarCategory_Rolls,
 	RadarCategory_Lifts,
+	RadarCategory_Fakes,
 	NUM_RadarCategory,	// leave this at the end
 	RadarCategory_Invalid
 };
@@ -410,9 +411,9 @@ struct DisplayBpms
 enum StyleType
 {
 	StyleType_OnePlayerOneSide,		// e.g. single
-	StyleType_TwoPlayersTwoSides,	// e.g. versus
-	StyleType_OnePlayerTwoSides,	// e.g. double
-	StyleType_TwoPlayersSharedSides, // e.g. routine
+	StyleType_TwoPlayersTwoSides,		// e.g. versus
+	StyleType_OnePlayerTwoSides,		// e.g. double
+	StyleType_TwoPlayersSharedSides,	// e.g. routine
 	NUM_StyleType,
 	StyleType_Invalid
 };
