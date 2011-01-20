@@ -71,7 +71,7 @@ void FadingBanner::Load( RageTextureID ID, bool bLowResToHighRes )
 {
 	BeforeChange( bLowResToHighRes );
 	m_Banner[m_iIndexLatest].Load(ID);
-
+	
 	/* XXX: Hack to keep movies from updating multiple times.
 	 * We need to either completely disallow movies in banners or support
 	 * them. There are a number of files that use them currently in the
@@ -179,6 +179,12 @@ void FadingBanner::LoadFromSong( const Song* pSong )
 		LoadFallback();
 	else
 		LoadFromCachedBanner( sPath );
+}
+
+void FadingBanner::LoadAllMusic()
+{
+	BeforeChange();
+	m_Banner[m_iIndexLatest].LoadAllMusic();
 }
 
 void FadingBanner::LoadMode()

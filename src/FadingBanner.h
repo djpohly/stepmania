@@ -19,6 +19,7 @@ public:
 	 * resolution banner, set bLowResToHighRes to true. */
 	void Load( RageTextureID ID, bool bLowResToHighRes=false );
 	void LoadFromSong( const Song* pSong );		// NULL means no song
+	void LoadAllMusic();
 	void LoadMode();
 	void LoadFromSongGroup( RString sSongGroup );
 	void LoadFromCourse( const Course* pCourse );
