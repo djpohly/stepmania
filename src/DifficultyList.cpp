@@ -193,7 +193,6 @@ void StepsDisplayList::UpdatePositions()
 			ItemPosition = (float) pos++;
 		else
 			ItemPosition = (float) total - 0.5f;
-
 		Row &row = Rows[i];
 
 		float fY = ITEMS_SPACING_Y*ItemPosition;

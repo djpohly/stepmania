@@ -61,13 +61,13 @@ private:
 			m_fY = 0;
 			m_bHidden = false;
 		}
-
+		
 		const Steps *m_Steps;
 		Difficulty m_dc;
 		float m_fY;
 		bool m_bHidden; // currently off screen
 	};
-
+	
 	vector<Row>		m_Rows;
 
 };
