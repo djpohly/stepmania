@@ -151,7 +151,7 @@ void LifeMeterBar::ChangeLife( HoldNoteScore score, TapNoteScore tscore )
 	case SongOptions::DRAIN_NORMAL:
 		switch( score )
 		{
-		case HNS_Held:		fDeltaLife = m_fLifePercentChange.GetValue(SE_Held);	break;
+		case HNS_Held:	fDeltaLife = m_fLifePercentChange.GetValue(SE_Held);	break;
 		case HNS_LetGo:	fDeltaLife = m_fLifePercentChange.GetValue(SE_LetGo);	break;
 		default:
 			ASSERT(0);
@@ -162,7 +162,7 @@ void LifeMeterBar::ChangeLife( HoldNoteScore score, TapNoteScore tscore )
 	case SongOptions::DRAIN_NO_RECOVER:
 		switch( score )
 		{
-		case HNS_Held:		fDeltaLife = +0.000f;	break;
+		case HNS_Held:	fDeltaLife = +0.000f;	break;
 		case HNS_LetGo:	fDeltaLife = m_fLifePercentChange.GetValue(SE_LetGo);	break;
 		default:
 			ASSERT(0);
@@ -172,7 +172,7 @@ void LifeMeterBar::ChangeLife( HoldNoteScore score, TapNoteScore tscore )
 		switch( score )
 		{
 		case HNS_Held:		fDeltaLife = +0;	break;
-		case HNS_LetGo:	fDeltaLife = -1.0;	break;
+		case HNS_LetGo:		fDeltaLife = -1.0;	break;
 		default:
 			ASSERT(0);
 		}
@@ -262,7 +262,7 @@ bool LifeMeterBar::IsFailing() const
 void LifeMeterBar::Update( float fDeltaTime )
 {
 	LifeMeter::Update( fDeltaTime );
-
+	
 	m_fPassingAlpha += !IsFailing() ? +fDeltaTime*2 : -fDeltaTime*2;
 	CLAMP( m_fPassingAlpha, 0, 1 );
 
@@ -352,7 +352,7 @@ void LifeMeterBar::UpdateNonstopLifebar()
 	// about 20% of your lifebar); at 0.2 it would be 40%, which
 	// is too harsh at one difficulty level higher.  Override.
 	int iLifeDifficulty = int( (1.8f - m_fLifeDifficulty)/0.2f );
-
+	
 	// first eight values don't matter
 	float fDifficultyValues[16] = {0,0,0,0,0,0,0,0, 
 		0.3f, 0.25f, 0.2f, 0.16f, 0.14f, 0.12f, 0.10f, 0.08f};

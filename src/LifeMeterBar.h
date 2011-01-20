@@ -16,7 +16,7 @@ class LifeMeterBar : public LifeMeter
 public:
 	LifeMeterBar();
 	~LifeMeterBar();
-
+	
 	virtual void Load( const PlayerState *pPlayerState, PlayerStageStats *pPlayerStageStats );
 
 	virtual void Update( float fDeltaTime );
@@ -46,17 +46,17 @@ private:
 
 	AutoActor		m_sprUnder;
 	AutoActor		m_sprDanger;
-	StreamDisplay*	m_pStream;
+	StreamDisplay*		m_pStream;
 	AutoActor		m_sprOver;
 
-	float		m_fLifePercentage;
+	float			m_fLifePercentage;
 
-	float		m_fPassingAlpha;
-	float		m_fHotAlpha;
+	float			m_fPassingAlpha;
+	float			m_fHotAlpha;
 
-	bool		m_bMercifulBeginnerInEffect;
-	float		m_fBaseLifeDifficulty;
-	float		m_fLifeDifficulty;		// essentially same as pref
+	bool			m_bMercifulBeginnerInEffect;
+	float			m_fBaseLifeDifficulty;
+	float			m_fLifeDifficulty;		// essentially same as pref
 
 	int			m_iProgressiveLifebar;		// cached from prefs
 	int			m_iMissCombo;			// current number of progressive W5/miss
