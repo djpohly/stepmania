@@ -15,7 +15,7 @@
 
 REGISTER_ACTOR_CLASS( Banner )
 
-ThemeMetric<bool> SCROLL_RANDOM	("Banner","ScrollRandom");
+ThemeMetric<bool> SCROLL_RANDOM		("Banner","ScrollRandom");
 ThemeMetric<bool> SCROLL_ROULETTE	("Banner","ScrollRoulette");
 
 Banner::Banner()
@@ -86,10 +86,10 @@ void Banner::Update( float fDeltaTime )
  
 		float fTexCoords[8] = 
 		{
-			0+m_fPercentScrolling, pTextureRect->top,		// top left
+			0+m_fPercentScrolling, pTextureRect->top,	// top left
 			0+m_fPercentScrolling, pTextureRect->bottom,	// bottom left
 			1+m_fPercentScrolling, pTextureRect->bottom,	// bottom right
-			1+m_fPercentScrolling, pTextureRect->top,		// top right
+			1+m_fPercentScrolling, pTextureRect->top,	// top right
 		};
 		Sprite::SetCustomTextureCoords( fTexCoords );
 	}
@@ -110,6 +110,12 @@ void Banner::LoadFromSong( Song* pSong ) // NULL means no song
 	else if( pSong->HasBanner() ) Load( pSong->GetBannerPath() );
 	else					LoadFallback();
 
+	m_bScrolling = false;
+}
+
+void Banner::LoadAllMusic()
+{
+	Load( THEME->GetPathG("Banner","All") );
 	m_bScrolling = false;
 }
 

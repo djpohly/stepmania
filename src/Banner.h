@@ -25,6 +25,7 @@ public:
 	virtual void Update( float fDeltaTime );
 
 	void LoadFromSong( Song* pSong );		// NULL means no song
+	void LoadAllMusic();
 	void LoadMode();
 	void LoadFromSongGroup( RString sSongGroup );
 	void LoadFromCourse( const Course *pCourse );
