@@ -29,6 +29,7 @@
 #include "NotesWriterSM.h"
 #include "UnlockManager.h"
 #include "LyricsLoader.h"
+#include "GameState.h"
 
 #include <time.h>
 #include <set>
@@ -55,7 +56,7 @@ Song::Song()
 	FOREACH_BackgroundLayer( i )
 		m_BackgroundChanges[i] = AutoPtrCopyOnWrite<VBackgroundChange>(new VBackgroundChange);
 	m_ForegroundChanges = AutoPtrCopyOnWrite<VBackgroundChange>(new VBackgroundChange);
-
+	
 	m_LoadedFromProfile = ProfileSlot_Invalid;
 	m_fMusicSampleStartSeconds = -1;
 	m_fMusicSampleLengthSeconds = DEFAULT_MUSIC_SAMPLE_LENGTH;
@@ -282,7 +283,8 @@ bool Song::LoadFromSongDir( RString sDir )
 		LOG->UserLog( "Song", sDir, "has no music; ignored." );
 		return false;	// don't load this song
 	}
-
+	
+	GetDisplayBpms( m_Bpms ); // unsure of this modification from StepNXA.
 	return true;	// do load this song
 }
 
@@ -492,7 +494,7 @@ void Song::TidyUpData()
 			m_fMusicSampleStartSeconds = this->GetElapsedTimeFromBeat( (float)iBeat );
 		}
 	}
-
+	
 	// The old logic meant that you couldn't have sample lengths that go forever,
 	// e.g. those in Donkey Konga. I never liked that. -freem
 	if( m_fMusicSampleLengthSeconds <= 0.00f )
@@ -862,7 +864,7 @@ void Song::Save()
 	GetDirListing( m_sSongDir + "*.bms", arrayOldFileNames );
 	GetDirListing( m_sSongDir + "*.pms", arrayOldFileNames );
 	GetDirListing( m_sSongDir + "*.ksf", arrayOldFileNames );
-
+	
 	for( unsigned i=0; i<arrayOldFileNames.size(); i++ )
 	{
 		const RString sOldPath = m_sSongDir + arrayOldFileNames[i];
@@ -973,7 +975,7 @@ void Song::AddAutoGenNotes()
 		StepsType st = m_vpSteps[i]->m_StepsType;
 		HasNotes[st] = true;
 	}
-
+	
 	FOREACH_ENUM( StepsType, stMissing )
 	{
 		if( HasNotes[stMissing] )
@@ -1109,7 +1111,7 @@ bool Song::HasEdits( StepsType st ) const
 			return true;
 		}
 	}
-
+	
 	return false;
 }
 
@@ -1140,7 +1142,7 @@ bool Song::HasInstrumentTrack( InstrumentTrack it ) const
 }
 bool Song::HasLyrics() const		{return m_sLyricsFile != ""		&& IsAFile(GetLyricsPath()); }
 bool Song::HasBackground() const 	{return m_sBackgroundFile != ""		&& IsAFile(GetBackgroundPath()); }
-bool Song::HasCDTitle() const 	{return m_sCDTitleFile != ""		&& IsAFile(GetCDTitlePath()); }
+bool Song::HasCDTitle() const 		{return m_sCDTitleFile != ""		&& IsAFile(GetCDTitlePath()); }
 bool Song::HasBGChanges() const
 {
 	FOREACH_BackgroundLayer( i )

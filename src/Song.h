@@ -61,7 +61,7 @@ public:
 	enum SelectionDisplay
 	{ 
 		SHOW_ALWAYS,	// always
-		SHOW_NEVER		// never (unless song hiding is turned off)
+		SHOW_NEVER	// never (unless song hiding is turned off)
 	} m_SelectionDisplay;
 
 	Song();
@@ -183,6 +183,10 @@ public:
 	TimingData m_Timing;
 
 	typedef vector<BackgroundChange> 	VBackgroundChange;
+	
+	bool			m_bHasSongAttacks;
+	RString			m_sAttackString;
+	AttackArray		m_Attacks;
 private:
 	// AutoPtr instead of raw pointer so that the auto gen'd copy constructor works correctly.
 	AutoPtrCopyOnWrite<VBackgroundChange>	m_BackgroundChanges[NUM_BackgroundLayer];	// these must be sorted before gameplay
@@ -202,6 +206,10 @@ public:
 	void AddForegroundChange( BackgroundChange seg );
 	void AddLyricSegment( LyricSegment seg );
 
+	int GetTickcountAtBeat( float fBeat ) const { return m_Timing.GetTickcountAtBeat( fBeat ); }
+	void SetTickcountAtBeat( float fBeat, int iTickcount) { m_Timing.SetTickcountAtBeat( fBeat, iTickcount ); }
+	void AddTickcountSegment( const TickcountSegment &seg ) { m_Timing.AddTickcountSegment( seg ); }
+	
 	void GetDisplayBpms( DisplayBpms &AddTo ) const;
 	const BackgroundChange &GetBackgroundAtBeat( BackgroundLayer iLayer, float fBeat ) const;
 
