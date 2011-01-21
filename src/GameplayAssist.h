@@ -4,11 +4,10 @@
 #define GameplayAssist_H
 
 #include "RageSound.h"
-#include "PlayerState.h"
 
 class NoteData;
 class TimingData;
-// class PlayerState;
+class PlayerState;
 
 class GameplayAssist
 {

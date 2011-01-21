@@ -2,6 +2,7 @@
 #include "GameplayAssist.h"
 #include "ThemeManager.h"
 #include "GameState.h"
+#include "PlayerState.h"
 #include "RageSoundManager.h"
 #include "CommonMetrics.h"
 #include "Song.h"
