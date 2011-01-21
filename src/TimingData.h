@@ -85,6 +85,67 @@ struct StopSegment
 };
 
 /*
+ * A tickcount segment is used to better replicate the checkpoint hold
+ * system used by various based video games. The number is used to 
+ * represent how many ticks can be counted in one beat.
+ */
+struct TickcountSegment
+{
+	TickcountSegment() : m_iStartRow(-1), m_iTicks(2) { }
+	TickcountSegment( int s, int t ){ m_iStartRow = max( 0, s ); m_iTicks = max( 1, t ); }
+	int m_iStartRow;
+	int m_iTicks;
+	
+	bool operator==( const TickcountSegment &other ) const
+	{
+		COMPARE( m_iStartRow );
+		COMPARE( m_iTicks );
+		return true;
+	}
+	bool operator!=( const TickcountSegment &other ) const { return !operator==(other); }
+	bool operator<( const TickcountSegment &other ) const { return m_iStartRow < other.m_iStartRow; }
+	bool operator<=( const TickcountSegment &other ) const
+	{
+		return ( operator<(other) || operator==(other) );
+	}
+	bool operator>( const TickcountSegment &other ) const { return m_iStartRow > other.m_iStartRow; }
+	bool operator>=( const TickcountSegment &other ) const
+	{
+		return ( operator>(other) || operator==(other) );
+	}
+};
+
+/*
+ * This Arrow Spacing segment is only here temporarily.
+ * I am not planning on implementing it completely.
+ */
+struct ArrowSpacingSegment
+{
+	ArrowSpacingSegment() : m_iStartRow(-1), m_fArrowSpacing(-1.0f) { }
+	ArrowSpacingSegment( int r, float t ) { m_iStartRow = max(0, r); m_fArrowSpacing = max(0, t); }
+	int m_iStartRow;
+	float m_fArrowSpacing;
+
+	bool operator==( const ArrowSpacingSegment &other ) const
+	{
+		COMPARE( m_iStartRow );
+		COMPARE( m_fArrowSpacing );
+		return true;
+	}
+	bool operator!=( const ArrowSpacingSegment &other ) const { return !operator==(other); }
+	bool operator<( const ArrowSpacingSegment &other ) const { return m_iStartRow < other.m_iStartRow; }
+	bool operator<=( const ArrowSpacingSegment &other ) const
+	{
+		return ( operator<(other) || operator==(other) );
+	}
+	bool operator>( const ArrowSpacingSegment &other ) const { return m_iStartRow > other.m_iStartRow; }
+	bool operator>=( const ArrowSpacingSegment &other ) const
+	{
+		return ( operator>(other) || operator==(other) );
+	}
+};
+
+/*
  * The combo segments are used to allow the combo to increment by an arbitrary amount whenever a note is
  * successfully hit. Many songs may not need this (the default is 1, as it normally is), but it is
  * available when required.
@@ -107,6 +168,36 @@ struct ComboSegment
 	bool operator<=( const ComboSegment &other ) const { return ( operator<(other) || operator==(other) ); }
 	bool operator>( const ComboSegment &other ) const { return m_iStartRow > other.m_iStartRow; }
 	bool operator>=( const ComboSegment &other ) const { return ( operator>(other) || operator==(other) ); }
+};
+
+/*
+ * This is another segment that won't be handled right away.
+ * It is still here just in case.
+ */
+struct NoteSkinSegment
+{
+	NoteSkinSegment() : m_iStartRow (-1), m_sNoteSkin ("default") { }
+	NoteSkinSegment( int s, RString t = "default" ) { m_iStartRow = max(0,s); m_sNoteSkin = t; };
+	float m_iStartRow;
+	RString m_sNoteSkin;
+
+	bool operator==( const NoteSkinSegment &other ) const
+	{
+		COMPARE( m_iStartRow );
+		COMPARE( m_sNoteSkin );
+		return true;
+	}
+	bool operator!=( const NoteSkinSegment &other ) const { return !operator==(other); }
+	bool operator<( const NoteSkinSegment &other ) const { return m_iStartRow < other.m_iStartRow; }
+	bool operator<=( const NoteSkinSegment &other ) const
+	{
+		return ( operator<(other) || operator==(other) );
+	}
+	bool operator>( const NoteSkinSegment &other ) const { return m_iStartRow > other.m_iStartRow; }
+	bool operator>=( const NoteSkinSegment &other ) const
+	{
+		return ( operator>(other) || operator==(other) );
+	}
 };
 
 /* This only supports simple time signatures. The upper number (called the numerator here, though this isn't
@@ -187,36 +278,7 @@ struct WarpSegment
 	}
 };
 
-/*
- * A tickcount segment is used to better replicate the checkpoint hold
- * system used by various based video games. The number is used to 
- * represent how many ticks can be counted in one beat.
- */
-struct TickcountSegment
-{
-	TickcountSegment() : m_iStartRow(-1), m_iTicks(2) { }
-	TickcountSegment( int s, int t ){ m_iStartRow = max( 0, s ); m_iTicks = max( 1, t ); }
-	int m_iStartRow;
-	int m_iTicks;
-	
-	bool operator==( const TickcountSegment &other ) const
-	{
-		COMPARE( m_iStartRow );
-		COMPARE( m_iTicks );
-		return true;
-	}
-	bool operator!=( const TickcountSegment &other ) const { return !operator==(other); }
-	bool operator<( const TickcountSegment &other ) const { return m_iStartRow < other.m_iStartRow; }
-	bool operator<=( const TickcountSegment &other ) const
-	{
-		return ( operator<(other) || operator==(other) );
-	}
-	bool operator>( const TickcountSegment &other ) const { return m_iStartRow > other.m_iStartRow; }
-	bool operator>=( const TickcountSegment &other ) const
-	{
-		return ( operator>(other) || operator==(other) );
-	}
-};
+
 
 class TimingData
 {
@@ -236,30 +298,20 @@ public:
 	float GetStopAtBeat( float fBeat ) const { return GetStopAtRow( BeatToNoteRow(fBeat) ); }
 	float GetDelayAtRow( int iRow ) const;
 	float GetDelayAtBeat( float fBeat ) const { return GetDelayAtRow( BeatToNoteRow(fBeat) ); }
-	int GetComboAtRow( int iRow ) const;
-	int GetComboAtBeat( float fBeat ) const { return GetComboAtRow( BeatToNoteRow(fBeat) ); }
 	void SetTimeSignatureAtRow( int iRow, int iNumerator, int iDenominator );
 	void SetTimeSignatureAtBeat( float fBeat, int iNumerator, int iDenominator ) { SetTimeSignatureAtRow( BeatToNoteRow(fBeat), iNumerator, iDenominator ); }
 	void SetTimeSignatureNumeratorAtRow( int iRow, int iNumerator );
 	void SetTimeSignatureNumeratorAtBeat( float fBeat, int iNumerator ) { SetTimeSignatureNumeratorAtRow( BeatToNoteRow(fBeat), iNumerator); }
 	void SetTimeSignatureDenominatorAtRow( int iRow, int iDenominator );
 	void SetTimeSignatureDenominatorAtBeat( float fBeat, int iDenominator ) { SetTimeSignatureDenominatorAtRow( BeatToNoteRow(fBeat), iDenominator); }
-	void SetComboAtRow( int iRow, int iCombo ) const;
-	void SetComboAtBeat( float fBeat, int iCombo ) const { SetComboAtRow( BeatToNoteRow(fBeat), iCombo ); }
 	int GetWarpToRow( int iWarpBeginRow ) const;
 	void SetDelayAtRow( int iNoteRow, float fSeconds ); // sm-ssc
 	void SetDelayAtBeat( float fBeat, float fSeconds ) { SetDelayAtRow( BeatToNoteRow(fBeat), fSeconds ); }
-	void SetTickcountAtRow( int iRow, int iTicks );
-	void SetTickcountAtBeat( float fBeat, int iTicks ) { SetTickcountAtRow( BeatToNoteRow( fBeat ), iTicks ); }
-	int GetTickcountAtRow( int iRow ) const;
-	int GetTickcountAtBeat( float fBeat ) const { return GetTickcountAtRow( BeatToNoteRow(fBeat) ); }
 	void MultiplyBPMInBeatRange( int iStartIndex, int iEndIndex, float fFactor );
 	void AddBPMSegment( const BPMSegment &seg );
 	void AddStopSegment( const StopSegment &seg );
 	void AddTimeSignatureSegment( const TimeSignatureSegment &seg );
 	void AddWarpSegment( const WarpSegment &seg );
-	void AddTickcountSegment( const TickcountSegment &seg );
-	void AddComboSegment( const ComboSegment &seg );
 	int GetBPMSegmentIndexAtBeat( float fBeat ) const;
 	int GetTimeSignatureSegmentIndexAtRow( int iRow ) const;
 	int GetTimeSignatureSegmentIndexAtBeat( float fBeat ) const { return GetTimeSignatureSegmentIndexAtRow( BeatToNoteRow(fBeat) ); }
@@ -272,14 +324,32 @@ public:
 	BPMSegment& GetBPMSegmentAtBeat( float fBeat );
 	int GetTickcountSegmentIndexAtRow( int iRow ) const;
 	int GetTickcountSegmentIndexAtBeat( float fBeat ) const { return GetTickcountSegmentIndexAtRow( BeatToNoteRow(fBeat) ); }
+	void NoteRowToMeasureAndBeat( int iNoteRow, int &iMeasureIndexOut, int &iBeatIndexOut, int &iRowsRemainder ) const;
+	
+	int GetTickcountAtRow( int iRow ) const;
+	int GetTickcountAtBeat( float fBeat ) const { return GetTickcountAtRow( BeatToNoteRow(fBeat) ); }
+	void SetTickcountAtRow( int iRow, int iTicks );
+	void SetTickcountAtBeat( float fBeat, int iTicks ) { SetTickcountAtRow( BeatToNoteRow( fBeat ), iTicks ); }
+	void AddTickcountSegment( const TickcountSegment &seg );
 	TickcountSegment& GetTickcountSegmentAtRow( int iRow );
 	TickcountSegment& GetTickcountSegmentAtBeat( float fBeat ) { return GetTickcountSegmentAtRow( BeatToNoteRow(fBeat) ); }
+	
+	int GetComboAtRow( int iRow ) const;
+	int GetComboAtBeat( float fBeat ) const { return GetComboAtRow( BeatToNoteRow(fBeat) ); }
 	ComboSegment& GetComboSegmentAtRow( int iRow );
+	void SetComboAtRow( int iRow, int iCombo ) const;
+	void SetComboAtBeat( float fBeat, int iCombo ) const { SetComboAtRow( BeatToNoteRow(fBeat), iCombo ); }
+	void AddComboSegment( const ComboSegment &seg );
 	ComboSegment& GetComboSegmentAtBeat( float fBeat ) { return GetComboSegmentAtRow( BeatToNoteRow(fBeat) ); }
 	int GetComboSegmentIndexAtRow( int iRow );
 	int GetComboSegmentIndexAtBeat( float fBeat ) { return GetComboSegmentIndexAtRow( BeatToNoteRow(fBeat) ); }
-	void NoteRowToMeasureAndBeat( int iNoteRow, int &iMeasureIndexOut, int &iBeatIndexOut, int &iRowsRemainder ) const;
-
+	
+	
+	void GetBeatAndBPSFromElapsedTime( float fElapsedTime, float &fBeatOut, float &fBPSOut, bool &bFreezeOut ) const
+	{
+		bool bThrowAway; int iThrowAway; float fThrowAway;
+		GetBeatAndBPSFromElapsedTime( fElapsedTime, fBeatOut, fBPSOut, bFreezeOut, bThrowAway, iThrowAway, fThrowAway );
+	}
 	void GetBeatAndBPSFromElapsedTime( float fElapsedTime, float &fBeatOut, float &fBPSOut, bool &bFreezeOut, bool &bDelayOut, int &iWarpBeginOut, float &fWarpLengthOut ) const;
 	float GetBeatFromElapsedTime( float fElapsedTime ) const	// shortcut for places that care only about the beat
 	{
@@ -311,18 +381,26 @@ public:
 		COMPARE( m_BPMSegments.size() );
 		for( unsigned i=0; i<m_BPMSegments.size(); i++ )
 			COMPARE( m_BPMSegments[i] );
+		
 		COMPARE( m_StopSegments.size() );
 		for( unsigned i=0; i<m_StopSegments.size(); i++ )
 			COMPARE( m_StopSegments[i] );
+		
 		COMPARE( m_WarpSegments.size() );
 		for( unsigned i=0; i<m_WarpSegments.size(); i++ )
 			COMPARE( m_WarpSegments[i] );
+		
 		COMPARE( m_vTimeSignatureSegments.size() );
 		for( unsigned i=0; i<m_vTimeSignatureSegments.size(); i++)
 			COMPARE( m_vTimeSignatureSegments[i] );
+		
 		COMPARE( m_TickcountSegments.size() );
 		for( unsigned i=0; i<m_TickcountSegments.size(); i++ )
 			COMPARE( m_TickcountSegments[i] );
+		
+		COMPARE( m_ComboSegments.size() );
+		for( unsigned i=0; i<m_ComboSegments.size(); i++ )
+			COMPARE( m_ComboSegments[i] );
 		COMPARE( m_fBeat0OffsetInSeconds );
 		return true;
 	}
@@ -340,8 +418,8 @@ public:
 	vector<BPMSegment>		m_BPMSegments;
 	vector<StopSegment>		m_StopSegments;
 	vector<TimeSignatureSegment>	m_vTimeSignatureSegments;
-	vector<WarpSegment>		m_WarpSegments;
 	vector<TickcountSegment>	m_TickcountSegments;
+	vector<WarpSegment>		m_WarpSegments;
 	vector<ComboSegment>		m_ComboSegments;
 	float	m_fBeat0OffsetInSeconds;
 	bool	m_bHasNegativeBpms; // only used for Lua bindings in Song (to be moved to TimingData later)
