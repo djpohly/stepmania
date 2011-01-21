@@ -29,7 +29,7 @@ protected:
 	
 	AutoActor m_sprCanGoLeft;
 	AutoActor m_sprCanGoRight;
-
+	
 	// save the metrics-set X because it gets oblitterated on a call to SetBarWidth
 	int m_iOriginalLeftX;
 	int m_iOriginalRightX;

@@ -70,7 +70,7 @@ void OptionsCursor::SetCanGo( bool bCanGoLeft, bool bCanGoRight )
 	{
 		m_sprCanGoLeft->EnableAnimation( bCanGoLeft );
 		m_sprCanGoRight->EnableAnimation( bCanGoRight );
-
+		
 		m_sprCanGoLeft->SetDiffuse( bCanGoLeft ? RageColor(1,1,1,1) : RageColor(1,1,1,0) );
 		m_sprCanGoRight->SetDiffuse( bCanGoRight ? RageColor(1,1,1,1) : RageColor(1,1,1,0) );
 	}
@@ -79,7 +79,7 @@ void OptionsCursor::SetCanGo( bool bCanGoLeft, bool bCanGoRight )
 void OptionsCursor::StopTweening()
 {
 	ActorFrame::StopTweening();
-
+	
 	m_sprMiddle->StopTweening();
 	m_sprLeft->StopTweening();
 	m_sprRight->StopTweening();

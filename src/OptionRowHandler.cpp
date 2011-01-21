@@ -47,7 +47,7 @@ StringToX( LayoutType );
 RString OptionRowHandler::OptionTitle() const
 {
 	bool bTheme = false;
-
+	
 	// HACK: Always theme the NEXT_ROW and EXIT items, even if metrics says not to theme.
 	if( m_Def.m_bAllowThemeTitle )
 		bTheme = true;
@@ -65,7 +65,7 @@ RString OptionRowHandler::GetThemedItemText( int iChoice ) const
 	if( s == "" )
 		return "";
 	bool bTheme = false;
-
+	
 	if( m_Def.m_bAllowThemeItems )	bTheme = true;
 
 	// Items beginning with a pipe mean "don't theme".
@@ -140,7 +140,7 @@ public:
 		ASSERT( sParam.size() );
 
 		m_bUseModNameForIcon = true;
-
+		
 		m_Def.m_sName = sParam;
 
 		m_Default.Load( -1, ParseCommands(ENTRY_DEFAULT(sParam)) );
@@ -806,10 +806,10 @@ public:
 		}
 
 		m_EnabledForPlayersFunc.PushSelf( L );
-
+		
 		// Argument 1 (self):
 		m_pLuaTable->PushSelf( L );
-
+		
 		lua_call( L, 1, 1 ); // call function with 1 argument and 1 result
 		if( !lua_istable(L, -1) )
 			RageException::Throw( "\"EnabledForPlayers\" did not return a table." );
@@ -916,7 +916,7 @@ public:
 			RageException::Throw( "\"%s\" \"EnabledForPlayers\" is not a table.", sLuaFunction.c_str() );
 		m_EnabledForPlayersFunc.SetFromStack( L );
 		SetEnabledForPlayers();
-
+		
 		// Iterate over the "ReloadRowMessages" table.
 		lua_pushstring( L, "ReloadRowMessages" );
 		lua_gettable( L, -2 );
@@ -1010,7 +1010,7 @@ public:
 			lua_pop( L, 1 ); // pop option table
 
 			LuaHelpers::ReadArrayFromTableB( L, vbSelOut );
-
+			
 			lua_pop( L, 1 ); // pop vbSelectedOut table
 
 			ASSERT( lua_gettop(L) == 0 );
@@ -1373,14 +1373,14 @@ OptionRowHandler* OptionRowHandlerUtil::MakeSimple( const MenuRowDef &mr )
 	pHand->m_Def.m_selectType = SELECT_ONE;
 	pHand->m_Def.m_layoutType = LAYOUT_SHOW_ONE_IN_ROW;
 	pHand->m_Def.m_bExportOnChange = false;//true;
-
+	
 	// MISTER CHOICES!
 	pHand->m_Def.m_vsChoices = mr.choices;
 
 	// Each row must have at least one choice.
 	if( pHand->m_Def.m_vsChoices.empty() )
 		pHand->m_Def.m_vsChoices.push_back( "" );
-
+	
 	pHand->m_Def.m_bAllowThemeTitle = mr.bThemeTitle;
 	pHand->m_Def.m_bAllowThemeItems = mr.bThemeItems;
 
