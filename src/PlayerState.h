@@ -9,6 +9,9 @@
 #include "PlayerOptions.h"
 #include "RageTimer.h"
 #include "SampleHistory.h"
+#include "RageTimer.h"
+#include "TimingData.h"
+
 struct lua_State;
 
 class PlayerState
@@ -21,9 +24,9 @@ public:
 	// TODO: Remove use of PlayerNumber.  All data about the player should live 
 	// in PlayerState and callers should not use PlayerNumber to index into 
 	// GameState.
-	PlayerNumber	m_PlayerNumber;
+	PlayerNumber		m_PlayerNumber;
 	MultiPlayer		m_mp;
-
+	
 	void ResetToDefaultPlayerOptions( ModsLevel l );
 	ModsGroup<PlayerOptions>	m_PlayerOptions;
 
@@ -32,8 +35,8 @@ public:
 
 	HealthState		m_HealthState;
 
-	float		m_fLastStrumMusicSeconds;	// Set to the MusicSeconds of when the a strum button was pressed.  If -1, the strum window has passed.
-	float		m_fLastHopoNoteMusicSeconds;	// Set to the MusicSeconds of the last note successfully strummed or hammered in a hopochain, -1, then there is no current hopo chain
+	float			m_fLastStrumMusicSeconds;	// Set to the MusicSeconds of when the a strum button was pressed.  If -1, the strum window has passed.
+	float			m_fLastHopoNoteMusicSeconds;	// Set to the MusicSeconds of the last note successfully strummed or hammered in a hopochain, -1, then there is no current hopo chain
 	int			m_iLastHopoNoteCol;			// if -1, then there is no current hopo chain
 
 	void ClearHopoState()
@@ -56,13 +59,29 @@ public:
 	// Attacks take a while to transition out of use.  Account for this in PlayerAI
 	// by still penalizing it for 1 second after the player options are rebuilt.
 	int		m_iLastPositiveSumOfAttackLevels;
-	float	m_fSecondsUntilAttacksPhasedOut; // positive means PlayerAI is still affected
-	bool	m_bAttackBeganThisUpdate;	// flag for other objects to watch (play sounds)
-	bool	m_bAttackEndedThisUpdate;	// flag for other objects to watch (play sounds)
+	float		m_fSecondsUntilAttacksPhasedOut; // positive means PlayerAI is still affected
+	bool		m_bAttackBeganThisUpdate;	// flag for other objects to watch (play sounds)
+	bool		m_bAttackEndedThisUpdate;	// flag for other objects to watch (play sounds)
 
-	AttackArray		m_ActiveAttacks;
+	AttackArray	m_ActiveAttacks;
 	vector<Attack>	m_ModsToApply;
 
+	// Used for Split BPM purposes.
+	float		m_fSongBeat;
+	float		m_fSongBeatNoOffset;
+	float		m_fCurBPS;
+	bool		m_bFreeze;
+	bool		m_bDelay;
+	RageTimer	m_LastBeatUpdate; // time of last m_fSongBeat, etc.
+	float		m_fSongBeatVisible;
+	int		m_iComboFactor;
+	int		m_iWarpBeginRow;
+	float		m_fWarpLength;
+
+	TimingData	m_TimingState;
+	void ResetPlayerMusicStatistics();
+	void UpdateSongPosition( float fPositionSeconds, const TimingData &timing, const RageTimer &timestamp = RageZeroTimer );
+	
 	// Haste
 	int		m_iTapsHitSinceLastHasteUpdate;
 	int		m_iTapsMissedSinceLastHasteUpdate;
@@ -74,17 +93,6 @@ public:
 	void RemoveAllInventory();
 	Attack	m_Inventory[NUM_INVENTORY_SLOTS];
 
-	// Used for Split BPM purposes.
-	float		m_fSongBeat;
-	float		m_fSongBeatVisible;
-	float		m_fSongBeatNoOffset;
-	float		m_fCurBPS;
-	bool		m_bFreeze;
-	bool		m_bDelay;
-	int		m_iWarpBeginRow;
-	float		m_fWarpLength;
-	RageTimer	m_LastBeatUpdate; // time of last m_fSongBeat, etc.
-	
 	// Lua
 	void PushSelf( lua_State *L );
 };

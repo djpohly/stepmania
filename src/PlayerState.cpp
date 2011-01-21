@@ -46,6 +46,9 @@ void PlayerState::Reset()
 
 	m_fLastStrumMusicSeconds = -1;
 	ClearHopoState();
+	ResetPlayerMusicStatistics();
+	m_iComboFactor = 1;
+	m_TimingState = TimingData();
 }
 
 void PlayerState::Update( float fDelta )
@@ -61,7 +64,7 @@ void PlayerState::Update( float fDelta )
 	for( unsigned s=0; s<m_ActiveAttacks.size(); s++ )
 	{
 		Attack &attack = m_ActiveAttacks[s];
-
+		
 		// -1 is the "starts now" sentinel value. You must add the attack
 		// by calling GameState::LaunchAttack, or else the -1 won't be 
 		// converted into the current music time.  
@@ -188,6 +191,37 @@ int PlayerState::GetSumOfActiveAttackLevels() const
 
 	return iSum;
 }
+
+void PlayerState::ResetPlayerMusicStatistics()
+{
+	m_fSongBeat = 0;
+	m_fSongBeatNoOffset = 0;
+	m_fCurBPS = 10;
+	m_bFreeze = false;
+	m_fSongBeatVisible = 0;
+}
+
+static Preference<float> g_fVisualDelaySeconds( "VisualDelaySeconds", 0.0f );
+void PlayerState::UpdateSongPosition( float fPositionSeconds, const TimingData &timing, const RageTimer &timestamp )
+{
+	if( !timestamp.IsZero() )
+		m_LastBeatUpdate = timestamp;
+	else
+		m_LastBeatUpdate.Touch();
+	timing.GetBeatAndBPSFromElapsedTime( fPositionSeconds, m_fSongBeat, m_fCurBPS, m_bFreeze );
+	ASSERT_M( m_fSongBeat > -2000, ssprintf("%f %f", m_fSongBeat, fPositionSeconds) );
+
+	GAMESTATE->m_fMusicSeconds = fPositionSeconds;
+	//m_fLightSongBeat = timing.GetBeatFromElapsedTime( fPositionSeconds + g_fLightsAheadSeconds );
+
+	m_fSongBeatNoOffset = timing.GetBeatFromElapsedTimeNoOffset( fPositionSeconds );
+
+	GAMESTATE->m_fMusicSecondsVisible = fPositionSeconds - g_fVisualDelaySeconds.Get();//no hay visual delay
+	float fThrowAway;
+	bool bThrowAway;
+	timing.GetBeatAndBPSFromElapsedTime( GAMESTATE->m_fMusicSecondsVisible, m_fSongBeatVisible, fThrowAway, bThrowAway );
+}
+
 
 // lua start
 #include "LuaBinding.h"

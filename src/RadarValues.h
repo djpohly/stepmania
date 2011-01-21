@@ -29,6 +29,7 @@ struct RadarValues
 			float fNumHands;
 			float fNumRolls;
 			float fNumLifts;
+			float fNumFakes;
 		} v;
 		float f[NUM_RadarCategory];
 	} m_Values;
@@ -39,7 +40,7 @@ struct RadarValues
 	RadarValues();
 	void MakeUnknown();
 	void Zero();
-
+	
 	RadarValues& operator+=( const RadarValues& other )
 	{
 		FOREACH_ENUM( RadarCategory, rc )
