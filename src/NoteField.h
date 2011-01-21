@@ -52,7 +52,7 @@ protected:
 	bool IsOnScreen( float fBeat, int iCol, int iDrawDistanceAfterTargetsPixels, int iDrawDistanceBeforeTargetsPixels ) const;
 
 	void DrawBoard( int iDrawDistanceAfterTargetsPixels, int iDrawDistanceBeforeTargetsPixels );
-
+	
 	enum BeatBarType { measure, beat, half_beat, quarter_beat };
 	void DrawBeatBar( const float fBeat, BeatBarType type, int iMeasureIndex );
 	void DrawMarkerBar( int fBeat );
@@ -73,7 +73,7 @@ protected:
 	const PlayerState*	m_pPlayerState;
 	int			m_iDrawDistanceAfterTargetsPixels;	// this should be a negative number
 	int			m_iDrawDistanceBeforeTargetsPixels;	// this should be a positive number
-	float		m_fYReverseOffsetPixels;
+	float			m_fYReverseOffsetPixels;
 
 	// color arrows
 	struct NoteDisplayCols

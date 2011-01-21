@@ -11,7 +11,7 @@ class XNode;
 struct TapNoteResult
 {
 	TapNoteResult() : tns(TNS_None), fTapNoteOffset(0.f), bHidden(false) { }
-
+	
 	TapNoteScore	tns;
 
 	/* Offset, in seconds, for a tap grade. Negative numbers mean the note
@@ -31,7 +31,7 @@ struct HoldNoteResult
 {
 	HoldNoteResult() : hns(HNS_None), fLife(1.f), fOverlappedTime(0), iLastHeldRow(0), iCheckpointsHit(0), iCheckpointsMissed(0), bHeld(false), bActive(false) { }
 	float GetLastHeldBeat() const;
-
+	
 	HoldNoteScore	hns;
 
 	/* 1.0 means this HoldNote has full life.
@@ -87,14 +87,14 @@ struct TapNote
 		original,	// part of the original NoteData
 		addition,	// additional note added by a transform
 	};
-
+	
 	Type		type;
 	SubType		subType;		// Only used if type is hold_head.
 	Source		source;
 	TapNoteResult	result;
 	PlayerNumber	pn;			// used in routine mode
 	bool		bHopoPossible;	// set just before gameplay begins
-
+	
 	// used only if Type == attack:
 	RString		sAttackModifiers;
 	float		fAttackDurationSeconds;
@@ -105,7 +105,7 @@ struct TapNote
 	// also used for hold_head only:
 	int		iDuration;
 	HoldNoteResult	HoldResult;
-
+	
 	// XML
 	XNode* CreateNode() const;
 	void LoadFromNode( const XNode* pNode );

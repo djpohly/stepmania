@@ -248,7 +248,7 @@ void NoteField::Update( float fDeltaTime )
 		const float fYOffsetLast	= ArrowEffects::GetYOffset( m_pPlayerState, 0, m_fCurrentBeatLastUpdate );
 		const float fYPosLast		= ArrowEffects::GetYPos(    m_pPlayerState, 0, fYOffsetLast, m_fYReverseOffsetPixels );
 		const float fPixelDifference = fYPosLast - m_fYPosCurrentBeatLastUpdate;
-
+		
 		//LOG->Trace( "speed = %f, %f, %f, %f, %f, %f", fSpeed, fYOffsetAtCurrent, fYOffsetAtNext, fSecondsAtCurrent, fSecondsAtNext, fPixelDifference, fSecondsDifference );
 
 		m_fBoardOffsetPixels += fPixelDifference;
@@ -301,7 +301,7 @@ void NoteField::DrawBeatBar( const float fBeat, BeatBarType type, int iMeasureIn
 
 	float fAlpha;
 	int iState;
-
+	
 	if( bIsMeasure )
 	{
 		fAlpha = BAR_MEASURE_ALPHA;
@@ -756,6 +756,18 @@ void NoteField::DrawPrimitives()
 			}
 		}
 
+		// Tickcount text
+		const vector<TickcountSegment> &tTickcountSegments = m_pPlayerState->m_TimingState.m_TickcountSegments;
+		for( unsigned i=0; i<tTickcountSegments.size(); i++ )
+		{
+			if( tTickcountSegments[i].m_iStartRow >= iFirstRowToDraw &&
+			    tTickcountSegments[i].m_iStartRow <= iLastRowToDraw)
+			{
+				float fBeat = NoteRowToBeat(tTickcountSegments[i].m_iStartRow);
+				if( IS_ON_SCREEN(fBeat) )
+					DrawTickcountText( fBeat, tTickcountSegments[i].m_iTicks );
+			}
+		}
 		// Combo text
 		const vector<ComboSegment> &aComboSegments = m_pPlayerState->m_TimingState.m_ComboSegments;
 		for( unsigned i=0; i<aComboSegments.size(); i++ )
@@ -792,19 +804,6 @@ void NoteField::DrawPrimitives()
 				float fBeat = NoteRowToBeat(vTimeSignatureSegments[i].m_iStartRow);
 				if( IS_ON_SCREEN(fBeat) )
 					DrawTimeSignatureText( fBeat, vTimeSignatureSegments[i].m_iNumerator, vTimeSignatureSegments[i].m_iDenominator );
-			}
-		}
-		
-		// Tickcount text
-		const vector<TickcountSegment> &tTickcountSegments = m_pPlayerState->m_TimingState.m_TickcountSegments;
-		for( unsigned i=0; i<tTickcountSegments.size(); i++ )
-		{
-			if( tTickcountSegments[i].m_iStartRow >= iFirstRowToDraw &&
-			    tTickcountSegments[i].m_iStartRow <= iLastRowToDraw)
-			{
-				float fBeat = NoteRowToBeat(tTickcountSegments[i].m_iStartRow);
-				if( IS_ON_SCREEN(fBeat) )
-					DrawTickcountText( fBeat, tTickcountSegments[i].m_iTicks );
 			}
 		}
 
@@ -980,7 +979,7 @@ void NoteField::DrawPrimitives()
 				const bool bIsHoldingNote = tn.HoldResult.bHeld;
 				if( bHoldGhostShowing )
 					m_pCurDisplay->m_GhostArrowRow.SetHoldShowing( c, tn );
-
+				
 				ASSERT_M( NoteRowToBeat(iStartRow) > -2000, ssprintf("%i %i %i", iStartRow, iEndRow, c) );
 
 				bool bIsInSelectionRange = false;
@@ -995,7 +994,7 @@ void NoteField::DrawPrimitives()
 				bAnyUpcomingInThisCol |= bNoteIsUpcoming;
 			}
 		}
-
+		
 		// Draw all TapNotes in this column
 
 		// draw notes from furthest to closest
