@@ -75,11 +75,11 @@ static void LoadFromSMNoteDataStringWithPlayer( NoteData& out, const RString &sS
 		split( sSMNoteData, ",", start, size, end, true ); // Ignore empty is important.
 		if( start == end )
 			break;
-
+		
 		// Partial string split.
 		int measureLineStart = start, measureLineSize = -1;
 		const int measureEnd = start + size;
-
+		
 		aMeasureLines.clear();
 		while( true )
 		{
@@ -90,7 +90,7 @@ static void LoadFromSMNoteDataStringWithPlayer( NoteData& out, const RString &sS
 			//RString &line = sSMNoteData.substr( measureLineStart, measureLineSize );
 			const char *beginLine = sSMNoteData.data() + measureLineStart;
 			const char *endLine = beginLine + measureLineSize;
-
+			
 			while( beginLine < endLine && strchr("\r\n\t ", *beginLine) )
 				++beginLine;
 			while( endLine > beginLine && strchr("\r\n\t ", *(endLine - 1)) )
@@ -98,23 +98,23 @@ static void LoadFromSMNoteDataStringWithPlayer( NoteData& out, const RString &sS
 			if( beginLine < endLine ) // nonempty
 				aMeasureLines.push_back( pair<const char *, const char *>(beginLine, endLine) );
 		}
-
+		
 		for( unsigned l=0; l<aMeasureLines.size(); l++ )
 		{
 			const char *p = aMeasureLines[l].first;
 			const char *const beginLine = p;
 			const char *const endLine = aMeasureLines[l].second;
-
+			
 			const float fPercentIntoMeasure = l/(float)aMeasureLines.size();
 			const float fBeat = (m + fPercentIntoMeasure) * BEATS_PER_MEASURE;
 			const int iIndex = BeatToNoteRow( fBeat );
-
+			
 			int iTrack = 0;
 			while( iTrack < iNumTracks && p < endLine )
 			{
 				TapNote tn;
 				char ch = *p;
-
+				
 				switch( ch )
 				{
 				case '0': tn = TAP_EMPTY;				break;
@@ -150,7 +150,7 @@ static void LoadFromSMNoteDataStringWithPlayer( NoteData& out, const RString &sS
 					{
 						out.FindTapNote( iTrack, iHeadRow )->second.iDuration = iIndex - iHeadRow;
 					}
-
+					
 					// This won't write tn, but keep parsing normally anyway.
 					break;
 				}
@@ -172,7 +172,7 @@ static void LoadFromSMNoteDataStringWithPlayer( NoteData& out, const RString &sS
 					tn = TAP_EMPTY;
 					break;
 				}
-
+				
 				p++;
 				// We won't scan past the end of the line so these are safe to do.
 #if 0
@@ -180,7 +180,7 @@ static void LoadFromSMNoteDataStringWithPlayer( NoteData& out, const RString &sS
 				if( *p == '{' )
 				{
 					p++;
-
+					
 					char szModifiers[256] = "";
 					float fDurationSeconds = 0;
 					if( sscanf( p, "%255[^:]:%f}", szModifiers, &fDurationSeconds ) == 2 )	// not fatal if this fails due to malformed data
@@ -189,7 +189,7 @@ static void LoadFromSMNoteDataStringWithPlayer( NoteData& out, const RString &sS
 						tn.sAttackModifiers = szModifiers;
 		 				tn.fAttackDurationSeconds = fDurationSeconds;
 					}
-
+					
 					// skip past the '}'
 					while( p < endLine )
 					{
@@ -231,7 +231,7 @@ static void LoadFromSMNoteDataStringWithPlayer( NoteData& out, const RString &sS
 					}
 				}
 #endif
-
+				
 				/* Optimization: if we pass TAP_EMPTY, NoteData will do a search
 				 * to remove anything in this position.  We know that there's nothing
 				 * there, so avoid the search. */
@@ -240,12 +240,12 @@ static void LoadFromSMNoteDataStringWithPlayer( NoteData& out, const RString &sS
 					tn.pn = pn;
 					out.SetTapNote( iTrack, iIndex, tn );
 				}
-
+				
 				iTrack++;
 			}
 		}
 	}
-
+	
 	// Make sure we don't have any hold notes that didn't find a tail.
 	for( int t=0; t<out.GetNumTracks(); t++ )
 	{
@@ -261,7 +261,7 @@ static void LoadFromSMNoteDataStringWithPlayer( NoteData& out, const RString &sS
 				LOG->UserLog( "", "", "While loading SM note data, there was an unmatched 2 at beat %f", NoteRowToBeat(iRow) );
 				out.RemoveTapNote( t, begin );
 			}
-
+			
 			begin = next;
 		}
 	}
@@ -275,7 +275,7 @@ void NoteDataUtil::LoadFromSMNoteDataString( NoteData &out, const RString &sSMNo
 	RString::size_type iIndexCommentEnd = 0;
 	RString::size_type origSize = sSMNoteData_.size();
 	const char *p = sSMNoteData_.data();
-
+	
 	sSMNoteData.reserve( origSize );
 	while( (iIndexCommentStart = sSMNoteData_.find("//", iIndexCommentEnd)) != RString::npos )
 	{
@@ -286,21 +286,21 @@ void NoteDataUtil::LoadFromSMNoteDataString( NoteData &out, const RString &sSMNo
 		p += iIndexCommentEnd - iIndexCommentStart;
 	}
 	sSMNoteData.append( p, origSize - iIndexCommentEnd );
-
+	
 	// Clear notes, but keep the same number of tracks.
 	int iNumTracks = out.GetNumTracks();
 	out.Init();
 	out.SetNumTracks( iNumTracks );
-
+	
 	if( !bComposite )
 	{
 		LoadFromSMNoteDataStringWithPlayer( out, sSMNoteData, 0, sSMNoteData.size(),
 						    PLAYER_INVALID, iNumTracks );
 		return;
 	}
-
+	
 	int start = 0, size = -1;
-
+	
 	vector<NoteData> vParts;
 	FOREACH_PlayerNumber( pn )
 	{
@@ -310,7 +310,7 @@ void NoteDataUtil::LoadFromSMNoteDataString( NoteData &out, const RString &sSMNo
 			break;
 		vParts.push_back( NoteData() );
 		NoteData &nd = vParts.back();
-
+		
 		nd.SetNumTracks( iNumTracks );
 		LoadFromSMNoteDataStringWithPlayer( nd, sSMNoteData, start, size, pn, iNumTracks );
 	}
@@ -347,9 +347,9 @@ void NoteDataUtil::GetSMNoteDataString( const NoteData &in, RString &sRet )
 	// Get note data
 	vector<NoteData> parts;
 	float fLastBeat = -1.0f;
-
+	
 	SplitCompositeNoteData( in, parts );
-
+	
 	FOREACH( NoteData, parts, nd )
 	{
 		InsertHoldTails( *nd );
@@ -368,7 +368,7 @@ void NoteDataUtil::GetSMNoteDataString( const NoteData &in, RString &sRet )
 			if( m )
 				sRet.append( 1, ',' );
 			sRet += ssprintf("  // measure %d\n", m+1);
-
+			
 			NoteType nt = GetSmallestNoteTypeForMeasure( *nd, m );
 			int iRowSpacing;
 			if( nt == NoteType_Invalid )
@@ -377,10 +377,10 @@ void NoteDataUtil::GetSMNoteDataString( const NoteData &in, RString &sRet )
 				iRowSpacing = lrintf( NoteTypeToBeat(nt) * ROWS_PER_BEAT );
 			// (verify first)
 			// iRowSpacing = BeatToNoteRow( NoteTypeToBeat(nt) );
-
+			
 			const int iMeasureStartRow = m * ROWS_PER_MEASURE;
 			const int iMeasureLastRow = (m+1) * ROWS_PER_MEASURE - 1;
-
+			
 			for( int r=iMeasureStartRow; r<=iMeasureLastRow; r+=iRowSpacing )
 			{
 				for( int t = 0; t < nd->GetNumTracks(); ++t )
@@ -410,7 +410,7 @@ void NoteDataUtil::GetSMNoteDataString( const NoteData &in, RString &sRet )
 						FAIL_M( ssprintf("tn %i", tn.type) );	// invalid enum value
 					}
 					sRet.append( 1, c );
-
+					
 					if( tn.type == TapNote::attack )
 					{
 						sRet.append( ssprintf("{%s:%.2f}", tn.sAttackModifiers.c_str(),
@@ -420,7 +420,7 @@ void NoteDataUtil::GetSMNoteDataString( const NoteData &in, RString &sRet )
 					if( tn.iKeysoundIndex >= 0 )
 						sRet.append( ssprintf("[%d]",tn.iKeysoundIndex) );
 				}
-
+				
 				sRet.append( 1, '\n' );
 			}
 		}
@@ -434,7 +434,7 @@ void NoteDataUtil::SplitCompositeNoteData( const NoteData &in, vector<NoteData> 
 		out.push_back( in );
 		return;
 	}
-
+	
 	FOREACH_PlayerNumber( pn )
 	{
 		out.push_back( NoteData() );
@@ -474,7 +474,7 @@ void NoteDataUtil::CombineCompositeNoteData( NoteData &out, const vector<NoteDat
 	FOREACH_CONST( NoteData, in, nd )
 	{
 		const int iMaxTracks = min( out.GetNumTracks(), nd->GetNumTracks() );
-
+		
 		for( int track = 0; track < iMaxTracks; ++track )
 		{
 			for( NoteData::const_iterator i = nd->begin(track); i != nd->end(track); ++i )
@@ -571,7 +571,7 @@ void NoteDataUtil::LoadOverlapped( const NoteData &in, NoteData &out, int iNewNu
 	int LastSourceTrack[MAX_NOTE_TRACKS];
 	int LastSourceRow[MAX_NOTE_TRACKS];
 	int DestRow[MAX_NOTE_TRACKS];
-
+	
 	for( int tr = 0; tr < MAX_NOTE_TRACKS; ++tr )
 	{
 		LastSourceTrack[tr] = -1;
@@ -738,8 +738,8 @@ void NoteDataUtil::CalculateRadarValues( const NoteData &in, float fSongSeconds,
 		switch( rc )
 		{
 		case RadarCategory_Stream:		out[rc] = GetStreamRadarValue( in, fSongSeconds );	break;	
-		case RadarCategory_Voltage:	out[rc] = GetVoltageRadarValue( in, fSongSeconds );	break;
-		case RadarCategory_Air:		out[rc] = GetAirRadarValue( in, fSongSeconds );		break;
+		case RadarCategory_Voltage:		out[rc] = GetVoltageRadarValue( in, fSongSeconds );	break;
+		case RadarCategory_Air:			out[rc] = GetAirRadarValue( in, fSongSeconds );		break;
 		case RadarCategory_Freeze:		out[rc] = GetFreezeRadarValue( in, fSongSeconds );	break;
 		case RadarCategory_Chaos:		out[rc] = GetChaosRadarValue( in, fSongSeconds );	break;
 		case RadarCategory_TapsAndHolds:	out[rc] = (float) in.GetNumRowsWithTapOrHoldHead();	break;
@@ -749,6 +749,7 @@ void NoteDataUtil::CalculateRadarValues( const NoteData &in, float fSongSeconds,
 		case RadarCategory_Hands:		out[rc] = (float) in.GetNumHands();			break;
 		case RadarCategory_Rolls:		out[rc] = (float) in.GetNumRolls();			break;
 		case RadarCategory_Lifts:		out[rc] = (float) in.GetNumLifts();			break;
+		case RadarCategory_Fakes:		out[rc] = (float) in.GetNumFakes();			break;
 		default:	ASSERT(0);
 		}
 	}
@@ -1602,8 +1603,7 @@ bool TrackIterator::Next()
 	if( m_bFast )
 	{
 		if( m_Iterator == XXX )
-			;
-
+			; // do nothing? -Wolfman2000
 	}
 
 }
@@ -2293,6 +2293,7 @@ bool NoteDataUtil::AnyTapsAndHoldsInTrackRange( const NoteData& in, int iTrack, 
 		{
 		case TapNote::empty:
 		case TapNote::mine:
+		case TapNote::fake:
 			continue;
 		default:
 			return true;
