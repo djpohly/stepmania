@@ -194,7 +194,7 @@ static int GetLuaStack( lua_State *L )
 			continue;
 		}
 		lua_pop( L, 1 ); // pop function
-
+		
 		sErr += ssprintf( "\n%s:", file );
 		if( ar.currentline != -1 )
 			sErr += ssprintf( "%i:", ar.currentline );
@@ -323,13 +323,13 @@ void LuaManager::Release( Lua *&p )
  * to process long-running actions, without blocking all other threads from using Lua
  * until it finishes.
  *
- * Lua *L = LUA->Get();			// acquires L and locks Lua
+ * Lua *L = LUA->Get();				// acquires L and locks Lua
  * lua_newtable(L);				// does something with Lua
  * LUA->YieldLua();				// unlocks Lua for lengthy operation; L is still owned, but can't be used
  * RString s = ReadFile("/filename.txt");	// time-consuming operation; other threads may use Lua in the meantime
- * LUA->UnyieldLua();			// relock Lua
- * lua_pushstring( L, s );		// finish working with it
- * LUA->Release( L );			// release L and unlock Lua
+ * LUA->UnyieldLua();				// relock Lua
+ * lua_pushstring( L, s );			// finish working with it
+ * LUA->Release( L );				// release L and unlock Lua
  *
  * YieldLua() must not be called when already yielded, or when a lua_State has not been
  * acquired (you have nothing to yield), and always unyield before releasing the
@@ -337,8 +337,8 @@ void LuaManager::Release( Lua *&p )
  *
  * L1 = LUA->Get();
  * LUA->YieldLua();				// yields
- *   L2 = LUA->Get();			// unyields
- *   LUA->Release(L2);			// re-yields
+ *   L2 = LUA->Get();				// unyields
+ *   LUA->Release(L2);				// re-yields
  * LUA->UnyieldLua();
  * LUA->Release(L1);
  */
@@ -402,7 +402,7 @@ LuaThreadVariable::LuaThreadVariable( lua_State *L )
 {
 	m_Name = new LuaReference;
 	m_pOldValue = new LuaReference;
-
+	
 	lua_pushvalue( L, -2 );
 	m_Name->SetFromStack( L );
 
@@ -554,7 +554,7 @@ XNode *LuaHelpers::GetLuaInformation()
 	XNode *pSingletonsNode = pLuaNode->AppendChild( "Singletons" );
 	XNode *pEnumsNode = pLuaNode->AppendChild( "Enums" );
 	XNode *pConstantsNode = pLuaNode->AppendChild( "Constants" );
-
+	
 	vector<RString> vFunctions;
 	map<RString, LClass> mClasses;
 	map<RString, vector<RString> > mNamespaces;
@@ -562,13 +562,13 @@ XNode *LuaHelpers::GetLuaInformation()
 	map<RString, float> mConstants;
 	map<RString, RString> mStringConstants;
 	map<RString, vector<RString> > mEnums;
-
+	
 	Lua *L = LUA->Get();
 	FOREACH_LUATABLE( L, LUA_GLOBALSINDEX )
 	{
 		RString sKey;
 		LuaHelpers::Pop( L, sKey );
-
+		
 		switch( lua_type(L, -1) )
 		{
 		case LUA_TTABLE:
@@ -576,12 +576,12 @@ XNode *LuaHelpers::GetLuaInformation()
 			if( luaL_getmetafield(L, -1, "class") )
 			{
 				const char *name = lua_tostring( L, -1 );
-
+				
 				if( !name )
 					break;
 				LClass &c = mClasses[name];
 				lua_pop( L, 1 ); // pop name
-
+				
 				// Get base class.
 				luaL_getmetatable( L, name );
 				ASSERT( !lua_isnil(L, -1) );
@@ -591,7 +591,7 @@ XNode *LuaHelpers::GetLuaInformation()
 				if( name )
 					c.m_sBaseName = name;
 				lua_pop( L, 2 ); // pop name and metatable
-
+				
 				// Get methods.
 				FOREACH_LUATABLE( L, -1 )
 				{
@@ -636,7 +636,7 @@ XNode *LuaHelpers::GetLuaInformation()
 			break;
 		}
 	}
-
+	
 	// Find namespaces
 	lua_pushcfunction( L, luaopen_package ); lua_call( L, 0, 0 );
 	lua_getglobal( L, "package" );
@@ -663,7 +663,7 @@ XNode *LuaHelpers::GetLuaInformation()
 		sort( vNamespaceFunctions.begin(), vNamespaceFunctions.end() );
 	}
 	lua_pop( L, 2 );
-
+	
 	LUA->Release( L );
 
 	/* Globals */
@@ -673,12 +673,12 @@ XNode *LuaHelpers::GetLuaInformation()
 		XNode *pFunctionNode = pGlobalsNode->AppendChild( "Function" );
 		pFunctionNode->AppendAttr( "name", *func );
 	}
-
+	
 	/* Classes */
 	FOREACHM_CONST( RString, LClass, mClasses, c )
 	{
 		XNode *pClassNode = pClassesNode->AppendChild( "Class" );
-
+		
 		pClassNode->AppendAttr( "name", c->first );
 		if( !c->second.m_sBaseName.empty() )
 			pClassNode->AppendAttr( "base", c->second.m_sBaseName );
@@ -688,7 +688,7 @@ XNode *LuaHelpers::GetLuaInformation()
 			pMethodNode->AppendAttr( "name", *m );
 		}
 	}
-
+	
 	/* Singletons */
 	FOREACHM_CONST( RString, RString, mSingletons, s )
 	{
@@ -733,7 +733,7 @@ XNode *LuaHelpers::GetLuaInformation()
 	FOREACHM_CONST( RString, float, mConstants, c )
 	{
 		XNode *pConstantNode = pConstantsNode->AppendChild( "Constant" );
-
+		
 		pConstantNode->AppendAttr( "name", c->first );
 		if( c->second == truncf(c->second) )
 			pConstantNode->AppendAttr( "value", int(c->second) );
@@ -853,10 +853,10 @@ void LuaHelpers::ParseCommandList( Lua *L, const RString &sCommands, const RStri
 	{
 		Commands cmds;
 		ParseCommands( sCommands, cmds );
-
+		
 		// Convert cmds to a Lua function
 		ostringstream s;
-
+		
 		s << "return function(self)\n";
 
 		FOREACH_CONST( Command, cmds.v, c )
@@ -1082,7 +1082,7 @@ namespace
 		LuaThreadVariable::GetThreadVariable( L );
 		return 1;
 	}
-
+	
 	const luaL_Reg luaTable[] =
 	{
 		LIST_METHOD( Trace ),
