@@ -329,14 +329,14 @@ void MemoryCardManager::UpdateAssignments()
 
 	// make a list of unassigned
 	vector<UsbStorageDevice> vUnassignedDevices = m_vStorageDevices; // copy
-
+	
 	// remove cards that are already assigned
 	FOREACH_PlayerNumber( p )
 	{
 		UsbStorageDevice &assigned_device = m_Device[p];
 		if( assigned_device.IsBlank() )     // no card assigned to this player
 			continue;
-
+		
 		FOREACH( UsbStorageDevice, vUnassignedDevices, d )
 		{
 			if( *d == assigned_device )
@@ -346,7 +346,7 @@ void MemoryCardManager::UpdateAssignments()
 			}
 		}
 	}
-
+	
 	// Try to assign each device to a player. If a player already has a device
 	// assigned, and the device still exists, keep him on the same card.
 	FOREACH_PlayerNumber( p )
@@ -568,7 +568,7 @@ void MemoryCardManager::LockCard( PlayerNumber pn )
 void MemoryCardManager::UnlockCard( PlayerNumber pn )
 {
 	m_bCardLocked[pn] = false;
-
+	
 	g_pWorker->SetMountThreadState( ThreadedMemoryCardWorker::detect_and_mount );
 
 	// If a memory card was inserted too late last game, allow it now.

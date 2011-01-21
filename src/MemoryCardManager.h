@@ -20,7 +20,7 @@ public:
 
 	MemoryCardState GetCardState( PlayerNumber pn ) const { return m_State[pn]; }
 	RString GetCardError( PlayerNumber pn ) const { return m_sError[pn]; }
-
+	
 	void WaitForCheckingToComplete();
 	bool CardInserted( PlayerNumber pn );
 	void LockCard( PlayerNumber pn ); // prevent removing or changing of memory card
@@ -34,7 +34,7 @@ public:
 	// When paused, no changes in memory card state will be noticed until unpaused.
 	void PauseMountingThread( int iTimeout = 20 );
 	void UnPauseMountingThread();
-
+	
 	bool GetCardLocked( PlayerNumber pn ) const { return m_bCardLocked[pn]; }
 
 	bool PathIsMemCard( RString sDir ) const;
