@@ -64,23 +64,23 @@ MusicWheelItem *MusicWheel::MakeItem()
 
 void MusicWheel::Load( RString sType ) 
 {
-	ROULETTE_SWITCH_SECONDS		.Load(sType,"RouletteSwitchSeconds");
-	ROULETTE_SLOW_DOWN_SWITCHES	.Load(sType,"RouletteSlowDownSwitches");
+	ROULETTE_SWITCH_SECONDS			.Load(sType,"RouletteSwitchSeconds");
+	ROULETTE_SLOW_DOWN_SWITCHES		.Load(sType,"RouletteSlowDownSwitches");
 	NUM_SECTION_COLORS			.Load(sType,"NumSectionColors");
-	SONG_REAL_EXTRA_COLOR		.Load(sType,"SongRealExtraColor");
+	SONG_REAL_EXTRA_COLOR			.Load(sType,"SongRealExtraColor");
 	SORT_MENU_COLOR				.Load(sType,"SortMenuColor");
 	SHOW_ROULETTE				.Load(sType,"ShowRoulette");
-	SHOW_RANDOM					.Load(sType,"ShowRandom");
-	SHOW_PORTAL					.Load(sType,"ShowPortal");
-	RANDOM_PICKS_LOCKED_SONGS	.Load(sType,"RandomPicksLockedSongs");
-	MOST_PLAYED_SONGS_TO_SHOW	.Load(sType,"MostPlayedSongsToShow");
-	RECENT_SONGS_TO_SHOW		.Load(sType,"RecentSongsToShow");
-	MODE_MENU_CHOICE_NAMES		.Load(sType,"ModeMenuChoiceNames");
-	SORT_ORDERS					.Load(sType,"SortOrders");
+	SHOW_RANDOM				.Load(sType,"ShowRandom");
+	SHOW_PORTAL				.Load(sType,"ShowPortal");
+	RANDOM_PICKS_LOCKED_SONGS		.Load(sType,"RandomPicksLockedSongs");
+	MOST_PLAYED_SONGS_TO_SHOW		.Load(sType,"MostPlayedSongsToShow");
+	RECENT_SONGS_TO_SHOW			.Load(sType,"RecentSongsToShow");
+	MODE_MENU_CHOICE_NAMES			.Load(sType,"ModeMenuChoiceNames");
+	SORT_ORDERS				.Load(sType,"SortOrders");
 	SHOW_EASY_FLAG				.Load(sType,"UseEasyMarkerFlag");
-	USE_SECTIONS_WITH_PREFERRED_GROUP		.Load(sType,"UseSectionsWithPreferredGroup");
-	HIDE_INACTIVE_SECTIONS		.Load(sType,"OnlyShowActiveSection");
-	REMIND_WHEEL_POSITIONS		.Load(sType,"RemindWheelPositions");
+	USE_SECTIONS_WITH_PREFERRED_GROUP	.Load(sType,"UseSectionsWithPreferredGroup");
+	HIDE_INACTIVE_SECTIONS			.Load(sType,"OnlyShowActiveSection");
+	REMIND_WHEEL_POSITIONS			.Load(sType,"RemindWheelPositions");
 	vector<RString> vsModeChoiceNames;
 	split( MODE_MENU_CHOICE_NAMES, ",", vsModeChoiceNames );
 	CHOICE				.Load(sType,CHOICE_NAME,vsModeChoiceNames);
@@ -501,7 +501,7 @@ void MusicWheel::BuildWheelItemDatas( vector<MusicWheelItemData *> &arrayWheelIt
 		{
 			// Make an array of Song*, then sort them
 			vector<Song*> arraySongs;
-
+			
 			GetSongList( arraySongs, so );
 
 			bool bUseSections = true;
@@ -832,7 +832,7 @@ void MusicWheel::UpdateSwitch()
 			const Song* pPrevSelectedSong = GetCurWheelItemData(m_iSelection)->m_pSong;
 
 			SCREENMAN->PostMessageToTopScreen( SM_SortOrderChanged, 0 );
-
+			
 			SetOpenSection( SongUtil::GetSectionNameFromSongAndSort(pPrevSelectedSong, GAMESTATE->m_SortOrder) );
 
 			m_iSelection = 0;

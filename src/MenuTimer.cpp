@@ -103,11 +103,11 @@ void MenuTimer::Update( float fDeltaTime )
 			for( int i=0; i<NUM_MENU_TIMER_TEXTS; i++ )
 				m_text[i].RunCommands( WARNING_COMMAND->GetValue(iCrossed) );
 		}
-
+		
 		if( iCrossed <= WARNING_BEEP_START && m_soundBeep.IsLoaded() && !m_bSilent )
 			m_soundBeep.Play();
 	}
-
+	
 	if( fNewSecondsLeft == 0 )
 	{
 		Stop();
@@ -176,7 +176,7 @@ void MenuTimer::SetText( float fSeconds )
 
 		// 1st parameter
 		LuaHelpers::Push( L, fSeconds );
-
+		
 		// call function with 1 argument and 1 result
 		RString sError;
 		if( !LuaHelpers::RunScriptOnStack(L, sError, 1, 1) )

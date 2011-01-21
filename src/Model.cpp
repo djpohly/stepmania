@@ -84,7 +84,7 @@ void Model::LoadPieces( const RString &sMeshesPath, const RString &sMaterialsPat
 	for( unsigned i = 0; i < m_pGeometry->m_Meshes.size(); ++i )
 	{
 		const msMesh *pMesh = &m_pGeometry->m_Meshes[i];
-
+		
 		if( pMesh->nMaterialIndex >= (int) m_Materials.size() )
 			RageException::Throw( "Model \"%s\" mesh \"%s\" references material index %i, but there are only %i materials.",
 				sMeshesPath.c_str(), pMesh->sName.c_str(), pMesh->nMaterialIndex, (int)m_Materials.size() );
@@ -327,11 +327,11 @@ void Model::DrawPrimitives()
 			{
 				// apply material
 				msMaterial& mat = m_Materials[ pMesh->nMaterialIndex ];
-
+				
 				RageColor Emissive = mat.Emissive;
 				RageColor Ambient = mat.Ambient;
 				RageColor Diffuse = mat.Diffuse;
-
+				
 				Emissive *= m_pTempState->diffuse[0];
 				Ambient *= m_pTempState->diffuse[0];
 				Diffuse *= m_pTempState->diffuse[0];
@@ -354,7 +354,7 @@ void Model::DrawPrimitives()
 					DISPLAY->SetTexture( TextureUnit_1, mat.diffuse.GetCurrentTexture() ? mat.diffuse.GetCurrentTexture()->GetTexHandle() : 0 );
 					Actor::SetTextureRenderStates();	// set Actor-specified render states
 					DISPLAY->SetSphereEnvironmentMapping( TextureUnit_1, mat.diffuse.m_bSphereMapped );
-
+					
 					// render the additive texture with texture unit 2
 					if( mat.alpha.GetCurrentTexture() )
 					{
@@ -386,7 +386,7 @@ void Model::DrawPrimitives()
 					Actor::SetTextureRenderStates();	// set Actor-specified render states
 					DISPLAY->SetSphereEnvironmentMapping( TextureUnit_1, mat.diffuse.m_bSphereMapped );
 					DrawMesh( i );
-
+					
 					// render the additive texture
 					if( mat.alpha.GetCurrentTexture() )
 					{
@@ -508,11 +508,11 @@ void Model::PlayAnimation( const RString &sAniName, float fPlayRate )
 		const RageVector3 &vRot = pBone->Rotation;
 
 		RageMatrixAngles( &m_vpBones[i].m_Relative, vRot );
-
+		
 		m_vpBones[i].m_Relative.m[3][0] = pBone->Position[0];
 		m_vpBones[i].m_Relative.m[3][1] = pBone->Position[1];
 		m_vpBones[i].m_Relative.m[3][2] = pBone->Position[2];
-
+		
 		int nParentBone = m_pCurAnimation->FindBoneByName( pBone->sParentName );
 		if( nParentBone != -1 )
 		{
@@ -546,12 +546,12 @@ void Model::PlayAnimation( const RString &sAniName, float fPlayRate )
 				RageMatrix inverse;
 				RageMatrixTranspose( &inverse, &m_vpBones[bone].m_Absolute );	// transpose = inverse for rotation matrices
 				RageVec3TransformNormal( &vTmp, &pos, &inverse );
-
+				
 				pos = vTmp;
 			}
 		}
 	}
-
+	
 	// Set up m_vpBones, just in case we're drawn without being Update()d.
 	SetBones( m_pCurAnimation, m_fCurFrame, m_vpBones );
 	UpdateTempGeometry();

@@ -27,7 +27,6 @@ public:
 	void EnableSilent( bool bSilent ) { m_bSilent = bSilent; } // make timer silent
 	void EnableStealth( bool bStealth ); // make timer invisible and silent
 
-
 	// Lua
 	virtual void PushSelf( lua_State *L );
 
@@ -47,7 +46,6 @@ protected:
 	LuaReference	m_exprFormatText[NUM_MENU_TIMER_TEXTS];
 
 	AutoActor	m_sprFrame;
-
 	RageSound	m_soundBeep;
 
 	ThemeMetric<int>		WARNING_START;
