@@ -795,7 +795,7 @@ void ScreenEdit::Init()
 
 	m_bDirty = false;
 
-	m_Player->Init( "Player", GAMESTATE->m_pPlayerState[PLAYER_1], NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL );
+	m_Player->Init( "Player", &m_PlayerStateEdit, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL );
 	m_Player->CacheAllUsedNoteSkins();
 	GAMESTATE->m_pPlayerState[PLAYER_1]->m_PlayerController = PC_HUMAN;
 	m_Player->SetXY( PLAYER_X, PLAYER_Y );
