@@ -11,7 +11,7 @@ class LyricDisplay: public ActorFrame
 public:
 	LyricDisplay();
 	void Update( float fDeltaTime );
-
+	
 	/* Call when song changes: */
 	void Init();
 
