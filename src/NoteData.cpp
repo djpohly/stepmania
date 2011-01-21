@@ -417,7 +417,7 @@ bool NoteData::IsEmpty() const
 int NoteData::GetFirstRow() const
 { 
 	int iEarliestRowFoundSoFar = -1;
-
+	
 	for( int t=0; t < GetNumTracks(); t++ )
 	{
 		int iRow = -1;
@@ -439,7 +439,7 @@ int NoteData::GetFirstRow() const
 int NoteData::GetLastRow() const
 { 
 	int iOldestRowFoundSoFar = 0;
-
+	
 	for( int t=0; t < GetNumTracks(); t++ )
 	{
 		int iRow = MAX_NOTE_ROW;
@@ -470,7 +470,7 @@ int NoteData::GetNumTapNotes( int iStartIndex, int iEndIndex ) const
 				iNumNotes++;
 		}
 	}
-
+	
 	return iNumNotes;
 }
 
@@ -486,7 +486,7 @@ int NoteData::GetNumRowsWithTap( int iStartIndex, int iEndIndex ) const
 	FOREACH_NONEMPTY_ROW_ALL_TRACKS_RANGE( *this, r, iStartIndex, iEndIndex )
 		if( IsThereATapAtRow(r) )
 			iNumNotes++;
-
+	
 	return iNumNotes;
 }
 
@@ -500,7 +500,7 @@ int NoteData::GetNumMines( int iStartIndex, int iEndIndex ) const
 			if( GetTapNote(t, r).type == TapNote::mine )
 				iNumMines++;
 	}
-
+	
 	return iNumMines;
 }
 
@@ -510,7 +510,7 @@ int NoteData::GetNumRowsWithTapOrHoldHead( int iStartIndex, int iEndIndex ) cons
 	FOREACH_NONEMPTY_ROW_ALL_TRACKS_RANGE( *this, r, iStartIndex, iEndIndex )
 		if( IsThereATapOrHoldHeadAtRow(r) )
 			iNumNotes++;
-
+	
 	return iNumNotes;
 }
 
@@ -581,7 +581,7 @@ int NoteData::GetNumRowsWithSimultaneousTaps( int iMinTaps, int iStartIndex, int
 		if( iNumNotesThisIndex >= iMinTaps )
 			iNum++;
 	}
-
+	
 	return iNum;
 }
 
@@ -635,6 +635,20 @@ int NoteData::GetNumLifts( int iStartIndex, int iEndIndex ) const
 	return iNumLifts;
 }
 
+int NoteData::GetNumFakes( int iStartIndex, int iEndIndex ) const
+{
+	int iNumFakes = 0;
+	
+	for( int t=0; t<GetNumTracks(); t++ )
+	{
+		FOREACH_NONEMPTY_ROW_IN_TRACK_RANGE( *this, t, r, iStartIndex, iEndIndex )
+		if( GetTapNote(t, r).type == TapNote::fake )
+			iNumFakes++;
+	}
+	
+	return iNumFakes;
+}
+
 /*
 int NoteData::GetNumMinefields( int iStartIndex, int iEndIndex ) const
 {
@@ -660,7 +674,7 @@ void NoteData::LoadTransformed( const NoteData& in, int iNewNumTracks, const int
 {
 	// reset all notes
 	Init();
-
+	
 	SetNumTracks( iNewNumTracks );
 
 	// copy tracks
@@ -686,7 +700,7 @@ void NoteData::MoveTapNoteTrack( int dest, int src )
 void NoteData::SetTapNote( int track, int row, const TapNote& t )
 {
 	DEBUG_ASSERT( track>=0 && track<GetNumTracks() );
-
+	
 	if( row < 0 )
 		return;
 
@@ -728,7 +742,7 @@ bool NoteData::GetNextTapNoteRowForTrack( int track, int &rowInOut ) const
 
 	// lower_bound and upper_bound have the same effect here because duplicate 
 	// keys aren't allowed.
-
+	
 	// lower_bound "finds the first element whose key is not less than k" (>=);
 	// upper_bound "finds the first element whose key greater than k".  They don't
 	// have the same effect, but lower_bound(row+1) should equal upper_bound(row). -glenn
@@ -927,13 +941,13 @@ bool NoteData::GetPrevTapNoteRowForAllTracks( int &rowInOut ) const
 XNode* NoteData::CreateNode() const
 {
 	XNode *p = new XNode( "NoteData" );
-
+	
 	all_tracks_const_iterator iter = GetTapNoteRangeAllTracks( 0, GetLastRow() );
-
+	
 	for( ; !iter.IsAtEnd(); ++iter )
 	{
 		XNode *p2 = iter->CreateNode();
-
+		
 		p2->AppendAttr( "Track", iter.Track() );
 		p2->AppendAttr( "Row", iter.Row() );
 		p->AppendChild( p2 );
