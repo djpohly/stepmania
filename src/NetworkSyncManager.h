@@ -28,8 +28,8 @@ enum NSCommand
 	NSCUUL,			//  9 [SMLC_Reserved1]
 	NSCSMS,			// 10 [SMLC_MusicSelect]
 	NSCUPOpts,		// 11 [SMLC_PlayerOpts]
-	NSCSMOnline,	// 12 [SMLC_SMO]
-	NSCFormatted,	// 13 [SMLC_RESERVED1]
+	NSCSMOnline,		// 12 [SMLC_SMO]
+	NSCFormatted,		// 13 [SMLC_RESERVED1]
 	NSCAttack,		// 14 [SMLC_RESERVED2]
 	NUM_NS_COMMANDS
 };

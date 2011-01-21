@@ -108,7 +108,7 @@ void NetworkSyncManager::PostStartUp( const RString& ServerIP )
 {
 	RString sAddress;
 	short iPort;
-
+	
 	size_t cLoc = ServerIP.find( ':' );
 	if( ServerIP.find( ':' ) != RString::npos )
 	{
@@ -152,7 +152,7 @@ void NetworkSyncManager::PostStartUp( const RString& ServerIP )
 	 * Move mode to blocking in order to give CPU back to the system,
 	 * and not wait.
 	 */
-
+	
 	bool dontExit = true;
 
 	NetPlayerClient->blocking = true;
@@ -227,7 +227,7 @@ void NetworkSyncManager::ReportScore(int playerID, int step, int score, int comb
 {
 	if( !useSMserver ) //Make sure that we are using the network
 		return;
-
+	
 	LOG->Trace( ssprintf("Player ID %i combo = %i", playerID, combo) );
 	m_packet.ClearPacket();
 
@@ -338,7 +338,7 @@ void NetworkSyncManager::StartRequest( short position )
 		ctr = uint8_t( ctr + (int)tSteps->GetDifficulty() );
 
 	m_packet.Write1( ctr );
-
+	
 	//Notify server if this is for sync or not.
 	ctr = char( position*16 );
 	m_packet.Write1( ctr );
