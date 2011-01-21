@@ -10,6 +10,15 @@ class Song;
 class Steps;
 class TimingData;
 
+enum SSCLoadingStates
+{
+	GETTING_SONG_INFO,
+	GETTING_STEP_INFO,
+	GETTING_STEP_TIMING_INFO,
+	GETTING_NOTE_INFO,
+	NUM_SSCLoadingStates
+};
+
 namespace SSCLoader
 {
 	bool LoadFromDir( const RString &sPath, Song &out );
