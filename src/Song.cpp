@@ -284,7 +284,6 @@ bool Song::LoadFromSongDir( RString sDir )
 		return false;	// don't load this song
 	}
 	
-	GetDisplayBpms( m_Bpms ); // unsure of this modification from StepNXA.
 	return true;	// do load this song
 }
 

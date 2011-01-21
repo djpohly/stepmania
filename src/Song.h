@@ -185,8 +185,8 @@ public:
 	typedef vector<BackgroundChange> 	VBackgroundChange;
 	
 	bool			m_bHasSongAttacks;
-	RString			m_sAttackString;
-	AttackArray		m_Attacks;
+	//RString			m_sAttackString;
+	//AttackArray		m_Attacks;
 private:
 	// AutoPtr instead of raw pointer so that the auto gen'd copy constructor works correctly.
 	AutoPtrCopyOnWrite<VBackgroundChange>	m_BackgroundChanges[NUM_BackgroundLayer];	// these must be sorted before gameplay
@@ -209,6 +209,10 @@ public:
 	int GetTickcountAtBeat( float fBeat ) const { return m_Timing.GetTickcountAtBeat( fBeat ); }
 	void SetTickcountAtBeat( float fBeat, int iTickcount) { m_Timing.SetTickcountAtBeat( fBeat, iTickcount ); }
 	void AddTickcountSegment( const TickcountSegment &seg ) { m_Timing.AddTickcountSegment( seg ); }
+	
+	int GetComboAtBeat( float fBeat ) const { return m_Timing.GetComboAtBeat( fBeat ); }
+	void SetComboAtBeat( float fBeat, int iComboFactor) { m_Timing.SetComboAtBeat( fBeat, iComboFactor ); }
+	void AddComboSegment( const ComboSegment &seg ) { m_Timing.AddComboSegment( seg ); }
 	
 	void GetDisplayBpms( DisplayBpms &AddTo ) const;
 	const BackgroundChange &GetBackgroundAtBeat( BackgroundLayer iLayer, float fBeat ) const;
