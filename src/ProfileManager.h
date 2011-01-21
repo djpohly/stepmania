@@ -35,7 +35,7 @@ public:
 	Profile *GetLocalProfile( const RString &sProfileID ) { return (Profile*) ((const ProfileManager *) this)->GetLocalProfile(sProfileID); }
 	Profile *GetLocalProfileFromIndex( int iIndex );
 	RString GetLocalProfileIDFromIndex( int iIndex );
-
+	
 	bool CreateLocalProfile( RString sName, RString &sProfileIDOut );
 	void AddLocalProfileByID( Profile *pProfile, RString sProfileID ); // transfers ownership of pProfile
 	bool RenameLocalProfile( RString sProfileID, RString sNewName );
@@ -53,7 +53,7 @@ public:
 	bool SaveProfile( PlayerNumber pn ) const;
 	bool SaveLocalProfile( RString sProfileID );
 	void UnloadProfile( PlayerNumber pn );
-
+	
 	// General data
 	void IncrementToastiesCount( PlayerNumber pn );
 	void AddStepTotals( PlayerNumber pn, int iNumTapsAndHolds, int iNumJumps, int iNumHolds, int iNumRolls, int iNumMines, int iNumHands, int iNumLifts, float fCaloriesBurned );
@@ -71,7 +71,7 @@ public:
 	Profile* GetProfile( PlayerNumber pn ) { return (Profile*) ((const ProfileManager *) this)->GetProfile(pn); }
 	const Profile* GetProfile( ProfileSlot slot ) const;
 	Profile* GetProfile( ProfileSlot slot ) { return (Profile*) ((const ProfileManager *) this)->GetProfile(slot); }
-
+	
 	const RString& GetProfileDir( ProfileSlot slot ) const;
 	RString GetProfileDirImportedFrom( ProfileSlot slot ) const;
 
@@ -119,7 +119,7 @@ private:
 	bool m_bLastLoadWasTamperedOrCorrupt[NUM_PLAYERS];	// true if Stats.xml was present, but failed to load (probably because of a signature failure)
 	bool m_bLastLoadWasFromLastGood[NUM_PLAYERS];		// if true, then m_bLastLoadWasTamperedOrCorrupt is also true
 	mutable bool m_bNeedToBackUpLastLoad[NUM_PLAYERS];	// if true, back up profile on next save
-
+	
 	Profile	*m_pMemoryCardProfile[NUM_PLAYERS];	// holds Profile for the currently inserted card
 	Profile *m_pMachineProfile;
 };

@@ -153,43 +153,43 @@ void ValidateSongsPerPlay( int &val )
 }
 
 PrefsManager::PrefsManager() :
-	m_sCurrentGame		( "CurrentGame",		"" ),
-
-	m_sAnnouncer		( "Announcer",			"" ),
-	m_sTheme		( "Theme",			SpecialFiles::BASE_THEME_NAME ),
-	m_sDefaultModifiers	( "DefaultModifiers",		"" ), 
-
-	m_bWindowed		( "Windowed",			true ),
-	m_iDisplayWidth		( "DisplayWidth",		640 ),
-	m_iDisplayHeight	( "DisplayHeight",		480 ),
-	m_fDisplayAspectRatio	( "DisplayAspectRatio",		4/3.f, ValidateDisplayAspectRatio ),
-	m_iDisplayColorDepth	( "DisplayColorDepth",		16 ),
-	m_iTextureColorDepth	( "TextureColorDepth",		16 ),
-	m_iMovieColorDepth	( "MovieColorDepth",		16 ),
+	m_sCurrentGame			( "CurrentGame",		"" ),
+	
+	m_sAnnouncer			( "Announcer",			"" ),
+	m_sTheme			( "Theme",			SpecialFiles::BASE_THEME_NAME ),
+	m_sDefaultModifiers		( "DefaultModifiers",		"" ), 
+	
+	m_bWindowed			( "Windowed",			true ),
+	m_iDisplayWidth			( "DisplayWidth",		640 ),
+	m_iDisplayHeight		( "DisplayHeight",		480 ),
+	m_fDisplayAspectRatio		( "DisplayAspectRatio",		4/3.f, ValidateDisplayAspectRatio ),
+	m_iDisplayColorDepth		( "DisplayColorDepth",		16 ),
+	m_iTextureColorDepth		( "TextureColorDepth",		16 ),
+	m_iMovieColorDepth		( "MovieColorDepth",		16 ),
 	m_HighResolutionTextures	( "HighResolutionTextures",	HighResolutionTextures_Auto ),
-	m_iMaxTextureResolution	( "MaxTextureResolution",	2048 ),
-	m_iRefreshRate		( "RefreshRate",		REFRESH_DEFAULT ),
-	m_bAllowMultitexture	( "AllowMultitexture",		true ),
-	m_bShowStats		( "ShowStats",			TRUE_IF_DEBUG),
-	m_bShowBanners		( "ShowBanners",		true ),
-
-	m_bHiddenSongs		( "HiddenSongs",		false ),
-	m_bVsync		( "Vsync",			true ),
-	m_bInterlaced		( "Interlaced",			false ),
-	m_bPAL			( "PAL",			false ),
-	m_bDelayedTextureDelete	( "DelayedTextureDelete",	false ),
-	m_bDelayedModelDelete	( "DelayedModelDelete",		false ),
-	m_BannerCache		( "BannerCache",		BNCACHE_LOW_RES_PRELOAD ),
+	m_iMaxTextureResolution		( "MaxTextureResolution",	2048 ),
+	m_iRefreshRate			( "RefreshRate",		REFRESH_DEFAULT ),
+	m_bAllowMultitexture		( "AllowMultitexture",		true ),
+	m_bShowStats			( "ShowStats",			TRUE_IF_DEBUG),
+	m_bShowBanners			( "ShowBanners",		true ),
+	
+	m_bHiddenSongs			( "HiddenSongs",		false ),
+	m_bVsync			( "Vsync",			true ),
+	m_bInterlaced			( "Interlaced",			false ),
+	m_bPAL				( "PAL",			false ),
+	m_bDelayedTextureDelete		( "DelayedTextureDelete",	false ),
+	m_bDelayedModelDelete		( "DelayedModelDelete",		false ),
+	m_BannerCache			( "BannerCache",		BNCACHE_LOW_RES_PRELOAD ),
 	//m_BackgroundCache		( "BackgroundCache",		BGCACHE_LOW_RES_PRELOAD ),
-	m_bFastLoad		( "FastLoad",			false ),
+	m_bFastLoad			( "FastLoad",			false ),
 	m_bFastLoadAdditionalSongs      ( "FastLoadAdditionalSongs",    false ),
-
+	
 	m_bOnlyDedicatedMenuButtons	( "OnlyDedicatedMenuButtons",	false ),
-	m_bMenuTimer		( "MenuTimer",			false ),
-
-	m_fLifeDifficultyScale	( "LifeDifficultyScale",	1.0f ),
-
-
+	m_bMenuTimer			( "MenuTimer",			false ),
+	
+	m_fLifeDifficultyScale		( "LifeDifficultyScale",	1.0f ),
+	
+	
 	m_iRegenComboAfterMiss		( "RegenComboAfterMiss",	5 ),
 	m_bMercifulDrain		( "MercifulDrain",		true ),	// negative life deltas are scaled by the players life percentage
 	m_bMinimum1FullSongInCourses	( "Minimum1FullSongInCourses",	false ),	// FEoS for 1st song, FailImmediate thereafter
@@ -217,7 +217,7 @@ PrefsManager::PrefsManager() :
 	m_bDisqualification		( "Disqualification",			false ),
 	m_bAutogenSteps			( "AutogenSteps",			true ),
 	m_bAutogenGroupCourses		( "AutogenGroupCourses",		true ),
-	m_bOnlyPreferredDifficulties ( "OnlyPreferredDifficulties", false ),
+	m_bOnlyPreferredDifficulties	( "OnlyPreferredDifficulties", false ),
 	m_bBreakComboToGetItem		( "BreakComboToGetItem",		false ),
 	m_bLockCourseDifficulties	( "LockCourseDifficulties",		true ),
 	m_ShowDancingCharacters		( "ShowDancingCharacters",		SDC_Random ),
@@ -380,7 +380,7 @@ void PrefsManager::ResetToFactoryDefaults()
 	Init();
 	IPreference::LoadAllDefaults();
 	ReadPrefsFromFile( SpecialFiles::STATIC_INI_PATH, GetPreferencesSection(), true );
-
+	
 	SavePrefsToDisk();
 }
 
@@ -499,7 +499,7 @@ RString PrefsManager::GetPreferencesSection() const
 
 	// OK if this fails
 	GetFileContents( SpecialFiles::TYPE_TXT_FILE, sSection, true );
-
+	
 	// OK if this fails
 	GetCommandlineArgument( "Type", &sSection );
 

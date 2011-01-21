@@ -138,7 +138,7 @@ void PercentageDisplay::Refresh()
 	{
 		float fPercentDancePoints = m_pPlayerStageStats->GetPercentDancePoints();
 		float fCurMaxPercentDancePoints = m_pPlayerStageStats->GetCurMaxPercentDancePoints();
-
+		
 		if( m_bApplyScoreDisplayOptions )
 		{
 			switch( m_pPlayerState->m_PlayerOptions.GetCurrent().m_ScoreDisplay )

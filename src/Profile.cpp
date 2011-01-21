@@ -574,10 +574,10 @@ HighScoreList& Profile::GetStepsHighScoreList( const Song* pSong, const Steps* p
 {
 	SongID songID;
 	songID.FromSong( pSong );
-
+	
 	StepsID stepsID;
 	stepsID.FromSteps( pSteps );
-
+	
 	HighScoresForASong &hsSong = m_SongHighScores[songID];	// operator[] inserts into map
 	HighScoresForASteps &hsSteps = hsSong.m_StepsHighScores[stepsID];	// operator[] inserts into map
 
@@ -645,7 +645,7 @@ void Profile::GetGrades( const Song* pSong, StepsType st, int iCounts[NUM_Grade]
 {
 	SongID songID;
 	songID.FromSong( pSong );
-
+	
 	memset( iCounts, 0, sizeof(int)*NUM_Grade );
 	const HighScoresForASong *hsSong = GetHighScoresForASong( songID );
 	if( hsSong == NULL )
@@ -800,7 +800,7 @@ ProfileLoadResult Profile::LoadAllFromDir( RString sDir, bool bRequireSignature 
 
 	// Not critical if this fails
 	LoadEditableDataFromDir( sDir );
-
+	
 	// Check for the existance of stats.xml
 	RString fn = sDir + STATS_XML;
 	bool bCompressed = false;
@@ -904,7 +904,7 @@ ProfileLoadResult Profile::LoadStatsXmlFromNode( const XNode *xml, bool bIgnoreE
 	LOAD_NODE( CategoryScores );
 	LOAD_NODE( ScreenshotData );
 	LOAD_NODE( CalorieData );
-
+	
 	if( bIgnoreEditable )
 	{
 		m_sDisplayName = sName;
@@ -925,7 +925,7 @@ bool Profile::SaveAllToDir( RString sDir, bool bSignData ) const
 	SaveEditableDataToDir( sDir );
 
 	bool bSaved = SaveStatsXmlToDir( sDir, bSignData );
-
+	
 	SaveStatsWebPageToDir( sDir );
 
 	// Empty directories if none exist.
@@ -959,7 +959,7 @@ bool Profile::SaveStatsXmlToDir( RString sDir, bool bSignData ) const
 {
 	LOG->Trace( "SaveStatsXmlToDir: %s", sDir.c_str() );
 	auto_ptr<XNode> xml( SaveStatsXmlCreateNode() );
-
+	
 	// Save stats.xml
 	RString fn = sDir + (g_bProfileDataCompress? STATS_XML_GZ:STATS_XML);
 
@@ -971,14 +971,14 @@ bool Profile::SaveStatsXmlToDir( RString sDir, bool bSignData ) const
 			LOG->Warn( "Couldn't open %s for writing: %s", fn.c_str(), f.GetError().c_str() );
 			return false;
 		}
-
+		
 		if( g_bProfileDataCompress )
 		{
 			RageFileObjGzip gzip( &f );
 			gzip.Start();
 			if( !XmlFileUtil::SaveToFile( xml.get(), gzip, "", false ) )
 				return false;
-
+			
 			if( gzip.Finish() == -1 )
 				return false;
 

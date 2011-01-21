@@ -149,15 +149,15 @@ protected:
 
 public:
 	Preference<bool>	m_bWindowed;
-	Preference<int>	m_iDisplayWidth;
-	Preference<int>	m_iDisplayHeight;
+	Preference<int>		m_iDisplayWidth;
+	Preference<int>		m_iDisplayHeight;
 	Preference<float>	m_fDisplayAspectRatio;
-	Preference<int>	m_iDisplayColorDepth;
-	Preference<int>	m_iTextureColorDepth;
-	Preference<int>	m_iMovieColorDepth;
+	Preference<int>		m_iDisplayColorDepth;
+	Preference<int>		m_iTextureColorDepth;
+	Preference<int>		m_iMovieColorDepth;
 	Preference<HighResolutionTextures>	m_HighResolutionTextures;
-	Preference<int>	m_iMaxTextureResolution;
-	Preference<int>	m_iRefreshRate;
+	Preference<int>		m_iMaxTextureResolution;
+	Preference<int>		m_iRefreshRate;
 	Preference<bool>	m_bAllowMultitexture;
 	Preference<bool>	m_bShowStats;
 	Preference<bool>	m_bShowBanners;
@@ -179,7 +179,7 @@ public:
 	Preference<float>	m_fLifeDifficultyScale;
 
 	// Whoever added these: Please add a comment saying what they do. -Chris
-	Preference<int>	m_iRegenComboAfterMiss;
+	Preference<int>		m_iRegenComboAfterMiss;
 	Preference<bool>	m_bMercifulDrain; // negative life deltas are scaled by the players life percentage
 	Preference<bool>	m_bMinimum1FullSongInCourses; // FEoS for 1st song, FailImmediate thereafter
 	Preference<bool>	m_bFailOffInBeginner;
@@ -190,13 +190,13 @@ public:
 	Preference<bool>	m_bShowInstructions; // how to play a mode
 	Preference<bool>	m_bShowCaution;
 	Preference<bool>	m_bShowNativeLanguage;
-	Preference<int>	m_iArcadeOptionsNavigation;
+	Preference<int>		m_iArcadeOptionsNavigation;
 	Preference<MusicWheelUsesSections>		m_MusicWheelUsesSections;
-	Preference<int>	m_iMusicWheelSwitchSpeed;
+	Preference<int>		m_iMusicWheelSwitchSpeed;
 	Preference<AllowW1>	m_AllowW1; // this should almost always be on, given use cases. -aj
 	Preference<bool>	m_bEventMode;
-	Preference<int>	m_iCoinsPerCredit;
-	Preference<int>	m_iSongsPerPlay;
+	Preference<int>		m_iCoinsPerCredit;
+	Preference<int>		m_iSongsPerPlay;
 	Preference<bool>	m_bDelayedCreditsReconcile; // zuh?
 	Preference<Maybe>	m_ShowSongOptions;
 	Preference<bool>	m_bDancePointsForOni;
@@ -212,9 +212,9 @@ public:
 	Preference<ShowDancingCharacters>		m_ShowDancingCharacters;
 	Preference<bool>	m_bUseUnlockSystem;
 	Preference<float>	m_fGlobalOffsetSeconds;
-	Preference<int>	m_iProgressiveLifebar;
-	Preference<int>	m_iProgressiveStageLifebar;
-	Preference<int>	m_iProgressiveNonstopLifebar;
+	Preference<int>		m_iProgressiveLifebar;
+	Preference<int>		m_iProgressiveStageLifebar;
+	Preference<int>		m_iProgressiveNonstopLifebar;
 	Preference<bool>	m_bShowBeginnerHelper;
 	Preference<bool>	m_bDisableScreenSaver;
 	Preference<RString>	m_sLanguage;
@@ -226,8 +226,8 @@ public:
 	Preference<int>	m_fCenterImageAddHeight;
 	Preference<AttractSoundFrequency>	m_AttractSoundFrequency;
 	Preference<bool>	m_bAllowExtraStage;
-	Preference<int>	m_iMaxHighScoresPerListForMachine;
-	Preference<int>	m_iMaxHighScoresPerListForPlayer;
+	Preference<int>		m_iMaxHighScoresPerListForMachine;
+	Preference<int>		m_iMaxHighScoresPerListForPlayer;
 	Preference<bool>	m_bAllowMultipleHighScoreWithSameName;
 	Preference<bool>	m_bCelShadeModels;
 	Preference<bool>	m_bPreferredSortUsesGroups;
@@ -265,9 +265,9 @@ public:
 	Preference<RString>	m_sLastSeenVideoDriver;
 	Preference<RString>	m_sVideoRenderers; // StepMania.cpp sets these on first run based on the card
 	Preference<bool>	m_bSmoothLines;
-	Preference<int>	m_iSoundWriteAhead;
+	Preference<int>		m_iSoundWriteAhead;
 	Preference<RString>	m_iSoundDevice;	
-	Preference<int>	m_iSoundPreferredSampleRate;
+	Preference<int>		m_iSoundPreferredSampleRate;
 	Preference<RString>	m_sLightsStepsDifficulty;
 	Preference<bool>	m_bAllowUnacceleratedRenderer;
 	Preference<bool>	m_bThreadedInput;

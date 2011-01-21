@@ -87,7 +87,7 @@ public:
 	bool IsCodeUnlocked( RString sUnlockEntryID ) const;
 	Song *GetMostPopularSong() const;
 	Course *GetMostPopularCourse() const;
-
+	
 	void AddStepTotals( int iNumTapsAndHolds, int iNumJumps, int iNumHolds, int iNumRolls, int iNumMines, int iNumHands, int iNumLifts, float fCaloriesBurned );
 
 	bool IsMachine() const;
@@ -199,7 +199,6 @@ public:
 	int GetCategoryNumTimesPlayed( StepsType st ) const;
 	void IncrementCategoryPlayCount( StepsType st, RankingCategory rc );
 
-
 	// Screenshot Data
 	vector<Screenshot> m_vScreenshots;
 	void AddScreenshot( const Screenshot &screenshot );
@@ -220,7 +219,7 @@ public:
 	};
 	map<DateTime,Calories> m_mapDayToCaloriesBurned;
 	float GetCaloriesBurnedForDay( DateTime day ) const;
-
+	
 /*
 	// RecentSongScores
 	struct HighScoreForASongAndSteps
