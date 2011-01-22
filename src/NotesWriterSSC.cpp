@@ -87,7 +87,7 @@ void SSCWriter::Serialize( const TapNote &o, Json::Value &root )
 		root["AttackModifiers"] = o.sAttackModifiers;
 	if( o.fAttackDurationSeconds > 0 )
 		root["AttackDurationSeconds"] = o.fAttackDurationSeconds;
-	if( o.iKeysoundIndex )
+	if( o.iKeysoundIndex > 0 ) // Only print used keysounds.
 		root["KeysoundIndex"] = o.iKeysoundIndex;
 	if( o.iDuration > 0 )
 		root["Duration"] = o.iDuration;
