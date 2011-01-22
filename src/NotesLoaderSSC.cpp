@@ -204,9 +204,15 @@ static void SSCLoader::Deserialize( Song &out, const Json::Value &root )
 	out.m_fMusicLengthSeconds = (float)root["MusicLengthSeconds"].asDouble();
 	
 	RString displayBpmType = root["DisplayBpmType"].asString();
-	if( displayBpmType == "*" )
+	if( displayBpmType == "RANDOM" )
 	{
 		out.m_DisplayBPMType = Song::DISPLAY_RANDOM;
+	}
+	else if ( displayBpmType == "ACTUAL" )
+	{
+		out.m_DisplayBPMType = Song::DISPLAY_ACTUAL;
+		out.m_fSpecifiedBPMMin = (float)root["SpecifiedBpmMin"].asDouble();
+		out.m_fSpecifiedBPMMax = (float)root["SpecifiedBpmMax"].asDouble();
 	}
 	else 
 	{

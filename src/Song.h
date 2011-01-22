@@ -56,7 +56,7 @@ class Song
 	RString m_sSongDir;
 public:
 	void SetSongDir( const RString sDir ) { m_sSongDir = sDir; }
-
+	
 	// Set when this song should be displayed in the music wheel:
 	enum SelectionDisplay
 	{ 
