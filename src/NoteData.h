@@ -105,7 +105,7 @@ public:
 			return TAP_EMPTY;
 	}
 
-
+	const TrackMap &GetTrack( int iTrack ) const { return m_TapNotes[iTrack]; }
 	inline iterator FindTapNote( unsigned iTrack, int iRow )	{ return m_TapNotes[iTrack].find( iRow ); }
 	inline const_iterator FindTapNote( unsigned iTrack, int iRow ) const { return m_TapNotes[iTrack].find( iRow ); }
 	void RemoveTapNote( unsigned iTrack, iterator it )		{ m_TapNotes[iTrack].erase( it ); }

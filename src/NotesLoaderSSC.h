@@ -4,33 +4,48 @@
 #define NotesLoaderSSC_H
 
 #include "GameConstantsAndTypes.h"
+#include "Json/Value.h"
+#include "JsonUtil.h"
+#include "NoteData.h"
+#include "NoteTypes.h"
+#include "TimingData.h"
+#include "BackgroundUtil.h"
+#include "Song.h"
+#include "Steps.h"
 
-class MsdFile;
 class Song;
 class Steps;
 class TimingData;
 
-enum SSCLoadingStates
-{
-	GETTING_SONG_INFO,
-	GETTING_STEP_INFO,
-	GETTING_STEP_TIMING_INFO,
-	GETTING_NOTE_INFO,
-	NUM_SSCLoadingStates
-};
-
 namespace SSCLoader
 {
-	bool LoadFromDir( const RString &sPath, Song &out );
-	
-	bool LoadFromSSCFile( const RString &sPath, Song &out, bool bFromCache = false );
 	void GetApplicableFiles( const RString &sPath, vector<RString> &out );
+	
+	static void Deserialize( BPMSegment &seg, const Json::Value &root );
+	static void Deserialize( StopSegment &seg, const Json::Value &root );
+	static void DeserializeDelay( StopSegment &seg, const Json::Value &root );
+	// static void Deserialize( DelaySegment &seg, const Json::Value &root );
+	static void Deserialize( TickcountSegment &seg, const Json::Value &root );
+	static void Deserialize( ComboSegment &seg, const Json::Value &root );
+	static void Deserialize( TimeSignatureSegment &seg, const Json::Value &root );
+	static void Deserialize( TimingData &seg, const Json::Value &root );
+	static void Deserialize( LyricSegment &seg, const Json::Value &root );
+	static void Deserialize( BackgroundDef &seg, const Json::Value &root );
+	static void Deserialize( BackgroundChange &seg, const Json::Value &root );
+	static void Deserialize( TapNote &seg, const Json::Value &root );
+	static void Deserialize( NoteData &seg, const Json::Value &root );
+	static void Deserialize( RadarValues &o, const Json::Value &root );
+	static void Deserialize( Steps &o, const Json::Value &root );
+	static void Deserialize( Song &out, const Json::Value &root );
+	
+	bool LoadFromJsonFile( const RString &sPath, Song &out );
+	bool LoadFromDir( const RString &sPath, Song &out );
 }
 
 #endif
 
 /*
- * (c) 2011 spinal shark collective
+ * (c) 2001-2011 Chris Danford, Glenn Maynard, spinal shark collective
  * All rights reserved.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a
