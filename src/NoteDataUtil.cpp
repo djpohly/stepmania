@@ -165,7 +165,7 @@ static void LoadFromSMNoteDataStringWithPlayer( NoteData& out, const RString &sS
 				// case 'I': tn = TAP_ORIGINAL_ITEM;			break;
 				default: 
 					/* Invalid data. We don't want to assert, since there might
-					 * simply be invalid data in an .SM, and we don't want to die
+					 * simply be invalid data in a .SSC, and we don't want to die
 					 * due to invalid data. We should probably check for this when
 					 * we load SM data for the first time ... */
 					// ASSERT(0); 

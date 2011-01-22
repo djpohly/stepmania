@@ -79,7 +79,8 @@ public:
 	void TranslateTitles();	// called by TidyUpData
 
 	bool SaveToSMFile( RString sPath, bool bSavingCache );
-	void Save();	// saves SM and DWI
+	bool SaveToSSCFile( RString sPath, bool bSavingCache );
+	void Save();	// saves SSC and SM
 	bool SaveToCacheFile();
 	bool SaveToDWIFile();
 
@@ -94,9 +95,9 @@ public:
 	const RString &GetSongDir() const { return m_sSongDir; }
 
 	/* Filename associated with this file. This will always have
-	 * an .SM extension. If we loaded an .SM, this will point to 
+	 * a .SSC extension. If we loaded a .SSC, this will point to 
 	 * it, but if we loaded any other type, this will point to a
-	 * generated .SM filename. */
+	 * generated .SSC filename. */
 	RString m_sSongFileName;
 
 	RString m_sGroupName;

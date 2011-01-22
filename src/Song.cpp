@@ -25,8 +25,10 @@
 #include "SpecialFiles.h"
 #include "NotesLoader.h"
 #include "NotesLoaderSM.h"
+#include "NotesLoaderSSC.h"
 #include "NotesWriterDWI.h"
 #include "NotesWriterSM.h"
+#include "NotesWriterSSC.h"
 #include "UnlockManager.h"
 #include "LyricsLoader.h"
 
@@ -714,7 +716,7 @@ void Song::TidyUpData()
 	{
 		/* Generated filename; this doesn't always point to a loadable file,
 		 * but instead points to the file we should write changed files to,
-		 * and will always be an .SM.
+		 * and will always be a .SSC.
 		 *
 		 * This is a little tricky. We can't always use the song title directly,
 		 * since it might contain characters we can't store in filenames. Two
@@ -728,23 +730,32 @@ void Song::TidyUpData()
 		 * but not KSFs and BMSs.
 		 *
 		 * So, let's do this (by priority):
-		 * 1. If there's an .SM file, use that filename. No reason to use anything
+		 * 1. If there's a .SSC file, use that filename. No reason to use anything
 		 *    else; it's the filename in use.
-		 * 2. If there's a .DWI, use it with a changed extension.
-		 * 3. Otherwise, use the name of the directory, since it's definitely a valid
+		 * 2. If there's an .SM file, use it with a changed extension.
+		 * 3. If there's a .DWI file, use it with a changed extension.
+		 * 4. Otherwise, use the name of the directory, since it's definitely a valid
 		 *    filename, and should always be the title of the song (unlike KSFs). */
 		m_sSongFileName = m_sSongDir;
 		vector<RString> asFileNames;
-		GetDirListing( m_sSongDir+"*.sm", asFileNames );
+		GetDirListing( m_sSongDir+"*.ssc", asFileNames );
 		if( !asFileNames.empty() )
 			m_sSongFileName += asFileNames[0];
 		else {
-			GetDirListing( m_sSongDir+"*.dwi", asFileNames );
-			if( !asFileNames.empty() ) {
-				m_sSongFileName += SetExtension( asFileNames[0], "sm" );
-			} else {
-				m_sSongFileName += Basename(m_sSongDir);
-				m_sSongFileName += ".sm";
+			GetDirListing( m_sSongDir+"*.sm", asFileNames );
+			if( !asFileNames.empty() )
+			{
+				m_sSongFileName += SetExtension( asFileNames[0], "ssc" );
+			}
+			else 
+			{
+				GetDirListing( m_sSongDir+"*.dwi", asFileNames );
+				if( !asFileNames.empty() ) {
+					m_sSongFileName += SetExtension( asFileNames[0], "ssc" );
+				} else {
+					m_sSongFileName += Basename(m_sSongDir);
+					m_sSongFileName += ".ssc";
+				}
 			}
 		}
 	}
@@ -851,9 +862,9 @@ void Song::Save()
 	TranslateTitles();
 
 	// Save the new files. These calls make backups on their own.
-	if( !SaveToSMFile(GetSongFilePath(), false) )
+	if( !SaveToSSCFile(GetSongFilePath(), false) )
 		return;
-	SaveToDWIFile();
+	// SaveToDWIFile();
 	SaveToCacheFile();
 
 	/* We've safely written our files and created backups. Rename non-SM and
@@ -935,11 +946,67 @@ bool Song::SaveToSMFile( RString sPath, bool bSavingCache )
 	return true;
 }
 
+bool Song::SaveToSSCFile( RString sPath, bool bSavingCache )
+{
+	LOG->Trace( "Song::SaveToSSCFile('%s')", sPath.c_str() );
+	
+	// If the file exists, make a backup.
+	if( !bSavingCache && IsAFile(sPath) )
+		FileCopy( sPath, sPath + ".old" );
+	
+	vector<Steps*> vpStepsToSave;
+	FOREACH_CONST( Steps*, m_vpSteps, s ) 
+	{
+		Steps *pSteps = *s;
+		if( pSteps->IsAutogen() )
+			continue; // don't write autogen notes
+		
+		// Only save steps that weren't loaded from a profile.
+		if( pSteps->WasLoadedFromProfile() )
+			continue;
+		
+		vpStepsToSave.push_back( pSteps );
+	}
+	
+	if( !SSCWriter::Write(sPath, *this, /* vpStepsToSave, */ bSavingCache) )
+		return false;
+	
+	if( !bSavingCache && g_BackUpAllSongSaves.Get() )
+	{
+		RString sExt = GetExtension( sPath );
+		RString sBackupFile = SetExtension( sPath, "" );
+		
+		time_t cur_time;
+		time( &cur_time );
+		struct tm now;
+		localtime_r( &cur_time, &now );
+		
+		sBackupFile += ssprintf( "-%04i-%02i-%02i--%02i-%02i-%02i", 
+					1900+now.tm_year, now.tm_mon+1, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec );
+		sBackupFile = SetExtension( sBackupFile, sExt );
+		sBackupFile += ssprintf( ".old" );
+		
+		if( FileCopy(sPath, sBackupFile) )
+			LOG->Trace( "Backed up %s to %s", sPath.c_str(), sBackupFile.c_str() );
+		else
+			LOG->Trace( "Failed to back up %s to %s", sPath.c_str(), sBackupFile.c_str() );
+	}
+	
+	if( !bSavingCache )
+	{
+		// Mark these steps saved to disk.
+		FOREACH( Steps*, vpStepsToSave, s )
+		(*s)->SetSavedToDisk( true );
+	}
+	
+	return true;
+}
+
 bool Song::SaveToCacheFile()
 {
 	SONGINDEX->AddCacheIndex(m_sSongDir, GetHashForDirectory(m_sSongDir));
 	const RString sPath = GetCacheFilePath();
-	if( !SaveToSMFile(sPath, true) )
+	if( !SaveToSSCFile(sPath, true) )
 		return false;
 
 	FOREACH( Steps*, m_vpSteps, pSteps )
