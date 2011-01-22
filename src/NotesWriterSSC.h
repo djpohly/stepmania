@@ -16,6 +16,10 @@ namespace SSCWriter
 {
 	static void Serialize(const BPMSegment &seg, Json::Value &root);
 	static void Serialize(const StopSegment &seg, Json::Value &root);
+	static void SerializeDelay(const StopSegment &seg, Json::Value &root);
+	static void Serialize(const TickcountSegment &seg, Json::Value &root );
+	static void Serialize(const ComboSegment &seg, Json::Value &root );
+	static void Serialize(const TimeSignatureSegment &seg, Json::Value &root );
 	static void Serialize(const TimingData &td, Json::Value &root);
 	static void Serialize(const LyricSegment &o, Json::Value &root);
 	static void Serialize(const BackgroundDef &o, Json::Value &root);

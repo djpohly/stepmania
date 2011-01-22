@@ -11,20 +11,51 @@
 
 static void SSCWriter::Serialize(const BPMSegment &seg, Json::Value &root)
 {
-	root["StartIndex"] = seg.m_iStartRow;
+	root["StartRow"] = seg.m_iStartRow;
 	root["BPS"] = seg.m_fBPS;
 }
 
 static void SSCWriter::Serialize(const StopSegment &seg, Json::Value &root)
 {
+	if (seg.m_bDelay) return;
 	root["StartRow"] = seg.m_iStartRow;
 	root["StopSeconds"] = seg.m_fStopSeconds;
+}
+
+static void SSCWriter::SerializeDelay(const StopSegment &seg, Json::Value &root)
+{
+	if (!seg.m_bDelay) return;
+	root["StartRow"] = seg.m_iStartRow;
+	root["StopSeconds"] = seg.m_fStopSeconds;
+}
+
+static void SSCWriter::Serialize(const TickcountSegment &seg, Json::Value &root )
+{
+	root["StartRow"] = seg.m_iStartRow;
+	root["Ticks"] = seg.m_iTicks;
+}
+
+static void SSCWriter::Serialize(const ComboSegment &seg, Json::Value &root )
+{
+	root["StartRow"] = seg.m_iStartRow;
+	root["ComboFactor"] = seg.m_iComboFactor;
+}
+
+static void SSCWriter::Serialize(const TimeSignatureSegment &seg, Json::Value &root )
+{
+	root["StartRow"] = seg.m_iStartRow;
+	root["Numerator"] = seg.m_iNumerator;
+	root["Denominator"] = seg.m_iDenominator;
 }
 
 static void SSCWriter::Serialize(const TimingData &td, Json::Value &root)
 {
 	JsonUtil::SerializeVectorObjects( td.m_BPMSegments, Serialize, root["BPMs"] );
 	JsonUtil::SerializeVectorObjects( td.m_StopSegments, Serialize, root["Stops"] );
+	JsonUtil::SerializeVectorObjects( td.m_StopSegments, SerializeDelay, root["Delays"] );
+	JsonUtil::SerializeVectorObjects( td.m_TickcountSegments, Serialize, root["Tickcounts"] );
+	JsonUtil::SerializeVectorObjects( td.m_ComboSegments, Serialize, root["Combos"] );
+	JsonUtil::SerializeVectorObjects( td.m_vTimeSignatureSegments, Serialize, root["TimeSignatures"] );
 }
 
 static void SSCWriter::Serialize(const LyricSegment &o, Json::Value &root)
