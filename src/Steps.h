@@ -10,6 +10,8 @@
 #include "Difficulty.h"
 #include "RageUtil_AutoPtr.h"
 #include "RageUtil_CachedObject.h"
+#include "TimingData.h" // for later.
+
 class Profile;
 class NoteData;
 struct lua_State;
@@ -68,6 +70,7 @@ public:
 	void PushSelf( lua_State *L );
 
 	StepsType			m_StepsType;
+	TimingData			m_Timing; // For later.
 
 	CachedObject<Steps> m_CachedObject;
 
