@@ -25,8 +25,10 @@
 #include "SpecialFiles.h"
 #include "NotesLoader.h"
 #include "NotesLoaderSM.h"
+#include "NotesLoaderSSC.h"
 #include "NotesWriterDWI.h"
 #include "NotesWriterSM.h"
+#include "NotesWriterSSC.h"
 #include "UnlockManager.h"
 #include "LyricsLoader.h"
 #include "GameState.h"
@@ -35,7 +37,7 @@
 #include <set>
 #include <float.h>
 
-const int FILE_CACHE_VERSION = 162;	// increment this to invalidate cache
+const int FILE_CACHE_VERSION = 163;	// increment this to invalidate cache
 
 const float DEFAULT_MUSIC_SAMPLE_LENGTH = 12.f;
 
@@ -854,8 +856,10 @@ void Song::Save()
 	// Save the new files. These calls make backups on their own.
 	if( !SaveToSMFile(GetSongFilePath(), false) )
 		return;
-	SaveToDWIFile();
-	SaveToCacheFile();
+	if( !SaveToSSCFile(GetSongFilePath(), false) )
+		return;
+	//SaveToDWIFile();
+	//SaveToCacheFile();
 
 	/* We've safely written our files and created backups. Rename non-SM and
 	 * non-DWI files to avoid confusion. */
@@ -936,11 +940,67 @@ bool Song::SaveToSMFile( RString sPath, bool bSavingCache )
 	return true;
 }
 
+bool Song::SaveToSSCFile( RString sPath, bool bSavingCache )
+{
+	LOG->Trace( "Song::SaveToSSCFile('%s')", sPath.c_str() );
+	
+	// If the file exists, make a backup.
+	if( !bSavingCache && IsAFile(sPath) )
+		FileCopy( sPath, sPath + ".old" );
+	
+	vector<Steps*> vpStepsToSave;
+	FOREACH_CONST( Steps*, m_vpSteps, s ) 
+	{
+		Steps *pSteps = *s;
+		if( pSteps->IsAutogen() )
+			continue; // don't write autogen notes
+		
+		// Only save steps that weren't loaded from a profile.
+		if( pSteps->WasLoadedFromProfile() )
+			continue;
+		
+		vpStepsToSave.push_back( pSteps );
+	}
+	
+	if( !SSCWriter::Write(sPath, *this, /* vpStepsToSave, */ bSavingCache) )
+		return false;
+	
+	if( !bSavingCache && g_BackUpAllSongSaves.Get() )
+	{
+		RString sExt = GetExtension( sPath );
+		RString sBackupFile = SetExtension( sPath, "" );
+		
+		time_t cur_time;
+		time( &cur_time );
+		struct tm now;
+		localtime_r( &cur_time, &now );
+		
+		sBackupFile += ssprintf( "-%04i-%02i-%02i--%02i-%02i-%02i", 
+					1900+now.tm_year, now.tm_mon+1, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec );
+		sBackupFile = SetExtension( sBackupFile, sExt );
+		sBackupFile += ssprintf( ".old" );
+		
+		if( FileCopy(sPath, sBackupFile) )
+			LOG->Trace( "Backed up %s to %s", sPath.c_str(), sBackupFile.c_str() );
+		else
+			LOG->Trace( "Failed to back up %s to %s", sPath.c_str(), sBackupFile.c_str() );
+	}
+	
+	if( !bSavingCache )
+	{
+		// Mark these steps saved to disk.
+		FOREACH( Steps*, vpStepsToSave, s )
+		(*s)->SetSavedToDisk( true );
+	}
+	
+	return true;
+}
+
 bool Song::SaveToCacheFile()
 {
 	SONGINDEX->AddCacheIndex(m_sSongDir, GetHashForDirectory(m_sSongDir));
 	const RString sPath = GetCacheFilePath();
-	if( !SaveToSMFile(sPath, true) )
+	if( !SaveToSSCFile(sPath, true) )
 		return false;
 
 	FOREACH( Steps*, m_vpSteps, pSteps )
