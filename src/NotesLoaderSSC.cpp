@@ -152,7 +152,7 @@ static void SSCLoader::Deserialize( Steps &o, const Json::Value &root )
 	
 	o.Decompress();
 	
-	Deserialize( out.m_Timing, root["TimingData"] ); // Split Timing.
+	Deserialize( o.m_Timing, root["TimingData"] ); // Split Timing.
 	
 	NoteData nd;
 	Deserialize( nd, root["NoteData"] );
