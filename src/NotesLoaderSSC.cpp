@@ -2,7 +2,7 @@
 #include "NotesLoaderSSC.h"
 #include "BackgroundUtil.h"
 #include "GameManager.h"
-#include "MsdFile.h"
+#include "MsdFile.h" // No JSON here.
 #include "NoteTypes.h"
 #include "RageFileManager.h"
 #include "RageLog.h"
