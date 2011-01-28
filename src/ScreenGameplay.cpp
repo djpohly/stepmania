@@ -715,6 +715,14 @@ void ScreenGameplay::Init()
 
 	if( m_pSongBackground )
 		m_pSongBackground->Init();
+	
+	{
+		FOREACH_EnabledPlayerInfo( m_vPlayerInfo, pi )
+		{
+			PlayerNumber pn = pi->GetStepsAndTrailIndex();
+			pi->GetPlayerState()->m_TimingState = GAMESTATE->m_pCurSteps[pn]->m_Timing;
+		}
+	}
 
 	FOREACH_EnabledPlayerInfo( m_vPlayerInfo, pi )
 	{
