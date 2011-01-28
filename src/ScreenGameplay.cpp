@@ -1849,7 +1849,7 @@ void ScreenGameplay::Update( float fDeltaTime )
 				}
 			}
 		}
-		
+		/*
 		// Adjust the miss combo.
 		int iRealMissCombo = INT_MAX;
 		FOREACH_EnabledPlayerInfo( m_vPlayerInfo, pi )
@@ -1858,6 +1858,7 @@ void ScreenGameplay::Update( float fDeltaTime )
 
 			iRealMissCombo = min(iRealMissCombo,iDiv);
 		}
+		 */
 		// update give up
 		bool bGiveUpTimerFired = !m_GiveUpTimer.IsZero() && m_GiveUpTimer.Ago() > 2.5f;
 		bool bAllHumanHaveBigMissCombo = FAIL_ON_MISS_COMBO.GetValue() != -1 && STATSMAN->m_CurStageStats.GetMinimumMissCombo() >= FAIL_ON_MISS_COMBO;
