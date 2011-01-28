@@ -13,8 +13,7 @@ class TimingData;
 namespace SMLoader
 {
 	bool LoadFromDir( const RString &sPath, Song &out );
-	void TidyUpData( Song &song, bool bFromCache );
-
+	
 	bool LoadFromSMFile( const RString &sPath, Song &out, bool bFromCache = false );
 	void GetApplicableFiles( const RString &sPath, vector<RString> &out );
 	bool LoadTimingFromFile( const RString &fn, TimingData &out );

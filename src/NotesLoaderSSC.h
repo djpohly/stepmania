@@ -25,6 +25,10 @@ namespace SSCLoader
 	
 	bool LoadFromSSCFile( const RString &sPath, Song &out, bool bFromCache = false );
 	void GetApplicableFiles( const RString &sPath, vector<RString> &out );
+	bool LoadEditFromFile( RString sEditFilePath, ProfileSlot slot, bool bAddStepsToSong );
+	bool LoadEditFromMsd( const MsdFile &msd, const RString &sEditFilePath, ProfileSlot slot, bool bAddStepsToSong );
+	void TidyUpData( Song &song, bool bFromCache );
+	
 }
 
 #endif

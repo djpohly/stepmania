@@ -4,6 +4,7 @@
 #include "GameManager.h"
 #include "MsdFile.h" // No JSON here.
 #include "NoteTypes.h"
+#include "NotesLoaderSM.h" // edit file holdover.
 #include "RageFileManager.h"
 #include "RageLog.h"
 #include "RageUtil.h"
@@ -13,6 +14,62 @@
 #include "PrefsManager.h"
 
 const int MAX_EDIT_STEPS_SIZE_BYTES = 60*1024; // 60 KB
+
+// Holdover from .sm format, mainly to make edits behave.
+static void LoadFromSMTokens( 
+			     RString sStepsType, 
+			     RString sDescription,
+			     RString sDifficulty,
+			     RString sMeter,
+			     RString sRadarValues,
+			     RString sNoteData,
+			     Steps &out
+			     )
+{
+	// we're loading from disk, so this is by definition already saved:
+	out.SetSavedToDisk( true );
+	
+	Trim( sStepsType );
+	Trim( sDescription );
+	Trim( sDifficulty );
+	Trim( sNoteData );
+	
+	//	LOG->Trace( "Steps::LoadFromSMTokens()" );
+	
+	// insert stepstype hacks from GameManager.cpp here? -aj
+	out.m_StepsType = GAMEMAN->StringToStepsType( sStepsType );
+	out.SetDescription( sDescription );
+	out.SetDifficulty( DwiCompatibleStringToDifficulty(sDifficulty) );
+	
+	// Handle hacks that originated back when StepMania didn't have
+	// Difficulty_Challenge. (At least v1.64, possibly v3.0 final...)
+	if( out.GetDifficulty() == Difficulty_Hard )
+	{
+		// HACK: SMANIAC used to be Difficulty_Hard with a special description.
+		if( sDescription.CompareNoCase("smaniac") == 0 ) 
+			out.SetDifficulty( Difficulty_Challenge );
+		
+		// HACK: CHALLENGE used to be Difficulty_Hard with a special description.
+		if( sDescription.CompareNoCase("challenge") == 0 ) 
+			out.SetDifficulty( Difficulty_Challenge );
+	}
+	
+	out.SetMeter( atoi(sMeter) );
+	vector<RString> saValues;
+	split( sRadarValues, ",", saValues, true );
+	if( saValues.size() == NUM_RadarCategory * NUM_PLAYERS )
+	{
+		RadarValues v[NUM_PLAYERS];
+		FOREACH_PlayerNumber( pn )
+		FOREACH_ENUM( RadarCategory, rc )
+		v[pn][rc] = StringToFloat( saValues[pn*NUM_RadarCategory + rc] );
+		out.SetCachedRadarValues( v );
+	}
+	
+	out.SetSMNoteData( sNoteData );
+	
+	out.TidyUpData();
+}
 
 bool LoadFromBGSSCChangesString( BackgroundChange &change, const RString &sBGChangeExpression )
 {
@@ -117,7 +174,6 @@ bool SSCLoader::LoadFromSSCFile( const RString &sPath, Song &out, bool bFromCach
 	
 	for( unsigned i = 0; i < values; i++ )
 	{
-		int iNumParams = msd.GetNumParams(i);
 		const MsdFile::value_t &sParams = msd.GetValue(i);
 		RString sValueName = sParams[0];
 		sValueName.MakeUpper();
@@ -883,6 +939,163 @@ bool SSCLoader::LoadFromSSCFile( const RString &sPath, Song &out, bool bFromCach
 void SSCLoader::GetApplicableFiles( const RString &sPath, vector<RString> &out )
 {
 	GetDirListing( sPath + RString("*.ssc"), out );
+}
+
+bool SSCLoader::LoadEditFromFile( RString sEditFilePath, ProfileSlot slot, bool bAddStepsToSong )
+{
+	LOG->Trace( "SSCLoader::LoadEditFromFile(%s)", sEditFilePath.c_str() );
+	
+	int iBytes = FILEMAN->GetFileSizeInBytes( sEditFilePath );
+	if( iBytes > MAX_EDIT_STEPS_SIZE_BYTES )
+	{
+		LOG->UserLog( "Edit file", sEditFilePath, "is unreasonably large. It won't be loaded." );
+		return false;
+	}
+	
+	MsdFile msd;
+	if( !msd.ReadFile( sEditFilePath, true ) ) // unescape
+	{
+		LOG->UserLog( "Edit file", sEditFilePath, "couldn't be opened: %s", msd.GetError().c_str() );
+		return false;
+	}
+	
+	return LoadEditFromMsd( msd, sEditFilePath, slot, bAddStepsToSong );
+}
+
+bool SSCLoader::LoadEditFromMsd( const MsdFile &msd, const RString &sEditFilePath, ProfileSlot slot, bool bAddStepsToSong )
+{
+	Song* pSong = NULL;
+	
+	for( unsigned i=0; i<msd.GetNumValues(); i++ )
+	{
+		int iNumParams = msd.GetNumParams(i);
+		const MsdFile::value_t &sParams = msd.GetValue(i);
+		RString sValueName = sParams[0];
+		sValueName.MakeUpper();
+		
+		// handle the data
+		if( sValueName=="SONG" )
+		{
+			if( pSong )
+			{
+				LOG->UserLog( "Edit file", sEditFilePath, "has more than one #SONG tag." );
+				return false;
+			}
+			
+			RString sSongFullTitle = sParams[1];
+			sSongFullTitle.Replace( '\\', '/' );
+			
+			pSong = SONGMAN->FindSong( sSongFullTitle );
+			if( pSong == NULL )
+			{
+				LOG->UserLog( "Edit file", sEditFilePath, "requires a song \"%s\" that isn't present.", sSongFullTitle.c_str() );
+				return false;
+			}
+			
+			if( pSong->GetNumStepsLoadedFromProfile(slot) >= MAX_EDITS_PER_SONG_PER_PROFILE )
+			{
+				LOG->UserLog( "Song file", sSongFullTitle, "already has the maximum number of edits allowed for ProfileSlotP%d.", slot+1 );
+				return false;
+			}
+		}
+		
+		else if( sValueName=="NOTES" )
+		{
+			// TODO: deal with transferring the timing data if required.
+			if( pSong == NULL )
+			{
+				LOG->UserLog( "Edit file", sEditFilePath, "doesn't have a #SONG tag preceeding the first #NOTES tag." );
+				return false;
+			}
+			
+			if( iNumParams < 7 )
+			{
+				LOG->UserLog( "Edit file", sEditFilePath, "has %d fields in a #NOTES tag, but should have at least 7.", iNumParams );
+				continue;
+			}
+			
+			if( !bAddStepsToSong )
+				return true;
+			
+			Steps* pNewNotes = new Steps;
+			LoadFromSMTokens( 
+					 sParams[1], sParams[2], sParams[3], sParams[4], sParams[5], sParams[6],
+					 *pNewNotes);
+			
+			pNewNotes->SetLoadedFromProfile( slot );
+			pNewNotes->SetDifficulty( Difficulty_Edit );
+			pNewNotes->SetFilename( sEditFilePath );
+			
+			if( pSong->IsEditAlreadyLoaded(pNewNotes) )
+			{
+				LOG->UserLog( "Edit file", sEditFilePath, "is a duplicate of another edit that was already loaded." );
+				SAFE_DELETE( pNewNotes );
+				return false;
+			}
+			
+			pSong->AddSteps( pNewNotes );
+			return true; // Only allow one Steps per edit file!
+		}
+		else
+		{
+			LOG->UserLog( "Edit file", sEditFilePath, "has an unexpected value \"%s\".", sValueName.c_str() );
+		}
+	}
+	
+	return true;
+}
+
+void SSCLoader::TidyUpData( Song &song, bool bFromCache )
+{
+	/*
+	 * Hack: if the song has any changes at all (so it won't use a random BGA)
+	 * and doesn't end with "-nosongbg-", add a song background BGC.  Remove
+	 * "-nosongbg-" if it exists.
+	 *
+	 * This way, songs that were created earlier, when we added the song BG
+	 * at the end by default, will still behave as expected; all new songs will
+	 * have to add an explicit song BG tag if they want it.  This is really a
+	 * formatting hack only; nothing outside of SMLoader ever sees "-nosongbg-".
+	 */
+	vector<BackgroundChange> &bg = song.GetBackgroundChanges(BACKGROUND_LAYER_1);
+	if( !bg.empty() )
+	{
+		/* BGChanges have been sorted. On the odd chance that a BGChange exists
+		 * with a very high beat, search the whole list. */
+		bool bHasNoSongBgTag = false;
+		
+		for( unsigned i = 0; !bHasNoSongBgTag && i < bg.size(); ++i )
+		{
+			if( !bg[i].m_def.m_sFile1.CompareNoCase(NO_SONG_BG_FILE) )
+			{
+				bg.erase( bg.begin()+i );
+				bHasNoSongBgTag = true;
+			}
+		}
+		
+		// If there's no -nosongbg- tag, add the song BG.
+		if( !bHasNoSongBgTag ) do
+		{
+			/* If we're loading cache, -nosongbg- should always be in there. We
+			 * must not call IsAFile(song.GetBackgroundPath()) when loading cache. */
+			if( bFromCache )
+				break;
+			
+			/* If BGChanges already exist after the last beat, don't add the
+			 * background in the middle. */
+			if( !bg.empty() && bg.back().m_fStartBeat-0.0001f >= song.m_fLastBeat )
+				break;
+			
+			// If the last BGA is already the song BGA, don't add a duplicate.
+			if( !bg.empty() && !bg.back().m_def.m_sFile1.CompareNoCase(song.m_sBackgroundFile) )
+				break;
+			
+			if( !IsAFile( song.GetBackgroundPath() ) )
+				break;
+			
+			bg.push_back( BackgroundChange(song.m_fLastBeat,song.m_sBackgroundFile) );
+		} while(0);
+	}
 }
 
 /*

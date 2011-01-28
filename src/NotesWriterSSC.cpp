@@ -199,7 +199,7 @@ static void WriteGlobalTags( RageFile &f, const Song &out )
 			f.PutLine( BackgroundChangeToString(*bgc)+"," );
 
 		/* If there's an animation plan at all, add a dummy "-nosongbg-" tag to indicate that
-		 * this file doesn't want a song BG entry added at the end.  See SMLoader::TidyUpData.
+		 * this file doesn't want a song BG entry added at the end.  See SSCLoader::TidyUpData.
 		 * This tag will be removed on load.  Add it at a very high beat, so it won't cause
 		 * problems if loaded in older versions. */
 		if( b==0 && !out.GetBackgroundChanges(b).empty() )

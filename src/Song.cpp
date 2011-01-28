@@ -222,8 +222,8 @@ bool Song::LoadFromSongDir( RString sDir )
 	if( bUseCache )
 	{
 //		LOG->Trace( "Loading '%s' from cache file '%s'.", m_sSongDir.c_str(), GetCacheFilePath().c_str() );
-		SMLoader::LoadFromSMFile( sCacheFilePath, *this, true );
-		SMLoader::TidyUpData( *this, true );
+		SSCLoader::LoadFromSSCFile( sCacheFilePath, *this, true );
+		SSCLoader::TidyUpData( *this, true );
 	}
 	else
 	{
