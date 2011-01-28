@@ -25,6 +25,7 @@
 #include "SpecialFiles.h"
 #include "NotesLoader.h"
 #include "NotesLoaderSM.h"
+#include "NotesLoaderSSC.h"
 #include "NotesWriterDWI.h"
 #include "NotesWriterSM.h"
 #include "UnlockManager.h"
@@ -35,7 +36,7 @@
 #include <set>
 #include <float.h>
 
-const int FILE_CACHE_VERSION = 162;	// increment this to invalidate cache
+const int FILE_CACHE_VERSION = 166;	// increment this to invalidate cache
 
 const float DEFAULT_MUSIC_SAMPLE_LENGTH = 12.f;
 
@@ -854,8 +855,10 @@ void Song::Save()
 	// Save the new files. These calls make backups on their own.
 	if( !SaveToSMFile(GetSongFilePath(), false) )
 		return;
-	SaveToDWIFile();
-	SaveToCacheFile();
+	if( !SaveToSSCFile(GetSongFilePath(), false) )
+		return;
+	//SaveToDWIFile();
+	//SaveToCacheFile();
 
 	/* We've safely written our files and created backups. Rename non-SM and
 	 * non-DWI files to avoid confusion. */
@@ -934,6 +937,11 @@ bool Song::SaveToSMFile( RString sPath, bool bSavingCache )
 	}
 
 	return true;
+}
+
+bool Song::SaveToSSCFile( RString sPath, bool bSavingCache )
+{
+	return true; // Stub.
 }
 
 bool Song::SaveToCacheFile()
