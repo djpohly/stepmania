@@ -153,8 +153,8 @@ struct ArrowSpacingSegment
 struct ComboSegment
 {
 	ComboSegment() : m_iStartRow(0), m_iComboFactor(1) { }
-	ComboSegment( float s, int t ) { m_iStartRow = max(0, s); m_iComboFactor = max(0, t); }
-	float m_iStartRow;
+	ComboSegment( int s, int t ) { m_iStartRow = max(0, s); m_iComboFactor = max(0, t); }
+	int m_iStartRow;
 	int m_iComboFactor;
 
 	bool operator==( const ComboSegment &other ) const
