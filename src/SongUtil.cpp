@@ -405,7 +405,7 @@ static bool CompareSongPointersByLength( const Song *pSong1, const Song *pSong2 
 	float length1, length2;
 	length1 = pSong1->m_fMusicLengthSeconds;
 	length2 = pSong2->m_fMusicLengthSeconds;
-
+	
 	if( length1 < length2 )
 		return true;
 	if( length1 > length2 )
@@ -562,7 +562,7 @@ RString SongUtil::GetSectionNameFromSongAndSort( const Song* pSong, SortOrder so
 			default:	ASSERT(0);
 			}
 			s = MakeSortString(s);	// resulting string will be uppercase
-
+			
 			if( s.empty() )
 				return RString();
 			else if( s[0] >= '0' && s[0] <= '9' )
@@ -740,7 +740,7 @@ RString SongUtil::MakeUniqueEditDescription( const Song *pSong, StepsType st, co
 		if( IsEditDescriptionUnique(pSong, st, sTemp, NULL) )
 			return sTemp;
 	}
-
+	
 	// Edit limit guards should keep us from ever having more than 1000 edits per song.
 	ASSERT(0);
 	return RString();
@@ -975,7 +975,7 @@ void SongID::FromSong( const Song *p )
 		sDir = p->GetSongDir();
 	else
 		sDir = "";
-
+	
 	// HACK for backwards compatibility:
 	// Strip off leading "/".  2005/05/21 file layer changes added a leading slash.
 	if( sDir.Left(1) == "/" )

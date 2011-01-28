@@ -9,6 +9,7 @@
 #include "XmlFile.h"
 #include "UnlockManager.h"
 #include "SongUtil.h"
+#include "GameState.h"
 
 
 bool StepsCriteria::Matches( const Song *pSong, const Steps *pSteps ) const
@@ -145,7 +146,7 @@ bool StepsUtil::CompareNotesPointersByRadarValues(const Steps* pSteps1, const St
 {
 	float fScore1 = 0;
 	float fScore2 = 0;
-
+	
 	fScore1 += pSteps1->GetRadarValues( PLAYER_1 )[RadarCategory_TapsAndHolds];
 	fScore2 += pSteps2->GetRadarValues( PLAYER_1 )[RadarCategory_TapsAndHolds];
 
@@ -223,14 +224,15 @@ void StepsID::FromSteps( const Steps *p )
 	{
 		st = p->m_StepsType;
 		dc = p->GetDifficulty();
+		sDescription = "";
+		
 		if( dc == Difficulty_Edit )
 		{
-			sDescription = p->GetDescription();
 			uHash = p->GetHash();
+			sDescription = p->GetDifficulty();
 		}
 		else
 		{
-			sDescription = "";
 			uHash = 0;
 		}
 	}

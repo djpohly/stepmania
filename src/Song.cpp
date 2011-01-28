@@ -746,14 +746,14 @@ void Song::TidyUpData()
 		{
 			GetDirListing( m_sSongDir+"*.sm", asFileNames );
 			if( !asFileNames.empty() )
-				m_sSongFileName += asFileNames[0];
+				m_sSongFileName += SetExtension( asFileNames[0], "ssc" );
 			else {
 				GetDirListing( m_sSongDir+"*.dwi", asFileNames );
 				if( !asFileNames.empty() ) {
-					m_sSongFileName += SetExtension( asFileNames[0], "sm" );
+					m_sSongFileName += SetExtension( asFileNames[0], "ssc" );
 				} else {
 					m_sSongFileName += Basename(m_sSongDir);
-					m_sSongFileName += ".sm";
+					m_sSongFileName += ".ssc";
 				}
 			}
 		}

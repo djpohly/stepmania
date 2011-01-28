@@ -716,6 +716,7 @@ bool SSCLoader::LoadFromSSCFile( const RString &sPath, Song &out, bool bFromCach
 				
 				else if( sValueName=="NOTES" )
 				{
+					state = GETTING_SONG_INFO;
 					pNewNotes->m_Timing = out.m_Timing;
 					pNewNotes->SetSMNoteData( sParams[1] );
 					pNewNotes->TidyUpData();
@@ -935,6 +936,7 @@ bool SSCLoader::LoadFromSSCFile( const RString &sPath, Song &out, bool bFromCach
 				
 				else if( sValueName=="NOTES" )
 				{
+					state = GETTING_SONG_INFO;
 					pNewNotes->m_Timing.m_fBeat0OffsetInSeconds = out.m_Timing.m_fBeat0OffsetInSeconds;
 					pNewNotes->SetSMNoteData( sParams[1] );
 					pNewNotes->TidyUpData();
@@ -943,7 +945,7 @@ bool SSCLoader::LoadFromSSCFile( const RString &sPath, Song &out, bool bFromCach
 			}
 		}
 	}
-	return false;
+	return true;
 }
 
 void SSCLoader::GetApplicableFiles( const RString &sPath, vector<RString> &out )

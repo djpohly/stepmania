@@ -90,6 +90,8 @@ namespace SongUtil
 	Steps* GetStepsByDescription(	const Song *pSong, StepsType st, RString sDescription );
 	Steps* GetClosestNotes(		const Song *pSong, StepsType st, Difficulty dc, bool bIgnoreLocked=false );
 
+	void LockSteps( Song* pSong );
+	
 	void AdjustDuplicateSteps( Song *pSong ); // part of TidyUpData
 	void DeleteDuplicateSteps( Song *pSong, vector<Steps*> &vSteps );
 
