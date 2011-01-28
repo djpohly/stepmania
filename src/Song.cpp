@@ -781,6 +781,18 @@ void Song::TidyUpData()
 		seg.m_iTicks = 2;
 		m_Timing.m_TickcountSegments.push_back( seg );
 	}
+	
+	/*
+	 * If no combo segments, assume the whole song is 1 combo per
+	 * (metric settings here).
+	 */
+	if( m_Timing.m_ComboSegments.empty() )
+	{
+		ComboSegment seg;
+		seg.m_iStartRow = 0;
+		seg.m_iCombo = 1;
+		m_Timing.m_ComboSegments.push_back( seg );
+	}
 }
 
 void Song::TranslateTitles()
