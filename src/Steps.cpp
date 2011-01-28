@@ -166,6 +166,41 @@ void Steps::TidyUpData()
 
 	if( GetMeter() < 1) // meter is invalid
 		SetMeter( int(PredictMeter()) );
+	
+	// If no time signature specified, assume 4/4 time for the whole song.
+	if( m_Timing.m_vTimeSignatureSegments.empty() )
+	{
+		TimeSignatureSegment seg;
+		seg.m_iStartRow = 0;
+		seg.m_iNumerator = 4;
+		seg.m_iDenominator = 4;
+		m_Timing.m_vTimeSignatureSegments.push_back( seg );
+	}
+	
+	/*
+	 * Likewise, if no tickcount signature is specified, assume 2 ticks
+	 * per beat for the entire song. The default of 2 is chosen more
+	 * for compatibility with the Pump Pro series than anything else.
+	 */
+	if( m_Timing.m_TickcountSegments.empty() )
+	{
+		TickcountSegment seg;
+		seg.m_iStartRow = 0;
+		seg.m_iTicks = 2;
+		m_Timing.m_TickcountSegments.push_back( seg );
+	}
+	
+	/*
+	 * If no combo segments, assume the whole song is 1 combo per
+	 * (metric settings here).
+	 */
+	if( m_Timing.m_ComboSegments.empty() )
+	{
+		ComboSegment seg;
+		seg.m_iStartRow = 0;
+		seg.m_iComboFactor = 1;
+		m_Timing.m_ComboSegments.push_back( seg );
+	}
 }
 
 void Steps::CalculateRadarValues( float fMusicLengthSeconds )
