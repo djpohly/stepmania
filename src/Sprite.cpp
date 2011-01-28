@@ -141,7 +141,7 @@ void Sprite::LoadFromNode( const XNode* pNode )
 	{
 		// Load the texture
 		LoadFromTexture( sPath );
-
+		
 		LoadStatesFromTexture();
 
 		// Read in frames and delays from the sprite file, 
@@ -322,7 +322,7 @@ void Sprite::LoadStatesFromTexture()
 		m_States.push_back( newState );
 		return;
 	}
-
+	
 	for( int i=0; i<m_pTexture->GetNumFrames(); ++i )
 	{
 		State newState;
@@ -1014,7 +1014,7 @@ void Sprite::CropTo( float fWidth, float fHeight )
 		{
 			float fPercentageToCutOff = (this->GetZoomedWidth() - fWidth) / this->GetZoomedWidth();
 			float fPercentageToCutOffEachSide = fPercentageToCutOff / 2;
-
+			
 			// generate a rectangle with new texture coordinates
 			RectF fCustomImageRect( 
 				fPercentageToCutOffEachSide, 
@@ -1027,7 +1027,7 @@ void Sprite::CropTo( float fWidth, float fHeight )
 		{
 			float fPercentageToCutOff = (this->GetZoomedHeight() - fHeight) / this->GetZoomedHeight();
 			float fPercentageToCutOffEachSide = fPercentageToCutOff / 2;
-
+			
 			// generate a rectangle with new texture coordinates
 			RectF fCustomImageRect( 
 				0, 

@@ -42,7 +42,7 @@ void Style::GetTransformedNoteDataForStyle( PlayerNumber pn, const NoteData& ori
 		ColumnInfo colInfo = m_ColumnInfo[pn][col];
 		iNewToOriginalTrack[col] = colInfo.track;
 	}
-
+	
 	noteDataOut.LoadTransformed( original, m_iColsPerPlayer, iNewToOriginalTrack );
 }
 

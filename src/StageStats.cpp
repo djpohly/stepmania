@@ -95,7 +95,7 @@ void StageStats::AddStats( const StageStats& other )
 
 	m_bGaveUp |= other.m_bGaveUp;
 	m_bUsedAutoplay |= other.m_bUsedAutoplay;
-
+	
 	m_fGameplaySeconds += other.m_fGameplaySeconds;
 	m_fStepsSeconds += other.m_fStepsSeconds;
 
@@ -277,7 +277,7 @@ void StageStats::FinalizeScores( bool bSummary )
 			Steps* pSteps = GAMESTATE->m_pCurSteps[p];
 			pHSL = &pProfile->GetStepsHighScoreList( pSong, pSteps );
 		}
-
+		
 		vector<HighScore>::const_iterator iter = find( pHSL->vHighScores.begin(), pHSL->vHighScores.end(), hs );
 		if( iter == pHSL->vHighScores.end() )
 			m_player[p].m_iMachineHighScoreIndex = -1;
@@ -355,7 +355,6 @@ public:
 			lua_rawseti( L, -2, i+1 );
 		}
 		return 1;
-
 	}
 	static int GetGameplaySeconds( T* p, lua_State *L )	{ lua_pushnumber(L, p->m_fGameplaySeconds); return 1; }
 	static int OnePassed( T* p, lua_State *L )		{ lua_pushboolean(L, p->OnePassed()); return 1; }
