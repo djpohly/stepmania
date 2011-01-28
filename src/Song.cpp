@@ -790,7 +790,7 @@ void Song::TidyUpData()
 	{
 		ComboSegment seg;
 		seg.m_iStartRow = 0;
-		seg.m_iCombo = 1;
+		seg.m_iComboFactor = 1;
 		m_Timing.m_ComboSegments.push_back( seg );
 	}
 }
