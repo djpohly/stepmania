@@ -719,7 +719,6 @@ bool SSCLoader::LoadFromSSCFile( const RString &sPath, Song &out, bool bFromCach
 					pNewNotes->m_Timing = out.m_Timing;
 					pNewNotes->SetSMNoteData( sParams[1] );
 					pNewNotes->TidyUpData();
-					; // Copy timing from song to steps.
 				}
 				else if( sValueName=="BPMS" )
 				{
@@ -928,6 +927,17 @@ bool SSCLoader::LoadFromSSCFile( const RString &sPath, Song &out, bool bFromCach
 						ComboSegment new_seg( BeatToNoteRow( fComboBeat ), iCombos );
 						pNewNotes->m_Timing.AddComboSegment( new_seg );
 					}
+				}
+				else if( sValueName=="OFFSET" )
+				{
+					pNewNotes->m_Timing.m_fBeat0OffsetInSeconds = StringToFloat( sParams[1] );
+				}
+				
+				else if( sValueName=="NOTES" )
+				{
+					pNewNotes->m_Timing.m_fBeat0OffsetInSeconds = out.m_Timing.m_fBeat0OffsetInSeconds;
+					pNewNotes->SetSMNoteData( sParams[1] );
+					pNewNotes->TidyUpData();
 				}
 				break;
 			}

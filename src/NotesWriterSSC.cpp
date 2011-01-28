@@ -340,6 +340,8 @@ static RString GetSSCNotesTag( const Song &song, const Steps &in, bool bSavingCa
 	}
 	lines.push_back( ssprintf( "#COMBOS:%s;", join("\n,", asComboValues).c_str() ) );
 	
+	lines.push_back( ssprintf( "#OFFSET:%.6f;", in.m_Timing.m_fBeat0OffsetInSeconds ) );
+	
 	RString sNoteData;
 	in.GetSMNoteData( sNoteData );
 
