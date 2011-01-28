@@ -1,4 +1,4 @@
-/* MsdFile - Read .SM, .DWI, and .MSD files. */
+/* MsdFile - Read .SM, .SSC, .DWI, and .MSD files. */
 
 #ifndef MSDFILE_H
 #define MSDFILE_H

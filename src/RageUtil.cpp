@@ -638,7 +638,7 @@ RString SmEscape( const char *cUnescaped, int len )
 		// Other characters we could theoretically escape:
 		// NotesWriterSM.cpp used to claim ',' should be escaped, but there was no explanation why
 		// '#' is both a control character and a valid part of a parameter.  The only way for there to be
-		//   any confusion is in a misformatted .sm file, though, so it is unnecessary to escape it.
+		//   any confusion is in a misformatted .ssc file, though, so it is unnecessary to escape it.
 		if( cUnescaped[i] == '/' && i + 1 < len && cUnescaped[i + 1] == '/' )
 		{
 			answer += "\\/\\/";

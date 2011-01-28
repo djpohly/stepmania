@@ -77,7 +77,7 @@ void ScreenEditMenu::HandleScreenMessage( const ScreenMessage SM )
 		pSong->DeleteSteps( pStepsToDelete );
 		SONGMAN->Invalidate( pSong );
 
-		/* Only save to the main .SM file if the steps we're deleting were loaded
+		/* Only save to the main .SSC file if the steps we're deleting were loaded
 		 * from it. */
 		if( bSaveSong )
 		{

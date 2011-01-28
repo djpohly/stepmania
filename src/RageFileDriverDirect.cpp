@@ -80,8 +80,8 @@ static RString MakeTempFilename( const RString &sPath )
 {
 	/* "Foo/bar/baz" -> "Foo/bar/new.baz.new".  Both prepend and append: we don't
 	 * want a wildcard search for the filename to match (foo.txt.new matches foo.txt*),
-	 * and we don't want to have the same extension (so "new.foo.sm" doesn't show up
-	 * in *.sm). */
+	 * and we don't want to have the same extension (so "new.foo.ssc" doesn't show up
+	 * in *.ssc). */
 	return Dirname(sPath) + "new." + Basename(sPath) + ".new";
 }
 
