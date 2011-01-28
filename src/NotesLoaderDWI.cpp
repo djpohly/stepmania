@@ -540,6 +540,7 @@ bool DWILoader::LoadFromDir( const RString &sPath_, Song &out, set<RString> &Bla
 			 0==stricmp(sValueName,"SOLO") )
 		{
 			Steps* pNewNotes = new Steps;
+			pNewNotes->m_Timing = out.m_Timing;
 			LoadFromDWITokens( 
 				sParams[0], 
 				sParams[1], 
