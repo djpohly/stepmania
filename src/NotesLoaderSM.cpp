@@ -734,6 +734,7 @@ bool SMLoader::LoadFromSMFile( const RString &sPath, Song &out, bool bFromCache 
 			}
 
 			Steps* pNewNotes = new Steps;
+			pNewNotes->m_Timing = out.m_Timing;
 			LoadFromSMTokens( 
 				sParams[1], 
 				sParams[2], 
