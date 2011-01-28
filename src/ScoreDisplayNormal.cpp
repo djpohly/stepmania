@@ -54,7 +54,7 @@ void ScoreDisplayNormal::SetScore( int iNewScore )
 	// Play some games to display the correct score -- the actual internal 
 	// score does not change at all but the displayed one can (ie: displayed 
 	// score for subtractive is MaxScore - score).
-
+	
 	int iMaxScore = STATSMAN->m_CurStageStats.m_player[pn].m_iMaxScore;
 	int iCurMaxScore = STATSMAN->m_CurStageStats.m_player[pn].m_iCurMaxScore;
 

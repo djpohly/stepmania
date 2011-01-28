@@ -33,7 +33,7 @@ int GetNumNWithScore( const NoteData &in, TapNoteScore tns, int MinTaps, int iSt
 	FOREACH_NONEMPTY_ROW_ALL_TRACKS_RANGE( in, r, iStartRow, iEndRow )
 	{
 		int iNumNotesInRow = in.GetNumTracksWithTapOrHoldHead( r );
-		TapNoteScore tnsRow = NoteDataWithScoring::LastTapNoteWithResult( in, r ).result.tns;
+		TapNoteScore tnsRow = NoteDataWithScoring::LastTapNoteWithResult( in, r, PLAYER_INVALID ).result.tns;
 
 		if( iNumNotesInRow >= MinTaps && tnsRow >= tns )
 			iNumSuccessfulDoubles++;
@@ -164,7 +164,7 @@ int LastTapNoteScoreTrack( const NoteData &in, unsigned iRow, PlayerNumber pn )
 
 		float tm = tn.result.fTapNoteOffset;
 		if(tm < scoretime) continue;
-
+		
 		scoretime = tm;
 		best_track = t;
 	}
@@ -212,7 +212,7 @@ int MinTapNoteScoreTrack( const NoteData &in, unsigned iRow, PlayerNumber pn )
 
 }
 
-const TapNote &NoteDataWithScoring::LastTapNoteWithResult( const NoteData &in, unsigned iRow )
+const TapNote &NoteDataWithScoring::LastTapNoteWithResult( const NoteData &in, unsigned iRow, PlayerNumber pn )
 {
 	// Allow this to be configurable between LastTapNoteScoreTrack and
 	// MinTapNoteScore; this change inspired by PumpMania (Zmey, et al) -aj
@@ -231,7 +231,7 @@ const TapNote &NoteDataWithScoring::LastTapNoteWithResult( const NoteData &in, u
 			break;
 	}
 	*/
-	int iTrack = LastTapNoteScoreTrack( in, iRow, PLAYER_INVALID );
+	int iTrack = LastTapNoteScoreTrack( in, iRow, pn );
 	if( iTrack == -1 )
 		return TAP_EMPTY;
 
@@ -241,7 +241,7 @@ const TapNote &NoteDataWithScoring::LastTapNoteWithResult( const NoteData &in, u
 
 /* Return the minimum tap score of a row.  If the row isn't complete (not all
  * taps have been hit), return TNS_None or TNS_Miss. */
-TapNoteScore NoteDataWithScoring::MinTapNoteScore( const NoteData &in, unsigned row )
+TapNoteScore NoteDataWithScoring::MinTapNoteScore( const NoteData &in, unsigned row, PlayerNumber pn )
 {
 	//LOG->Trace("Hey I'm NoteDataWithScoring::MinTapNoteScore");
 	TapNoteScore score = TNS_W1;
@@ -258,9 +258,9 @@ TapNoteScore NoteDataWithScoring::MinTapNoteScore( const NoteData &in, unsigned 
 	return score;
 }
 
-bool NoteDataWithScoring::IsRowCompletelyJudged( const NoteData &in, unsigned row )
+bool NoteDataWithScoring::IsRowCompletelyJudged( const NoteData &in, unsigned row, PlayerNumber pn )
 {
-	return MinTapNoteScore( in, row ) >= TNS_Miss;
+	return MinTapNoteScore( in, row, pn ) >= TNS_Miss;
 }
 
 namespace

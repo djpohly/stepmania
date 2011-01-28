@@ -46,7 +46,7 @@ public:
 	}
 
 	PlayerController	m_PlayerController;
-
+	
 	SampleHistory m_EffectHistory;
 
 	// Used in Battle and Rave

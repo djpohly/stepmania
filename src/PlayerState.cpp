@@ -25,7 +25,7 @@ void PlayerState::Reset()
 	m_iLastHopoNoteCol = -1;
 
 	m_PlayerController = PC_HUMAN;
-
+	
 	m_iCpuSkill = 5;
 
 	m_iLastPositiveSumOfAttackLevels = 0;

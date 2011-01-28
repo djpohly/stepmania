@@ -154,7 +154,7 @@ void ScoreKeeperNormal::Load(
 		NoteDataUtil::TransformNoteData( nd, m_pPlayerState->m_PlayerOptions.GetStage(), pSteps->m_StepsType );
 		RadarValues rvPost;
 		NoteDataUtil::CalculateRadarValues( nd, pSong->m_fMusicLengthSeconds, rvPost );
-
+		
 		iTotalPossibleDancePoints += this->GetPossibleDancePoints( rvPre, rvPost );
 		iTotalPossibleGradePoints += this->GetPossibleGradePoints( rvPre, rvPost );
 	}
@@ -671,7 +671,7 @@ void ScoreKeeperNormal::HandleTapRowScore( const NoteData &nd, int iRow )
 
 	m_iNumNotesHitThisRow = iNumTapsInRow;
 
-	TapNoteScore scoreOfLastTap = NoteDataWithScoring::LastTapNoteWithResult( nd, iRow ).result.tns;
+	TapNoteScore scoreOfLastTap = NoteDataWithScoring::LastTapNoteWithResult( nd, iRow, m_pPlayerState->m_PlayerNumber ).result.tns;
 	HandleTapNoteScoreInternal( scoreOfLastTap, TNS_W1 );
 
 	if ( GAMESTATE->GetCurrentGame()->m_bCountNotesSeparately )
@@ -752,7 +752,7 @@ void ScoreKeeperNormal::HandleTapRowScore( const NoteData &nd, int iRow )
 
 	// TODO: Remove indexing with PlayerNumber
 	PlayerNumber pn = m_pPlayerState->m_PlayerNumber;
-	float offset = NoteDataWithScoring::LastTapNoteWithResult( nd, iRow ).result.fTapNoteOffset;
+	float offset = NoteDataWithScoring::LastTapNoteWithResult( nd, iRow, pn ).result.fTapNoteOffset;
 	NSMAN->ReportScore( pn, scoreOfLastTap,
 			m_pPlayerStageStats->m_iScore,
 			m_pPlayerStageStats->m_iCurCombo, offset );

@@ -11,6 +11,7 @@
 #include "NoteData.h"
 #include "ScreenMessage.h"
 #include "ThemeMetric.h"
+#include "TimingData.h"
 #include "InputEventPlus.h"
 
 class ScoreDisplay;
@@ -71,7 +72,7 @@ public:
 
 	// Called when a fret, step, or strum type button changes
 	void Fret( int col, int row, const RageTimer &tm, bool bHeld, bool bRelease );
-
+	
 	// Called when the strum bar is pressed down
 	void Strum( int col, int row, const RageTimer &tm, bool bHeld, bool bRelease );
 
@@ -86,7 +87,7 @@ public:
 
 	// called by Fret for Hammer-ons and Pull-offs
 	void Hopo( int col, int row, const RageTimer &tm, bool bHeld, bool bRelease )	{ StepStrumHopo(col, row, tm, bHeld, bRelease, ButtonType_Hopo); }
-
+	
 	void RandomizeNotes( int iNoteRow );
 	void FadeToFail();
 	void CacheAllUsedNoteSkins();
@@ -112,7 +113,7 @@ public:
 protected:
 	void UpdateTapNotesMissedOlderThan( float fMissIfOlderThanThisBeat );
 	void UpdateJudgedRows();
-	void FlashGhostRow( int iRow );
+	void FlashGhostRow( int iRow, PlayerNumber pn );
 	void HandleTapRowScore( unsigned row );
 	void HandleHoldScore( const TapNote &tn );
 	void HandleHoldCheckpoint( int iRow, int iNumHoldsHeldThisRow, int iNumHoldsMissedThisRow, const vector<int> &viColsWithHold );
@@ -204,7 +205,7 @@ protected:
 	ThemeMetric<bool>	COMBO_UNDER_FIELD;
 	ThemeMetric<int>	DRAW_DISTANCE_AFTER_TARGET_PIXELS;
 	ThemeMetric<int>	DRAW_DISTANCE_BEFORE_TARGET_PIXELS;
-
+	
 #define NUM_REVERSE 2
 #define NUM_CENTERED 2
 	TweenState		m_tsJudgment[NUM_REVERSE][NUM_CENTERED];
