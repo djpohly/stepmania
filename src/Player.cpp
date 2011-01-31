@@ -143,6 +143,9 @@ ThemeMetric<int> COMBO_STOPPED_AT ( "Player", "ComboStoppedAt" );
 ThemeMetric<float> ATTACK_RUN_TIME_RANDOM ( "Player", "AttackRunTimeRandom" );
 ThemeMetric<float> ATTACK_RUN_TIME_MINE ( "Player", "AttackRunTimeMine" );
 
+ThemeMetric<TapNoteScore> MIN_SCORE_TO_CONTINUE_COMBO ( "Gameplay", "MinScoreToContinueCombo" );
+ThemeMetric<TapNoteScore> MIN_SCORE_TO_MAINTAIN_COMBO ( "Gameplay", "MinScoreToMaintainCombo" );
+
 float Player::GetWindowSeconds( TimingWindow tw )
 {
 	float fSecs = m_fTimingWindowSeconds[tw];
@@ -2942,6 +2945,33 @@ void Player::HandleTapRowScore( unsigned row )
 
 	if( scoreOfLastTap == TNS_Miss )
 		m_LastTapNoteScore = TNS_Miss;
+	
+	/*
+	 * This was mostly ported from StepNXA to have the combo segments behave.
+	 * Some behavior was modified to try to be more consistent with the main arcade line.
+	 * Any future modifications will likely use metrics. -Wolfman2000
+	 */
+	if( scoreOfLastTap >= MIN_SCORE_TO_CONTINUE_COMBO )
+	{
+		m_pPlayerStageStats->m_iCurCombo += m_pPlayerState->m_iComboFactor;
+		m_pPlayerStageStats->m_iMaxCombo = max( m_pPlayerStageStats->m_iCurCombo, m_pPlayerStageStats->m_iMaxCombo );
+		m_pPlayerStageStats->m_iCurMissCombo = 0;
+	}
+	else if( scoreOfLastTap >= MIN_SCORE_TO_MAINTAIN_COMBO )
+	{
+		m_pPlayerStageStats->m_iMaxCombo = max( m_pPlayerStageStats->m_iCurCombo, m_pPlayerStageStats->m_iMaxCombo );
+		m_pPlayerStageStats->m_iCurMissCombo = 0;
+	}
+	else if( scoreOfLastTap == TNS_W5 ) // TODO: un-hardcode this.
+	{
+		m_pPlayerStageStats->m_iCurMissCombo = 0;
+	}
+	else
+	{
+		m_pPlayerStageStats->m_iCurCombo = 0;
+		m_pPlayerStageStats->m_iCurMissCombo += 1; // StepNXA also increased via combo factor.
+	}
+
 
 	for( int track = 0; track < m_NoteData.GetNumTracks(); ++track )
 	{
