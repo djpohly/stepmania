@@ -730,7 +730,9 @@ void ScreenEdit::Init()
 	GAMESTATE->m_bGameplayLeadIn.Set( true );
 	GAMESTATE->m_EditMode = EDIT_MODE.GetValue();
 	GAMESTATE->m_fSongBeat = 0;
-	m_fTrailingBeat = GAMESTATE->m_fSongBeat;
+	
+	m_PlayerStateEdit.m_TimingState = GAMESTATE->m_pCurSteps[PLAYER_1]->m_Timing;
+	m_fTrailingBeat = m_PlayerStateEdit.m_fSongBeat;
 
 	m_iShiftAnchor = -1;
 	m_iStartPlayingAt = -1;
@@ -3032,6 +3034,8 @@ void ScreenEdit::HandleMainMenuChoice( MainMenuChoice c, const vector<int> &iAns
 
 				// copy edit into current Steps
 				m_pSteps->SetNoteData( m_NoteDataEdit );
+				
+				GAMESTATE->m_pCurSteps[PLAYER_1]->m_Timing = m_PlayerStateEdit.m_TimingState;
 
 				switch( EDIT_MODE.GetValue() )
 				{
