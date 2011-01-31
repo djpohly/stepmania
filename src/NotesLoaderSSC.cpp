@@ -720,6 +720,7 @@ bool SSCLoader::LoadFromSSCFile( const RString &sPath, Song &out, bool bFromCach
 					pNewNotes->m_Timing = out.m_Timing;
 					pNewNotes->SetSMNoteData( sParams[1] );
 					pNewNotes->TidyUpData();
+					out.AddSteps( pNewNotes );
 				}
 				else if( sValueName=="BPMS" )
 				{
@@ -940,6 +941,7 @@ bool SSCLoader::LoadFromSSCFile( const RString &sPath, Song &out, bool bFromCach
 					pNewNotes->m_Timing.m_fBeat0OffsetInSeconds = out.m_Timing.m_fBeat0OffsetInSeconds;
 					pNewNotes->SetSMNoteData( sParams[1] );
 					pNewNotes->TidyUpData();
+					out.AddSteps( pNewNotes );
 				}
 				break;
 			}
