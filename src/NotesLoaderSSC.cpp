@@ -677,22 +677,22 @@ bool SSCLoader::LoadFromSSCFile( const RString &sPath, Song &out, bool bFromCach
 			{
 				if( sValueName=="STEPSTYPE" )
 				{
-					pNewNotes->m_StepsType = GAMEMAN->StringToStepsType( sValueName );
+					pNewNotes->m_StepsType = GAMEMAN->StringToStepsType( sParams[1] );
 				}
 				
 				else if( sValueName=="DESCRIPTION" )
 				{
-					pNewNotes->SetDescription( sValueName );
+					pNewNotes->SetDescription( sParams[1] );
 				}
 				
 				else if( sValueName=="DIFFICULTY" )
 				{
-					pNewNotes->SetDifficulty( DwiCompatibleStringToDifficulty( sValueName ) );
+					pNewNotes->SetDifficulty( DwiCompatibleStringToDifficulty( sParams[1] ) );
 				}
 				
 				else if( sValueName=="METER" )
 				{
-					pNewNotes->SetMeter( atoi(sValueName) );
+					pNewNotes->SetMeter( atoi( sParams[1] ) );
 				}
 				
 				else if( sValueName=="RADARVALUES" )
