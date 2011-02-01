@@ -11,6 +11,7 @@
 #include "ThemeManager.h"
 #include "NoteSkinManager.h"
 #include "Song.h"
+#include "Steps.h"
 #include "ScreenDimensions.h"
 #include "PlayerState.h"
 #include "Style.h"
@@ -448,6 +449,23 @@ void NoteField::DrawBPMText( const float fBeat, const float fBPM )
 	m_textMeasureNumber.Draw();
 }
 
+void NoteField::DrawTickcountText( const float fBeat, int iTicks )
+{
+	const float fYOffset	= ArrowEffects::GetYOffset( m_pPlayerState, 0, fBeat );
+ 	const float fYPos	= ArrowEffects::GetYPos(    m_pPlayerState, 0, fYOffset, m_fYReverseOffsetPixels );
+	const float fZoom	= ArrowEffects::GetZoom(    m_pPlayerState );
+	const float xBase	= GetWidth()/2.f;
+	const float xOffset	= TICKCOUNT_OFFSETX * fZoom;
+	
+	m_textMeasureNumber.SetZoom( fZoom );
+	m_textMeasureNumber.SetHorizAlign( TICKCOUNT_IS_LEFT_SIDE ? align_right : align_left );
+	m_textMeasureNumber.SetDiffuse( TICKCOUNT_COLOR );
+	m_textMeasureNumber.SetGlow( RageColor(1,1,1,RageFastCos(RageTimer::GetTimeSinceStartFast()*2)/2+0.5f) );
+	m_textMeasureNumber.SetText( ssprintf("%d", iTicks) );
+	m_textMeasureNumber.SetXY( (TICKCOUNT_IS_LEFT_SIDE ? -xBase - xOffset : xBase + xOffset), fYPos );
+	m_textMeasureNumber.Draw();
+}
+
 void NoteField::DrawComboText( const float fBeat, const int iCombo )
 {
 	const float fYOffset	= ArrowEffects::GetYOffset( m_pPlayerState, 0, fBeat );
@@ -464,6 +482,8 @@ void NoteField::DrawComboText( const float fBeat, const int iCombo )
 	m_textMeasureNumber.SetXY( (COMBO_IS_LEFT_SIDE ? -xBase - xOffset : xBase + xOffset), fYPos );
 	m_textMeasureNumber.Draw();
 }
+
+
 void NoteField::DrawFreezeText( const float fBeat, const float fSecs, const float bDelay )
 {
 	const float fYOffset	= ArrowEffects::GetYOffset( m_pPlayerState, 0, fBeat );
@@ -489,7 +509,6 @@ void NoteField::DrawFreezeText( const float fBeat, const float fSecs, const floa
 	m_textMeasureNumber.SetText( ssprintf("%.3f", fSecs) );
 	m_textMeasureNumber.Draw();
 }
-
 void NoteField::DrawTimeSignatureText( const float fBeat, int iNumerator, int iDenominator )
 {
 	const float fYOffset	= ArrowEffects::GetYOffset( m_pPlayerState, 0, fBeat );
@@ -504,23 +523,6 @@ void NoteField::DrawTimeSignatureText( const float fBeat, int iNumerator, int iD
 	m_textMeasureNumber.SetGlow( RageColor(1,1,1,RageFastCos(RageTimer::GetTimeSinceStartFast()*2)/2+0.5f) );
 	m_textMeasureNumber.SetText( ssprintf("%d\n--\n%d", iNumerator, iDenominator) );
 	m_textMeasureNumber.SetXY( (TIME_SIGNATURE_IS_LEFT_SIDE ? -xBase - xOffset : xBase + xOffset), fYPos );
-	m_textMeasureNumber.Draw();
-}
-
-void NoteField::DrawTickcountText( const float fBeat, int iTicks )
-{
-	const float fYOffset	= ArrowEffects::GetYOffset( m_pPlayerState, 0, fBeat );
- 	const float fYPos	= ArrowEffects::GetYPos(    m_pPlayerState, 0, fYOffset, m_fYReverseOffsetPixels );
-	const float fZoom	= ArrowEffects::GetZoom(    m_pPlayerState );
-	const float xBase	= GetWidth()/2.f;
-	const float xOffset	= TICKCOUNT_OFFSETX * fZoom;
-	
-	m_textMeasureNumber.SetZoom( fZoom );
-	m_textMeasureNumber.SetHorizAlign( TICKCOUNT_IS_LEFT_SIDE ? align_right : align_left );
-	m_textMeasureNumber.SetDiffuse( TICKCOUNT_COLOR );
-	m_textMeasureNumber.SetGlow( RageColor(1,1,1,RageFastCos(RageTimer::GetTimeSinceStartFast()*2)/2+0.5f) );
-	m_textMeasureNumber.SetText( ssprintf("%d", iTicks) );
-	m_textMeasureNumber.SetXY( (TICKCOUNT_IS_LEFT_SIDE ? -xBase - xOffset : xBase + xOffset), fYPos );
 	m_textMeasureNumber.Draw();
 }
 

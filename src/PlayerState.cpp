@@ -209,7 +209,7 @@ void PlayerState::UpdateSongPosition( float fPositionSeconds, const TimingData &
 	else
 		m_LastBeatUpdate.Touch();
 	timing.GetBeatAndBPSFromElapsedTime( fPositionSeconds, m_fSongBeat, m_fCurBPS, m_bFreeze );
-	ASSERT_M( m_fSongBeat > -2000, ssprintf("%f %f", m_fSongBeat, fPositionSeconds) );
+	ASSERT_M( m_fSongBeat > -2000, ssprintf("Step beat %f at %f seconds", m_fSongBeat, fPositionSeconds) );
 
 	GAMESTATE->m_fMusicSeconds = fPositionSeconds;
 	//m_fLightSongBeat = timing.GetBeatFromElapsedTime( fPositionSeconds + g_fLightsAheadSeconds );
