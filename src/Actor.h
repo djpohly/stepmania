@@ -1,4 +1,4 @@
-/* Actor - Base class for all objects that appear on the screen. */
+/** Actor - Base class for all objects that appear on the screen. */
 
 #ifndef ACTOR_H
 #define ACTOR_H
