@@ -25,6 +25,8 @@
 		1215D7A208C6559A00B87D8B /* ScreenGameplayNormal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1215D7A008C6559A00B87D8B /* ScreenGameplayNormal.cpp */; };
 		2B30D6821315EA7E00044B68 /* MouseDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B30D6801315EA7E00044B68 /* MouseDevice.cpp */; };
 		2B30D6831315EA7E00044B68 /* MouseDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B30D6811315EA7E00044B68 /* MouseDevice.h */; };
+		2B9E0BDE131EF81900287154 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 2B9E0BDC131EF81900287154 /* sqlite3.c */; };
+		2B9E0BDF131EF81900287154 /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B9E0BDD131EF81900287154 /* sqlite3.h */; };
 		2BA7925E1304F20D002BD8E1 /* NotesLoaderSSC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2BA7925A1304F20D002BD8E1 /* NotesLoaderSSC.cpp */; };
 		2BA7925F1304F20D002BD8E1 /* NotesLoaderSSC.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BA7925B1304F20D002BD8E1 /* NotesLoaderSSC.h */; };
 		2BA792601304F20D002BD8E1 /* NotesWriterSSC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2BA7925C1304F20D002BD8E1 /* NotesWriterSSC.cpp */; };
@@ -1776,6 +1778,8 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		2B30D6801315EA7E00044B68 /* MouseDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseDevice.cpp; sourceTree = "<group>"; };
 		2B30D6811315EA7E00044B68 /* MouseDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MouseDevice.h; sourceTree = "<group>"; };
+		2B9E0BDC131EF81900287154 /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sqlite3.c; path = ../lib/sqlite3/sqlite3.c; sourceTree = SOURCE_ROOT; };
+		2B9E0BDD131EF81900287154 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = ../lib/sqlite3/sqlite3.h; sourceTree = SOURCE_ROOT; };
 		2BA7925A1304F20D002BD8E1 /* NotesLoaderSSC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NotesLoaderSSC.cpp; path = ../src/NotesLoaderSSC.cpp; sourceTree = SOURCE_ROOT; };
 		2BA7925B1304F20D002BD8E1 /* NotesLoaderSSC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotesLoaderSSC.h; path = ../src/NotesLoaderSSC.h; sourceTree = SOURCE_ROOT; };
 		2BA7925C1304F20D002BD8E1 /* NotesWriterSSC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NotesWriterSSC.cpp; path = ../src/NotesWriterSSC.cpp; sourceTree = SOURCE_ROOT; };
@@ -3141,6 +3145,7 @@
 		29B97314FDCFA39411CA2CEA /* SDL App */ = {
 			isa = PBXGroup;
 			children = (
+				2B9E0BD6131EF6D500287154 /* ExternalLibraries */,
 				EE906F6F12BF3A5B00146C96 /* json */,
 				AAA070B20CE7B3AD005A3060 /* mad-0.15.1b */,
 				AA7C8B920B67467C00FD9940 /* libtomcrypt */,
@@ -3199,6 +3204,23 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2B9E0BD6131EF6D500287154 /* ExternalLibraries */ = {
+			isa = PBXGroup;
+			children = (
+				2B9E0BD7131EF6DE00287154 /* sqlite3 */,
+			);
+			name = ExternalLibraries;
+			sourceTree = "<group>";
+		};
+		2B9E0BD7131EF6DE00287154 /* sqlite3 */ = {
+			isa = PBXGroup;
+			children = (
+				2B9E0BDC131EF81900287154 /* sqlite3.c */,
+				2B9E0BDD131EF81900287154 /* sqlite3.h */,
+			);
+			name = sqlite3;
 			sourceTree = "<group>";
 		};
 		AA60E0BB067992D7008ADC41 /* Threads */ = {
@@ -4935,6 +4957,7 @@
 				2BA7925F1304F20D002BD8E1 /* NotesLoaderSSC.h in Headers */,
 				2BA792611304F20D002BD8E1 /* NotesWriterSSC.h in Headers */,
 				2B30D6831315EA7E00044B68 /* MouseDevice.h in Headers */,
+				2B9E0BDF131EF81900287154 /* sqlite3.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6180,6 +6203,7 @@
 				2BA7925E1304F20D002BD8E1 /* NotesLoaderSSC.cpp in Sources */,
 				2BA792601304F20D002BD8E1 /* NotesWriterSSC.cpp in Sources */,
 				2B30D6821315EA7E00044B68 /* MouseDevice.cpp in Sources */,
+				2B9E0BDE131EF81900287154 /* sqlite3.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7099,7 +7123,7 @@
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
-				GCC_FAST_MATH = YES;
+				GCC_FAST_MATH = NO;
 				GCC_FAST_OBJC_DISPATCH = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
@@ -7133,6 +7157,7 @@
 				MACOSX_DEPLOYMENT_TARGET_i386 = 10.4;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.3;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PREBINDING = NO;
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				SDKROOT_i386 = /Developer/SDKs/MacOSX10.4u.sdk;
@@ -7632,7 +7657,7 @@
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
-				GCC_FAST_MATH = YES;
+				GCC_FAST_MATH = NO;
 				GCC_FAST_OBJC_DISPATCH = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
@@ -7963,7 +7988,7 @@
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
-				GCC_FAST_MATH = YES;
+				GCC_FAST_MATH = NO;
 				GCC_FAST_OBJC_DISPATCH = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
@@ -8088,7 +8113,7 @@
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
-				GCC_FAST_MATH = YES;
+				GCC_FAST_MATH = NO;
 				GCC_FAST_OBJC_DISPATCH = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
