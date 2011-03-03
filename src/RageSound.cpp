@@ -600,6 +600,8 @@ void RageSound::ApplyParams()
 	case RageSoundParams::M_CONTINUE:
 		m_pSource->SetProperty( "Continue", 1.0f );
 		break;
+	default:
+		break;
 	}
 }
 

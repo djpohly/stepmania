@@ -462,6 +462,7 @@ bool Course::GetTrailUnsorted( StepsType st, CourseDifficulty cd, Trail &trail )
 		return false;
 	case Difficulty_Challenge:
 		return false;
+	default: break;
 	}
 
 	// Construct a new Trail, add it to the cache, then return it.

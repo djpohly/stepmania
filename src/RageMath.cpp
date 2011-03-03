@@ -575,6 +575,7 @@ float RageFastSin( float x )
 		bInited = true;
 		for( unsigned i=0; i<ARRAYLEN(table); i++ )
 		{
+			// Is this shadowing intentional? -Wolfman2000
 			float x = SCALE(i,0,ARRAYLEN(table),0.0f,PI);
 			table[i] = sinf(x);
 		}
