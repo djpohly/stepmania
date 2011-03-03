@@ -556,6 +556,8 @@ void Player::Load()
 			count %= 4;
 		}
 		break;
+	default:
+		break;
 	}
 
 	int iDrawDistanceAfterTargetsPixels = GAMESTATE->IsEditing() ? -100 : DRAW_DISTANCE_AFTER_TARGET_PIXELS;
