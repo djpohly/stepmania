@@ -456,9 +456,11 @@ void InitializeBacktrace()
 
 void GetSignalBacktraceContext( BacktraceContext *ctx, const ucontext_t *uc )
 {
+    /*
 	ctx->ip = (void *) uc->uc_mcontext->ss.eip;
 	ctx->bp = (void *) uc->uc_mcontext->ss.ebp;
 	ctx->sp = (void *) uc->uc_mcontext->ss.esp;
+     */
 }
 
 /* The following from VirtualDub: */
