@@ -9,15 +9,15 @@
 #include <limits.h>
 
 /* use configuration data */
-#include "tomcrypt_custom.h"
+#include <tomcrypt_custom.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* version */
-#define CRYPT   0x0116
-#define SCRYPT  "1.16"
+#define CRYPT   0x0117
+#define SCRYPT  "1.17"
 
 /* max size of either a cipher/hash block or symmetric key [largest of the two] */
 #define MAXBLOCKSIZE  128
@@ -63,17 +63,17 @@ enum {
    CRYPT_PK_INVALID_PADDING /* Invalid padding on input */
 };
 
-#include "tomcrypt_cfg.h"
-#include "tomcrypt_macros.h"
-#include "tomcrypt_cipher.h"
-#include "tomcrypt_hash.h"
-#include "tomcrypt_mac.h"
-#include "tomcrypt_prng.h"
-#include "tomcrypt_pk.h"
-#include "tomcrypt_math.h"
-#include "tomcrypt_misc.h"
-#include "tomcrypt_argchk.h"
-#include "tomcrypt_pkcs.h"
+#include <tomcrypt_cfg.h>
+#include <tomcrypt_macros.h>
+#include <tomcrypt_cipher.h>
+#include <tomcrypt_hash.h>
+#include <tomcrypt_mac.h>
+#include <tomcrypt_prng.h>
+#include <tomcrypt_pk.h>
+#include <tomcrypt_math.h>
+#include <tomcrypt_misc.h>
+#include <tomcrypt_argchk.h>
+#include <tomcrypt_pkcs.h>
 
 #ifdef __cplusplus
    }
@@ -82,6 +82,6 @@ enum {
 #endif /* TOMCRYPT_H_ */
 
 
-/* $Source$ */
-/* $Revision: 24839 $ */
-/* $Date: 2007-01-23 23:42:14 -0600 (Tue, 23 Jan 2007) $ */
+/* $Source: /cvs/libtom/libtomcrypt/src/headers/tomcrypt.h,v $ */
+/* $Revision: 1.21 $ */
+/* $Date: 2006/12/16 19:34:05 $ */

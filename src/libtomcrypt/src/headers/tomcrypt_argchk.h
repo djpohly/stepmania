@@ -33,6 +33,6 @@ void crypt_argchk(char *v, char *s, int d);
 #endif
 
 
-/* $Source$ */
-/* $Revision: 24839 $ */
-/* $Date: 2007-01-23 23:42:14 -0600 (Tue, 23 Jan 2007) $ */
+/* $Source: /cvs/libtom/libtomcrypt/src/headers/tomcrypt_argchk.h,v $ */
+/* $Revision: 1.5 $ */
+/* $Date: 2006/08/27 20:50:21 $ */

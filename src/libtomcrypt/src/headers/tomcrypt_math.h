@@ -7,11 +7,11 @@
 #define LTC_MP_NO    0
 #define LTC_MP_YES   1
 
-#ifndef MECC
+#ifndef LTC_MECC
    typedef void ecc_point;
 #endif
 
-#ifndef MRSA
+#ifndef LTC_MRSA
    typedef void rsa_key;
 #endif
 
@@ -495,6 +495,6 @@ extern const ltc_math_descriptor gmp_desc;
 
 #endif
 
-/* $Source$ */
-/* $Revision: 24839 $ */
-/* $Date: 2007-01-23 23:42:14 -0600 (Tue, 23 Jan 2007) $ */
+/* $Source: /cvs/libtom/libtomcrypt/src/headers/tomcrypt_math.h,v $ */
+/* $Revision: 1.44 $ */
+/* $Date: 2007/05/12 14:32:35 $ */

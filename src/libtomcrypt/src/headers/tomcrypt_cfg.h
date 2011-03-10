@@ -57,9 +57,7 @@ LTC_EXPORT int   LTC_CALL XSTRCMP(const char *s1, const char *s2);
 
 /* detect x86-32 machines somewhat */
 #if !defined(__STRICT_ANSI__) && (defined(INTEL_CC) || (defined(_MSC_VER) && defined(WIN32)) || (defined(__GNUC__) && (defined(__DJGPP__) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__i386__))))
-#if !defined(ENDIAN_LITTLE) // SM
    #define ENDIAN_LITTLE
-#endif
    #define ENDIAN_32BITWORD
    #define LTC_FAST
    #define LTC_FAST_TYPE    unsigned long
@@ -73,19 +71,15 @@ LTC_EXPORT int   LTC_CALL XSTRCMP(const char *s1, const char *s2);
 
 /* detect amd64 */
 #if !defined(__STRICT_ANSI__) && defined(__x86_64__)
-#if !defined(ENDIAN_LITTLE)
    #define ENDIAN_LITTLE
-#endif
    #define ENDIAN_64BITWORD
    #define LTC_FAST
    #define LTC_FAST_TYPE    unsigned long
 #endif
 
 /* detect PPC32 */
-#if !defined(__STRICT_ANSI__) && (defined(LTC_PPC32) || defined(__ppc__) || defined(__powerpc__))
-#if !defined(ENDIAN_BIG) // SM
+#if !defined(__STRICT_ANSI__) && defined(LTC_PPC32)
    #define ENDIAN_BIG
-#endif
    #define ENDIAN_32BITWORD
    #define LTC_FAST
    #define LTC_FAST_TYPE    unsigned long
@@ -137,6 +131,6 @@ LTC_EXPORT int   LTC_CALL XSTRCMP(const char *s1, const char *s2);
 #endif
 
 
-/* $Source$ */
-/* $Revision: 27820 $ */
-/* $Date: 2008-12-26 05:11:48 -0600 (Fri, 26 Dec 2008) $ */
+/* $Source: /cvs/libtom/libtomcrypt/src/headers/tomcrypt_cfg.h,v $ */
+/* $Revision: 1.19 $ */
+/* $Date: 2006/12/04 02:19:48 $ */

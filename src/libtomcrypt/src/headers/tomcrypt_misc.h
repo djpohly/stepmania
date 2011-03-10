@@ -1,5 +1,5 @@
-/* ---- BASE64 Routines ---- */
-#ifdef BASE64
+/* ---- LTC_BASE64 Routines ---- */
+#ifdef LTC_BASE64
 int base64_encode(const unsigned char *in,  unsigned long len, 
                         unsigned char *out, unsigned long *outlen);
 
@@ -18,6 +18,6 @@ extern const char *crypt_build_settings;
 /* ---- HMM ---- */
 int crypt_fsa(void *mp, ...);
 
-/* $Source$ */
-/* $Revision: 24839 $ */
-/* $Date: 2007-01-23 23:42:14 -0600 (Tue, 23 Jan 2007) $ */
+/* $Source: /cvs/libtom/libtomcrypt/src/headers/tomcrypt_misc.h,v $ */
+/* $Revision: 1.5 $ */
+/* $Date: 2007/05/12 14:32:35 $ */

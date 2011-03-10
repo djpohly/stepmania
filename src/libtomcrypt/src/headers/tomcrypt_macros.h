@@ -244,7 +244,7 @@ asm __volatile__ (             \
 
 #elif !defined(__STRICT_ANSI__) && defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__)) && !defined(INTEL_CC) && !defined(LTC_NO_ASM)
 
-static inline __attribute__((always_inline)) unsigned ROL(unsigned word, int i)
+static inline unsigned ROL(unsigned word, int i)
 {
    asm ("roll %%cl,%0"
       :"=r" (word)
@@ -252,7 +252,7 @@ static inline __attribute__((always_inline)) unsigned ROL(unsigned word, int i)
    return word;
 }
 
-static inline __attribute__((always_inline)) unsigned ROR(unsigned word, int i)
+static inline unsigned ROR(unsigned word, int i)
 {
    asm ("rorl %%cl,%0"
       :"=r" (word)
@@ -262,7 +262,7 @@ static inline __attribute__((always_inline)) unsigned ROR(unsigned word, int i)
 
 #ifndef LTC_NO_ROLC
 
-static inline __attribute__((always_inline)) unsigned ROLc(unsigned word, const int i)
+static inline unsigned ROLc(unsigned word, const int i)
 {
    asm ("roll %2,%0"
       :"=r" (word)
@@ -270,7 +270,7 @@ static inline __attribute__((always_inline)) unsigned ROLc(unsigned word, const 
    return word;
 }
 
-static inline __attribute__((always_inline)) unsigned RORc(unsigned word, const int i)
+static inline unsigned RORc(unsigned word, const int i)
 {
    asm ("rorl %2,%0"
       :"=r" (word)
@@ -287,7 +287,7 @@ static inline __attribute__((always_inline)) unsigned RORc(unsigned word, const 
 
 #elif !defined(__STRICT_ANSI__) && defined(LTC_PPC32)
 
-static inline __attribute__((always_inline)) unsigned ROL(unsigned word, int i)
+static inline unsigned ROL(unsigned word, int i)
 {
    asm ("rotlw %0,%0,%2"
       :"=r" (word)
@@ -295,7 +295,7 @@ static inline __attribute__((always_inline)) unsigned ROL(unsigned word, int i)
    return word;
 }
 
-static inline __attribute__((always_inline)) unsigned ROR(unsigned word, int i)
+static inline unsigned ROR(unsigned word, int i)
 {
    asm ("rotlw %0,%0,%2"
       :"=r" (word)
@@ -305,7 +305,7 @@ static inline __attribute__((always_inline)) unsigned ROR(unsigned word, int i)
 
 #ifndef LTC_NO_ROLC
 
-static inline __attribute__((always_inline)) unsigned ROLc(unsigned word, const int i)
+static inline unsigned ROLc(unsigned word, const int i)
 {
    asm ("rotlwi %0,%0,%2"
       :"=r" (word)
@@ -313,7 +313,7 @@ static inline __attribute__((always_inline)) unsigned ROLc(unsigned word, const 
    return word;
 }
 
-static inline __attribute__((always_inline)) unsigned RORc(unsigned word, const int i)
+static inline unsigned RORc(unsigned word, const int i)
 {
    asm ("rotrwi %0,%0,%2"
       :"=r" (word)
@@ -343,7 +343,7 @@ static inline __attribute__((always_inline)) unsigned RORc(unsigned word, const 
 /* 64-bit Rotates */
 #if !defined(__STRICT_ANSI__) && defined(__GNUC__) && defined(__x86_64__) && !defined(LTC_NO_ASM)
 
-static inline __attribute__((always_inline)) unsigned long ROL64(unsigned long word, int i)
+static inline unsigned long ROL64(unsigned long word, int i)
 {
    asm("rolq %%cl,%0"
       :"=r" (word)
@@ -351,7 +351,7 @@ static inline __attribute__((always_inline)) unsigned long ROL64(unsigned long w
    return word;
 }
 
-static inline __attribute__((always_inline)) unsigned long ROR64(unsigned long word, int i)
+static inline unsigned long ROR64(unsigned long word, int i)
 {
    asm("rorq %%cl,%0"
       :"=r" (word)
@@ -361,7 +361,7 @@ static inline __attribute__((always_inline)) unsigned long ROR64(unsigned long w
 
 #ifndef LTC_NO_ROLC
 
-static inline __attribute__((always_inline)) unsigned long ROL64c(unsigned long word, const int i)
+static inline unsigned long ROL64c(unsigned long word, const int i)
 {
    asm("rolq %2,%0"
       :"=r" (word)
@@ -369,7 +369,7 @@ static inline __attribute__((always_inline)) unsigned long ROL64c(unsigned long 
    return word;
 }
 
-static inline __attribute__((always_inline)) unsigned long ROR64c(unsigned long word, const int i)
+static inline unsigned long ROR64c(unsigned long word, const int i)
 {
    asm("rorq %2,%0"
       :"=r" (word)
@@ -419,6 +419,6 @@ static inline __attribute__((always_inline)) unsigned long ROR64c(unsigned long 
    #define byte(x, n) (((x) >> (8 * (n))) & 255)
 #endif   
 
-/* $Source$ */
-/* $Revision: 26244 $ */
-/* $Date: 2007-05-10 13:35:24 -0500 (Thu, 10 May 2007) $ */
+/* $Source: /cvs/libtom/libtomcrypt/src/headers/tomcrypt_macros.h,v $ */
+/* $Revision: 1.15 $ */
+/* $Date: 2006/11/29 23:43:57 $ */
