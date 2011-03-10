@@ -23,6 +23,10 @@
 #include "archutils/Unix/arch_setup.h"
 #endif
 
+#if defined(MACOSX)
+#define _XOPEN_SOURCE 500
+#endif
+
 /* Set one of these in arch_setup.h.  (Don't bother trying to fall back on BYTE_ORDER
  * if it was already set; too many systems are missing endian.h.) */
 #if !defined(ENDIAN_LITTLE) && !defined(ENDIAN_BIG)
