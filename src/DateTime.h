@@ -30,6 +30,7 @@ enum Month
 };
 
 RString DayInYearToString( int iDayInYearIndex );
+int StringToDayInYear( RString sDayInYear );
 RString LastDayToString( int iLastDayIndex );
 RString LastDayToLocalizedString( int iLastDayIndex );
 RString DayOfWeekToString( int iDayOfWeekIndex );

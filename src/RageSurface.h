@@ -74,6 +74,10 @@ struct RageSurface
 RageSurface *CreateSurface( int width, int height, int bpp, uint32_t Rmask, uint32_t Gmask, uint32_t Bmask, uint32_t Amask );
 RageSurface *CreateSurfaceFrom( int width, int height, int bpp, uint32_t Rmask, uint32_t Gmask, uint32_t Bmask, uint32_t Amask, uint8_t *pPixels, uint32_t pitch );
 
+void SetupFormat( RageSurfaceFormat &fmt, int width, int height, 
+				 int BitsPerPixel, uint32_t Rmask, uint32_t Gmask, 
+				 uint32_t Bmask, uint32_t Amask );
+
 #endif
 
 /*

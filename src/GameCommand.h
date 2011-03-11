@@ -103,6 +103,10 @@ private:
 	bool		m_bApplyCommitsScreens;
 };
 
+int GetNumCreditsPaid();
+
+int GetCreditsRequiredToPlayStyle( const Style *style );
+
 #endif
 
 /*

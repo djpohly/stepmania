@@ -67,6 +67,8 @@ public:
 };
 
 extern GameSoundManager *SOUND;
+
+int MusicThread_start( void *p );
 #endif
 
 /*

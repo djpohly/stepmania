@@ -346,8 +346,8 @@ static void NormalizePath( RString &sPath )
 		sPath.insert( sPath.begin(), '/' );
 }
 
-bool ilt( const RString &a, const RString &b ) { return a.CompareNoCase(b) < 0; }
-bool ieq( const RString &a, const RString &b ) { return a.CompareNoCase(b) == 0; }
+inline bool ilt( const RString &a, const RString &b ) { return a.CompareNoCase(b) < 0; }
+inline bool ieq( const RString &a, const RString &b ) { return a.CompareNoCase(b) == 0; }
 void RageFileManager::GetDirListing( const RString &sPath_, vector<RString> &AddTo, bool bOnlyDirs, bool bReturnPathToo )
 {
 	RString sPath = sPath_;

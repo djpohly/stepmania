@@ -91,6 +91,15 @@ private:
 	mutable CachedObjectPointer<Course> m_Cache;
 };
 
+bool CompareCoursePointersBySortValueAscending( const Course *pSong1, 
+											   const Course *pSong2 );
+
+bool CompareCoursePointersBySortValueDescending( const Course *pSong1, 
+												const Course *pSong2 );
+
+bool CompareCoursePointersByTitle( const Course *pCourse1, 
+								  const Course *pCourse2 );
+
 #endif
 
 /**

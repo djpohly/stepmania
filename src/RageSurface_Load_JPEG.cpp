@@ -7,34 +7,6 @@
 
 #include <setjmp.h>
 
-// Don't let jpeglib.h define the boolean type on Xbox.
-#if defined(_XBOX)
-#  define HAVE_BOOLEAN
-#endif
-
-#if defined(WIN32)
-/* work around namespace bugs in win32/libjpeg: */
-#define XMD_H
-#undef FAR
-#include "libjpeg/jpeglib.h"
-#include "libjpeg/jerror.h"
-
-#if defined(_MSC_VER)
-#if !defined(XBOX)
-#pragma comment(lib, "libjpeg/jpeg.lib")
-#else
-#pragma comment(lib, "libjpeg/xboxjpeg.lib")
-#endif
-#endif
-
-#pragma warning(disable: 4611) /* interaction between '_setjmp' and C++ object destruction is non-portable */
-#else
-extern "C" {
-#include <jpeglib.h>
-#include <jerror.h>
-}
-#endif
-
 struct my_jpeg_error_mgr
 {
   struct jpeg_error_mgr pub;    /* "public" fields */

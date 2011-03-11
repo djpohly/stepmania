@@ -2,6 +2,8 @@
 #define StatsManager_H
 
 #include "StageStats.h"
+#include "Trail.h"
+#include "Profile.h"
 /** @brief Managed non-persisted statistics. */
 class StatsManager
 {
@@ -40,6 +42,9 @@ private:
 
 extern StatsManager*	STATSMAN;	// global and accessable from anywhere in our program
 
+void AddPlayerStatsToProfile( Profile *pProfile, const StageStats &ss, PlayerNumber pn );
+XNode* MakeRecentScoreNode( const StageStats &ss, Trail *pTrail, 
+						   const PlayerStageStats &pss, MultiPlayer mp );
 #endif
 
 /**

@@ -33,6 +33,11 @@ public:
 	static DriverList m_pDriverList;
 };
 
+/**
+ * @brief Force a UTF-8 string into an ASCII style string.
+ * @param str the RString to convert. */
+void ForceToAscii( RString &str );
+
 #define REGISTER_MOVIE_TEXTURE_CLASS( name ) \
 	static RegisterRageDriver register_##name( &RageMovieTextureDriver::m_pDriverList, #name, CreateClass<RageMovieTextureDriver_##name, RageDriver> )
 

@@ -57,6 +57,14 @@ protected:
 	ThemeMetric1D<apActorCommands>	*WARNING_COMMAND;
 };
 
+/** @brief The amount of time to display while paused. */
+static const float TIMER_PAUSE_SECONDS = 99.99f;
+
+inline RString WARNING_COMMAND_NAME( size_t i ) 
+{ 
+	return ssprintf("Warning%dCommand",int(i)); 
+}
+
 #endif
 
 /*

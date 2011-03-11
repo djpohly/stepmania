@@ -100,6 +100,25 @@ protected:
 	Quad		m_rectAreaHighlight;
 };
 
+// CPU OPTIMIZATION OPPORTUNITY:
+// change this probing to binary search
+/**
+ * @brief Find the first displayed beat.
+ *
+ * TODO: Look into changing the probing to use a binary search.
+ * @param pPlayerState the Player involved.
+ * @param iDrawDistanceAfterTargetPixels the space above the target arrows.
+ * @return the first displayed beat. */
+float FindFirstDisplayedBeat( const PlayerState* pPlayerState, int iDrawDistanceAfterTargetsPixels );
+/**
+ * @brief Find the last displayed beat.
+ *
+ * TODO: Look into changing the probing to use a binary search.
+ * @param pPlayerState the Player involved.
+ * @param iDrawDistanceAfterTargetPixels the space below the target arrows.
+ * @return the last displayed beat. */
+float FindLastDisplayedBeat( const PlayerState* pPlayerState, int iDrawDistanceBeforeTargetsPixels );
+
 #endif
 
 /**

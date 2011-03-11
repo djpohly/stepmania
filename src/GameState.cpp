@@ -715,6 +715,7 @@ void GameState::CancelStage()
 			case PLAY_MODE_BATTLE:
 			case PLAY_MODE_RAVE:
 			m_iPlayerStageTokens[p] = PREFSMAN->m_iSongsPerPlay;
+			default: ;
 		}
 	}
 
@@ -1184,12 +1185,14 @@ bool GameState::IsPlayerEnabled( PlayerNumber pn ) const
 	// In rave, all players are present.  Non-human players are CPU controlled.
 	switch( m_PlayMode )
 	{
-	case PLAY_MODE_BATTLE:
-	case PLAY_MODE_RAVE:
-		return true;
+		case PLAY_MODE_BATTLE:
+		case PLAY_MODE_RAVE:
+		{
+			return true;
+		}
+		default: 
+			return IsHumanPlayer( pn );
 	}
-
-	return IsHumanPlayer( pn );
 }
 
 bool GameState::IsMultiPlayerEnabled( MultiPlayer mp ) const
@@ -1361,16 +1364,19 @@ StageResult GameState::GetStageResult( PlayerNumber pn ) const
 {
 	switch( m_PlayMode )
 	{
-	case PLAY_MODE_BATTLE:
-	case PLAY_MODE_RAVE:
-		if( fabsf(m_fTugLifePercentP1 - 0.5f) < 0.0001f )
-			return RESULT_DRAW;
-		switch( pn )
+		case PLAY_MODE_BATTLE:
+		case PLAY_MODE_RAVE:
 		{
-		case PLAYER_1:	return (m_fTugLifePercentP1>=0.5f)?RESULT_WIN:RESULT_LOSE;
-		case PLAYER_2:	return (m_fTugLifePercentP1<0.5f)?RESULT_WIN:RESULT_LOSE;
-		default:	ASSERT(0); return RESULT_LOSE;
+			if( fabsf(m_fTugLifePercentP1 - 0.5f) < 0.0001f )
+				return RESULT_DRAW;
+			switch( pn )
+			{
+			case PLAYER_1:	return (m_fTugLifePercentP1>=0.5f)?RESULT_WIN:RESULT_LOSE;
+			case PLAYER_2:	return (m_fTugLifePercentP1<0.5f)?RESULT_WIN:RESULT_LOSE;
+			default:	ASSERT(0); return RESULT_LOSE;
+			}
 		}
+		default: break;
 	}
 
 	StageResult win = RESULT_WIN;

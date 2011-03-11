@@ -120,6 +120,10 @@ private:
 
 };
 
+void PercentScoreWeightInit( size_t /*ScoreEvent*/ i, 
+							RString &sNameOut, int &defaultValueOut );
+void GradeWeightInit( size_t /*ScoreEvent*/ i, 
+					 RString &sNameOut, int &defaultValueOut );
 #endif
 
 /*

@@ -381,6 +381,18 @@ private:
 	vector<Steps*> m_vpStepsByType[NUM_StepsType];
 };
 
+/**
+ * @brief Fix up song paths. 
+ *
+ * If there's a leading "./", be sure to keep it: it's a signal that the path 
+ * is from the root directory, not the song directory. Other than a leading 
+ * "./", song paths must never contain "." or "..". 
+ * @param path the path to fix.
+ * @param sSongPath ...actually, it's unused right now. *shrugs* */
+void FixupPath( RString &path, const RString &sSongPath );
+
+RString GetSongAssetPath( RString sPath, const RString &sSongPath );
+
 #endif
 
 /**

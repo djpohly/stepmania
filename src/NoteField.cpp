@@ -1021,6 +1021,7 @@ void NoteField::DrawPrimitives()
 					//if (tn.subType == TapNote::hold_head_roll)
 						continue; // skip
 				}
+				default: break;
 			}
 
 			// Don't draw hidden (fully judged) steps.

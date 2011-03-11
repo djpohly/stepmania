@@ -76,6 +76,8 @@ namespace BackgroundUtil
 	void BakeAllBackgroundChanges( Song *pSong );
 };
 
+int CompareBackgroundChanges(const BackgroundChange &seg1, 
+							 const BackgroundChange &seg2);
 
 #endif
 

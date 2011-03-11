@@ -35,6 +35,8 @@ private:
 	WavReader *m_pImpl;
 };
 
+RString ReadString( RageFileBasic &f, int iSize, RString &sError );
+
 #endif
 
 /*

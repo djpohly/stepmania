@@ -197,6 +197,7 @@ public:
 	bool IsValid() const;
 };
 
+void AppendOctal( int n, int digits, RString &out );
 
 #endif
 

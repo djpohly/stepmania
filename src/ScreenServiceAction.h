@@ -16,6 +16,7 @@ public:
 	virtual void BeginScreen();
 };
 
+RString ClearMachineStats();
 
 #endif
 

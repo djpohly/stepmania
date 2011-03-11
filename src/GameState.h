@@ -372,6 +372,8 @@ MultiPlayer GetNextEnabledMultiPlayer( MultiPlayer mp );
 
 extern GameState*	GAMESTATE;	// global and accessable from anywhere in our program
 
+SortOrder GetDefaultSort();
+
 #endif
 
 /**

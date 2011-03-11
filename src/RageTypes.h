@@ -391,6 +391,8 @@ public:
 
 RageColor scale( float x, float l1, float h1, const RageColor &a, const RageColor &b );
 
+int LuaFunc_color( lua_State *L );
+void LuaFunc_Register_color( lua_State *L );
 #endif
 
 /*

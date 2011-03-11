@@ -26,17 +26,6 @@
 #include <mad.h>
 #endif // _WINDOWS
 
-/* ID3 code from libid3: */
-enum tagtype {
-  TAGTYPE_NONE = 0,
-  TAGTYPE_ID3V1,
-  TAGTYPE_ID3V2,
-  TAGTYPE_ID3V2_FOOTER
-};
-
-typedef unsigned long id3_length_t;
-static const int ID3_TAG_FLAG_FOOTERPRESENT = 0x10;
-
 static tagtype tagtype( const unsigned char *data, id3_length_t length )
 {
 	if (length >= 3 &&

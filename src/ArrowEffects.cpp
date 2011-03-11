@@ -596,7 +596,6 @@ static float GetSuddenStartLine( const PlayerState* pPlayerState )
 		GetCenterLine( pPlayerState ) * pPlayerState->m_PlayerOptions.GetCurrent().m_fAppearances[PlayerOptions::APPEARANCE_SUDDEN_OFFSET];
 }
 
-// used by ArrowGetAlpha and ArrowGetGlow below
 float ArrowGetPercentVisible( const PlayerState* pPlayerState, float fYPosWithoutReverse )
 {
 	const float fDistFromCenterLine = fYPosWithoutReverse - GetCenterLine( pPlayerState );

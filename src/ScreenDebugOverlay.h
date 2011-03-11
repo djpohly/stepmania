@@ -32,6 +32,16 @@ private:
 	vector<BitmapText*> m_vptextFunction;
 };
 
+/**
+ * @brief Change the game's volume.
+ * @param fDelta the amount to change the volume by.
+ */
+void ChangeVolume( float fDelta );
+/**
+ * @brief Change the game's visual delay.
+ * @param fDelta the amount to change the visual delay by.
+ */
+void ChangeVisualDelay( float fDelta );
 
 #endif
 

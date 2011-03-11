@@ -86,6 +86,16 @@ public:
 	static float GetFrameWidthScale( const PlayerState* pPlayerState, float fYOffset, float fOverlappedTime );
 };
 
+// used by ArrowGetAlpha and ArrowGetGlow below
+/**
+ * @brief Get the percentage of the arrow that is visible.
+ *
+ * This is primarily used by ArrowGetAlpha and ArrowGetGLow.
+ * @param pPlayerState the Player in question.
+ * @param fYPosWithoutReverse the y position of the Arrow normally.
+ * @return the percentage of the arrow that's visible. */
+float ArrowGetPercentVisible( const PlayerState* pPlayerState, float fYPosWithoutReverse );
+
 #endif
 
 /**

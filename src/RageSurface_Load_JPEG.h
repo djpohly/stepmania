@@ -6,6 +6,41 @@
 #include "RageSurface_Load.h"
 RageSurfaceUtils::OpenResult RageSurface_Load_JPEG( const RString &sPath, RageSurface *&ret, bool bHeaderOnly, RString &error );
 
+// Don't let jpeglib.h define the boolean type on Xbox.
+#if defined(_XBOX)
+#  define HAVE_BOOLEAN
+#endif
+
+#if defined(WIN32)
+/* work around namespace bugs in win32/libjpeg: */
+#define XMD_H
+#undef FAR
+#include "libjpeg/jpeglib.h"
+#include "libjpeg/jerror.h"
+
+#if defined(_MSC_VER)
+#if !defined(XBOX)
+#pragma comment(lib, "libjpeg/jpeg.lib")
+#else
+#pragma comment(lib, "libjpeg/xboxjpeg.lib")
+#endif
+#endif
+
+#pragma warning(disable: 4611) /* interaction between '_setjmp' and C++ object destruction is non-portable */
+#else
+extern "C" {
+#include <jpeglib.h>
+#include <jerror.h>
+}
+#endif
+
+void my_output_message( j_common_ptr cinfo );
+void my_error_exit( j_common_ptr cinfo );
+void RageFile_JPEG_init_source( j_decompress_ptr cinfo );
+boolean RageFile_JPEG_fill_input_buffer( j_decompress_ptr cinfo );
+void RageFile_JPEG_skip_input_data( j_decompress_ptr cinfo, long num_bytes );
+void RageFile_JPEG_term_source( j_decompress_ptr cinfo );
+
 #endif
 
 /*

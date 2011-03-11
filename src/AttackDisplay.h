@@ -26,6 +26,8 @@ protected:
 	RageTexturePreloader m_TexturePreload;
 };
 
+RString GetAttackPieceName( const RString &sAttack );
+
 #endif
 
 /**
