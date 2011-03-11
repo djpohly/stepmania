@@ -78,6 +78,7 @@ RageSoundReader_FileReader *RageSoundReader_FileReader::TryOpenFile( RageFileBas
 		bKeepTrying = false;
 		error = err;
 		break;
+	default: break;
 	}
 
 	return NULL;

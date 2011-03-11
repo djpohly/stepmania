@@ -220,6 +220,7 @@ float ScreenRanking::SetPage( const PageToShow &pts )
 		bShowPoints = pts.pCourse->IsOni();
 		bShowTime = pts.pCourse->IsOni();
 		break;
+	default: break;
 	}
 
 	for( int l=0; l<NUM_RANKING_LINES; l++ )

@@ -97,6 +97,7 @@ void ScreenEnding::Init()
 		case MemoryCardState_NoCard:
 			m_sprRemoveMemoryCard[p].SetVisible( false );
 			break;
+			default: break;
 		}
 		LOAD_ALL_COMMANDS_AND_SET_XY_AND_ON_COMMAND( m_sprRemoveMemoryCard[p] );
 		this->AddChild( &m_sprRemoveMemoryCard[p] );
@@ -117,6 +118,7 @@ void ScreenEnding::Input( const InputEventPlus &input )
 		case GAME_BUTTON_START:
 			SCREENMAN->PostMessageToTopScreen( SM_BeginFadingOut, 0 );
 			break;
+			default: break;
 		}
 	}
 

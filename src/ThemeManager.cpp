@@ -669,6 +669,7 @@ try_element_again:
 			goto try_element_again;
 		case Dialog::ignore:
 			break;
+		default: break;
 		}
 	}
 
@@ -712,6 +713,7 @@ try_element_again:
 	case Dialog::ignore:
 		GetPathInfo( out, category, "", "_missing" );
 		return true;
+	default: break;
 	}
 
 	RageException::Throw( "%s", sMessage.c_str() ); 

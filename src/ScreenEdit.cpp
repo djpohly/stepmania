@@ -250,6 +250,7 @@ void ScreenEdit::InitEditMappings()
 		m_EditMappingsDeviceInput.hold[EDIT_BUTTON_DELETE_SHIFT_PAUSES][0] = DeviceInput(DEVICE_KEYBOARD, KEY_LCTRL);
 		m_EditMappingsDeviceInput.hold[EDIT_BUTTON_DELETE_SHIFT_PAUSES][1] = DeviceInput(DEVICE_KEYBOARD, KEY_RCTRL);
 		break;
+		default: break;
 	}
 
 	m_EditMappingsDeviceInput.button[EDIT_BUTTON_COLUMN_0][0] = DeviceInput(DEVICE_KEYBOARD, KEY_C1);
@@ -2061,6 +2062,7 @@ void ScreenEdit::InputEdit( const InputEventPlus &input, EditButton EditB )
 				m_InputPlayerNumber = PLAYER_1;
 		}
 		break;
+	default: break;
 	}
 }
 
@@ -2172,6 +2174,7 @@ void ScreenEdit::InputRecordPaused( const InputEventPlus &input, EditButton Edit
 	case EDIT_BUTTON_RETURN_TO_EDIT:
 		TransitionEditState( STATE_EDITING );
 		break;
+	default: break;
 	}
 }
 
@@ -2220,6 +2223,7 @@ void ScreenEdit::InputPlay( const InputEventPlus &input, EditButton EditB )
 				}
 			}
 			break;
+			default: break;
 		}
 	}
 
@@ -2258,6 +2262,7 @@ void ScreenEdit::InputPlay( const InputEventPlus &input, EditButton EditB )
 			m_pSong->m_Timing.m_fBeat0OffsetInSeconds += fOffsetDelta;
 		}
 			break;
+			default: break;
 		}
 	}
 }
@@ -2320,6 +2325,7 @@ void ScreenEdit::TransitionEditState( EditState em )
 
 			CheckNumberOfNotesAndUndo();
 			break;
+			default: break;
 		}
 	}
 
@@ -2338,6 +2344,7 @@ void ScreenEdit::TransitionEditState( EditState em )
 		case STATE_RECORDING_PAUSED:
 			PO_GROUP_ASSIGN_N( GAMESTATE->m_pPlayerState[PLAYER_1]->m_PlayerOptions, ModsLevel_Stage, m_fScrolls, PlayerOptions::SCROLL_CENTERED, 1.0f );
 			break;
+			default: break;
 		}
 
 		// Snap to current options.
@@ -2427,6 +2434,7 @@ void ScreenEdit::TransitionEditState( EditState em )
 		m_NoteFieldRecord.m_iEndMarker = m_iStopPlayingAt;
 
 		break;
+	default: break;
 	}
 
 	// Show/hide depending on edit state (em)
@@ -2453,6 +2461,7 @@ void ScreenEdit::TransitionEditState( EditState em )
 	{
 	case STATE_PLAYING:
 	case STATE_RECORDING:
+		{
 		const float fStartSeconds = m_pSong->GetElapsedTimeFromBeat(GAMESTATE->m_fSongBeat);
 		LOG->Trace( "Starting playback at %f", fStartSeconds );
 
@@ -2463,6 +2472,8 @@ void ScreenEdit::TransitionEditState( EditState em )
 		m_pSoundMusic->SetProperty( "AccurateSync", true );
 		m_pSoundMusic->Play( &p );
 		break;
+		}
+	default: break;
 	}
 
 	m_EditState = em;
@@ -3576,6 +3587,7 @@ void ScreenEdit::HandleStepsInformationChoice( StepsInformationChoice c, const v
 			NULL
 			);
 		break;
+		default: break;
 	}
 }
 

@@ -422,6 +422,7 @@ bool Course::GetTrailUnsorted( StepsType st, CourseDifficulty cd, Trail &trail )
 		return false;
 	case Difficulty_Challenge:
 		return false;
+		default: break;
 	}
 
 	// Construct a new Trail, add it to the cache, then return it.
@@ -930,6 +931,7 @@ const CourseEntry *Course::FindFixedSong( const Song *pSong ) const
 	FOREACH_CONST( CourseEntry, m_vEntries, e )
 	{
 		const CourseEntry &entry = *e;
+		// either unused pointer, or pointless (?) self comparison. Point?
 		Song *pSong = entry.songID.ToSong();
 		if( pSong == pSong )
 			return &entry;

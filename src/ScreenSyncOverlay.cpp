@@ -218,6 +218,7 @@ bool ScreenSyncOverlay::OverlayInput( const InputEventPlus &input )
 					fDelta *= 0;
 				else
 					fDelta *= 10;
+			default: break;
 			}
 			if( GAMESTATE->m_pCurSong != NULL )
 			{
@@ -243,6 +244,7 @@ bool ScreenSyncOverlay::OverlayInput( const InputEventPlus &input )
 					fDelta *= 0;
 				else
 					fDelta *= 10;
+				default: break;
 			}
 
 			switch( a )
@@ -255,6 +257,7 @@ bool ScreenSyncOverlay::OverlayInput( const InputEventPlus &input )
 				if( GAMESTATE->m_pCurSong != NULL )
 					GAMESTATE->m_pCurSong->m_Timing.m_fBeat0OffsetInSeconds += fDelta;
 				break;
+			default: break;
 			}
 		}
 		break;

@@ -204,6 +204,7 @@ void ScreenTextEntry::Input( const InputEventPlus &input )
 		case IET_REPEAT:
 			BackspaceInAnswer();
 			break;
+		default: break;
 		}
 	}
 	else if( input.type == IET_FIRST_PRESS )

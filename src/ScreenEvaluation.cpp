@@ -202,6 +202,7 @@ void ScreenEvaluation::Init()
 					ss.m_player[p].m_radarPossible[rc] = 1 + (rand() % 200);
 					ss.m_player[p].m_radarActual[rc] = rand() % (int)(ss.m_player[p].m_radarPossible[rc]);
 					break;
+				default: break;
 				}
 
 				;	// filled in by ScreenGameplay on start of notes
@@ -650,6 +651,7 @@ void ScreenEvaluation::Init()
 	case Grade_Tier03:
 		this->PostScreenMessage( SM_PlayCheer, CHEER_DELAY_SECONDS );
 		break;
+	default: break;
 	}
 }
 

@@ -465,6 +465,7 @@ void MemoryCardManager::CheckStateChanges()
 			case UsbStorageDevice::STATE_READY:
 				state = MemoryCardState_Ready;
 				break;
+			default: break;
 			}
 		}
 
@@ -493,6 +494,7 @@ void MemoryCardManager::CheckStateChanges()
 			case MemoryCardState_Error:
 				m_soundError.Play( &params );
 				break;
+			default: break;
 			}
 
 			m_State[p] = state;

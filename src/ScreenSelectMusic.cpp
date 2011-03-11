@@ -542,6 +542,7 @@ void ScreenSelectMusic::Input( const InputEventPlus &input )
 				else
 					m_soundLocked.Play();
 				break;
+				default: break;
 			}
 		}
 		else if( input.type == IET_FIRST_PRESS && input.MenuI != GAME_BUTTON_SELECT )

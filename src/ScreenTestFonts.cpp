@@ -124,6 +124,7 @@ void ScreenTestFonts::Input( const InputEventPlus &input )
 			  SetText( m_sCurText );
 			  SetFont( m_sFont );
 			  break;
+	default: break;
 	}
 }
 

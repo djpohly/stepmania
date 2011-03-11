@@ -197,8 +197,9 @@ void ScreenTestSound::Input( const InputEventPlus &input )
 			obj.SetY(obj.GetY() + 10);
 			break;
 */
+			default: break;
 		}
-
+		default: break;
 	}
 
 }

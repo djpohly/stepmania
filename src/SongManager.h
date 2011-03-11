@@ -185,6 +185,15 @@ extern SongManager*	SONGMAN;	// global and accessable from anywhere in our progr
 
 bool CompareNotesPointersForExtra(const Steps *n1, const Steps *n2);
 
+inline RString SONG_GROUP_COLOR_NAME( size_t i )   
+{ 
+	return ssprintf( "SongGroupColor%i", (int) i+1 ); 
+}
+inline RString COURSE_GROUP_COLOR_NAME( size_t i ) 
+{ 
+	return ssprintf( "CourseGroupColor%i", (int) i+1 ); 
+}
+
 #endif
 
 /**

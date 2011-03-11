@@ -56,10 +56,6 @@ static const ThemeMetric<int>		EXTRA_STAGE2_DIFFICULTY_MAX	( "SongManager", "Ext
 static Preference<RString> g_sDisabledSongs( "DisabledSongs", "" );
 static Preference<bool> g_bHideIncompleteCourses( "HideIncompleteCourses", false );
 
-RString SONG_GROUP_COLOR_NAME( size_t i )   { return ssprintf( "SongGroupColor%i", (int) i+1 ); }
-RString COURSE_GROUP_COLOR_NAME( size_t i ) { return ssprintf( "CourseGroupColor%i", (int) i+1 ); }
-
-
 SongManager::SongManager()
 {
 	// Register with Lua.
@@ -481,6 +477,7 @@ RageColor SongManager::GetSongColor( const Song* pSong ) const
 			case Difficulty_Challenge:
 			case Difficulty_Edit:
 				continue;
+			default: ;
 			}
 
 			//if(pSteps->m_StepsType != st)

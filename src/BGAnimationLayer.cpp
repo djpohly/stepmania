@@ -194,6 +194,7 @@ void BGAnimationLayer::LoadFromAniLayerFile( const RString& sPath )
 			case EFFECT_STRETCH_SCROLL_UP:		m_fTexCoordVelocityX = 0; m_fTexCoordVelocityY = +0.5f;	break;
 			case EFFECT_STRETCH_SCROLL_DOWN:	m_fTexCoordVelocityX = 0; m_fTexCoordVelocityY = -0.5f;	break;
 				break;
+			default: break;
 			}
 		}
 		break;

@@ -252,6 +252,7 @@ void ScreenJukebox::Input( const InputEventPlus &input )
 	case GAME_BUTTON_RIGHT:
 		SCREENMAN->PostMessageToTopScreen( SM_NotesEnded, 0 );
 		return;
+	default: break;
 	}
 
 	ScreenAttract::AttractInput( input, this );

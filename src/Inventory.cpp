@@ -81,6 +81,7 @@ void Inventory::Load( PlayerState* pPlayerState )
 		}
 		m_soundItemEnding.Load( THEME->GetPathS("Inventory","item ending") );
 		break;
+	default: break;
 	}
 }
 

@@ -124,6 +124,7 @@ void ScreenPrompt::Input( const InputEventPlus &input )
 		case KEY_RIGHT:
 			this->MenuRight( input );
 			return;
+		default: break;
 		}
 	}
 
@@ -204,6 +205,7 @@ void ScreenPrompt::End( bool bCancelled )
 	case ANSWER_NO:
 		m_smSendOnPop = SM_Failure;
 		break;
+	default: break;
 	}
 
 	if( bCancelled )
@@ -226,6 +228,7 @@ void ScreenPrompt::End( bool bCancelled )
 		if( g_pOnNo )
 			g_pOnNo(g_pCallbackData);
 		break;
+	default: break;
 	}
 
 	s_LastAnswer = bCancelled ? ANSWER_CANCEL : m_Answer;

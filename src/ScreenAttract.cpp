@@ -103,6 +103,7 @@ void ScreenAttract::AttractInput( const InputEventPlus &input, ScreenWithMenuEle
 			ASSERT(0);
 		}
 		break;
+	default: break;
 	}
 
 	if( pScreen->IsTransitioning() )
@@ -114,6 +115,7 @@ void ScreenAttract::AttractInput( const InputEventPlus &input, ScreenWithMenuEle
 	case GAME_BUTTON_RIGHT:
 		SCREENMAN->PostMessageToTopScreen( SM_BeginFadingOut, 0 );
 		break;
+	default: break;
 	}
 
 //	Screen::Input( input );

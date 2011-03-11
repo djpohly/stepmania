@@ -210,6 +210,7 @@ void ScreenEditMenu::MenuStart( const InputEventPlus &input )
 		FILEMAN->Remove( sTempFile );
 		break;
 	}
+		default: break;
 	}
 
 	switch( action )
@@ -222,6 +223,7 @@ void ScreenEditMenu::MenuStart( const InputEventPlus &input )
 			SCREENMAN->SystemMessage( DELETED_AUTOGEN_STEPS.GetValue() );
 			return;
 		}
+		default: break;
 	}
 
 	// Do work

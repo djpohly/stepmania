@@ -1307,6 +1307,7 @@ bool HandleGlobalInputs( const InputEventPlus &input )
 		}
 		StepMania::InsertCoin();
 		return false; // Attract needs to know because it goes to TitleMenu on > 1 credit
+	default: break;
 	}
 
 	/* Re-added for StepMania 3.9 theming veterans, plus it's just faster than

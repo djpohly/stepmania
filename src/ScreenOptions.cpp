@@ -471,6 +471,7 @@ void ScreenOptions::TweenCursor( PlayerNumber pn )
 		break;
 	case LAYOUT_SHOW_ALL_IN_ROW:
 		break;
+	default: break;
 	}
 	cursor.SetCanGo( bCanGoLeft, bCanGoRight );
 
@@ -512,6 +513,7 @@ void ScreenOptions::Input( const InputEventPlus &input )
 			INPUTMAPPER->ResetKeyRepeat( GAME_BUTTON_START, input.pn );
 			INPUTMAPPER->ResetKeyRepeat( GAME_BUTTON_RIGHT, input.pn );
 			INPUTMAPPER->ResetKeyRepeat( GAME_BUTTON_LEFT, input.pn );
+		default: break;
 		}
 	}
 
@@ -742,6 +744,7 @@ void ScreenOptions::AfterChangeValueOrRow( PlayerNumber pn )
 	case INPUTMODE_SHARE_CURSOR:
 		pText = &m_textExplanationTogether;
 		break;
+	default: break;
 	}
 	if( pText->GetText() != text )
 	{
@@ -800,6 +803,7 @@ void ScreenOptions::MenuStart( const InputEventPlus &input )
 				return;
 			}
 		}
+	default: break;
 	}
 
 	this->ProcessMenuStart( input );
@@ -1165,6 +1169,7 @@ void ScreenOptions::AfterChangeRow( PlayerNumber pn )
 				}
 			}
 			break;
+			default: break;
 		}
 
 		if( row.GetFirstItemGoesDown() )

@@ -45,6 +45,7 @@ static SortOrder ForceAppropriateSort( PlayMode pm, SortOrder so )
 	case PLAY_MODE_ONI:	return SORT_ONI_COURSES;
 	case PLAY_MODE_NONSTOP:	return SORT_NONSTOP_COURSES;
 	case PLAY_MODE_ENDLESS:	return SORT_ENDLESS_COURSES;
+	default: break;
 	}
 
 	// If we're not in a course mode, don't start in a course sort.
@@ -55,6 +56,7 @@ static SortOrder ForceAppropriateSort( PlayMode pm, SortOrder so )
 	case SORT_ENDLESS_COURSES:
 		so = SortOrder_Invalid;
 		break;
+	default: break;
 	}
 
 	return so;
@@ -508,6 +510,7 @@ void MusicWheel::BuildWheelItemDatas( vector<MusicWheelItemData *> &arrayWheelIt
 				if( so != SORT_TITLE && so != SORT_GROUP )
 					bUseSections = false;
 				break;
+			default: break;
 			}
 
 			if( bUseSections )
@@ -684,6 +687,7 @@ void MusicWheel::BuildWheelItemDatas( vector<MusicWheelItemData *> &arrayWheelIt
 					case PLAY_MODE_ONI:	sThisSection = "Oni";		break;
 					case PLAY_MODE_NONSTOP:	sThisSection = "Nonstop";	break;
 					case PLAY_MODE_ENDLESS:	sThisSection = "Endless";	break;
+					default: break;
 					}
 				}
 
@@ -700,6 +704,7 @@ void MusicWheel::BuildWheelItemDatas( vector<MusicWheelItemData *> &arrayWheelIt
 			}
 			break;
 		}
+		default: break;
 	}
 
 	// init music status icons
@@ -1091,6 +1096,7 @@ bool MusicWheel::Select()	// return true if this selection ends the screen
 		m_Moving = 0;
 		SCREENMAN->PostMessageToTopScreen( SM_SongChanged, 0 );
 		return true;
+	default: break;
 	}
 
 	if( !WheelBase::Select() )
@@ -1104,10 +1110,6 @@ bool MusicWheel::Select()	// return true if this selection ends the screen
 	case TYPE_RANDOM:
 		StartRandom();
 		return false;
-	case TYPE_SONG:
-	case TYPE_COURSE:
-	case TYPE_PORTAL:
-		break;
 	case TYPE_SORT:
 		GetCurWheelItemData(m_iSelection)->m_pAction->ApplyToAllPlayers();
 		ChangeSort( GAMESTATE->m_PreferredSortOrder );
@@ -1119,8 +1121,12 @@ bool MusicWheel::Select()	// return true if this selection ends the screen
 			return true;
 		else
 			return false;
+	case TYPE_SONG:
+	case TYPE_COURSE:
+	case TYPE_PORTAL:
+	default: 
+		return true;
 	}
-	return true;
 }
 
 void MusicWheel::StartRoulette() 
@@ -1363,9 +1369,8 @@ Song* MusicWheel::GetSelectedSong()
 	{
 	case TYPE_PORTAL:
 		return GetPreferredSelectionForRandomOrPortal();
+	default: return GetCurWheelItemData(m_iSelection)->m_pSong;
 	}
-
-	return GetCurWheelItemData(m_iSelection)->m_pSong;
 }
 
 /* Find a random song.  If possible, find one that has the preferred difficulties of
