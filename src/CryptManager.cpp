@@ -10,6 +10,7 @@
 #include "LuaManager.h"
 
 #include "libtomcrypt/src/headers/tomcrypt.h"
+extern const ltc_math_descriptor ltm_desc;
 
 CryptManager*	CRYPTMAN	= NULL;	// global and accessable from anywhere in our program
 
