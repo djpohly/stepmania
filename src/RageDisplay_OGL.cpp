@@ -1626,6 +1626,7 @@ void RageDisplay_OGL::SetTextureMode( TextureUnit tu, TextureMode tm )
 		glTexEnvi( GL_TEXTURE_ENV, GLenum(GL_OPERAND1_ALPHA_EXT), GL_SRC_ALPHA );
 		glTexEnvi( GL_TEXTURE_ENV, GLenum(GL_SOURCE1_ALPHA_EXT), GL_TEXTURE );
 		break;
+		default: break;
 	}
 }
 
@@ -1678,6 +1679,7 @@ void RageDisplay_OGL::SetEffectMode( EffectMode effect )
 	case EffectMode_Overlay:	hShader = g_hOverlayShader; break;
 	case EffectMode_Screen:	hShader = g_hScreenShader; break;
 	case EffectMode_YUYV422:	hShader = g_hYUYV422Shader; break;
+		default: break;
 	}
 
 	DebugFlushGLErrors();
@@ -1713,9 +1715,8 @@ bool RageDisplay_OGL::IsEffectModeSupported( EffectMode effect )
 	case EffectMode_Overlay:		return g_hOverlayShader != 0;
 	case EffectMode_Screen:		return g_hScreenShader != 0;
 	case EffectMode_YUYV422:	return g_hYUYV422Shader != 0;
+	default: return false;
 	}
-
-	return false;
 }
 
 void RageDisplay_OGL::SetBlendMode( BlendMode mode )

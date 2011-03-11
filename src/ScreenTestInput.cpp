@@ -98,12 +98,17 @@ void ScreenTestInput::Input( const InputEventPlus &input )
 	{
 	case IET_FIRST_PRESS:
 	case IET_RELEASE:
+		{
 		switch( input.type )
 		{
 		case IET_FIRST_PRESS:	sMessage += "Pressed";	break;
 		case IET_RELEASE:	sMessage += "Released";	break;
+			default: break;
 		}
 		MESSAGEMAN->Broadcast( sMessage );
+			break;
+		}
+	default: break;
 	}
 
 	Screen::Input( input );	// default handler

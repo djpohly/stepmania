@@ -288,6 +288,7 @@ int PlayerStageStats::GetLessonScoreActual() const
 		case TNS_W1:
 			iScore += m_iTapNoteScores[tns];
 			break;
+			default: break;
 		}
 	}
 
@@ -298,6 +299,7 @@ int PlayerStageStats::GetLessonScoreActual() const
 		case HNS_Held:
 			iScore += m_iHoldNoteScores[hns];
 			break;
+			default: break;
 		}
 	}
 

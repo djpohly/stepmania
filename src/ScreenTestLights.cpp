@@ -65,6 +65,7 @@ void ScreenTestLights::Update( float fDeltaTime )
 	case LIGHTSMODE_TEST_MANUAL_CYCLE:
 		s += MANUAL_CYCLE.GetValue()+"\n";
 		break;
+		default: break;
 	}
 
 	if( cl == CabinetLight_Invalid )

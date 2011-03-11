@@ -209,6 +209,7 @@ void ScreenSelectCharacter::BeforeRowChange( PlayerNumber pn )
 	case CHOOSING_HUMAN_CHARACTER:
 		m_sprCardArrows[pnAffected].StopEffect();
 		break;
+	default: break;
 	}
 }
 
@@ -221,6 +222,7 @@ void ScreenSelectCharacter::AfterRowChange( PlayerNumber pn )
 	case CHOOSING_HUMAN_CHARACTER:
 		m_sprCardArrows[pnAffected].SetEffectGlowShift();
 		break;
+	default: break;
 	}
 }
 
@@ -299,13 +301,16 @@ void ScreenSelectCharacter::Move( PlayerNumber pn, int deltaValue )
 	{
 	case CHOOSING_CPU_CHARACTER:
 	case CHOOSING_HUMAN_CHARACTER:
-		vector<Character*> apCharacters;
+		{
+			vector<Character*> apCharacters;
 		CHARMAN->GetCharacters( apCharacters );
 		m_iSelectedCharacter[pnAffected] += deltaValue;
 		wrap( m_iSelectedCharacter[pnAffected], apCharacters.size() );
 		AfterValueChange(pn);
 		m_soundChange.Play();
 		break;
+		}
+		default: break;
 	}
 }
 
@@ -338,6 +343,7 @@ void ScreenSelectCharacter::MakeSelection( PlayerNumber pn )
 	case CHOOSING_CPU_CHARACTER:
 		m_SelectionRow[pn] = FINISHED_CHOOSING;
 		break;
+	default: break;
 	}
 	AfterRowChange(pn);
 	AfterValueChange(pn);
