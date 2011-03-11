@@ -58,6 +58,7 @@ const RString &EnumToString( int iVal, int iMax, const char **szNameArray, auto_
 
 #define XToString(X) \
 	COMPILE_ASSERT( NUM_##X == ARRAYLEN(X##Names) ); \
+    const RString& X##ToString( X x ); \
 	const RString& X##ToString( X x ) \
 	{	\
 		static auto_ptr<RString> as_##X##Name[NUM_##X+2]; \
@@ -66,7 +67,8 @@ const RString &EnumToString( int iVal, int iMax, const char **szNameArray, auto_
 	namespace StringConversion { template<> RString ToString<X>( const X &value ) { return X##ToString(value); } }
 
 #define XToLocalizedString(X)      \
-	const RString &X##ToLocalizedString( X x ) \
+	const RString &X##ToLocalizedString( X x ); \
+    const RString &X##ToLocalizedString( X x ) \
 	{       \
 		static auto_ptr<LocalizedString> g_##X##Name[NUM_##X]; \
 		if( g_##X##Name[0].get() == NULL ) { \
@@ -80,6 +82,7 @@ const RString &EnumToString( int iVal, int iMax, const char **szNameArray, auto_
 	}
 
 #define StringToX(X)	\
+    X StringTo##X( const RString& s ); \
 	X StringTo##X( const RString& s ) \
 	{	\
 		for( unsigned i = 0; i < ARRAYLEN(X##Names); ++i )	\

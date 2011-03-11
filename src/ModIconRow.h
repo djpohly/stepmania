@@ -39,6 +39,8 @@ protected:
 	vector<ModIcon*> m_vpModIcon;
 };
 
+int OptionToPreferredColumn( RString sOptionText );
+
 #endif
 
 /*
