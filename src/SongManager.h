@@ -183,6 +183,8 @@ protected:
 
 extern SongManager*	SONGMAN;	// global and accessable from anywhere in our program
 
+bool CompareNotesPointersForExtra(const Steps *n1, const Steps *n2);
+
 #endif
 
 /**

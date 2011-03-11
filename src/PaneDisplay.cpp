@@ -143,6 +143,7 @@ void PaneDisplay::SetContent( PaneCategory c )
 			case PaneCategory_ProfileHighScore:
 				str = NOT_AVAILABLE;
 				break;
+				default: break;
 			}
 		}
 
@@ -163,6 +164,7 @@ void PaneDisplay::SetContent( PaneCategory c )
 			case PaneCategory_ProfileHighScore:
 				str = NOT_AVAILABLE;
 				break;
+				default: break;
 			}
 		}
 
@@ -185,6 +187,7 @@ void PaneDisplay::SetContent( PaneCategory c )
 		{
 		case PaneCategory_ProfileHighScore:
 			slot = (ProfileSlot) m_PlayerNumber;
+			default: ;
 		}
 
 		if( pSteps )
@@ -214,6 +217,7 @@ void PaneDisplay::SetContent( PaneCategory c )
 			CHECKPOINT;
 			val = pHSL->GetTopScore().GetPercentDP();
 			break;
+			default: break;
 		};
 
 		if( val != RADAR_VAL_UNKNOWN )
@@ -248,6 +252,8 @@ void PaneDisplay::SetContent( PaneCategory c )
 			case PaneCategory_Hands:
 			case PaneCategory_Lifts:
 				str = ssprintf( COUNT_FORMAT.GetValue(), val );
+				break;
+			default: break;
 			}
 		}
 	}

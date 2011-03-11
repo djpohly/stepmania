@@ -711,6 +711,7 @@ void Actor::UpdateInternal( float fDeltaTime )
 		wrap( m_current.rotation.y, 360 );
 		wrap( m_current.rotation.z, 360 );
 		break;
+	default: break;
 	}
 
 	UpdateTweening( fDeltaTime );

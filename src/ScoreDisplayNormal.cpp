@@ -74,6 +74,8 @@ void ScoreDisplayNormal::SetScore( int iNewScore )
 			float fScoreRatio = fScore / (float)iCurMaxScore;
 			fScore = fScoreRatio * iMaxScore;
 		}
+		break;
+	default: break;
 	}
 
 	m_text.SetTargetNumber( fScore );

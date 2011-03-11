@@ -84,6 +84,7 @@ void ScoreKeeperRave::HandleHoldScore( const TapNote &tn )
 	switch( tapScore )
 	{
 	case TNS_HitMine:	fPercentToMove = g_fSuperMeterPercentChange[SE_HitMine];	break;
+		default: break;
 	}
 	AddSuperMeterDelta( fPercentToMove );
 }

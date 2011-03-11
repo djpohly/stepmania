@@ -219,6 +219,7 @@ void LifeMeterBar::ChangeLife( float fDeltaLife )
 		else
 			fDeltaLife /= m_fLifeDifficulty;
 		break;
+		default: break;
 	}
 
 	m_fLifePercentage += fDeltaLife;

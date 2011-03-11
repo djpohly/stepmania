@@ -835,6 +835,7 @@ skip_track:
 						bNoteHandled = true;
 					}
 					break;
+					default: break;
 				}
 
 
@@ -868,6 +869,7 @@ skip_track:
 						bNonTerminatedNote = true;
 						bNoteHandled = true;
 					}
+					default: break;
 				}
 
 				countOfLastNote = count;

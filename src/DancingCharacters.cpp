@@ -131,6 +131,7 @@ DancingCharacters::DancingCharacters()
 		case PLAY_MODE_BATTLE:
 		case PLAY_MODE_RAVE:
 			m_pCharacter[p]->SetRotationY( MODEL_ROTATIONY_TWO_PLAYERS[p] );
+		default:
 			break;
 		}
 
