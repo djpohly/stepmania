@@ -19,28 +19,6 @@ class Song;
 #include "StepMania.h"
 #include "ActorUtil.h"
 
-struct PlayAfterLaunchInfo
-{
-	RString sSongDir;
-	RString sTheme;
-	bool bAnySongChanged;
-	bool bAnyThemeChanged;
-
-	PlayAfterLaunchInfo()
-	{
-		bAnySongChanged = false;
-		bAnyThemeChanged = false;
-	}
-
-	void OverlayWith( const PlayAfterLaunchInfo &other )
-	{
-		if( !other.sSongDir.empty() ) sSongDir = other.sSongDir;
-		if( !other.sTheme.empty() ) sTheme = other.sTheme;
-		bAnySongChanged |= other.bAnySongChanged;
-		bAnyThemeChanged |= other.bAnyThemeChanged;
-	}
-};
-
 static void Parse( const RString &sDir, PlayAfterLaunchInfo &out )
 {
 	vector<RString> vsDirParts;

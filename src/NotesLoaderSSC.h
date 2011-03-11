@@ -2,6 +2,7 @@
 #ifndef NotesLoaderSSC_H
 #define NotesLoaderSSC_H
 
+#include "BackgroundUtil.h"
 #include "GameConstantsAndTypes.h"
 
 class MsdFile;
@@ -73,6 +74,18 @@ namespace SSCLoader
 	 */
 	void TidyUpData( Song &song, bool bFromCache );
 }
+
+/**
+ * @brief Attempt to load any background changes in use by this song.
+ * 
+ * This code is right now copied from NotesLoaderSM. There may be a time
+ * when we add to this code, or perhaps just refactor it properly.
+ * @param change a reference to the background change.
+ * @param sBGChangeExpression a reference to the list of changes to be made.
+ * @return its success or failure.
+ */
+bool LoadFromBGSSCChangesString( BackgroundChange &change, const RString &sBGChangeExpression );
+
 #endif
 /**
  * @file

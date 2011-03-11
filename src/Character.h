@@ -64,6 +64,8 @@ public:
 	int m_iPreloadRefcount;
 };
 
+RString GetRandomFileInDir( RString sDir );
+
 #endif
 
 /*

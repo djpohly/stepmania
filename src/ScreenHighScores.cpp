@@ -197,9 +197,6 @@ void ScoreScroller::Load( RString sMetricsGroup )
 
 /////////////////////////////////////////////
 
-RString COLUMN_DIFFICULTY_NAME( size_t i ) { return ssprintf("ColumnDifficulty%d",int(i+1)); }
-RString COLUMN_STEPS_TYPE_NAME( size_t i ) { return ssprintf("ColumnStepsType%d",int(i+1)); }
-
 void ScreenHighScores::Init()
 {
 	ScreenAttract::Init();

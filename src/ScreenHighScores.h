@@ -75,6 +75,9 @@ private:
 	ScoreScroller m_Scroller;
 };
 
+inline RString COLUMN_DIFFICULTY_NAME( size_t i ) { return ssprintf("ColumnDifficulty%d",int(i+1)); }
+inline RString COLUMN_STEPS_TYPE_NAME( size_t i ) { return ssprintf("ColumnStepsType%d",int(i+1)); }
+
 #endif
 
 /*

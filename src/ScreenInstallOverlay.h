@@ -4,6 +4,7 @@
 #include "Screen.h"
 #include "BitmapText.h"
 #include "InputEventPlus.h"
+#include "CommandLineActions.h"
 
 /** @brief Package installation processing and messaging. */
 class ScreenInstallOverlay : public Screen
@@ -20,6 +21,32 @@ private:
 
 	BitmapText m_textStatus;
 };
+
+struct PlayAfterLaunchInfo
+{
+	RString sSongDir;
+	RString sTheme;
+	bool bAnySongChanged;
+	bool bAnyThemeChanged;
+    
+	PlayAfterLaunchInfo()
+	{
+		bAnySongChanged = false;
+		bAnyThemeChanged = false;
+	}
+    
+	void OverlayWith( const PlayAfterLaunchInfo &other )
+	{
+		if( !other.sSongDir.empty() ) sSongDir = other.sSongDir;
+		if( !other.sTheme.empty() ) sTheme = other.sTheme;
+		bAnySongChanged |= other.bAnySongChanged;
+		bAnyThemeChanged |= other.bAnyThemeChanged;
+	}
+};
+
+void InstallSmzipOsArg( const RString &sOsZipFile, PlayAfterLaunchInfo &out );
+
+PlayAfterLaunchInfo DoInstalls( CommandLineActions::CommandLineArgs args );
 
 #endif
 
