@@ -146,6 +146,15 @@ public:
 	void SetDestination( Actor::TweenState &ts, bool bTween );
 };
 
+inline RString ITEMS_LONG_ROW_X_NAME( size_t p )	
+{ 
+	return ssprintf("ItemsLongRowP%dX",int(p+1)); 
+}
+inline RString MOD_ICON_X_NAME( size_t p )		
+{ 
+	return ssprintf("ModIconP%dX",int(p+1)); 
+}
+
 #endif
 
 /*

@@ -13,6 +13,8 @@ namespace CrashHandler
 	void ForceDeadlock( RString reason, uint64_t CrashHandle );
 }
 
+bool child_read( int fd, void *p, int size );
+
 #endif
 
 /*

@@ -5,6 +5,8 @@ class Game;
 class RageTimer;
 class VideoModeParams;
 
+#include "InputEventPlus.h"
+
 int main( int argc, char* argv[] );
 
 /** @brief Utility functions for controlling the whole game. */
@@ -27,6 +29,18 @@ namespace StepMania
 	void GetPreferredVideoModeParams( VideoModeParams &paramsOut );
 	bool GetHighResolutionTextures();
 }
+
+/**
+ * @brief Shutdown all global singletons.
+ *
+ * Note that this may be called partway through initialization, due to an 
+ * object failing to initialize, in which case some of these may still be 
+ * NULL. */
+void ShutdownGame();
+
+bool HandleGlobalInputs( const InputEventPlus &input );
+
+void HandleInputEvents(float fDeltaTime);
 
 #endif
 

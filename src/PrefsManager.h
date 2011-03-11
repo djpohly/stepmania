@@ -335,6 +335,10 @@ extern bool			g_bAutoRestart;
 
 extern PrefsManager*	PREFSMAN;	// global and accessable from anywhere in our program
 
+void ValidateDisplayAspectRatio( float &val );
+
+void ValidateSongsPerPlay( int &val );
+
 #endif
 
 /**

@@ -200,6 +200,9 @@ public:
 	bool IsEasierForCourseAndTrail( Course* pCourse, Trail* pTrail ) const;
 };
 
+void NextFloat( float fValues[], int size );
+void NextBool( bool bValues[], int size );
+
 #endif
 
 /*

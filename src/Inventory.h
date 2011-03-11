@@ -36,6 +36,8 @@ protected:
 	RageSound m_soundItemEnding;
 };
 
+void ReloadItems();
+
 #endif
 
 /**

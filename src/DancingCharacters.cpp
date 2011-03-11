@@ -170,8 +170,6 @@ void DancingCharacters::LoadNextSong()
 			m_pCharacter[p]->PlayAnimation( "rest" );
 }
 
-int Neg1OrPos1() { return RandomInt( 2 ) ? -1 : +1; }
-
 void DancingCharacters::Update( float fDelta )
 {
 	if( GAMESTATE->m_bFreeze || GAMESTATE->m_bDelay )

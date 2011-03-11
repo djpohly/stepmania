@@ -154,6 +154,9 @@ namespace NoteDataUtil
 	void SetHopoPossibleFlags( const Song *pSong, NoteData& ndInOut );
 };
 
+int FindLongestOverlappingHoldNoteForAnyTrack( const NoteData &in, int iRow );
+void LightTransformHelper( const NoteData &in, NoteData &out, const vector<int> &aiTracks );
+
 #endif
 
 /**

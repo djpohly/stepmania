@@ -90,15 +90,6 @@ public:
 	}
 };
 
-
-RString ATTACK_DISPLAY_X_NAME( size_t p, size_t both_sides )	{ return "AttackDisplayXOffset" + (both_sides ? RString("BothSides") : ssprintf("OneSideP%d",int(p+1)) ); }
-
-/**
- * @brief Distance to search for a note in Step(), in seconds.
- *
- * TODO: This should be calculated based on the max size of the current judgment windows. */
-static const float StepSearchDistance = 1.0f;
-
 void TimingWindowSecondsInit( size_t /*TimingWindow*/ i, RString &sNameOut, float &defaultValueOut )
 {
 	sNameOut = "TimingWindowSeconds" + TimingWindowToString( (TimingWindow)i );
@@ -556,6 +547,7 @@ void Player::Load()
 			count %= 4;
 		}
 		break;
+	default: break;
 	}
 
 	int iDrawDistanceAfterTargetsPixels = GAMESTATE->IsEditing() ? -100 : DRAW_DISTANCE_AFTER_TARGET_PIXELS;
@@ -2715,6 +2707,7 @@ void Player::CrossedRows( int iLastRowCrossed, const RageTimer &now )
 		switch( tn.type )
 		{
 		case TapNote::hold_head:
+			{
 			tn.HoldResult.fLife = INITIAL_HOLD_LIFE;
 			if( !REQUIRE_STEP_ON_HOLD_HEADS )
 			{
@@ -2732,7 +2725,9 @@ void Player::CrossedRows( int iLastRowCrossed, const RageTimer &now )
 				}
 			}
 			break;
+			}
 		case TapNote::mine:
+			{
 			// Hold the panel while crossing a mine will cause the mine to explode
 			// TODO: Remove use of PlayerNumber.
 			PlayerNumber pn = m_pPlayerState->m_PlayerNumber;
@@ -2749,6 +2744,8 @@ void Player::CrossedRows( int iLastRowCrossed, const RageTimer &now )
 					Step( iTrack, iRow, now, true, false );
 			}
 			break;
+			}
+		default: { break; }
 		}
 
 		if( iRow != iLastSeenRow )

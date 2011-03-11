@@ -672,6 +672,11 @@ const RString& CourseTypeToString( CourseType i );
 const RString& CourseTypeToLocalizedString( CourseType i );
 LuaDeclareType( CourseType );
 
+/**
+ * @brief Convert the StepsType to a String.
+ * @param st the StepsType to convert.
+ * @return the converted String. */
+RString StepsTypeToString( StepsType st );
 
 #endif
 

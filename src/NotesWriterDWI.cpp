@@ -51,11 +51,6 @@ static char OptimizeDWIPair( char c1, char c2 )
 	return it->second;
 }
 
-/**
- * @brief Shrink the file contents as best as possible.
- * @param holds the holds in the file.
- * @param taps the taps in the file.
- * @return the optimized string. */
 RString OptimizeDWIString( RString holds, RString taps )
 {
 	/* First, sort the holds and taps in ASCII order.  This puts 2468 first.

@@ -410,6 +410,7 @@ void MakeUpper( char *p, size_t iLen );
 void MakeLower( char *p, size_t iLen );
 void MakeUpper( wchar_t *p, size_t iLen );
 void MakeLower( wchar_t *p, size_t iLen );
+void UnicodeUpperLower( wchar_t *p, size_t iLen, const unsigned char pMapping[256] );
 float StringToFloat( const RString &sString );
 bool StringToFloat( const RString &sString, float &fOut );
 

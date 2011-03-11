@@ -109,6 +109,8 @@ private:
 	float m_fTexCoordVelocityY;
 };
 
+void TexCoordArrayFromRect( float fImageCoords[8], const RectF &rect );
+
 #endif
 
 /**

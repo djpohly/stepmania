@@ -115,6 +115,9 @@ public:
 	static vector<int>	s_viLastAnswers;
 };
 
+void PrepareToLoadScreen( const RString &sScreenName );
+void FinishedLoadingScreen();
+
 #endif
 
 /*

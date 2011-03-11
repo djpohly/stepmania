@@ -65,6 +65,8 @@ protected:
 	int m_i2DAnimState[NUM_PLAYERS];
 };
 
+inline int Neg1OrPos1() { return RandomInt( 2 ) ? -1 : +1; }
+
 #endif
 
 /**

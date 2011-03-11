@@ -27,9 +27,6 @@ RString OptionRow::GetThemedItemText( int iChoice ) const
 	return s;
 }
 
-RString ITEMS_LONG_ROW_X_NAME( size_t p )	{ return ssprintf("ItemsLongRowP%dX",int(p+1)); }
-RString MOD_ICON_X_NAME( size_t p )		{ return ssprintf("ModIconP%dX",int(p+1)); }
-
 OptionRow::OptionRow( const OptionRowType *pSource )
 {
 	m_pParentType = pSource;
@@ -427,6 +424,7 @@ void OptionRow::AfterImportOptions( PlayerNumber pn )
 	switch( m_pHand->m_Def.m_selectType )
 	{
 	case SELECT_ONE:
+		{
 		// Make sure the row actually has a selection.
 		int iSelection = GetOneSelection(pn, true);
 		if( iSelection == -1 )
@@ -435,6 +433,8 @@ void OptionRow::AfterImportOptions( PlayerNumber pn )
 			m_vbSelected[pn][0] = true;
 		}
 		break;
+		}
+		default: break;
 	}
 
 	ResetFocusFromSelection( pn );
@@ -520,6 +520,7 @@ void OptionRow::UpdateText( PlayerNumber p )
 			m_textItems[index]->SetText( sText );
 		}
 		break;
+		default: break;
 	}
 }
 
@@ -757,9 +758,12 @@ void OptionRow::ResetFocusFromSelection( PlayerNumber pn )
 	switch( m_pHand->m_Def.m_selectType )
 	{
 	case SELECT_ONE:
+		{
 		// Import the focus from the selected option.
 		iSelection = GetOneSelection( pn, true );
 		break;
+		}
+		default: break;
 	}
 
 	// HACK: Set focus to one item in the row, which is "go down"

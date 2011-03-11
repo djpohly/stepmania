@@ -13,6 +13,13 @@ namespace NotesWriterDWI
 	bool Write( RString sPath, const Song &out );
 }
 
+/**
+ * @brief Shrink the file contents as best as possible.
+ * @param holds the holds in the file.
+ * @param taps the taps in the file.
+ * @return the optimized string. */
+RString OptimizeDWIString( RString holds, RString taps );
+
 #endif
 
 /**
