@@ -42,9 +42,15 @@ bool GetThreadBacktraceContext( uint64_t iID, BacktraceContext *ctx )
 	
 	if( thread_get_state(thread, i386_THREAD_STATE, thread_state_t(&state), &count) )
 		return false;
+#if defined(__DARWIN_UNIX03)
 	ctx->ip = (void *)state.__eip;
 	ctx->bp = (void *)state.__ebp;
 	ctx->sp = (void *)state.__esp;
+#else
+	ctx->ip = (void *)state.eip;
+	ctx->bp = (void *)state.ebp;
+	ctx->sp = (void *)state.esp;
+#endif
 	return true;
 #else
 	return false;
