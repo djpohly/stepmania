@@ -624,7 +624,8 @@ void MusicWheel::BuildWheelItemDatas( vector<MusicWheelItemData *> &arrayWheelIt
 			// make WheelItemDatas with sections
 			RString sLastSection = "";
 			int iSectionColorIndex = 0;
-			for( unsigned i=0; i< arraySongs.size(); i++ )
+			unsigned songEnd = arraySongs.size();
+			for( unsigned i=0; i < songEnd; i++ )
 			{
 				Song* pSong = arraySongs[i];
 				if( bUseSections )
@@ -635,8 +636,8 @@ void MusicWheel::BuildWheelItemDatas( vector<MusicWheelItemData *> &arrayWheelIt
 					{
 						int iSectionCount = 0;
 						// Count songs in this section
-						unsigned j;
-						for( j=i; j < arraySongs.size(); j++ )
+						unsigned j = i;
+						for( ; j < songEnd; j++ )
 						{
 							if( SongUtil::GetSectionNameFromSongAndSort( arraySongs[j], so ) != sThisSection )
 								break;
@@ -665,7 +666,8 @@ void MusicWheel::BuildWheelItemDatas( vector<MusicWheelItemData *> &arrayWheelIt
 				// Only add TYPE_RANDOM and TYPE_PORTAL if there's at least
 				// one song on the list.
 				bool bFoundAnySong = false;
-				for( unsigned i=0; !bFoundAnySong && i < arrayWheelItemDatas.size(); i++ )
+				unsigned itemEnd = arrayWheelItemDatas.size();
+				for( unsigned i=0; !bFoundAnySong && i < itemEnd; i++ )
 					if( arrayWheelItemDatas[i]->m_Type == TYPE_SONG )
 						bFoundAnySong = true;
 
@@ -678,7 +680,8 @@ void MusicWheel::BuildWheelItemDatas( vector<MusicWheelItemData *> &arrayWheelIt
 				// add custom wheel items
 				vector<RString> vsNames;
 				split( CUSTOM_WHEEL_ITEM_NAMES, ",", vsNames );
-				for( unsigned i=0; i<vsNames.size(); ++i )
+				unsigned nameEnd = vsNames.size();
+				for( unsigned i=0; i<nameEnd; ++i )
 				{
 					MusicWheelItemData wid( TYPE_CUSTOM, NULL, "", NULL, CUSTOM_CHOICE_COLORS.GetValue(vsNames[i]), 0 );
 					wid.m_pAction = HiddenPtr<GameCommand>( new GameCommand );
@@ -698,8 +701,8 @@ void MusicWheel::BuildWheelItemDatas( vector<MusicWheelItemData *> &arrayWheelIt
 				Song* pSong;
 				Steps* pSteps;
 				SONGMAN->GetExtraStageInfo( GAMESTATE->IsExtraStage2(), GAMESTATE->GetCurrentStyle(), pSong, pSteps );
-				
-				for( unsigned i=0; i<arrayWheelItemDatas.size(); i++ )
+				unsigned itemEnd = arrayWheelItemDatas.size();
+				for( unsigned i=0; i < itemEnd; i++ )
 				{
 					if( arrayWheelItemDatas[i]->m_pSong == pSong )
 					{
@@ -777,7 +780,8 @@ void MusicWheel::BuildWheelItemDatas( vector<MusicWheelItemData *> &arrayWheelIt
 
 			RString sLastSection = "";
 			int iSectionColorIndex = 0;
-			for( unsigned i=0; i<apCourses.size(); i++ )	// foreach course
+			const unsigned courseEnd = apCourses.size();
+			for( unsigned i=0; i < courseEnd; i++ )	// foreach course
 			{
 				Course* pCourse = apCourses[i];
 
@@ -816,7 +820,8 @@ void MusicWheel::BuildWheelItemDatas( vector<MusicWheelItemData *> &arrayWheelIt
 	}
 
 	// init music status icons
-	for( unsigned i=0; i<arrayWheelItemDatas.size(); i++ )
+	unsigned itemEnd = arrayWheelItemDatas.size();
+	for( unsigned i=0; i < itemEnd; i++ )
 	{
 		MusicWheelItemData& WID = *arrayWheelItemDatas[i];
 		if( WID.m_pSong != NULL )
@@ -840,7 +845,7 @@ void MusicWheel::BuildWheelItemDatas( vector<MusicWheelItemData *> &arrayWheelIt
 	// Update the popularity and init icons.
 	if( so == SORT_POPULARITY )
 	{
-		for( unsigned i=0; i< min(3u,arrayWheelItemDatas.size()); i++ )
+		for( unsigned i=0; i< min(3u,itemEnd); i++ )
 		{
 			MusicWheelItemData& WID = *arrayWheelItemDatas[i];
 			WID.m_Flags.iPlayersBestNumber = i+1;
@@ -949,7 +954,8 @@ void MusicWheel::ChangeMusic( int iDist )
 	if( REMIND_WHEEL_POSITIONS && HIDE_INACTIVE_SECTIONS )
 	{
 		// store the group song index
-		for( unsigned idx = 0 ; idx < m_viWheelPositions.size() ; idx++ )
+		unsigned positionEnd = m_viWheelPositions.size();
+		for( unsigned idx = 0 ; idx < positionEnd ; idx++ )
 		{
 			if( m_sExpandedSectionName == SONGMAN->GetSongGroupByIndex(idx) )
 			{
@@ -1023,13 +1029,14 @@ bool MusicWheel::NextSort()		// return true if change successful
 	}
 
 	// find the index of the current sort
-	int cur = 0;
-	while( cur < int(aSortOrders.size()) && aSortOrders[cur] != GAMESTATE->m_SortOrder )
+	unsigned cur = 0;
+	unsigned soSize = aSortOrders.size();
+	while( cur < soSize && aSortOrders[cur] != GAMESTATE->m_SortOrder )
 		++cur;
 
 	// move to the next sort with wrapping
 	++cur;
-	wrap( cur, aSortOrders.size() );
+	wrap( cur, soSize );
 
 	// apply new sort
 	SortOrder soNew = aSortOrders[cur];
@@ -1183,7 +1190,8 @@ void MusicWheel::SetOpenSection( RString group )
 	//restore the past group song index
 	if( REMIND_WHEEL_POSITIONS && HIDE_INACTIVE_SECTIONS )
 	{
-		for( unsigned idx = 0 ; idx < m_viWheelPositions.size() ; idx++ )
+		const unsigned positionEnd = m_viWheelPositions.size();
+		for( unsigned idx = 0 ; idx < positionEnd ; idx++ )
 		{
 			if( m_sExpandedSectionName == SONGMAN->GetSongGroupByIndex(idx) )
 			{
@@ -1195,8 +1203,8 @@ void MusicWheel::SetOpenSection( RString group )
 	{
 		// Try to select the item that was selected before changing groups
 		m_iSelection = 0;
-
-		for( unsigned i=0; i<m_CurWheelItemData.size(); i++ )
+		unsigned itemEnd = m_CurWheelItemData.size();
+		for( unsigned i=0; i < itemEnd; i++ )
 		{
 			if( m_CurWheelItemData[i] == old )
 			{
@@ -1367,7 +1375,7 @@ Song *MusicWheel::GetPreferredSelectionForRandomOrPortal()
 
 	StepsType st = GAMESTATE->GetCurrentStyle()->m_StepsType;
 
-#define NUM_PROBES 1000
+	const int NUM_PROBES = 1000;
 	for( int i=0; i<NUM_PROBES; i++ )
 	{
 		/* Maintaining difficulties is higher priority than maintaining
