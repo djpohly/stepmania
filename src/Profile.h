@@ -53,6 +53,20 @@ extern const RString LASTGOOD_SUBDIR;
 /** @brief The max number of characters that can be used in a profile. */
 const unsigned int PROFILE_MAX_DISPLAY_NAME_LENGTH	= 32;
 
+/** @brief The max size of the Editable.ini file for profiles. */
+const int MAX_EDITABLE_INI_SIZE_BYTES = 2048; // 2 KB
+/** @brief The max size of the GUID. */
+const unsigned GUID_SIZE_BYTES = 8;
+/**
+ * @brief The max size of the player's XML states file.
+ *
+ * It is composed of 4 parts, in order:
+ * - The number of songs to track
+ * - The number of steps per song to track
+ * - The number of high scores per step
+ * - The size in bytes of a HighScores XNode
+ */
+const int MAX_PLAYER_STATS_XML_SIZE_BYTES = 500 * 5 * 5 * 1024;
 
 class Style;
 

@@ -44,14 +44,6 @@ static Preference<bool> g_bProfileDataCompress( "ProfileDataCompress", false );
 static Preference<bool> g_bCopyCatalogToProfiles( "CopyCatalogToProfiles", true );
 extern Preference<bool> g_bWriteCatalog;
 static ThemeMetric<RString> UNLOCK_AUTH_STRING( "Profile", "UnlockAuthString" );
-#define GUID_SIZE_BYTES 8
-
-#define MAX_EDITABLE_INI_SIZE_BYTES			2*1024		// 2KB
-#define MAX_PLAYER_STATS_XML_SIZE_BYTES	\
-	400 /* Songs */						\
-	* 5 /* Steps per Song */			\
-	* 5 /* HighScores per Steps */		\
-	* 1024 /* size in bytes of a HighScores XNode */
 
 const unsigned int DEFAULT_WEIGHT_POUNDS	= 120;
 
