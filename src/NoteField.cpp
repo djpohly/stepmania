@@ -968,7 +968,7 @@ void NoteField::DrawPrimitives()
 	float fSelectedRangeGlow = SCALE( RageFastCos(RageTimer::GetTimeSinceStartFast()*2), -1, 1, 0.1f, 0.3f );
 
 	const Style* pStyle = GAMESTATE->GetCurrentStyle();
-	const unsigned numTracks = m_pNoteData->GetNumTracks();
+	const int numTracks = m_pNoteData->GetNumTracks();
 	ASSERT( GAMESTATE->GetCurrentStyle()->m_iColsPerPlayer == numTracks );
 	for( int i=0; i < numTracks; i++ )	// for each arrow column
 	{
