@@ -90,7 +90,8 @@ void NoteField::CacheNoteSkin( const RString &sNoteSkin_ )
 	LOG->Trace("NoteField::CacheNoteSkin: cache %s", sNoteSkinLower.c_str() );
 	NoteDisplayCols *nd = new NoteDisplayCols( GAMESTATE->GetCurrentStyle()->m_iColsPerPlayer );
 
-	for( int c=0; c<GAMESTATE->GetCurrentStyle()->m_iColsPerPlayer; c++ ) 
+	int colsEnd = GAMESTATE->GetCurrentStyle()->m_iColsPerPlayer;
+	for( int c=0; c<colsEnd; c++ ) 
 		nd->display[c].Load( c, m_pPlayerState, m_fYReverseOffsetPixels );
 	nd->m_ReceptorArrowRow.Load( m_pPlayerState, m_fYReverseOffsetPixels );
 	nd->m_GhostArrowRow.Load( m_pPlayerState, m_fYReverseOffsetPixels );
@@ -125,8 +126,8 @@ void NoteField::CacheAllUsedNoteSkins()
 	asSkinsLower.push_back( m_pPlayerState->m_PlayerOptions.GetStage().m_sNoteSkin );
 	FOREACH( RString, asSkinsLower, s )
 		s->MakeLower();
-
-	for( unsigned i=0; i < asSkinsLower.size(); ++i )
+	unsigned skinEnd = asSkinsLower.size();
+	for( unsigned i=0; i < skinEnd; ++i )
 		CacheNoteSkin( asSkinsLower[i] );
 
 	/* If we're changing note skins in the editor, we can have old note skins lying
@@ -767,7 +768,8 @@ void NoteField::DrawPrimitives()
 
 		// BPM text
 		const vector<BPMSegment> &aBPMSegments = GAMESTATE->m_pCurSong->m_Timing.m_BPMSegments;
-		for( unsigned i=0; i<aBPMSegments.size(); i++ )
+		unsigned bpmEnd = aBPMSegments.size();
+		for( unsigned i=0; i<bpmEnd; i++ )
 		{
 			if( aBPMSegments[i].m_iStartRow >= iFirstRowToDraw &&
 			    aBPMSegments[i].m_iStartRow <= iLastRowToDraw)
@@ -780,7 +782,8 @@ void NoteField::DrawPrimitives()
 
 		// Freeze text
 		const vector<StopSegment> &aStopSegments = GAMESTATE->m_pCurSong->m_Timing.m_StopSegments;
-		for( unsigned i=0; i<aStopSegments.size(); i++ )
+		unsigned stopEnd = aStopSegments.size();
+		for( unsigned i=0; i<stopEnd; i++ )
 		{
 			if( aStopSegments[i].m_iStartRow >= iFirstRowToDraw &&
 			    aStopSegments[i].m_iStartRow <= iLastRowToDraw)
@@ -793,7 +796,8 @@ void NoteField::DrawPrimitives()
 		
 		// Warp text
 		const vector<WarpSegment> &aWarpSegments = GAMESTATE->m_pCurSong->m_Timing.m_WarpSegments;
-		for( unsigned i=0; i<aWarpSegments.size(); i++ )
+		unsigned warpEnd = aWarpSegments.size();
+		for( unsigned i=0; i<warpEnd; i++ )
 		{
 			if( aWarpSegments[i].m_iStartRow >= iFirstRowToDraw &&
 			    aWarpSegments[i].m_iStartRow <= iLastRowToDraw)
@@ -806,7 +810,8 @@ void NoteField::DrawPrimitives()
 
 		// Time Signature text
 		const vector<TimeSignatureSegment> &vTimeSignatureSegments = GAMESTATE->m_pCurSong->m_Timing.m_vTimeSignatureSegments;
-		for( unsigned i=0; i<vTimeSignatureSegments.size(); i++ )
+		unsigned timeEnd = vTimeSignatureSegments.size();
+		for( unsigned i=0; i<timeEnd; i++ )
 		{
 			if( vTimeSignatureSegments[i].m_iStartRow >= iFirstRowToDraw &&
 			    vTimeSignatureSegments[i].m_iStartRow <= iLastRowToDraw)
@@ -819,7 +824,8 @@ void NoteField::DrawPrimitives()
 
 		// Tickcount text
 		const vector<TickcountSegment> &tTickcountSegments = GAMESTATE->m_pCurSong->m_Timing.m_TickcountSegments;
-		for( unsigned i=0; i<tTickcountSegments.size(); i++ )
+		unsigned tickEnd = tTickcountSegments.size();
+		for( unsigned i=0; i<tickEnd; i++ )
 		{
 			if( tTickcountSegments[i].m_iStartRow >= iFirstRowToDraw &&
 			    tTickcountSegments[i].m_iStartRow <= iLastRowToDraw)
@@ -832,7 +838,8 @@ void NoteField::DrawPrimitives()
 		
 		// Combo text
 		const vector<ComboSegment> &tComboSegments = GAMESTATE->m_pCurSong->m_Timing.m_ComboSegments;
-		for( unsigned i=0; i<tComboSegments.size(); i++ )
+		unsigned comboEnd = tComboSegments.size();
+		for( unsigned i=0; i<comboEnd; i++ )
 		{
 			if( tComboSegments[i].m_iStartRow >= iFirstRowToDraw &&
 			   tComboSegments[i].m_iStartRow <= iLastRowToDraw)
@@ -961,9 +968,9 @@ void NoteField::DrawPrimitives()
 	float fSelectedRangeGlow = SCALE( RageFastCos(RageTimer::GetTimeSinceStartFast()*2), -1, 1, 0.1f, 0.3f );
 
 	const Style* pStyle = GAMESTATE->GetCurrentStyle();
-	ASSERT( GAMESTATE->GetCurrentStyle()->m_iColsPerPlayer == m_pNoteData->GetNumTracks() );
-
-	for( int i=0; i<m_pNoteData->GetNumTracks(); i++ )	// for each arrow column
+	const unsigned numTracks = m_pNoteData->GetNumTracks();
+	ASSERT( GAMESTATE->GetCurrentStyle()->m_iColsPerPlayer == numTracks );
+	for( int i=0; i < numTracks; i++ )	// for each arrow column
 	{
 		const int c = pStyle->m_iColumnDrawOrder[i];
 
@@ -1073,7 +1080,7 @@ void NoteField::DrawPrimitives()
 			bool bHoldNoteBeginsOnThisBeat = false;
 			if( m_pCurDisplay->display[c].DrawHoldHeadForTapsOnSameRow() )
 			{
-				for( int c2=0; c2<m_pNoteData->GetNumTracks(); c2++ )
+				for( int c2=0; c2<numTracks; c2++ )
 				{
 					if( m_pNoteData->GetTapNote(c2, q).type == TapNote::hold_head)
 					{
