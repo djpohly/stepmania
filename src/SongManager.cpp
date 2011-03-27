@@ -782,7 +782,8 @@ void SongManager::InitAutogenCourses()
 	vector<RString> saGroupNames;
 	this->GetSongGroupNames( saGroupNames );
 	Course* pCourse;
-	for( unsigned g=0; g<saGroupNames.size(); g++ )	// foreach Group
+	unsigned groupEnd = saGroupNames.size();
+	for( unsigned g=0; g<groupEnd; g++ )	// foreach Group
 	{
 		RString sGroupName = saGroupNames[g];
 
@@ -810,6 +811,7 @@ void SongManager::InitAutogenCourses()
 		 * consistent. For example, transliterated Japanese names are alternately
 		 * spelled given- and family-name first, but display titles are more consistent. */
 		vector<Song*> apSongs = this->GetAllSongs();
+		const unsigned songSize = apSongs.size();
 		SongUtil::SortSongPointerArrayByDisplayArtist( apSongs );
 
 		RString sCurArtist = "";
@@ -819,9 +821,9 @@ void SongManager::InitAutogenCourses()
 		vector<Song *> aSongs;
 		unsigned i = 0;
 		do {
-			RString sArtist = i >= apSongs.size()? RString(""): apSongs[i]->GetDisplayArtist();
-			RString sTranslitArtist = i >= apSongs.size()? RString(""): apSongs[i]->GetTranslitArtist();
-			if( i < apSongs.size() && !sCurArtist.CompareNoCase(sArtist) )
+			RString sArtist = i >= songSize ? RString(""): apSongs[i]->GetDisplayArtist();
+			RString sTranslitArtist = i >= songSize ? RString(""): apSongs[i]->GetTranslitArtist();
+			if( i < songSize && !sCurArtist.CompareNoCase(sArtist) )
 			{
 				aSongs.push_back( apSongs[i] );
 				++iCurArtistCount;
@@ -841,14 +843,14 @@ void SongManager::InitAutogenCourses()
 
 			aSongs.clear();
 			
-			if( i < apSongs.size() )
+			if( i < songSize )
 			{
 				sCurArtist = sArtist;
 				sCurArtistTranslit = sTranslitArtist;
 				iCurArtistCount = 1;
 				aSongs.push_back( apSongs[i] );
 			}
-		} while( i++ < apSongs.size() );
+		} while( i++ < songSize );
 	}
 }
 
@@ -866,7 +868,8 @@ void SongManager::InitRandomAttacks()
 			LOG->Warn( "Error opening file '%s' for reading: %s.", ATTACK_FILE.c_str(), msd.GetError().c_str() );
 		else
 		{
-			for( unsigned i=0; i<msd.GetNumValues(); i++ )
+			const unsigned msdEnd = msd.GetNumValues();
+			for( unsigned i=0; i<msdEnd; i++ )
 			{
 				int iNumParams = msd.GetNumParams(i);
 				const MsdFile::value_t &sParams = msd.GetValue(i);
@@ -993,13 +996,15 @@ void SongManager::Invalidate( const Song *pStaleSong )
 
 void SongManager::RegenerateNonFixedCourses()
 {
-	for( unsigned i=0; i < m_pCourses.size(); i++ )
+	const unsigned courseSize = m_pCourses.size();
+	for( unsigned i=0; i < courseSize; i++ )
 		m_pCourses[i]->RegenerateNonFixedTrails();
 }
 
 void SongManager::SetPreferences()
 {
-	for( unsigned int i=0; i<m_pSongs.size(); i++ )
+	const unsigned songSize = m_pSongs.size();
+	for( unsigned int i=0; i < songSize; i++ )
 	{
 		// PREFSMAN->m_bAutogenSteps may have changed.
 		m_pSongs[i]->RemoveAutoGenNotes();
@@ -1093,14 +1098,16 @@ bool SongManager::WasLoadedFromAdditionalCourses( const Course *pCourse ) const
 
 void SongManager::GetAllCourses( vector<Course*> &AddTo, bool bIncludeAutogen ) const
 {
-	for( unsigned i=0; i<m_pCourses.size(); i++ )
+	const unsigned courseSize = m_pCourses.size();
+	for( unsigned i=0; i < courseSize; i++ )
 		if( bIncludeAutogen || !m_pCourses[i]->m_bIsAutogen )
 			AddTo.push_back( m_pCourses[i] );
 }
 
 void SongManager::GetCourses( CourseType ct, vector<Course*> &AddTo, bool bIncludeAutogen ) const
 {
-	for( unsigned i=0; i<m_pCourses.size(); i++ )
+	const unsigned courseSize = m_pCourses.size();
+	for( unsigned i=0; i < courseSize; i++ )
 		if( m_pCourses[i]->GetCourseType() == ct )
 			if( bIncludeAutogen || !m_pCourses[i]->m_bIsAutogen )
 				AddTo.push_back( m_pCourses[i] );
@@ -1108,7 +1115,8 @@ void SongManager::GetCourses( CourseType ct, vector<Course*> &AddTo, bool bInclu
 
 void SongManager::GetCoursesInGroup( vector<Course*> &AddTo, const RString &sCourseGroup, bool bIncludeAutogen ) const
 {
-	for( unsigned i=0; i<m_pCourses.size(); i++ )
+	const unsigned courseSize = m_pCourses.size();
+	for( unsigned i=0; i < courseSize; i++ )
 		if( m_pCourses[i]->m_sGroupName == sCourseGroup )
 			if( bIncludeAutogen || !m_pCourses[i]->m_bIsAutogen )
 				AddTo.push_back( m_pCourses[i] );
@@ -1192,13 +1200,15 @@ void SongManager::GetExtraStageInfo( bool bExtra2, const Style *sd, Song*& pSong
 	Steps*	pExtra2Notes = NULL;
 	
 	const vector<Song*> &apSongs = GetSongs( sGroup );
-	for( unsigned s=0; s<apSongs.size(); s++ )	// foreach song
+	const unsigned songSize = apSongs.size();
+	for( unsigned s=0; s<songSize; s++ )	// foreach song
 	{
 		Song* pSong = apSongs[s];
 
 		vector<Steps*> apSteps;
 		SongUtil::GetSteps( pSong, apSteps, sd->m_StepsType );
-		for( unsigned n=0; n<apSteps.size(); n++ )	// foreach Steps
+		const unsigned stepSize = apSteps.size();
+		for( unsigned n=0; n<stepSize; n++ )	// foreach Steps
 		{
 			Steps* pSteps = apSteps[n];
 
@@ -1208,7 +1218,7 @@ void SongManager::GetExtraStageInfo( bool bExtra2, const Style *sd, Song*& pSong
 				pExtra1Notes = pSteps;
 			}
 
-			// for extra 2, we don't want to choose the hardest notes possible.  So, we'll disgard Steps with meter > 8 (assuming dance)
+			// With most themes, the encore extra stage shouldn't always be the hardest step.
 			if( bExtra2 && pSteps->GetMeter() > EXTRA_STAGE2_DIFFICULTY_MAX )	
 				continue;	// skip
 			if( pExtra2Notes == NULL  ||  CompareNotesPointersForExtra(pExtra2Notes,pSteps) )	// pSteps is harder than pHardestNotes
@@ -1240,8 +1250,8 @@ Song* SongManager::GetRandomSong()
 		return NULL;
 
 	static int i = 0;
-
-	for( int iThrowAway=0; iThrowAway<100; iThrowAway++ )
+	const int finalThrowaways = 100;
+	for( int iThrowAway=0; iThrowAway < finalThrowaways; iThrowAway++ )
 	{
 		i++;
 		wrap( i, m_pShuffledSongs.size() );
@@ -1262,8 +1272,8 @@ Course* SongManager::GetRandomCourse()
 		return NULL;
 
 	static int i = 0;
-
-	for( int iThrowAway=0; iThrowAway<100; iThrowAway++ )
+	const int finalThrowaways = 100;
+	for( int iThrowAway=0; iThrowAway < finalThrowaways; iThrowAway++ )
 	{
 		i++;
 		wrap( i, m_pShuffledCourses.size() );
@@ -1312,8 +1322,8 @@ Course* SongManager::GetCourseFromName( RString sName ) const
 {
 	if( sName == "" )
 		return NULL;
-
-	for( unsigned int i=0; i<m_pCourses.size(); i++ )
+	const unsigned courseSize = m_pCourses.size();
+	for( unsigned int i=0; i<courseSize; i++ )
 		if( sName.CompareNoCase(m_pCourses[i]->GetDisplayFullTitle()) == 0 )
 			return m_pCourses[i];
 
@@ -1390,7 +1400,8 @@ void SongManager::UpdatePopular()
 {
 	// update players best
 	vector<Song*> apBestSongs = m_pSongs;
-	for ( unsigned j=0; j < apBestSongs.size() ; ++j )
+	unsigned bestSize = apBestSongs.size();
+	for ( unsigned j=0; j < bestSize ; ++j )
 	{
 		bool bFiltered = false;
 		// Filter out locked songs.
@@ -1403,6 +1414,7 @@ void SongManager::UpdatePopular()
 		swap( apBestSongs[j], apBestSongs.back() );
 		apBestSongs.erase( apBestSongs.end()-1 );
 		--j;
+		--bestSize;
 	}
 
 	SongUtil::SortSongPointerArrayByTitle( apBestSongs );
