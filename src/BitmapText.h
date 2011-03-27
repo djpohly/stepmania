@@ -11,8 +11,16 @@ struct FontPageTextures;
 class BitmapText : public Actor
 {
 public:
+	/** @brief Set up a BitmapText with the default values. */
 	BitmapText();
+	/**
+	 * @brief Set up a BitmapText based off of another BitmapText.
+	 * @param cpy the already existing BitmapText. */
 	BitmapText( const BitmapText &cpy );
+	/**
+	 * @brief Set one BitmapText equal to another one.
+	 * @param cpy the BitmapText to set equal to.
+	 * @return the new BitmapText. */
 	BitmapText &operator=(const BitmapText &cpy);
 	virtual ~BitmapText();
 
