@@ -37,7 +37,8 @@ BitmapText::BitmapText()
 	if( iReloadCounter % 20==0 )
 	{
 		RAINBOW_COLORS.resize( NUM_RAINBOW_COLORS );
-		for( unsigned i = 0; i < RAINBOW_COLORS.size(); ++i )
+		const unsigned iEnd = RAINBOW_COLORS.size();
+		for( unsigned i = 0; i < iEnd; ++i )
 			RAINBOW_COLORS[i] = RAINBOW_COLOR(i);
 	}
 	iReloadCounter++;
@@ -182,7 +183,8 @@ void BitmapText::BuildChars()
 	m_size.x = 0;
 
 	m_iLineWidths.clear();
-	for( unsigned l=0; l<m_wTextLines.size(); l++ ) // for each line
+	unsigned lEnd = m_wTextLines.size();
+	for( unsigned l=0; l < lEnd; l++ ) // for each line
 	{
 		m_iLineWidths.push_back(m_pFont->GetLineWidthInSourcePixels( m_wTextLines[l] ));
 		m_size.x = max( m_size.x, m_iLineWidths.back() );
@@ -210,7 +212,8 @@ void BitmapText::BuildChars()
 	// the top position of the first row of characters
 	int iY = lrintf(-m_size.y/2.0f);
 
-	for( unsigned i=0; i<m_wTextLines.size(); i++ ) // foreach line
+	lEnd = m_wTextLines.size();
+	for( unsigned i=0; i < lEnd; i++ ) // foreach line
 	{
 		iY += m_pFont->GetHeight();
 
@@ -222,7 +225,8 @@ void BitmapText::BuildChars()
 		float fX = SCALE( m_fHorizAlign, 0.0f, 1.0f, -m_size.x/2.0f, +m_size.x/2.0f - iLineWidth );
 		int iX = lrintf( fX );
 
-		for( unsigned j = 0; j < sLine.size(); ++j )
+		unsigned jEnd = sLine.size();
+		for( unsigned j = 0; j < jEnd; ++j )
 		{
 			RageSpriteVertex v[4];
 			const glyph &g = m_pFont->GetGlyph( sLine[j] );
@@ -404,7 +408,8 @@ void BitmapText::SetTextInternal()
 		vector<RString> asLines;
 		split( m_sText, "\n", asLines, false );
 
-		for( unsigned line = 0; line < asLines.size(); ++line )
+		unsigned lineEnd = asLines.size();
+		for( unsigned line = 0; line < lineEnd; ++line )
 		{
 			vector<RString> asWords;
 			split( asLines[line], " ", asWords );
@@ -412,7 +417,8 @@ void BitmapText::SetTextInternal()
 			RString sCurLine;
 			int iCurLineWidth = 0;
 
-			for( unsigned i=0; i<asWords.size(); i++ )
+			unsigned wordEnd = asWords.size();
+			for( unsigned i=0; i < wordEnd; i++ )
 			{
 				const RString &sWord = asWords[i];
 				int iWidthWord = m_pFont->GetLineWidthInSourcePixels( RStringToWstring(sWord) );
@@ -525,8 +531,8 @@ bool BitmapText::StringWillUseAlternate( const RString& sText, const RString& sA
 void BitmapText::CropToWidth( int iMaxWidthInSourcePixels )
 {
 	iMaxWidthInSourcePixels = max( 0, iMaxWidthInSourcePixels );
-
-	for( unsigned l=0; l<m_wTextLines.size(); l++ ) // for each line
+	unsigned lineEnd = m_wTextLines.size();
+	for( unsigned l=0; l<lineEnd; l++ ) // for each line
 	{
 		while( m_iLineWidths[l] > iMaxWidthInSourcePixels )
 		{
@@ -560,7 +566,8 @@ void BitmapText::DrawPrimitives()
 
 			RageColor c = m_ShadowColor;
 			c.a *= m_pTempState->diffuse[0].a;
-			for( unsigned i=0; i<m_aVertices.size(); i++ )
+			unsigned vertexEnd = m_aVertices.size();
+			for( unsigned i=0; i<vertexEnd; i++ )
 				m_aVertices[i].c = c;
 			DrawChars( false );
 
@@ -572,7 +579,8 @@ void BitmapText::DrawPrimitives()
 		{
 			RageColor c = m_StrokeColor;
 			c.a *= m_pTempState->diffuse[0].a;
-			for( unsigned i=0; i<m_aVertices.size(); i++ )
+			unsigned vertexEnd = m_aVertices.size();
+			for( unsigned i=0; i<vertexEnd; i++ )
 				m_aVertices[i].c = c;
 			DrawChars( true );
 		}
@@ -581,7 +589,8 @@ void BitmapText::DrawPrimitives()
 		if( m_bRainbowScroll )
 		{
 			int color_index = int(RageTimer::GetTimeSinceStartFast() / 0.200) % RAINBOW_COLORS.size();
-			for( unsigned i=0; i<m_aVertices.size(); i+=4 )
+			unsigned vertexEnd = m_aVertices.size();
+			for( unsigned i=0; i<vertexEnd; i+=4 )
 			{
 				const RageColor color = RAINBOW_COLORS[color_index];
 				for( unsigned j=i; j<i+4; j++ )
@@ -632,8 +641,8 @@ void BitmapText::DrawPrimitives()
 		{
 			int iSeed = lrintf( RageTimer::GetTimeSinceStartFast()*8 );
 			RandomGen rnd( iSeed );
-
-			for( unsigned i=0; i<m_aVertices.size(); i+=4 )
+			unsigned vertexEnd = m_aVertices.size();
+			for( unsigned i=0; i<vertexEnd; i+=4 )
 			{
 				RageVector3 jitter( rnd()%2, rnd()%3, 0 );
 				vGlyphJitter.push_back( jitter );
@@ -651,7 +660,8 @@ void BitmapText::DrawPrimitives()
 		if( m_bJitter )
 		{
 			ASSERT( vGlyphJitter.size() == m_aVertices.size()/4 );
-			for( unsigned i=0; i<m_aVertices.size(); i+=4 )
+			unsigned vertexEnd = m_aVertices.size();
+			for( unsigned i=0; i<vertexEnd; i+=4 )
 			{
 				const RageVector3 &jitter = vGlyphJitter[i/4];;
 
