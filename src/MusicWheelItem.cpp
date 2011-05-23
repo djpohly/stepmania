@@ -410,11 +410,11 @@ void MusicWheelItem::RefreshGrades()
 void MusicWheelItem::HandleMessage(const Message &msg)
 {
 	if (msg == Message_CurrentStepsP1Changed ||
-	                msg == Message_CurrentStepsP2Changed ||
-	                msg == Message_CurrentTrailP1Changed ||
-	                msg == Message_CurrentTrailP2Changed ||
-	                msg == Message_PreferredDifficultyP1Changed ||
-	                msg == Message_PreferredDifficultyP2Changed)
+	        msg == Message_CurrentStepsP2Changed ||
+	        msg == Message_CurrentTrailP1Changed ||
+	        msg == Message_CurrentTrailP2Changed ||
+	        msg == Message_PreferredDifficultyP1Changed ||
+	        msg == Message_PreferredDifficultyP2Changed)
 	{
 		RefreshGrades();
 	}

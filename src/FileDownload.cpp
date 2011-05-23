@@ -337,9 +337,9 @@ void FileTransfer::HTTPUpdate()
 	}
 
 	if ((m_iTotalBytes <= m_iDownloaded && m_iTotalBytes != -1) ||
-	                //We have the full doc. (And we knew how big it was)
-	                (m_iTotalBytes == -1 &&
-	                 (m_wSocket.state == EzSockets::skERROR || m_wSocket.state == EzSockets::skDISCONNECTED)))
+	        //We have the full doc. (And we knew how big it was)
+	        (m_iTotalBytes == -1 &&
+	         (m_wSocket.state == EzSockets::skERROR || m_wSocket.state == EzSockets::skDISCONNECTED)))
 		// We didn't know how big it was, and were disconnected
 		// So that means we have it all.
 	{
@@ -371,10 +371,10 @@ bool FileTransfer::ParseHTTPAddress(const RString &URL, RString &sProto, RString
 	// [PROTO://]SERVER[:PORT][/URL]
 
 	Regex re(
-	        "^([A-Z]+)://" // [0]: HTTP://
-	        "([^/:]+)"     // [1]: a.b.com
-	        "(:([0-9]+))?" // [2], [3]: :1234 (optional, default 80)
-	        "(/(.*))?$");    // [4], [5]: /foo.html (optional)
+	    "^([A-Z]+)://" // [0]: HTTP://
+	    "([^/:]+)"     // [1]: a.b.com
+	    "(:([0-9]+))?" // [2], [3]: :1234 (optional, default 80)
+	    "(/(.*))?$");    // [4], [5]: /foo.html (optional)
 	vector<RString> asMatches;
 	if (!re.Compare(URL, asMatches))
 	{

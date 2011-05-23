@@ -185,8 +185,8 @@ void ScreenSetTime::ChangeSelection(int iDirection)
 
 	m_textValue[OldSelection].StopEffect();
 	m_textValue[m_Selection].SetEffectDiffuseShift(1.f,
-	                RageColor(0.3f, 0.3f, 0.3f, 1),
-	                RageColor(1, 1, 1, 1));
+	        RageColor(0.3f, 0.3f, 0.3f, 1),
+	        RageColor(1, 1, 1, 1));
 
 	if (iDirection != 0)
 	{
@@ -217,8 +217,8 @@ void ScreenSetTime::MenuRight(const InputEventPlus &input)
 void ScreenSetTime::MenuStart(const InputEventPlus &input)
 {
 	bool bHoldingLeftAndRight =
-	        INPUTMAPPER->IsBeingPressed(GAME_BUTTON_RIGHT, input.pn) &&
-	        INPUTMAPPER->IsBeingPressed(GAME_BUTTON_LEFT, input.pn);
+	    INPUTMAPPER->IsBeingPressed(GAME_BUTTON_RIGHT, input.pn) &&
+	    INPUTMAPPER->IsBeingPressed(GAME_BUTTON_LEFT, input.pn);
 
 	if (bHoldingLeftAndRight)
 	{

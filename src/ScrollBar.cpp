@@ -89,10 +89,10 @@ void ScrollBar::SetPercentage(float fCenterPercent, float fSizePercent)
 	for (unsigned i = 0; i < ARRAYLEN(m_sprScrollStretchThumb); i++)
 	{
 		RectF rect(
-		        -m_sprScrollStretchThumb[i]->GetUnzoomedWidth() / 2,
-		        fPartTopY[i],
-		        +m_sprScrollStretchThumb[i]->GetUnzoomedWidth() / 2,
-		        fPartBottomY[i]
+		    -m_sprScrollStretchThumb[i]->GetUnzoomedWidth() / 2,
+		    fPartTopY[i],
+		    +m_sprScrollStretchThumb[i]->GetUnzoomedWidth() / 2,
+		    fPartBottomY[i]
 		);
 		m_sprScrollStretchThumb[i]->StretchTo(rect);
 	}

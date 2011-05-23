@@ -32,11 +32,11 @@ bool DifficultyIcon::Load(RString sPath)
 	if (bWarn)
 	{
 		RString sError = ssprintf(
-		                         "The difficulty icon graphic '%s' must have %d or %d frames.  It has %d states.",
-		                         sPath.c_str(),
-		                         NUM_Difficulty,
-		                         NUM_Difficulty * 2,
-		                         iStates);
+		                     "The difficulty icon graphic '%s' must have %d or %d frames.  It has %d states.",
+		                     sPath.c_str(),
+		                     NUM_Difficulty,
+		                     NUM_Difficulty * 2,
+		                     iStates);
 		Dialog::OK(sError);
 	}
 	StopAnimating();

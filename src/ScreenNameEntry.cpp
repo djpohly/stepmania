@@ -224,7 +224,7 @@ void ScreenNameEntry::Init()
 	                    && !(GAMESTATE->m_pCurCourse->IsRanking()));
 
 	if (PREFSMAN->m_GetRankingName == RANKING_OFF ||
-	                (PREFSMAN->m_GetRankingName == RANKING_LIST && !IsOnRanking))
+	        (PREFSMAN->m_GetRankingName == RANKING_LIST && !IsOnRanking))
 	{
 		// don't collect score due to ranking setting
 		PostScreenMessage(SM_GoToNextScreen, 0);

@@ -102,13 +102,13 @@ namespace NoteDataUtil
 	void BMRize(NoteData &inout, int iStartIndex = 0, int iEndIndex = MAX_NOTE_ROW);
 	void Skippy(NoteData &inout, int iStartIndex = 0, int iEndIndex = MAX_NOTE_ROW);
 	void InsertIntelligentTaps(
-	        NoteData &in,
-	        int iWindowSizeRows,
-	        int iInsertOffsetRows,
-	        int iWindowStrideRows,
-	        bool bSkippy,
-	        int iStartIndex = 0,
-	        int iEndIndex = MAX_NOTE_ROW);
+	    NoteData &in,
+	    int iWindowSizeRows,
+	    int iInsertOffsetRows,
+	    int iWindowStrideRows,
+	    bool bSkippy,
+	    int iStartIndex = 0,
+	    int iEndIndex = MAX_NOTE_ROW);
 	void AddMines(NoteData &inout, int iStartIndex = 0, int iEndIndex = MAX_NOTE_ROW);
 	void Echo(NoteData &inout, int iStartIndex = 0, int iEndIndex = MAX_NOTE_ROW);
 	void Stomp(NoteData &inout, StepsType st, int iStartIndex = 0, int iEndIndex = MAX_NOTE_ROW);

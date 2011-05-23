@@ -83,7 +83,7 @@ static bool LoadFromKSFFile(const RString &sPath, Steps &out, const Song &song, 
 		/* handle the data...well, not this data: not related to steps.
 		 * Skips INTRO, MUSICINTRO, TITLEFILE, DISCFILE, SONGFILE. */
 		if (sValueName == "TITLE" || EndsWith(sValueName, "INTRO")
-		                || EndsWith(sValueName, "FILE"))
+		        || EndsWith(sValueName, "FILE"))
 		{
 			;
 		}
@@ -485,12 +485,12 @@ static void LoadTags(const RString &str, Song &out)
 	split(str, " - ", asBits, false);
 	// Ignore the difficulty, since we get that elsewhere.
 	if (asBits.size() == 3 && (
-	                        asBits[2].EqualsNoCase("double") ||
-	                        asBits[2].EqualsNoCase("easy") ||
-	                        asBits[2].EqualsNoCase("normal") ||
-	                        asBits[2].EqualsNoCase("hard") ||
-	                        asBits[2].EqualsNoCase("crazy") ||
-	                        asBits[2].EqualsNoCase("nightmare"))
+	            asBits[2].EqualsNoCase("double") ||
+	            asBits[2].EqualsNoCase("easy") ||
+	            asBits[2].EqualsNoCase("normal") ||
+	            asBits[2].EqualsNoCase("hard") ||
+	            asBits[2].EqualsNoCase("crazy") ||
+	            asBits[2].EqualsNoCase("nightmare"))
 	   )
 	{
 		asBits.erase(asBits.begin() + 2, asBits.begin() + 3);
@@ -710,7 +710,7 @@ static bool LoadGlobalData(const RString &sPath, Song &out, bool &bKIUCompliant)
 
 			// This is where the DMRequired test will take place.
 			if (BeginsWith(NoteRowString, "|T") || BeginsWith(NoteRowString, "|B") ||
-			                BeginsWith(NoteRowString, "|D") || BeginsWith(NoteRowString, "|E"))
+			        BeginsWith(NoteRowString, "|D") || BeginsWith(NoteRowString, "|E"))
 			{
 				bDMRequired = true;
 				if (!HandlePipeChars(out.m_SongTiming, NoteRowString, fCurBeat, iTickCount))

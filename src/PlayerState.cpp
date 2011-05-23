@@ -70,9 +70,9 @@ void PlayerState::Update(float fDelta)
 		ASSERT(attack.fStartSecond != -1);
 
 		bool bCurrentlyEnabled =
-		        attack.bGlobal ||
-		        (attack.fStartSecond < m_Position.m_fMusicSeconds &&
-		         m_Position.m_fMusicSeconds < attack.fStartSecond + attack.fSecsRemaining);
+		    attack.bGlobal ||
+		    (attack.fStartSecond < m_Position.m_fMusicSeconds &&
+		     m_Position.m_fMusicSeconds < attack.fStartSecond + attack.fSecsRemaining);
 
 		if (m_ActiveAttacks[s].bOn == bCurrentlyEnabled)
 		{

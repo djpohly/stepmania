@@ -107,7 +107,7 @@ NoteField::~NoteField()
 void NoteField::Unload()
 {
 	for (map<RString, NoteDisplayCols *>::iterator it = m_NoteDisplays.begin();
-	                it != m_NoteDisplays.end(); ++it)
+	        it != m_NoteDisplays.end(); ++it)
 	{
 		delete it->second;
 	}
@@ -214,9 +214,9 @@ void NoteField::Init(const PlayerState* pPlayerState, float fYReverseOffsetPixel
 }
 
 void NoteField::Load(
-        const NoteData *pNoteData,
-        int iDrawDistanceAfterTargetsPixels,
-        int iDrawDistanceBeforeTargetsPixels)
+    const NoteData *pNoteData,
+    int iDrawDistanceAfterTargetsPixels,
+    int iDrawDistanceBeforeTargetsPixels)
 {
 	ASSERT(pNoteData);
 	m_pNoteData = pNoteData;
@@ -831,8 +831,8 @@ void NoteField::DrawPrimitives()
 	// HACK: If boomerang and centered are on, then we want to draw much
 	// earlier so that the notes don't pop on screen.
 	float fCenteredTimesBoomerang =
-	        current_po.m_fScrolls[PlayerOptions::SCROLL_CENTERED] *
-	        current_po.m_fAccels[PlayerOptions::ACCEL_BOOMERANG];
+	    current_po.m_fScrolls[PlayerOptions::SCROLL_CENTERED] *
+	    current_po.m_fAccels[PlayerOptions::ACCEL_BOOMERANG];
 	iDrawDistanceAfterTargetsPixels += int(SCALE(fCenteredTimesBoomerang, 0.f, 1.f, 0.f, -SCREEN_HEIGHT / 2));
 	int iDrawDistanceBeforeTargetsPixels = m_iDrawDistanceBeforeTargetsPixels;
 
@@ -1070,7 +1070,7 @@ void NoteField::DrawPrimitives()
 				float fBeat = timing.GetBeatFromElapsedTime(fSecond);
 
 				if (BeatToNoteRow(fBeat) >= iFirstRowToDraw &&
-				                BeatToNoteRow(fBeat) <= iLastRowToDraw)
+				        BeatToNoteRow(fBeat) <= iLastRowToDraw)
 				{
 					if (IS_ON_SCREEN(fBeat))
 					{
@@ -1165,7 +1165,7 @@ void NoteField::DrawPrimitives()
 		else if (m_iBeginMarker != -1)
 		{
 			if (m_iBeginMarker >= iFirstRowToDraw &&
-			                m_iBeginMarker <= iLastRowToDraw)
+			        m_iBeginMarker <= iLastRowToDraw)
 			{
 				DrawMarkerBar(m_iBeginMarker);
 			}
@@ -1173,7 +1173,7 @@ void NoteField::DrawPrimitives()
 		else if (m_iEndMarker != -1)
 		{
 			if (m_iEndMarker >= iFirstRowToDraw &&
-			                m_iEndMarker <= iLastRowToDraw)
+			        m_iEndMarker <= iLastRowToDraw)
 			{
 				DrawMarkerBar(m_iEndMarker);
 			}
@@ -1305,7 +1305,7 @@ void NoteField::DrawPrimitives()
 			}
 
 			ASSERT_M(NoteRowToBeat(q) > -2000, ssprintf("%i %i %i, %f %f", q, iLastRowToDraw,
-			                iFirstRowToDraw, GetDisplayedPosition(m_pPlayerState)->m_fSongBeat, GetDisplayedPosition(m_pPlayerState)->m_fMusicSeconds));
+			         iFirstRowToDraw, GetDisplayedPosition(m_pPlayerState)->m_fSongBeat, GetDisplayedPosition(m_pPlayerState)->m_fMusicSeconds));
 
 			// See if there is a hold step that begins on this index.
 			// Only do this if the noteskin cares.

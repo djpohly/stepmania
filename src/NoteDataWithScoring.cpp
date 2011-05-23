@@ -383,8 +383,8 @@ namespace
 		}
 
 		const int ActualHolds =
-		        GetNumHoldNotesWithScore(in, TapNote::hold_head_hold, HNS_Held) +
-		        GetNumHoldNotesWithScore(in, TapNote::hold_head_roll, HNS_Held);
+		    GetNumHoldNotesWithScore(in, TapNote::hold_head_hold, HNS_Held) +
+		    GetNumHoldNotesWithScore(in, TapNote::hold_head_roll, HNS_Held);
 		return clamp(float(ActualHolds) / iTotalHolds, 0.0f, 1.0f);
 	}
 

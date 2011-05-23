@@ -276,7 +276,7 @@ void BitmapText::DrawChars(bool bUseStrokeTexture)
 {
 	// bail if cropped all the way
 	if (m_pTempState->crop.left + m_pTempState->crop.right >= 1  ||
-	                m_pTempState->crop.top + m_pTempState->crop.bottom >= 1)
+	        m_pTempState->crop.top + m_pTempState->crop.bottom >= 1)
 	{
 		return;
 	}
@@ -288,9 +288,9 @@ void BitmapText::DrawChars(bool bUseStrokeTexture)
 	iEndGlyph = clamp(iEndGlyph, 0, iNumGlyphs);
 
 	if (m_pTempState->fade.top > 0 ||
-	                m_pTempState->fade.bottom > 0 ||
-	                m_pTempState->fade.left > 0 ||
-	                m_pTempState->fade.right > 0)
+	        m_pTempState->fade.bottom > 0 ||
+	        m_pTempState->fade.left > 0 ||
+	        m_pTempState->fade.right > 0)
 	{
 		// Handle fading by tweaking the alpha values of the vertices.
 
@@ -301,7 +301,7 @@ void BitmapText::DrawChars(bool bUseStrokeTexture)
 		// If the cropped size is less than the fade distance, clamp.
 		const float fHorizRemaining = 1.0f - (m_pTempState->crop.left + m_pTempState->crop.right);
 		if (FadeDist.left + FadeDist.right > 0 &&
-		                fHorizRemaining < FadeDist.left + FadeDist.right)
+		        fHorizRemaining < FadeDist.left + FadeDist.right)
 		{
 			const float LeftPercent = FadeDist.left / (FadeDist.left + FadeDist.right);
 			FadeSize.left = LeftPercent * fHorizRemaining;

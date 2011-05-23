@@ -24,9 +24,9 @@ public:
 
 	virtual void Init(const PlayerState* pPlayerState, float fYReverseOffsetPixels);
 	virtual void Load(
-	        const NoteData* pNoteData,
-	        int iDrawDistanceAfterTargetsPixels,
-	        int iDrawDistanceBeforeTargetsPixels);
+	    const NoteData* pNoteData,
+	    int iDrawDistanceAfterTargetsPixels,
+	    int iDrawDistanceBeforeTargetsPixels);
 	virtual void Unload();
 
 	virtual void HandleMessage(const Message &msg);

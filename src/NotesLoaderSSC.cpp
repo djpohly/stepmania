@@ -576,7 +576,7 @@ bool SSCLoader::LoadFromSSCFile(const RString &sPath, Song &out, bool bFromCache
 						{
 							// Can't use the foreach anymore due to flexible radar lines.
 							for (RadarCategory rc = (RadarCategory)0; rc < categories;
-							                enum_add<RadarCategory>(rc, +1))
+							        enum_add<RadarCategory>(rc, +1))
 							{
 								v[pn][rc] = StringToFloat(saValues[pn * categories + rc]);
 							}
@@ -896,8 +896,8 @@ bool SSCLoader::LoadEditFromMsd(const MsdFile &msd, const RString &sEditFilePath
 			{
 				pNewNotes = pSong->CreateSteps();
 				SMLoader::LoadFromSMTokens(
-				        sParams[1], sParams[2], sParams[3], sParams[4], sParams[5], sParams[6],
-				        *pNewNotes);
+				    sParams[1], sParams[2], sParams[3], sParams[4], sParams[5], sParams[6],
+				    *pNewNotes);
 			}
 
 			pNewNotes->SetLoadedFromProfile(slot);

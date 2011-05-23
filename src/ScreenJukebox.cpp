@@ -146,7 +146,7 @@ void ScreenJukebox::SetSong()
 						s.MakeLower();
 						// todo: allow themers to modify this list? -aj
 						if (s.find("dark") != string::npos ||
-						                s.find("stealth") != string::npos)
+						        s.find("stealth") != string::npos)
 						{
 							bModsAreOkToShow = false;
 							break;

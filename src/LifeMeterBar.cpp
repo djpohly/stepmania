@@ -100,10 +100,10 @@ void LifeMeterBar::Load(const PlayerState *pPlayerState, PlayerStageStats *pPlay
 
 	// Change life difficulty to really easy if merciful beginner on
 	m_bMercifulBeginnerInEffect =
-	        GAMESTATE->m_PlayMode == PLAY_MODE_REGULAR  &&
-	        GAMESTATE->IsPlayerEnabled(pPlayerState)  &&
-	        GAMESTATE->m_pCurSteps[pn]->GetDifficulty() == Difficulty_Beginner  &&
-	        PREFSMAN->m_bMercifulBeginner;
+	    GAMESTATE->m_PlayMode == PLAY_MODE_REGULAR  &&
+	    GAMESTATE->IsPlayerEnabled(pPlayerState)  &&
+	    GAMESTATE->m_pCurSteps[pn]->GetDifficulty() == Difficulty_Beginner  &&
+	    PREFSMAN->m_bMercifulBeginner;
 
 	AfterLifeChanged();
 }

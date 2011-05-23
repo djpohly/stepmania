@@ -56,16 +56,16 @@ public:
 	void UpdateHoldNotes(int iSongRow, float fDeltaTime, vector<TrackRowTapNote> &vTN);
 
 	void Init(
-	        const RString &sType,
-	        PlayerState* pPlayerState,
-	        PlayerStageStats* pPlayerStageStats,
-	        LifeMeter* pLM,
-	        CombinedLifeMeter* pCombinedLM,
-	        ScoreDisplay* pScoreDisplay,
-	        ScoreDisplay* pSecondaryScoreDisplay,
-	        Inventory* pInventory,
-	        ScoreKeeper* pPrimaryScoreKeeper,
-	        ScoreKeeper* pSecondaryScoreKeeper);
+	    const RString &sType,
+	    PlayerState* pPlayerState,
+	    PlayerStageStats* pPlayerStageStats,
+	    LifeMeter* pLM,
+	    CombinedLifeMeter* pCombinedLM,
+	    ScoreDisplay* pScoreDisplay,
+	    ScoreDisplay* pSecondaryScoreDisplay,
+	    Inventory* pInventory,
+	    ScoreKeeper* pPrimaryScoreKeeper,
+	    ScoreKeeper* pSecondaryScoreKeeper);
 	void Load();
 	void CrossedRows(int iLastRowCrossed, const RageTimer &now);
 	bool IsOniDead() const;

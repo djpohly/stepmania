@@ -81,8 +81,8 @@ void MsdFile::ReadBuf(const char *buf, int len, bool bUnescape)
 			/* Skip newlines and whitespace before adding the value. */
 			iProcessedLen = j;
 			while (iProcessedLen > 0 &&
-			                (cProcessed[iProcessedLen - 1] == '\r' || cProcessed[iProcessedLen - 1] == '\n' ||
-			                 cProcessed[iProcessedLen - 1] == ' ' || cProcessed[iProcessedLen - 1] == '\t'))
+			        (cProcessed[iProcessedLen - 1] == '\r' || cProcessed[iProcessedLen - 1] == '\n' ||
+			         cProcessed[iProcessedLen - 1] == ' ' || cProcessed[iProcessedLen - 1] == '\t'))
 			{
 				--iProcessedLen;
 			}

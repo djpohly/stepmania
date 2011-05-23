@@ -627,8 +627,8 @@ void Model::SetPosition(float fSeconds)
 void Model::AdvanceFrame(float fDeltaTime)
 {
 	if (m_pGeometry == NULL ||
-	                m_pGeometry->m_Meshes.empty() ||
-	                !m_pCurAnimation)
+	        m_pGeometry->m_Meshes.empty() ||
+	        !m_pCurAnimation)
 	{
 		return; // bail early
 	}

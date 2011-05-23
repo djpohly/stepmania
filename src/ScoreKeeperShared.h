@@ -11,9 +11,9 @@ public:
 	ScoreKeeperShared(PlayerState *pPlayerState, PlayerStageStats *pPlayerStageStats);
 
 	virtual void Load(
-	        const vector<Song*> &apSongs,
-	        const vector<Steps*> &apSteps,
-	        const vector<AttackArray> &asModifiers);
+	    const vector<Song*> &apSongs,
+	    const vector<Steps*> &apSteps,
+	    const vector<AttackArray> &asModifiers);
 
 	virtual void DrawPrimitives();
 	virtual void Update(float fDelta);

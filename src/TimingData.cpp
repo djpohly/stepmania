@@ -156,8 +156,8 @@ void TimingData::SetTimeSignatureAtRow(int iRow, int iNumerator, int iDenominato
 	{
 		// No specific segmeent here: place one if it differs.
 		if (i == 0 ||
-		                (m_vTimeSignatureSegments[i - 1].m_iNumerator != iNumerator
-		                 || m_vTimeSignatureSegments[i - 1].m_iDenominator != iDenominator))
+		        (m_vTimeSignatureSegments[i - 1].m_iNumerator != iNumerator
+		         || m_vTimeSignatureSegments[i - 1].m_iDenominator != iDenominator))
 		{
 			AddTimeSignatureSegment(TimeSignatureSegment(iRow, iNumerator, iDenominator));
 		}
@@ -165,7 +165,7 @@ void TimingData::SetTimeSignatureAtRow(int iRow, int iNumerator, int iDenominato
 	else	// TimeSignatureSegment being modified is m_vTimeSignatureSegments[i]
 	{
 		if (i > 0  && m_vTimeSignatureSegments[i - 1].m_iNumerator == iNumerator
-		                && m_vTimeSignatureSegments[i - 1].m_iDenominator == iDenominator)
+		        && m_vTimeSignatureSegments[i - 1].m_iDenominator == iDenominator)
 			m_vTimeSignatureSegments.erase(m_vTimeSignatureSegments.begin() + i,
 			                               m_vTimeSignatureSegments.begin() + i + 1);
 		else
@@ -1425,8 +1425,8 @@ void TimingData::DeleteRows(int iStartRow, int iRowsToDelete)
 		if (time.m_iStartRow < iStartRow + iRowsToDelete)
 		{
 			m_vTimeSignatureSegments.erase(
-			        m_vTimeSignatureSegments.begin() + i,
-			        m_vTimeSignatureSegments.begin() + i + 1);
+			    m_vTimeSignatureSegments.begin() + i,
+			    m_vTimeSignatureSegments.begin() + i + 1);
 			--i;
 			continue;
 		}

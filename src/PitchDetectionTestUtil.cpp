@@ -122,9 +122,9 @@ VAL_REGISTER_CLASS(feats, EST_Features)
 EST_Val::~EST_Val(void)
 {
 	if ((t != val_int) &&
-	                (t != val_float) &&
-	                (t != val_unset) &&
-	                (t != val_string))
+	        (t != val_float) &&
+	        (t != val_unset) &&
+	        (t != val_string))
 	{
 		delete v.pval;
 	}
@@ -716,8 +716,8 @@ EST_FVector design_FIR_filter(const EST_FVector &frequency_response,
 }
 
 EST_FVector design_high_or_low_pass_FIR_filter(int sample_rate,
-                int cutoff_freq, int order,
-                float gain1, float gain2)
+        int cutoff_freq, int order,
+        float gain1, float gain2)
 {
 	// change to bandpass filter .....
 
@@ -761,7 +761,7 @@ EST_FVector design_high_or_low_pass_FIR_filter(int sample_rate,
 EST_FVector design_lowpass_FIR_filter(int sample_rate, int freq, int order)
 {
 	return design_high_or_low_pass_FIR_filter(sample_rate,
-	                freq, order, 1.0, 0.0);
+	        freq, order, 1.0, 0.0);
 }
 
 
@@ -1042,7 +1042,7 @@ void array_smoother(float *p_array, int arraylen, struct Ms_Op *ms)
 			{
 				/* compute rough component z(n) */
 				if (output != ms->breaker && xdel[delx - 1]
-				                != ms->breaker)
+				        != ms->breaker)
 				{
 					zatn = xdel[delx - 1] - output;
 				}
@@ -1077,7 +1077,7 @@ void array_smoother(float *p_array, int arraylen, struct Ms_Op *ms)
 						}
 					}
 					if (output != ms->breaker && ydel[dely - 1]
-					                != ms->breaker)
+					        != ms->breaker)
 					{
 						output += ydel[dely - 1];
 					}
@@ -3077,9 +3077,9 @@ EST_Val &EST_Val::operator=(const EST_Val &c)
 {
 	// Have to be careful with the case where they are different types
 	if ((t != val_int) &&
-	                (t != val_float) &&
-	                (t != val_unset) &&
-	                (t != val_string))
+	        (t != val_float) &&
+	        (t != val_unset) &&
+	        (t != val_string))
 	{
 		delete v.pval;
 	}
@@ -3455,9 +3455,9 @@ void super_resolution_pda(const Srpd_Op &paras, const SEGMENT_ &seg, CROSS_CORR_
 		                      p_status->cc_max;
 	/* determine if a bias should be applied */
 	if (paras.peak_tracking && prev_pf != BREAK_NUMBER &&
-	                p_status->v_uv == VOICED && p_status->s_h != HOLD &&
-	                p_status->pitch_freq < 1.75 * prev_pf &&
-	                p_status->pitch_freq > 0.625 * prev_pf)
+	        p_status->v_uv == VOICED && p_status->s_h != HOLD &&
+	        p_status->pitch_freq < 1.75 * prev_pf &&
+	        p_status->pitch_freq > 0.625 * prev_pf)
 	{
 		apply_bias = 1;
 	}
@@ -3507,7 +3507,7 @@ void super_resolution_pda(const Srpd_Op &paras, const SEGMENT_ &seg, CROSS_CORR_
 	}
 	/* low amplitude segment represents silence */
 	if (abs(x_max) + abs(x_min) < 2 * paras.Tsilent ||
-	                abs(y_max) + abs(y_min) < 2 * paras.Tsilent)
+	        abs(y_max) + abs(y_min) < 2 * paras.Tsilent)
 	{
 		for (q = 0; q < p_cc->size; p_cc->coeff[q++] = 0.0)
 		{
@@ -3531,7 +3531,7 @@ void super_resolution_pda(const Srpd_Op &paras, const SEGMENT_ &seg, CROSS_CORR_
 	prev_seg1 = seg.data[paras.Nmax - paras.Nmin] < 0 ? -1 : 1;
 	/* iteratively determine correlation coefficient for next possible period */
 	for (n = paras.Nmin + paras.L; n <= paras.Nmax; n += paras.L,
-	                j += paras.L)
+	        j += paras.L)
 	{
 		x_index = paras.Nmax - n;
 		y_index = paras.Nmax + j;
@@ -3560,8 +3560,8 @@ void super_resolution_pda(const Srpd_Op &paras, const SEGMENT_ &seg, CROSS_CORR_
 		}
 		/* set unknown coefficients to zero */
 		for (q = n - paras.Nmin + 1;
-		                q < p_cc->size && q < n - paras.Nmin + paras.L;
-		                p_cc->coeff[q++] = 0.0)
+		        q < p_cc->size && q < n - paras.Nmin + paras.L;
+		        p_cc->coeff[q++] = 0.0)
 		{
 			;
 		}
@@ -3696,7 +3696,7 @@ void super_resolution_pda(const Srpd_Op &paras, const SEGMENT_ &seg, CROSS_CORR_
 	p_status->cc_max = p_cc->coeff[N0 - paras.Nmin];
 	/* voiced segment period now found */
 	if ((tail == head && score == 1 && p_status->v_uv != VOICED) ||
-	                p_cc->coeff[N0 - paras.Nmin] < p_status->threshold)
+	        p_cc->coeff[N0 - paras.Nmin] < p_status->threshold)
 	{
 		p_status->s_h = HOLD;
 	}
@@ -3747,7 +3747,7 @@ void super_resolution_pda(const Srpd_Op &paras, const SEGMENT_ &seg, CROSS_CORR_
 			yy += (double) seg.data[y_index] * seg.data[y_index];
 		}
 		p_cc->coeff[N1 - paras.Nmin] = p_status->cc_max =
-		                                       xy / sqrt(xx) / sqrt(yy);
+		                                   xy / sqrt(xx) / sqrt(yy);
 		N0 = N1;
 		for (n = N1 + 1; n <= N2; n++, j++)
 		{
@@ -3775,7 +3775,7 @@ void super_resolution_pda(const Srpd_Op &paras, const SEGMENT_ &seg, CROSS_CORR_
 		N_ = N0 - 1;
 	}
 	else if (p_cc->coeff[N0 - paras.Nmin] - p_cc->coeff[N0 - paras.Nmin - 1] <
-	                p_cc->coeff[N0 - paras.Nmin] - p_cc->coeff[N0 - paras.Nmin + 1])
+	         p_cc->coeff[N0 - paras.Nmin] - p_cc->coeff[N0 - paras.Nmin + 1])
 	{
 		N_ = N0 - 1;
 	}

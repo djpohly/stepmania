@@ -386,9 +386,9 @@ void GameState::JoinPlayer(PlayerNumber pn)
 		// dance-threepanel, popn-nine). -aj
 		// XXX?: still shows joined player as "Insert Card". May not be an issue? -aj
 		if (m_pCurStyle->m_StyleType == StyleType_OnePlayerTwoSides ||
-		                m_pCurStyle->m_StepsType == StepsType_dance_solo ||
-		                m_pCurStyle->m_StepsType == StepsType_dance_threepanel ||
-		                m_pCurStyle->m_StepsType == StepsType_popn_nine)
+		        m_pCurStyle->m_StepsType == StepsType_dance_solo ||
+		        m_pCurStyle->m_StepsType == StepsType_dance_threepanel ||
+		        m_pCurStyle->m_StepsType == StepsType_popn_nine)
 		{
 			pStyle = GAMEMAN->GetFirstCompatibleStyle(m_pCurGame, 1, m_pCurStyle->m_StepsType);
 		}
@@ -509,7 +509,7 @@ int GameState::GetCoinsNeededToJoin() const
 
 	// If joint premium, don't take away a credit for the second join.
 	if (GetPremium() == Premium_2PlayersFor1Credit  &&
-	                GetNumSidesJoined() == 1)
+	        GetNumSidesJoined() == 1)
 	{
 		iCoinsToCharge = 0;
 	}

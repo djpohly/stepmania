@@ -76,10 +76,10 @@ void RageVec4TransformCoord(RageVector4* pOut, const RageVector4* pV, const Rage
 	const RageMatrix &a = *pM;
 	const RageVector4 &v = *pV;
 	*pOut = RageVector4(
-	                a.m00 * v.x + a.m10 * v.y + a.m20 * v.z + a.m30 * v.w,
-	                a.m01 * v.x + a.m11 * v.y + a.m21 * v.z + a.m31 * v.w,
-	                a.m02 * v.x + a.m12 * v.y + a.m22 * v.z + a.m32 * v.w,
-	                a.m03 * v.x + a.m13 * v.y + a.m23 * v.z + a.m33 * v.w);
+	            a.m00 * v.x + a.m10 * v.y + a.m20 * v.z + a.m30 * v.w,
+	            a.m01 * v.x + a.m11 * v.y + a.m21 * v.z + a.m31 * v.w,
+	            a.m02 * v.x + a.m12 * v.y + a.m22 * v.z + a.m32 * v.w,
+	            a.m03 * v.x + a.m13 * v.y + a.m23 * v.z + a.m33 * v.w);
 }
 
 RageMatrix::RageMatrix(float v00, float v01, float v02, float v03,
@@ -132,22 +132,22 @@ void RageMatrixMultiply(RageMatrix* pOut, const RageMatrix* pA, const RageMatrix
 	const RageMatrix &b = *pB;
 
 	*pOut = RageMatrix(
-	                b.m00 * a.m00 + b.m01 * a.m10 + b.m02 * a.m20 + b.m03 * a.m30,
-	                b.m00 * a.m01 + b.m01 * a.m11 + b.m02 * a.m21 + b.m03 * a.m31,
-	                b.m00 * a.m02 + b.m01 * a.m12 + b.m02 * a.m22 + b.m03 * a.m32,
-	                b.m00 * a.m03 + b.m01 * a.m13 + b.m02 * a.m23 + b.m03 * a.m33,
-	                b.m10 * a.m00 + b.m11 * a.m10 + b.m12 * a.m20 + b.m13 * a.m30,
-	                b.m10 * a.m01 + b.m11 * a.m11 + b.m12 * a.m21 + b.m13 * a.m31,
-	                b.m10 * a.m02 + b.m11 * a.m12 + b.m12 * a.m22 + b.m13 * a.m32,
-	                b.m10 * a.m03 + b.m11 * a.m13 + b.m12 * a.m23 + b.m13 * a.m33,
-	                b.m20 * a.m00 + b.m21 * a.m10 + b.m22 * a.m20 + b.m23 * a.m30,
-	                b.m20 * a.m01 + b.m21 * a.m11 + b.m22 * a.m21 + b.m23 * a.m31,
-	                b.m20 * a.m02 + b.m21 * a.m12 + b.m22 * a.m22 + b.m23 * a.m32,
-	                b.m20 * a.m03 + b.m21 * a.m13 + b.m22 * a.m23 + b.m23 * a.m33,
-	                b.m30 * a.m00 + b.m31 * a.m10 + b.m32 * a.m20 + b.m33 * a.m30,
-	                b.m30 * a.m01 + b.m31 * a.m11 + b.m32 * a.m21 + b.m33 * a.m31,
-	                b.m30 * a.m02 + b.m31 * a.m12 + b.m32 * a.m22 + b.m33 * a.m32,
-	                b.m30 * a.m03 + b.m31 * a.m13 + b.m32 * a.m23 + b.m33 * a.m33
+	            b.m00 * a.m00 + b.m01 * a.m10 + b.m02 * a.m20 + b.m03 * a.m30,
+	            b.m00 * a.m01 + b.m01 * a.m11 + b.m02 * a.m21 + b.m03 * a.m31,
+	            b.m00 * a.m02 + b.m01 * a.m12 + b.m02 * a.m22 + b.m03 * a.m32,
+	            b.m00 * a.m03 + b.m01 * a.m13 + b.m02 * a.m23 + b.m03 * a.m33,
+	            b.m10 * a.m00 + b.m11 * a.m10 + b.m12 * a.m20 + b.m13 * a.m30,
+	            b.m10 * a.m01 + b.m11 * a.m11 + b.m12 * a.m21 + b.m13 * a.m31,
+	            b.m10 * a.m02 + b.m11 * a.m12 + b.m12 * a.m22 + b.m13 * a.m32,
+	            b.m10 * a.m03 + b.m11 * a.m13 + b.m12 * a.m23 + b.m13 * a.m33,
+	            b.m20 * a.m00 + b.m21 * a.m10 + b.m22 * a.m20 + b.m23 * a.m30,
+	            b.m20 * a.m01 + b.m21 * a.m11 + b.m22 * a.m21 + b.m23 * a.m31,
+	            b.m20 * a.m02 + b.m21 * a.m12 + b.m22 * a.m22 + b.m23 * a.m32,
+	            b.m20 * a.m03 + b.m21 * a.m13 + b.m22 * a.m23 + b.m23 * a.m33,
+	            b.m30 * a.m00 + b.m31 * a.m10 + b.m32 * a.m20 + b.m33 * a.m30,
+	            b.m30 * a.m01 + b.m31 * a.m11 + b.m32 * a.m21 + b.m33 * a.m31,
+	            b.m30 * a.m02 + b.m31 * a.m12 + b.m32 * a.m22 + b.m33 * a.m32,
+	            b.m30 * a.m03 + b.m31 * a.m13 + b.m32 * a.m23 + b.m33 * a.m33
 	        );
 	// phew!
 	//#endif
@@ -455,10 +455,10 @@ void RageMatrixFromQuat(RageMatrix* pOut, const RageVector4 q)
 	// careful.  The param order is row-major, which is the
 	// transpose of the order shown in the OpenGL docs.
 	*pOut = RageMatrix(
-	                1 - (yy + zz), xy + wz,     xz - wy,     0,
-	                xy - wz,     1 - (xx + zz), yz + wx,     0,
-	                xz + wy,     yz - wx,     1 - (xx + yy), 0,
-	                0,         0,         0,         1);
+	            1 - (yy + zz), xy + wz,     xz - wy,     0,
+	            xy - wz,     1 - (xx + zz), yz + wx,     0,
+	            xz + wy,     yz - wx,     1 - (xx + yy), 0,
+	            0,         0,         0,         1);
 }
 
 void RageQuatSlerp(RageVector4 *pOut, const RageVector4 &from, const RageVector4 &to, float t)
@@ -510,9 +510,9 @@ void RageQuatSlerp(RageVector4 *pOut, const RageVector4 &from, const RageVector4
 }
 
 RageMatrix RageLookAt(
-        float eyex, float eyey, float eyez,
-        float centerx, float centery, float centerz,
-        float upx, float upy, float upz)
+    float eyex, float eyey, float eyez,
+    float centerx, float centery, float centerz,
+    float upx, float upy, float upz)
 {
 	RageVector3 Z(eyex - centerx, eyey - centery, eyez - centerz);
 	RageVec3Normalize(&Z, &Z);
@@ -520,23 +520,23 @@ RageMatrix RageLookAt(
 	RageVector3 Y(upx, upy, upz);
 
 	RageVector3 X(
-	        Y[1] * Z[2] - Y[2] * Z[1],
-	        -Y[0] * Z[2] + Y[2] * Z[0],
-	        Y[0] * Z[1] - Y[1] * Z[0]);
+	    Y[1] * Z[2] - Y[2] * Z[1],
+	    -Y[0] * Z[2] + Y[2] * Z[0],
+	    Y[0] * Z[1] - Y[1] * Z[0]);
 
 	Y = RageVector3(
-	            Z[1] * X[2] - Z[2] * X[1],
-	            -Z[0] * X[2] + Z[2] * X[0],
-	            Z[0] * X[1] - Z[1] * X[0]);
+	        Z[1] * X[2] - Z[2] * X[1],
+	        -Z[0] * X[2] + Z[2] * X[0],
+	        Z[0] * X[1] - Z[1] * X[0]);
 
 	RageVec3Normalize(&X, &X);
 	RageVec3Normalize(&Y, &Y);
 
 	RageMatrix mat(
-	        X[0], Y[0], Z[0], 0,
-	        X[1], Y[1], Z[1], 0,
-	        X[2], Y[2], Z[2], 0,
-	        0,    0,    0,    1);
+	    X[0], Y[0], Z[0], 0,
+	    X[1], Y[1], Z[1], 0,
+	    X[2], Y[2], Z[2], 0,
+	    0,    0,    0,    1);
 
 	RageMatrix mat2;
 	RageMatrixTranslation(&mat2, -eyex, -eyey, -eyez);
@@ -713,8 +713,8 @@ float RageBezier2D::EvaluateYFromX(float fX) const
 }
 
 void RageBezier2D::SetFromBezier(
-        float fC1X, float fC1Y, float fC2X, float fC2Y,
-        float fC3X, float fC3Y, float fC4X, float fC4Y)
+    float fC1X, float fC1Y, float fC2X, float fC2Y,
+    float fC3X, float fC3Y, float fC4X, float fC4Y)
 {
 	m_X.SetFromBezier(fC1X, fC2X, fC3X, fC4X);
 	m_Y.SetFromBezier(fC1Y, fC2Y, fC3Y, fC4Y);

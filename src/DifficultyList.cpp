@@ -252,7 +252,7 @@ void StepsDisplayList::PositionItems()
 
 		const float fDiffuseAlpha = bHidden ? 0.0f : 1.0f;
 		if (m_Lines[m].m_Meter.GetDestY() != row.m_fY ||
-		                m_Lines[m].m_Meter.DestTweenState().diffuse[0][3] != fDiffuseAlpha)
+		        m_Lines[m].m_Meter.DestTweenState().diffuse[0][3] != fDiffuseAlpha)
 		{
 			m_Lines[m].m_Meter.RunCommands(MOVE_COMMAND.GetValue());
 			m_Lines[m].m_Meter.RunCommandsOnChildren(MOVE_COMMAND.GetValue());
@@ -408,7 +408,7 @@ void StepsDisplayList::HandleMessage(const Message &msg)
 	FOREACH_ENUM(PlayerNumber, pn)
 	{
 		if (msg.GetName() == MessageIDToString((MessageID)(Message_CurrentStepsP1Changed + pn))  ||
-		                msg.GetName() == MessageIDToString((MessageID)(Message_CurrentTrailP1Changed + pn)))
+		        msg.GetName() == MessageIDToString((MessageID)(Message_CurrentTrailP1Changed + pn)))
 		{
 			SetFromGameState();
 		}

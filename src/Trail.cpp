@@ -22,14 +22,14 @@ bool TrailEntry::operator== (const TrailEntry &rhs) const
 {
 #define EQUAL(a) (a==rhs.a)
 	return
-	        EQUAL(pSong) &&
-	        EQUAL(pSteps) &&
-	        EQUAL(Modifiers) &&
-	        EQUAL(Attacks) &&
-	        EQUAL(bSecret) &&
-	        EQUAL(iLowMeter) &&
-	        EQUAL(iHighMeter) &&
-	        EQUAL(dc);
+	    EQUAL(pSong) &&
+	    EQUAL(pSteps) &&
+	    EQUAL(Modifiers) &&
+	    EQUAL(Attacks) &&
+	    EQUAL(bSecret) &&
+	    EQUAL(iLowMeter) &&
+	    EQUAL(iHighMeter) &&
+	    EQUAL(dc);
 }
 
 bool TrailEntry::ContainsTransformOrTurn() const

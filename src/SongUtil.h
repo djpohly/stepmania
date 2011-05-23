@@ -73,17 +73,17 @@ public:
 		/** @brief A quick way to match every part of the song criterium. */
 #define X(x) (x == other.x)
 		return
-		        X(m_sGroupName) &&
-		        X(m_bUseSongGenreAllowedList) &&
-		        X(m_vsSongGenreAllowedList) &&
-		        X(m_Selectable) &&
-		        X(m_bUseSongAllowedList) &&
-		        X(m_vpSongAllowedList) &&
-		        X(m_iMaxStagesForSong) &&
-		        //X(m_fMinBPM) &&
-		        //X(m_fMaxBPM) &&
-		        X(m_Tutorial) &&
-		        X(m_Locked);
+		    X(m_sGroupName) &&
+		    X(m_bUseSongGenreAllowedList) &&
+		    X(m_vsSongGenreAllowedList) &&
+		    X(m_Selectable) &&
+		    X(m_bUseSongAllowedList) &&
+		    X(m_vpSongAllowedList) &&
+		    X(m_iMaxStagesForSong) &&
+		    //X(m_fMinBPM) &&
+		    //X(m_fMaxBPM) &&
+		    X(m_Tutorial) &&
+		    X(m_Locked);
 #undef X
 	}
 	/**
@@ -101,28 +101,28 @@ public:
 namespace SongUtil
 {
 	void GetSteps(
-	        const Song *pSong,
-	        vector<Steps*>& arrayAddTo,
-	        StepsType st = StepsType_Invalid,
-	        Difficulty dc = Difficulty_Invalid,
-	        int iMeterLow = -1,
-	        int iMeterHigh = -1,
-	        const RString &sDescription = "",
-	        const RString &sCredit = "",
-	        bool bIncludeAutoGen = true,
-	        unsigned uHash = 0,
-	        int iMaxToGet = -1
+	    const Song *pSong,
+	    vector<Steps*>& arrayAddTo,
+	    StepsType st = StepsType_Invalid,
+	    Difficulty dc = Difficulty_Invalid,
+	    int iMeterLow = -1,
+	    int iMeterHigh = -1,
+	    const RString &sDescription = "",
+	    const RString &sCredit = "",
+	    bool bIncludeAutoGen = true,
+	    unsigned uHash = 0,
+	    int iMaxToGet = -1
 	);
 	Steps* GetOneSteps(
-	        const Song *pSong,
-	        StepsType st = StepsType_Invalid,
-	        Difficulty dc = Difficulty_Invalid,
-	        int iMeterLow = -1,
-	        int iMeterHigh = -1,
-	        const RString &sDescription = "",
-	        const RString &sCredit = "",
-	        unsigned uHash = 0,
-	        bool bIncludeAutoGen = true
+	    const Song *pSong,
+	    StepsType st = StepsType_Invalid,
+	    Difficulty dc = Difficulty_Invalid,
+	    int iMeterLow = -1,
+	    int iMeterHigh = -1,
+	    const RString &sDescription = "",
+	    const RString &sCredit = "",
+	    unsigned uHash = 0,
+	    bool bIncludeAutoGen = true
 	);
 	Steps* GetStepsByDifficulty(const Song *pSong, StepsType st, Difficulty dc, bool bIncludeAutoGen = true);
 	Steps* GetStepsByMeter(const Song *pSong, StepsType st, int iMeterLow, int iMeterHigh);

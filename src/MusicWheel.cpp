@@ -187,7 +187,7 @@ void MusicWheel::BeginScreen()
 	/* Invalidate current Song if it can't be played
 	 * because there are not enough stages remaining. */
 	if (GAMESTATE->m_pCurSong != NULL &&
-	                GameState::GetNumStagesMultiplierForSong(GAMESTATE->m_pCurSong) > GAMESTATE->GetSmallestNumStagesLeftForAnyHumanPlayer())
+	        GameState::GetNumStagesMultiplierForSong(GAMESTATE->m_pCurSong) > GAMESTATE->GetSmallestNumStagesLeftForAnyHumanPlayer())
 	{
 		GAMESTATE->m_pCurSong.Set(NULL);
 	}
@@ -1308,7 +1308,7 @@ void MusicWheel::SetOpenSection(RString group)
 	{
 		MusicWheelItemData &d = *from[i];
 		if ((d.m_Type == TYPE_SONG || d.m_Type == TYPE_COURSE) && !d.m_sText.empty() &&
-		                d.m_sText != group)
+		        d.m_sText != group)
 		{
 			continue;
 		}
@@ -1328,8 +1328,8 @@ void MusicWheel::SetOpenSection(RString group)
 
 		// Only show tutorial songs in arcade
 		if (GAMESTATE->m_PlayMode != PLAY_MODE_REGULAR &&
-		                d.m_pSong &&
-		                d.m_pSong->IsTutorial())
+		        d.m_pSong &&
+		        d.m_pSong->IsTutorial())
 		{
 			continue;
 		}

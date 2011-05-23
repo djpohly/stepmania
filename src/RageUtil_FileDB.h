@@ -91,8 +91,8 @@ struct FileSet
 	}
 
 	void GetFilesMatching(
-	        const RString &sBeginning, const RString &sContaining, const RString &sEnding,
-	        vector<RString> &asOut, bool bOnlyDirs) const;
+	    const RString &sBeginning, const RString &sContaining, const RString &sEnding,
+	    vector<RString> &asOut, bool bOnlyDirs) const;
 	void GetFilesEqualTo(const RString &pat, vector<RString> &out, bool bOnlyDirs) const;
 
 	RageFileManager::FileType GetFileType(const RString &sPath) const;

@@ -80,7 +80,7 @@ void ScreenOptionsManageCourses::BeginScreen()
 	GAMESTATE->SetCurrentStyle(pStyle);
 
 	if (GAMESTATE->m_stEdit == StepsType_Invalid  ||
-	                GAMESTATE->m_cdEdit == Difficulty_Invalid)
+	        GAMESTATE->m_cdEdit == Difficulty_Invalid)
 	{
 		SetNextCombination();
 	}

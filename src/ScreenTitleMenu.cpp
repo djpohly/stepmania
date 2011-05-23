@@ -54,12 +54,12 @@ void ScreenTitleMenu::Input(const InputEventPlus &input)
 	{
 		// detect codes
 		if (CodeDetector::EnteredCode(input.GameI.controller, CODE_NEXT_THEME) ||
-		                CodeDetector::EnteredCode(input.GameI.controller, CODE_NEXT_THEME2))
+		        CodeDetector::EnteredCode(input.GameI.controller, CODE_NEXT_THEME2))
 		{
 			GameLoop::ChangeTheme(THEME->GetNextSelectableTheme(), m_sName);
 		}
 		if (CodeDetector::EnteredCode(input.GameI.controller, CODE_NEXT_ANNOUNCER) ||
-		                CodeDetector::EnteredCode(input.GameI.controller, CODE_NEXT_ANNOUNCER2))
+		        CodeDetector::EnteredCode(input.GameI.controller, CODE_NEXT_ANNOUNCER2))
 		{
 			ANNOUNCER->NextAnnouncer();
 			RString sName = ANNOUNCER->GetCurAnnouncerName();

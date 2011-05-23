@@ -39,15 +39,15 @@ void ScreenSyncOverlay::Init()
 	m_textHelp.SetDiffuseAlpha(0);
 	m_textHelp.SetShadowLength(2);
 	m_textHelp.SetText(
-	        REVERT_SYNC_CHANGES.GetValue() + ":\n"
-	        "    F4\n" +
-	        CURRENT_BPM.GetValue() + ":\n"
-	        "    F9/F10\n" +
-	        CURRENT_BPM.GetValue() + ":\n"
-	        "    F11/F12\n" +
-	        MACHINE_OFFSET.GetValue() + ":\n"
-	        "    Shift + F11/F12\n" +
-	        HOLD_ALT.GetValue());
+	    REVERT_SYNC_CHANGES.GetValue() + ":\n"
+	    "    F4\n" +
+	    CURRENT_BPM.GetValue() + ":\n"
+	    "    F9/F10\n" +
+	    CURRENT_BPM.GetValue() + ":\n"
+	    "    F11/F12\n" +
+	    MACHINE_OFFSET.GetValue() + ":\n"
+	    "    Shift + F11/F12\n" +
+	    HOLD_ALT.GetValue());
 	this->AddChild(&m_textHelp);
 
 	m_quad.ZoomToWidth(m_textHelp.GetZoomedWidth() + 20);
@@ -199,7 +199,7 @@ bool ScreenSyncOverlay::OverlayInput(const InputEventPlus &input)
 			bIncrease = false; /* fall through */
 		case KEY_F12:
 			if (INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RSHIFT)) ||
-			                INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LSHIFT)))
+			        INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LSHIFT)))
 			{
 				a = ChangeGlobalOffset;
 			}
@@ -236,7 +236,7 @@ bool ScreenSyncOverlay::OverlayInput(const InputEventPlus &input)
 		{
 			float fDelta = bIncrease ? +0.02f : -0.02f;
 			if (INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RALT)) ||
-			                INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LALT)))
+			        INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LALT)))
 			{
 				fDelta /= 20;
 			}
@@ -267,7 +267,7 @@ bool ScreenSyncOverlay::OverlayInput(const InputEventPlus &input)
 		{
 			float fDelta = bIncrease ? +0.02f : -0.02f;
 			if (INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RALT)) ||
-			                INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LALT)))
+			        INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LALT)))
 			{
 				fDelta /= 20; /* 1ms */
 			}

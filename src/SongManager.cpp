@@ -288,8 +288,8 @@ void SongManager::LoadStepManiaSongDir(RString sDir, LoadingWindow *ld)
 			if (ld)
 			{
 				ld->SetText(LOADING_SONGS.GetValue() + ssprintf("\n%s\n%s",
-				                Basename(sGroupDirName).c_str(),
-				                Basename(sSongDirName).c_str()));
+				            Basename(sGroupDirName).c_str(),
+				            Basename(sSongDirName).c_str()));
 				ld->Paint();
 			}
 			Song* pNewSong = new Song;
@@ -816,8 +816,8 @@ void SongManager::InitCoursesFromDisk(LoadingWindow *ld)
 			if (ld)
 			{
 				ld->SetText(LOADING_COURSES.GetValue() + ssprintf("\n%s\n%s",
-				                Basename(*sCourseGroup).c_str(),
-				                Basename(*sCoursePath).c_str()));
+				            Basename(*sCourseGroup).c_str(),
+				            Basename(*sCoursePath).c_str()));
 				ld->Paint();
 			}
 
@@ -895,8 +895,8 @@ void SongManager::InitAutogenCourses()
 			/* Different artist, or we're at the end. If we have enough entries for
 			 * the last artist, add it. Skip blanks and "Unknown artist". */
 			if (iCurArtistCount >= 3 && sCurArtistTranslit != "" &&
-			                sCurArtistTranslit.CompareNoCase("Unknown artist") &&
-			                sCurArtist.CompareNoCase("Unknown artist"))
+			        sCurArtistTranslit.CompareNoCase("Unknown artist") &&
+			        sCurArtist.CompareNoCase("Unknown artist"))
 			{
 				pCourse = new Course;
 				CourseUtil::AutogenOniFromArtist(sCurArtist, sCurArtistTranslit, aSongs, Difficulty_Hard, *pCourse);

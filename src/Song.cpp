@@ -440,7 +440,7 @@ void Song::TidyUpData()
 			 * don't use it--it's probably a KSF intro music file, which we don't
 			 * (yet) support. */
 			if (arrayPossibleMusic.size() > 1 &&
-			                !arrayPossibleMusic[0].Left(5).CompareNoCase("intro"))
+			        !arrayPossibleMusic[0].Left(5).CompareNoCase("intro"))
 			{
 				++idx;
 			}
@@ -521,8 +521,8 @@ void Song::TidyUpData()
 	TranslateTitles();
 
 	if (m_fMusicSampleStartSeconds == -1 ||
-	                m_fMusicSampleStartSeconds == 0 ||
-	                m_fMusicSampleStartSeconds + m_fMusicSampleLengthSeconds > this->m_fMusicLengthSeconds)
+	        m_fMusicSampleStartSeconds == 0 ||
+	        m_fMusicSampleStartSeconds + m_fMusicSampleLengthSeconds > this->m_fMusicLengthSeconds)
 	{
 		const TimingData &timing = this->m_SongTiming;
 		m_fMusicSampleStartSeconds = timing.GetElapsedTimeFromBeat(100);
@@ -1243,7 +1243,7 @@ bool Song::HasEdits(StepsType st) const
 	{
 		Steps* pSteps = m_vpSteps[i];
 		if (pSteps->m_StepsType == st &&
-		                pSteps->GetDifficulty() == Difficulty_Edit)
+		        pSteps->GetDifficulty() == Difficulty_Edit)
 		{
 			return true;
 		}
@@ -1586,8 +1586,8 @@ bool Song::IsEditAlreadyLoaded(Steps* pSteps) const
 	{
 		Steps* pOther = m_vpSteps[i];
 		if (pOther->GetDifficulty() == Difficulty_Edit &&
-		                pOther->m_StepsType == pSteps->m_StepsType &&
-		                pOther->GetHash() == pSteps->GetHash())
+		        pOther->m_StepsType == pSteps->m_StepsType &&
+		        pOther->GetHash() == pSteps->GetHash())
 		{
 			return true;
 		}

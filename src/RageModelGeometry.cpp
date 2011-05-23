@@ -189,10 +189,10 @@ void RageModelGeometry::LoadMilkshapeAscii(const RString& _sPath, bool bNeedsNor
 					}
 
 					if (sscanf(sLine, "%d %f %f %f %f %f %d",
-					                &nFlags,
-					                &v.p[0], &v.p[1], &v.p[2],
-					                &v.t[0], &v.t[1],
-					                &nIndex
+					           &nFlags,
+					           &v.p[0], &v.p[1], &v.p[2],
+					           &v.t[0], &v.t[1],
+					           &nIndex
 					          ) != 7)
 					{
 						THROW;
@@ -276,10 +276,10 @@ void RageModelGeometry::LoadMilkshapeAscii(const RString& _sPath, bool bNeedsNor
 					uint16_t nIndices[3];
 					uint16_t nNormalIndices[3];
 					if (sscanf(sLine, "%d %hd %hd %hd %hd %hd %hd %d",
-					                &nFlags,
-					                &nIndices[0], &nIndices[1], &nIndices[2],
-					                &nNormalIndices[0], &nNormalIndices[1], &nNormalIndices[2],
-					                &nIndex
+					           &nFlags,
+					           &nIndices[0], &nIndices[1], &nIndices[2],
+					           &nNormalIndices[0], &nNormalIndices[1], &nNormalIndices[2],
+					           &nIndex
 					          ) != 8)
 					{
 						THROW;
@@ -289,9 +289,9 @@ void RageModelGeometry::LoadMilkshapeAscii(const RString& _sPath, bool bNeedsNor
 					for (int k = 0; k < 3; k++)
 					{
 						ASSERT_M(nIndices[k] < Vertices.size(), ssprintf("mesh \"%s\" tri #%i accesses vertex %i, but we only have %i",
-						                szName, j, nIndices[k], int(Vertices.size())));
+						         szName, j, nIndices[k], int(Vertices.size())));
 						ASSERT_M(nNormalIndices[k] < Normals.size(), ssprintf("mesh \"%s\" tri #%i accesses normal %i, but we only have %i",
-						                szName, j, nNormalIndices[k], int(Normals.size())));
+						         szName, j, nNormalIndices[k], int(Normals.size())));
 						RageModelVertex& vertex = Vertices[ nIndices[k] ];
 						RageVector3& normal = Normals[ nNormalIndices[k] ];
 						vertex.n = normal;

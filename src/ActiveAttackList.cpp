@@ -19,9 +19,9 @@ void ActiveAttackList::Init(const PlayerState* pPlayerState)
 void ActiveAttackList::Update(float fDelta)
 {
 	bool bTimeToRefresh =
-	        IsFirstUpdate() || // check this before running Actor::Update()
-	        m_pPlayerState->m_bAttackBeganThisUpdate ||
-	        m_pPlayerState->m_bAttackEndedThisUpdate;
+	    IsFirstUpdate() || // check this before running Actor::Update()
+	    m_pPlayerState->m_bAttackBeganThisUpdate ||
+	    m_pPlayerState->m_bAttackEndedThisUpdate;
 
 	BitmapText::Update(fDelta);
 

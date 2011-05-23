@@ -45,8 +45,8 @@ void ScreenNetEvaluation::Init()
 	m_rectUsersBG.SetName("UsersBG");
 
 	m_rectUsersBG.SetXY(
-	        THEME->GetMetricF("ScreenNetEvaluation", ssprintf("UsersBG%dX", m_iShowSide)),
-	        THEME->GetMetricF("ScreenNetEvaluation", ssprintf("UsersBG%dY", m_iShowSide)));
+	    THEME->GetMetricF("ScreenNetEvaluation", ssprintf("UsersBG%dX", m_iShowSide)),
+	    THEME->GetMetricF("ScreenNetEvaluation", ssprintf("UsersBG%dY", m_iShowSide)));
 	LOAD_ALL_COMMANDS_AND_ON_COMMAND(m_rectUsersBG);
 
 	this->AddChild(&m_rectUsersBG);

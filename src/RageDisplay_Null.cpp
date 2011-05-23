@@ -107,8 +107,8 @@ RageSurface* RageDisplay_Null::CreateScreenshot()
 {
 	const PixelFormatDesc &desc = PIXEL_FORMAT_DESC[PixelFormat_RGB8];
 	RageSurface *image = CreateSurface(
-	                             640, 480, desc.bpp,
-	                             desc.masks[0], desc.masks[1], desc.masks[2], desc.masks[3]);
+	                         640, 480, desc.bpp,
+	                         desc.masks[0], desc.masks[1], desc.masks[2], desc.masks[3]);
 
 	memset(image->pixels, 0, 480 * image->pitch);
 
@@ -125,10 +125,10 @@ const RageDisplay::PixelFormatDesc *RageDisplay_Null::GetPixelFormatDesc(PixelFo
 RageMatrix RageDisplay_Null::GetOrthoMatrix(float l, float r, float b, float t, float zn, float zf)
 {
 	RageMatrix m(
-	        2 / (r - l),      0,            0,           0,
-	        0,            2 / (t - b),      0,           0,
-	        0,            0,            -2 / (zf - zn),   0,
-	        -(r + l) / (r - l), -(t + b) / (t - b), -(zf + zn) / (zf - zn),  1);
+	    2 / (r - l),      0,            0,           0,
+	    0,            2 / (t - b),      0,           0,
+	    0,            0,            -2 / (zf - zn),   0,
+	    -(r + l) / (r - l), -(t + b) / (t - b), -(zf + zn) / (zf - zn),  1);
 	return m;
 }
 

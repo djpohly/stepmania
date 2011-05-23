@@ -94,20 +94,20 @@ void StepMania::GetPreferredVideoModeParams(VideoModeParams &paramsOut)
 	// todo: allow for PRODUCT_ID + "-" + CommonMetrics::WINDOW_TITLE as
 	// a theme option (Midi requested it, AJ had the idea for making it optional)
 	paramsOut = VideoModeParams(
-	                    PREFSMAN->m_bWindowed,
-	                    iWidth,
-	                    PREFSMAN->m_iDisplayHeight,
-	                    PREFSMAN->m_iDisplayColorDepth,
-	                    PREFSMAN->m_iRefreshRate,
-	                    PREFSMAN->m_bVsync,
-	                    PREFSMAN->m_bInterlaced,
-	                    PREFSMAN->m_bSmoothLines,
-	                    PREFSMAN->m_bTrilinearFiltering,
-	                    PREFSMAN->m_bAnisotropicFiltering,
-	                    CommonMetrics::WINDOW_TITLE,
-	                    THEME->GetPathG("Common", "window icon"),
-	                    PREFSMAN->m_bPAL,
-	                    PREFSMAN->m_fDisplayAspectRatio
+	                PREFSMAN->m_bWindowed,
+	                iWidth,
+	                PREFSMAN->m_iDisplayHeight,
+	                PREFSMAN->m_iDisplayColorDepth,
+	                PREFSMAN->m_iRefreshRate,
+	                PREFSMAN->m_bVsync,
+	                PREFSMAN->m_bInterlaced,
+	                PREFSMAN->m_bSmoothLines,
+	                PREFSMAN->m_bTrilinearFiltering,
+	                PREFSMAN->m_bAnisotropicFiltering,
+	                CommonMetrics::WINDOW_TITLE,
+	                THEME->GetPathG("Common", "window icon"),
+	                PREFSMAN->m_bPAL,
+	                PREFSMAN->m_fDisplayAspectRatio
 	            );
 }
 
@@ -192,28 +192,28 @@ static void StartDisplay()
 	DISPLAY = CreateDisplay();
 
 	DISPLAY->ChangeCentering(
-	        PREFSMAN->m_iCenterImageTranslateX,
-	        PREFSMAN->m_iCenterImageTranslateY,
-	        PREFSMAN->m_fCenterImageAddWidth,
-	        PREFSMAN->m_fCenterImageAddHeight);
+	    PREFSMAN->m_iCenterImageTranslateX,
+	    PREFSMAN->m_iCenterImageTranslateY,
+	    PREFSMAN->m_fCenterImageAddWidth,
+	    PREFSMAN->m_fCenterImageAddHeight);
 
 	TEXTUREMAN	= new RageTextureManager;
 	TEXTUREMAN->SetPrefs(
-	        RageTextureManagerPrefs(
-	                PREFSMAN->m_iTextureColorDepth,
-	                PREFSMAN->m_iMovieColorDepth,
-	                PREFSMAN->m_bDelayedTextureDelete,
-	                PREFSMAN->m_iMaxTextureResolution,
-	                StepMania::GetHighResolutionTextures(),
-	                PREFSMAN->m_bForceMipMaps
-	        )
+	    RageTextureManagerPrefs(
+	        PREFSMAN->m_iTextureColorDepth,
+	        PREFSMAN->m_iMovieColorDepth,
+	        PREFSMAN->m_bDelayedTextureDelete,
+	        PREFSMAN->m_iMaxTextureResolution,
+	        StepMania::GetHighResolutionTextures(),
+	        PREFSMAN->m_bForceMipMaps
+	    )
 	);
 
 	MODELMAN	= new ModelManager;
 	MODELMAN->SetPrefs(
-	        ModelManagerPrefs(
-	                PREFSMAN->m_bDelayedModelDelete
-	        )
+	    ModelManagerPrefs(
+	        PREFSMAN->m_bDelayedModelDelete
+	    )
 	);
 }
 
@@ -230,26 +230,26 @@ void StepMania::ApplyGraphicOptions()
 	}
 
 	DISPLAY->ChangeCentering(
-	        PREFSMAN->m_iCenterImageTranslateX,
-	        PREFSMAN->m_iCenterImageTranslateY,
-	        PREFSMAN->m_fCenterImageAddWidth,
-	        PREFSMAN->m_fCenterImageAddHeight);
+	    PREFSMAN->m_iCenterImageTranslateX,
+	    PREFSMAN->m_iCenterImageTranslateY,
+	    PREFSMAN->m_fCenterImageAddWidth,
+	    PREFSMAN->m_fCenterImageAddHeight);
 
 	bNeedReload |= TEXTUREMAN->SetPrefs(
-	                       RageTextureManagerPrefs(
-	                               PREFSMAN->m_iTextureColorDepth,
-	                               PREFSMAN->m_iMovieColorDepth,
-	                               PREFSMAN->m_bDelayedTextureDelete,
-	                               PREFSMAN->m_iMaxTextureResolution,
-	                               StepMania::GetHighResolutionTextures(),
-	                               PREFSMAN->m_bForceMipMaps
-	                       )
+	                   RageTextureManagerPrefs(
+	                       PREFSMAN->m_iTextureColorDepth,
+	                       PREFSMAN->m_iMovieColorDepth,
+	                       PREFSMAN->m_bDelayedTextureDelete,
+	                       PREFSMAN->m_iMaxTextureResolution,
+	                       StepMania::GetHighResolutionTextures(),
+	                       PREFSMAN->m_bForceMipMaps
+	                   )
 	               );
 
 	bNeedReload |= MODELMAN->SetPrefs(
-	                       ModelManagerPrefs(
-	                               PREFSMAN->m_bDelayedModelDelete
-	                       )
+	                   ModelManagerPrefs(
+	                       PREFSMAN->m_bDelayedModelDelete
+	                   )
 	               );
 
 	if (bNeedReload)
@@ -451,15 +451,15 @@ struct VideoCardDefaults
 
 	VideoCardDefaults() {}
 	VideoCardDefaults(
-	        RString sDriverRegex_,
-	        RString sVideoRenderers_,
-	        int iWidth_,
-	        int iHeight_,
-	        int iDisplayColor_,
-	        int iTextureColor_,
-	        int iMovieColor_,
-	        int iTextureSize_,
-	        bool bSmoothLines_
+	    RString sDriverRegex_,
+	    RString sVideoRenderers_,
+	    int iWidth_,
+	    int iHeight_,
+	    int iDisplayColor_,
+	    int iTextureColor_,
+	    int iMovieColor_,
+	    int iTextureSize_,
+	    bool bSmoothLines_
 	)
 	{
 		sDriverRegex = sDriverRegex_;
@@ -475,156 +475,156 @@ struct VideoCardDefaults
 } const g_VideoCardDefaults[] =
 {
 	VideoCardDefaults(
-	        "Voodoo *5",
-	        "d3d,opengl",	// received 3 reports of opengl crashing. -Chris
-	        640, 480,
-	        32, 32, 32,
-	        2048,
-	        true	// accelerated
+	    "Voodoo *5",
+	    "d3d,opengl",	// received 3 reports of opengl crashing. -Chris
+	    640, 480,
+	    32, 32, 32,
+	    2048,
+	    true	// accelerated
 	),
 	VideoCardDefaults(
-	        "Voodoo|3dfx", // all other Voodoos: some drivers don't identify which one
-	        "d3d,opengl",
-	        640, 480,
-	        16, 16, 16,
-	        256,
-	        false	// broken, causes black screen
+	    "Voodoo|3dfx", // all other Voodoos: some drivers don't identify which one
+	    "d3d,opengl",
+	    640, 480,
+	    16, 16, 16,
+	    256,
+	    false	// broken, causes black screen
 	),
 	VideoCardDefaults(
-	        "Radeon.* 7|Wonder 7500|ArcadeVGA",	// Radeon 7xxx, RADEON Mobility 7500
-	        "d3d,opengl",	// movie texture performance is terrible in OpenGL, but fine in D3D.
-	        640, 480,
-	        16, 16, 16,
-	        2048,
-	        true	// accelerated
+	    "Radeon.* 7|Wonder 7500|ArcadeVGA",	// Radeon 7xxx, RADEON Mobility 7500
+	    "d3d,opengl",	// movie texture performance is terrible in OpenGL, but fine in D3D.
+	    640, 480,
+	    16, 16, 16,
+	    2048,
+	    true	// accelerated
 	),
 	VideoCardDefaults(
-	        "GeForce|Radeon|Wonder 9|Quadro",
-	        "opengl,d3d",
-	        640, 480,
-	        32, 32, 32,	// 32 bit textures are faster to load
-	        2048,
-	        true	// hardware accelerated
+	    "GeForce|Radeon|Wonder 9|Quadro",
+	    "opengl,d3d",
+	    640, 480,
+	    32, 32, 32,	// 32 bit textures are faster to load
+	    2048,
+	    true	// hardware accelerated
 	),
 	VideoCardDefaults(
-	        "TNT|Vanta|M64",
-	        "opengl,d3d",
-	        640, 480,
-	        16, 16, 16,	// Athlon 1.2+TNT demonstration w/ movies: 70fps w/ 32bit textures, 86fps w/ 16bit textures
-	        2048,
-	        true	// hardware accelerated
+	    "TNT|Vanta|M64",
+	    "opengl,d3d",
+	    640, 480,
+	    16, 16, 16,	// Athlon 1.2+TNT demonstration w/ movies: 70fps w/ 32bit textures, 86fps w/ 16bit textures
+	    2048,
+	    true	// hardware accelerated
 	),
 	VideoCardDefaults(
-	        "G200|G250|G400",
-	        "d3d,opengl",
-	        640, 480,
-	        16, 16, 16,
-	        2048,
-	        false	// broken, causes black screen
+	    "G200|G250|G400",
+	    "d3d,opengl",
+	    640, 480,
+	    16, 16, 16,
+	    2048,
+	    false	// broken, causes black screen
 	),
 	VideoCardDefaults(
-	        "Savage",
-	        "d3d",
-	        // OpenGL is unusable on my Savage IV with even the latest drivers.
-	        // It draws 30 frames of gibberish then crashes. This happens even with
-	        // simple NeHe demos. -Chris
-	        640, 480,
-	        16, 16, 16,
-	        2048,
-	        false
+	    "Savage",
+	    "d3d",
+	    // OpenGL is unusable on my Savage IV with even the latest drivers.
+	    // It draws 30 frames of gibberish then crashes. This happens even with
+	    // simple NeHe demos. -Chris
+	    640, 480,
+	    16, 16, 16,
+	    2048,
+	    false
 	),
 	VideoCardDefaults(
-	        "XPERT@PLAY|IIC|RAGE PRO|RAGE LT PRO",	// Rage Pro chip, Rage IIC chip
-	        "d3d",
-	        // OpenGL is not hardware accelerated, despite the fact that the
-	        // drivers come with an ICD.  Also, the WinXP driver performance
-	        // is terrible and supports only 640. The ATI driver is usable.
-	        // -Chris
-	        320, 240,	// lower resolution for 60fps. In-box WinXP driver doesn't support 400x300.
-	        16, 16, 16,
-	        256,
-	        false
+	    "XPERT@PLAY|IIC|RAGE PRO|RAGE LT PRO",	// Rage Pro chip, Rage IIC chip
+	    "d3d",
+	    // OpenGL is not hardware accelerated, despite the fact that the
+	    // drivers come with an ICD.  Also, the WinXP driver performance
+	    // is terrible and supports only 640. The ATI driver is usable.
+	    // -Chris
+	    320, 240,	// lower resolution for 60fps. In-box WinXP driver doesn't support 400x300.
+	    16, 16, 16,
+	    256,
+	    false
 	),
 	VideoCardDefaults(
-	        "RAGE MOBILITY-M1",
-	        "d3d,opengl",	// Vertex alpha is broken in OpenGL, but not D3D. -Chris
-	        400, 300,	// lower resolution for 60fps
-	        16, 16, 16,
-	        256,
-	        false
+	    "RAGE MOBILITY-M1",
+	    "d3d,opengl",	// Vertex alpha is broken in OpenGL, but not D3D. -Chris
+	    400, 300,	// lower resolution for 60fps
+	    16, 16, 16,
+	    256,
+	    false
 	),
 	VideoCardDefaults(
-	        "Mobility M3",	// ATI Rage Mobility 128 (AKA "M3")
-	        "d3d,opengl",	// bad movie texture performance in opengl
-	        640, 480,
-	        16, 16, 16,
-	        1024,
-	        false
+	    "Mobility M3",	// ATI Rage Mobility 128 (AKA "M3")
+	    "d3d,opengl",	// bad movie texture performance in opengl
+	    640, 480,
+	    16, 16, 16,
+	    1024,
+	    false
 	),
 	VideoCardDefaults(
-	        "Intel.*82810|Intel.*82815",
-	        "opengl,d3d",// OpenGL is 50%+ faster than D3D w/ latest Intel drivers.  -Chris
-	        512, 384,	// lower resolution for 60fps
-	        16, 16, 16,
-	        512,
-	        false
+	    "Intel.*82810|Intel.*82815",
+	    "opengl,d3d",// OpenGL is 50%+ faster than D3D w/ latest Intel drivers.  -Chris
+	    512, 384,	// lower resolution for 60fps
+	    16, 16, 16,
+	    512,
+	    false
 	),
 	VideoCardDefaults(
-	        "Intel*Extreme Graphics",
-	        "d3d",	// OpenGL blue screens w/ XP drivers from 6-21-2002
-	        640, 480,
-	        16, 16, 16,	// slow at 32bpp
-	        1024,
-	        false
+	    "Intel*Extreme Graphics",
+	    "d3d",	// OpenGL blue screens w/ XP drivers from 6-21-2002
+	    640, 480,
+	    16, 16, 16,	// slow at 32bpp
+	    1024,
+	    false
 	),
 	VideoCardDefaults(
-	        "Intel.*", /* fallback: all unknown Intel cards to D3D, since Intel is notoriously bad at OpenGL */
-	        "d3d,opengl",
-	        640, 480,
-	        16, 16, 16,
-	        2048,
-	        false
+	    "Intel.*", /* fallback: all unknown Intel cards to D3D, since Intel is notoriously bad at OpenGL */
+	    "d3d,opengl",
+	    640, 480,
+	    16, 16, 16,
+	    2048,
+	    false
 	),
 	VideoCardDefaults(
-	        // Cards that have problems with OpenGL:
-	        // ASSERT fail somewhere in RageDisplay_OpenGL "Trident Video Accelerator CyberBlade"
-	        // bug 764499: ASSERT fail after glDeleteTextures for "SiS 650_651_740"
-	        // bug 764830: ASSERT fail after glDeleteTextures for "VIA Tech VT8361/VT8601 Graphics Controller"
-	        // bug 791950: AV in glsis630!DrvSwapBuffers for "SiS 630/730"
-	        "Trident Video Accelerator CyberBlade|VIA.*VT|SiS 6*",
-	        "d3d,opengl",
-	        640, 480,
-	        16, 16, 16,
-	        2048,
-	        false
+	    // Cards that have problems with OpenGL:
+	    // ASSERT fail somewhere in RageDisplay_OpenGL "Trident Video Accelerator CyberBlade"
+	    // bug 764499: ASSERT fail after glDeleteTextures for "SiS 650_651_740"
+	    // bug 764830: ASSERT fail after glDeleteTextures for "VIA Tech VT8361/VT8601 Graphics Controller"
+	    // bug 791950: AV in glsis630!DrvSwapBuffers for "SiS 630/730"
+	    "Trident Video Accelerator CyberBlade|VIA.*VT|SiS 6*",
+	    "d3d,opengl",
+	    640, 480,
+	    16, 16, 16,
+	    2048,
+	    false
 	),
 	VideoCardDefaults(
-	        /* Unconfirmed texture problems on this; let's try D3D, since it's
-	         * a VIA/S3 chipset. */
-	        "VIA/S3G KM400/KN400",
-	        "d3d,opengl",
-	        640, 480,
-	        16, 16, 16,
-	        2048,
-	        false
+	    /* Unconfirmed texture problems on this; let's try D3D, since it's
+	     * a VIA/S3 chipset. */
+	    "VIA/S3G KM400/KN400",
+	    "d3d,opengl",
+	    640, 480,
+	    16, 16, 16,
+	    2048,
+	    false
 	),
 	VideoCardDefaults(
-	        "OpenGL",	// This matches all drivers in Mac and Linux. -Chris
-	        "opengl",
-	        640, 480,
-	        16, 16, 16,
-	        2048,
-	        true // Right now, they've got to have NVidia or ATi Cards anyway..
+	    "OpenGL",	// This matches all drivers in Mac and Linux. -Chris
+	    "opengl",
+	    640, 480,
+	    16, 16, 16,
+	    2048,
+	    true // Right now, they've got to have NVidia or ATi Cards anyway..
 	),
 	VideoCardDefaults(
-	        // Default graphics settings used for all cards that don't match above.
-	        // This must be the very last entry!
-	        "",
-	        "opengl,d3d",
-	        640, 480,
-	        32, 32, 32,
-	        2048,
-	        false  // AA is slow on some cards, so let's selectively enable HW accelerated cards.
+	    // Default graphics settings used for all cards that don't match above.
+	    // This must be the very last entry!
+	    "",
+	    "opengl,d3d",
+	    640, 480,
+	    32, 32, 32,
+	    2048,
+	    false  // AA is slow on some cards, so let's selectively enable HW accelerated cards.
 	),
 };
 
@@ -1410,7 +1410,7 @@ bool HandleGlobalInputs(const InputEventPlus &input)
 	if (input.DeviceI == DeviceInput(DEVICE_KEYBOARD, KEY_F4))
 	{
 		if (INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RALT), &input.InputList) ||
-		                INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LALT), &input.InputList))
+		        INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LALT), &input.InputList))
 		{
 			// pressed Alt+F4
 			ArchHooks::SetUserQuit();
@@ -1419,8 +1419,8 @@ bool HandleGlobalInputs(const InputEventPlus &input)
 	}
 #else
 	if (input.DeviceI == DeviceInput(DEVICE_KEYBOARD, KEY_Cq) &&
-	                (INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LMETA), &input.InputList) ||
-	                 INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RMETA), &input.InputList)))
+	        (INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LMETA), &input.InputList) ||
+	         INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RMETA), &input.InputList)))
 	{
 		/* The user quit is handled by the menu item so we don't need to set it
 		 * here; however, we do want to return that it has been handled since
@@ -1431,21 +1431,21 @@ bool HandleGlobalInputs(const InputEventPlus &input)
 
 	bool bDoScreenshot =
 #if defined(MACOSX)
-	        // Notebooks don't have F13. Use cmd-F12 as well.
-	        input.DeviceI == DeviceInput(DEVICE_KEYBOARD, KEY_PRTSC) ||
-	        input.DeviceI == DeviceInput(DEVICE_KEYBOARD, KEY_F13) ||
-	        (input.DeviceI == DeviceInput(DEVICE_KEYBOARD, KEY_F12) &&
-	         (INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LMETA), &input.InputList) ||
-	          INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RMETA), &input.InputList)));
+	    // Notebooks don't have F13. Use cmd-F12 as well.
+	    input.DeviceI == DeviceInput(DEVICE_KEYBOARD, KEY_PRTSC) ||
+	    input.DeviceI == DeviceInput(DEVICE_KEYBOARD, KEY_F13) ||
+	    (input.DeviceI == DeviceInput(DEVICE_KEYBOARD, KEY_F12) &&
+	     (INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LMETA), &input.InputList) ||
+	      INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RMETA), &input.InputList)));
 #else
-	        /* The default Windows message handler will capture the desktop window upon
-	         * pressing PrntScrn, or will capture the foreground with focus upon pressing
-	         * Alt+PrntScrn. Windows will do this whether or not we save a screenshot
-	         * ourself by dumping the frame buffer. */
-	        // "if pressing PrintScreen and not pressing Alt"
-	        input.DeviceI == DeviceInput(DEVICE_KEYBOARD, KEY_PRTSC) &&
-	        !INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LALT), &input.InputList) &&
-	        !INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RALT), &input.InputList);
+	    /* The default Windows message handler will capture the desktop window upon
+	     * pressing PrntScrn, or will capture the foreground with focus upon pressing
+	     * Alt+PrntScrn. Windows will do this whether or not we save a screenshot
+	     * ourself by dumping the frame buffer. */
+	    // "if pressing PrintScreen and not pressing Alt"
+	    input.DeviceI == DeviceInput(DEVICE_KEYBOARD, KEY_PRTSC) &&
+	    !INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LALT), &input.InputList) &&
+	    !INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RALT), &input.InputList);
 #endif
 	if (bDoScreenshot)
 	{
@@ -1460,8 +1460,8 @@ bool HandleGlobalInputs(const InputEventPlus &input)
 	}
 
 	if (input.DeviceI == DeviceInput(DEVICE_KEYBOARD, KEY_ENTER) &&
-	                (INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RALT), &input.InputList) ||
-	                 INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LALT), &input.InputList)))
+	        (INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RALT), &input.InputList) ||
+	         INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LALT), &input.InputList)))
 	{
 		// alt-enter
 		/* In OS X, this is a menu item and will be handled as such. This will
@@ -1581,7 +1581,7 @@ void HandleInputEvents(float fDeltaTime)
 
 		// check back in event mode
 		if (GAMESTATE->IsEventMode() &&
-		                CodeDetector::EnteredCode(input.GameI.controller, CODE_BACK_IN_EVENT_MODE))
+		        CodeDetector::EnteredCode(input.GameI.controller, CODE_BACK_IN_EVENT_MODE))
 		{
 			input.pn = PLAYER_1;
 			input.MenuI = GAME_BUTTON_BACK;

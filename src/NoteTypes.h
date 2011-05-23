@@ -149,12 +149,12 @@ struct TapNote
 		iDuration = 0;
 	}
 	TapNote(
-	        Type type_,
-	        SubType subType_,
-	        Source source_,
-	        RString sAttackModifiers_,
-	        float fAttackDurationSeconds_,
-	        int iKeysoundIndex_):
+	    Type type_,
+	    SubType subType_,
+	    Source source_,
+	    RString sAttackModifiers_,
+	    float fAttackDurationSeconds_,
+	    int iKeysoundIndex_):
 		type(type_), subType(subType_), source(source_), result(),
 		pn(PLAYER_INVALID), bHopoPossible(false),
 		sAttackModifiers(sAttackModifiers_),

@@ -274,7 +274,7 @@ void Font::AddPage(FontPage *m_pPage)
 	m_apPages.push_back(m_pPage);
 
 	for (map<wchar_t, int>::const_iterator it = m_pPage->m_iCharToGlyphNo.begin();
-	                it != m_pPage->m_iCharToGlyphNo.end(); ++it)
+	        it != m_pPage->m_iCharToGlyphNo.end(); ++it)
 	{
 		m_iCharToGlyph[it->first] = &m_pPage->m_aGlyphs[it->second];
 	}
@@ -292,7 +292,7 @@ void Font::MergeFont(Font &f)
 	}
 
 	for (map<wchar_t, glyph*>::iterator it = f.m_iCharToGlyph.begin();
-	                it != f.m_iCharToGlyph.end(); ++it)
+	        it != f.m_iCharToGlyph.end(); ++it)
 	{
 		m_iCharToGlyph[it->first] = it->second;
 	}
@@ -481,7 +481,7 @@ void Font::LoadFontPageSettings(FontPageSettings &cfg, IniFile &ini, const RStri
 					sscanf(sCodepoint.substr(2).c_str(), "%x", &c);
 				}
 				else if (sCodepoint.size() > 0 &&
-				                utf8_get_char_len(sCodepoint[0]) == int(sCodepoint.size()))
+				         utf8_get_char_len(sCodepoint[0]) == int(sCodepoint.size()))
 				{
 					c = utf8_get_char(sCodepoint.c_str());
 					if (c == wchar_t(-1))
@@ -819,7 +819,7 @@ void Font::Load(const RString &sIniPath, RString sChars)
 		/* Make sure that we don't map characters to frames we don't actually
 		 * have.  This can happen if the font is too small for an sChars. */
 		for (map<wchar_t, int>::const_iterator it = pPage->m_iCharToGlyphNo.begin();
-		                it != pPage->m_iCharToGlyphNo.end(); ++it)
+		        it != pPage->m_iCharToGlyphNo.end(); ++it)
 		{
 			if (it->second < pPage->m_FontPageTextures.m_pTextureMain->GetNumFrames())
 			{

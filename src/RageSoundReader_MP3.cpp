@@ -33,16 +33,16 @@ static const int ID3_TAG_FLAG_FOOTERPRESENT = 0x10;
 static tagtype tagtype(const unsigned char *data, id3_length_t length)
 {
 	if (length >= 3 &&
-	                data[0] == 'T' && data[1] == 'A' && data[2] == 'G')
+	        data[0] == 'T' && data[1] == 'A' && data[2] == 'G')
 	{
 		return TAGTYPE_ID3V1;
 	}
 
 	if (length >= 10 &&
-	                ((data[0] == 'I' && data[1] == 'D' && data[2] == '3') ||
-	                 (data[0] == '3' && data[1] == 'D' && data[2] == 'I')) &&
-	                data[3] < 0xff && data[4] < 0xff &&
-	                data[6] < 0x80 && data[7] < 0x80 && data[8] < 0x80 && data[9] < 0x80)
+	        ((data[0] == 'I' && data[1] == 'D' && data[2] == '3') ||
+	         (data[0] == '3' && data[1] == 'D' && data[2] == 'I')) &&
+	        data[3] < 0xff && data[4] < 0xff &&
+	        data[6] < 0x80 && data[7] < 0x80 && data[8] < 0x80 && data[9] < 0x80)
 	{
 		return data[0] == 'I' ? TAGTYPE_ID3V2 : TAGTYPE_ID3V2_FOOTER;
 	}
@@ -1092,8 +1092,8 @@ int RageSoundReader_MP3::GetLengthInternal(bool fast)
 
 	/* XXX use mad_header_decode and check more than one frame */
 	if (mad->length != -1 &&
-	                do_mad_frame_decode() &&
-	                mad->bitrate == (int) mad->Frame.header.bitrate)
+	        do_mad_frame_decode() &&
+	        mad->bitrate == (int) mad->Frame.header.bitrate)
 	{
 		return mad->length;
 	}

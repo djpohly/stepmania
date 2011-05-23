@@ -126,8 +126,8 @@ void ScreenOptionsMaster::HandleScreenMessage(const ScreenMessage SM)
 		 * title and icon. If the aspect ratio changes, we need to reset RageDisplay
 		 * so that the projection matrix is re-created using the new screen dimensions. */
 		if ((m_iChangeMask & OPT_APPLY_THEME) ||
-		                (m_iChangeMask & OPT_APPLY_GRAPHICS) ||
-		                (m_iChangeMask & OPT_APPLY_ASPECT_RATIO))
+		        (m_iChangeMask & OPT_APPLY_GRAPHICS) ||
+		        (m_iChangeMask & OPT_APPLY_ASPECT_RATIO))
 		{
 			/* If the resolution or aspect ratio changes, always reload the theme.
 			 * Otherwise, only reload it if it changed. */

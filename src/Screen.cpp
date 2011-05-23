@@ -35,7 +35,7 @@ Screen::~Screen()
 }
 
 bool Screen::SortMessagesByDelayRemaining(const Screen::QueuedScreenMessage &m1,
-                const Screen::QueuedScreenMessage &m2)
+        const Screen::QueuedScreenMessage &m2)
 {
 	return m1.fDelayRemaining < m2.fDelayRemaining;
 }

@@ -610,7 +610,7 @@ void ThemeManager::FilterFileLanguages(vector<RString> &asPaths)
 		return;
 	}
 	vector<RString>::iterator it =
-	        partition(asPaths.begin(), asPaths.end(), CompareLanguageTag(m_sCurLanguage));
+	    partition(asPaths.begin(), asPaths.end(), CompareLanguageTag(m_sCurLanguage));
 
 	int iDist = distance(asPaths.begin(), it);
 	if (iDist == 0)
@@ -716,9 +716,9 @@ try_element_again:
 		g_ThemePathCache[category].clear();
 
 		RString message = ssprintf(
-		                          "ThemeManager:  There is more than one theme element that matches "
-		                          "'%s/%s/%s'.  Please remove all but one of these matches.",
-		                          sThemeName.c_str(), sCategory.c_str(), MetricsGroupAndElementToFileName(sMetricsGroup, sElement).c_str());
+		                      "ThemeManager:  There is more than one theme element that matches "
+		                      "'%s/%s/%s'.  Please remove all but one of these matches.",
+		                      sThemeName.c_str(), sCategory.c_str(), MetricsGroupAndElementToFileName(sMetricsGroup, sElement).c_str());
 
 		switch (Dialog::AbortRetryIgnore(message))
 		{
@@ -763,9 +763,9 @@ try_element_again:
 	}
 
 	RString sMessage = ssprintf(
-	                           "ThemeManager:  The redirect '%s' points to the file '%s', which does not exist. "
-	                           "Verify that this redirect is correct.",
-	                           sPath.c_str(), sNewFileName.c_str());
+	                       "ThemeManager:  The redirect '%s' points to the file '%s', which does not exist. "
+	                       "Verify that this redirect is correct.",
+	                       sPath.c_str(), sNewFileName.c_str());
 
 	switch (Dialog::AbortRetryIgnore(sMessage))
 	{
@@ -1046,11 +1046,11 @@ RString ThemeManager::GetMetricRaw(const IniFile &ini, const RString &sMetricsGr
 				continue;
 			case Dialog::ignore:
 				LOG->UserLog(
-				        sType,
-				        sMetricsGroup + "::" + sValueName,
-				        "could not be found in \"%s\" or \"%s\".",
-				        sCurMetricPath.c_str(),
-				        sDefaultMetricPath.c_str());
+				    sType,
+				    sMetricsGroup + "::" + sValueName,
+				    "could not be found in \"%s\" or \"%s\".",
+				    sCurMetricPath.c_str(),
+				    sDefaultMetricPath.c_str());
 				return RString();
 			default:
 				ASSERT(0);

@@ -862,9 +862,9 @@ public:
 	}
 
 	void SetEffectDiffuseBlink(
-	        float fEffectPeriodSeconds = 1.0f,
-	        RageColor c1 = RageColor(0.5f, 0.5f, 0.5f, 1),
-	        RageColor c2 = RageColor(1, 1, 1, 1));
+	    float fEffectPeriodSeconds = 1.0f,
+	    RageColor c1 = RageColor(0.5f, 0.5f, 0.5f, 1),
+	    RageColor c2 = RageColor(1, 1, 1, 1));
 	void SetEffectDiffuseShift(float fEffectPeriodSeconds = 1.f,
 	                           RageColor c1 = RageColor(0, 0, 0, 1),
 	                           RageColor c2 = RageColor(1, 1, 1, 1));
@@ -875,28 +875,28 @@ public:
 	                        RageColor c1 = RageColor(1, 1, 1, 0.2f),
 	                        RageColor c2 = RageColor(1, 1, 1, 0.8f));
 	void SetEffectGlowShift(
-	        float fEffectPeriodSeconds = 1.0f,
-	        RageColor c1 = RageColor(1, 1, 1, 0.2f),
-	        RageColor c2 = RageColor(1, 1, 1, 0.8f));
+	    float fEffectPeriodSeconds = 1.0f,
+	    RageColor c1 = RageColor(1, 1, 1, 0.2f),
+	    RageColor c2 = RageColor(1, 1, 1, 0.8f));
 	void SetEffectGlowRamp(
-	        float fEffectPeriodSeconds = 1.0f,
-	        RageColor c1 = RageColor(1, 1, 1, 0.2f),
-	        RageColor c2 = RageColor(1, 1, 1, 0.8f));
+	    float fEffectPeriodSeconds = 1.0f,
+	    RageColor c1 = RageColor(1, 1, 1, 0.2f),
+	    RageColor c2 = RageColor(1, 1, 1, 0.8f));
 	void SetEffectRainbow(
-	        float fEffectPeriodSeconds = 2.0f);
+	    float fEffectPeriodSeconds = 2.0f);
 	void SetEffectWag(
-	        float fPeriod = 2.f,
-	        RageVector3 vect = RageVector3(0, 0, 20));
+	    float fPeriod = 2.f,
+	    RageVector3 vect = RageVector3(0, 0, 20));
 	void SetEffectBounce(
-	        float fPeriod = 2.f,
-	        RageVector3 vect = RageVector3(0, 20, 0));
+	    float fPeriod = 2.f,
+	    RageVector3 vect = RageVector3(0, 20, 0));
 	void SetEffectBob(
-	        float fPeriod = 2.f,
-	        RageVector3 vect = RageVector3(0, 20, 0));
+	    float fPeriod = 2.f,
+	    RageVector3 vect = RageVector3(0, 20, 0));
 	void SetEffectPulse(
-	        float fPeriod = 2.f,
-	        float fMinZoom = 0.5f,
-	        float fMaxZoom = 1.f);
+	    float fPeriod = 2.f,
+	    float fMinZoom = 0.5f,
+	    float fMaxZoom = 1.f);
 	void SetEffectSpin(RageVector3 vect = RageVector3(0, 0, 180));
 	void SetEffectVibrate(RageVector3 vect = RageVector3(10, 10, 10));
 

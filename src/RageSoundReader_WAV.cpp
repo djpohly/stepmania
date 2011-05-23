@@ -57,9 +57,9 @@ namespace
 			pIn -= 3;
 
 			int32_t iSample =
-			        (int(pIn[0]) << 0) |
-			        (int(pIn[1]) << 8) |
-			        (int(pIn[2]) << 16);
+			    (int(pIn[0]) << 0) |
+			    (int(pIn[1]) << 8) |
+			    (int(pIn[2]) << 16);
 
 			/* Sign-extend 24-bit to 32-bit: */
 			if (iSample & 0x800000)
@@ -113,7 +113,7 @@ struct WavReaderPCM: public WavReader
 	bool Init()
 	{
 		if (QuantizeUp(m_WavData.m_iBitsPerSample, 8) < 8 ||
-		                QuantizeUp(m_WavData.m_iBitsPerSample, 8) > 32)
+		        QuantizeUp(m_WavData.m_iBitsPerSample, 8) > 32)
 		{
 			m_sError = ssprintf("Unsupported sample size %i", m_WavData.m_iBitsPerSample);
 			return false;

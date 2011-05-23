@@ -18,9 +18,9 @@ public:
 	void Load(RString sMetricsGroup);	// load metrics
 	void SetFromSong(const Song *pSong);
 	void SetFromString(
-	        const RString &sDisplayTitle, const RString &sTranslitTitle,
-	        const RString &sDisplaySubTitle, const RString &sTranslitSubTitle,
-	        const RString &sDisplayArtist, const RString &sTranslitArtist);
+	    const RString &sDisplayTitle, const RString &sTranslitTitle,
+	    const RString &sDisplaySubTitle, const RString &sTranslitSubTitle,
+	    const RString &sDisplayArtist, const RString &sTranslitArtist);
 
 	// Lua
 	void PushSelf(lua_State *L);

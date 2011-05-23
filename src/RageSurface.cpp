@@ -98,10 +98,10 @@ bool RageSurfaceFormat::MapRGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a, uint
 	else
 	{
 		val  =
-		        (r >> Loss[0] << Shift[0]) |
-		        (g >> Loss[1] << Shift[1]) |
-		        (b >> Loss[2] << Shift[2]) |
-		        (a >> Loss[3] << Shift[3]);
+		    (r >> Loss[0] << Shift[0]) |
+		    (g >> Loss[1] << Shift[1]) |
+		    (b >> Loss[2] << Shift[2]) |
+		    (a >> Loss[3] << Shift[3]);
 	}
 	return true;
 }

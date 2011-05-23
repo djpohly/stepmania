@@ -557,7 +557,7 @@ void NetworkSyncManager::ProcessInput()
 {
 	//If we're disconnected, just exit
 	if ((NetPlayerClient->state != NetPlayerClient->skCONNECTED) ||
-	                NetPlayerClient->IsError())
+	        NetPlayerClient->IsError())
 	{
 		SCREENMAN->SystemMessageNoAnimate(CONNECTION_DROPPED);
 		useSMserver = false;

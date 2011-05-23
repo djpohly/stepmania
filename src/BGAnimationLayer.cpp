@@ -275,10 +275,10 @@ void BGAnimationLayer::LoadFromAniLayerFile(const RString& sPath)
 			this->AddChild(pSprite);
 			pSprite->Load(Sprite::SongBGTexture(sPath));
 			const RectF StretchedFullScreenRectF(
-			        FullScreenRectF.left - 200,
-			        FullScreenRectF.top - 200,
-			        FullScreenRectF.right + 200,
-			        FullScreenRectF.bottom + 200);
+			    FullScreenRectF.left - 200,
+			    FullScreenRectF.top - 200,
+			    FullScreenRectF.right + 200,
+			    FullScreenRectF.bottom + 200);
 
 			pSprite->ScaleToCover(StretchedFullScreenRectF);
 			pSprite->SetEffectSpin(RageVector3(0, 0, 60));
@@ -576,9 +576,9 @@ void BGAnimationLayer::LoadFromNode(const XNode* pNode)
 				              randomf(float(FullScreenRectF.top), float(FullScreenRectF.bottom)));
 				pActor->SetZoom(randomf(fZoomMin, fZoomMax));
 				m_vParticleVelocity.push_back(RageVector3(
-				                                      randomf(fVelocityXMin, fVelocityXMax),
-				                                      randomf(fVelocityYMin, fVelocityYMax),
-				                                      randomf(fVelocityZMin, fVelocityZMax)));
+				                                  randomf(fVelocityXMin, fVelocityXMax),
+				                                  randomf(fVelocityYMin, fVelocityYMax),
+				                                  randomf(fVelocityZMin, fVelocityZMax)));
 				if (fOverrideSpeed != 0)
 				{
 					RageVec3Normalize(&m_vParticleVelocity[i], &m_vParticleVelocity[i]);
@@ -648,8 +648,8 @@ void BGAnimationLayer::UpdateInternal(float fDeltaTime)
 					// XXX: there's no longer any guarantee that this is a Sprite
 					Sprite *pSprite = (Sprite*)m_SubActors[i];
 					pSprite->StretchTexCoords(
-					        fDeltaTime * m_fTexCoordVelocityX,
-					        fDeltaTime * m_fTexCoordVelocityY);
+					    fDeltaTime * m_fTexCoordVelocityX,
+					    fDeltaTime * m_fTexCoordVelocityY);
 				}
 			}
 			break;

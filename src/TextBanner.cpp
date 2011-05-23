@@ -57,9 +57,9 @@ TextBanner::TextBanner(const TextBanner &cpy):
 }
 
 void TextBanner::SetFromString(
-        const RString &sDisplayTitle, const RString &sTranslitTitle,
-        const RString &sDisplaySubTitle, const RString &sTranslitSubTitle,
-        const RString &sDisplayArtist, const RString &sTranslitArtist)
+    const RString &sDisplayTitle, const RString &sTranslitTitle,
+    const RString &sDisplaySubTitle, const RString &sTranslitSubTitle,
+    const RString &sDisplayArtist, const RString &sTranslitArtist)
 {
 	ASSERT(m_bInitted);
 

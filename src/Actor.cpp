@@ -367,11 +367,11 @@ void Actor::BeginDraw()		// set the world matrix and calculate actor properties
 		if (fTimeIntoEffect < m_fEffectRampUp)
 		{
 			fPercentThroughEffect = SCALE(
-			                                fTimeIntoEffect,
-			                                0,
-			                                m_fEffectRampUp,
-			                                0.0f,
-			                                0.5f);
+			                            fTimeIntoEffect,
+			                            0,
+			                            m_fEffectRampUp,
+			                            0.0f,
+			                            0.5f);
 		}
 		else if (fTimeIntoEffect < m_fEffectRampUp + m_fEffectHoldAtHalf)
 		{
@@ -380,11 +380,11 @@ void Actor::BeginDraw()		// set the world matrix and calculate actor properties
 		else if (fTimeIntoEffect < m_fEffectRampUp + m_fEffectHoldAtHalf + m_fEffectRampDown)
 		{
 			fPercentThroughEffect = SCALE(
-			                                fTimeIntoEffect,
-			                                m_fEffectRampUp + m_fEffectHoldAtHalf,
-			                                m_fEffectRampUp + m_fEffectHoldAtHalf + m_fEffectRampDown,
-			                                0.5f,
-			                                1.0f);
+			                            fTimeIntoEffect,
+			                            m_fEffectRampUp + m_fEffectHoldAtHalf,
+			                            m_fEffectRampUp + m_fEffectHoldAtHalf + m_fEffectRampDown,
+			                            0.5f,
+			                            1.0f);
 		}
 		else
 		{
@@ -440,10 +440,10 @@ void Actor::BeginDraw()		// set the world matrix and calculate actor properties
 				break;
 			case rainbow:
 				tempState.diffuse[0] = RageColor(
-				                               RageFastCos(fPercentBetweenColors * 2 * PI) * 0.5f + 0.5f,
-				                               RageFastCos(fPercentBetweenColors * 2 * PI + PI * 2.0f / 3.0f) * 0.5f + 0.5f,
-				                               RageFastCos(fPercentBetweenColors * 2 * PI + PI * 4.0f / 3.0f) * 0.5f + 0.5f,
-				                               fOriginalAlpha);
+				                           RageFastCos(fPercentBetweenColors * 2 * PI) * 0.5f + 0.5f,
+				                           RageFastCos(fPercentBetweenColors * 2 * PI + PI * 2.0f / 3.0f) * 0.5f + 0.5f,
+				                           RageFastCos(fPercentBetweenColors * 2 * PI + PI * 4.0f / 3.0f) * 0.5f + 0.5f,
+				                           fOriginalAlpha);
 				for (int i = 1; i < 4; i++)
 				{
 					tempState.diffuse[i] = tempState.diffuse[0];
@@ -516,10 +516,10 @@ void Actor::BeginDraw()		// set the world matrix and calculate actor properties
 	{
 		RageMatrix m;
 		RageMatrixTranslate(
-		        &m,
-		        m_pTempState->pos.x,
-		        m_pTempState->pos.y,
-		        m_pTempState->pos.z
+		    &m,
+		    m_pTempState->pos.x,
+		    m_pTempState->pos.y,
+		    m_pTempState->pos.z
 		);
 		DISPLAY->PreMultMatrix(m);
 	}
@@ -550,10 +550,10 @@ void Actor::BeginDraw()		// set the world matrix and calculate actor properties
 		{
 			RageMatrix m;
 			RageMatrixScale(
-			        &m,
-			        fScaleX,
-			        fScaleY,
-			        fScaleZ);
+			    &m,
+			    fScaleX,
+			    fScaleY,
+			    fScaleZ);
 			DISPLAY->PreMultMatrix(m);
 		}
 	}
@@ -565,10 +565,10 @@ void Actor::BeginDraw()		// set the world matrix and calculate actor properties
 		float fY = SCALE(m_fVertAlign, 0.0f, 1.0f, +m_size.y / 2.0f, -m_size.y / 2.0f);
 		RageMatrix m;
 		RageMatrixTranslate(
-		        &m,
-		        fX,
-		        fY,
-		        0
+		    &m,
+		    fX,
+		    fY,
+		    0
 		);
 		DISPLAY->PreMultMatrix(m);
 	}

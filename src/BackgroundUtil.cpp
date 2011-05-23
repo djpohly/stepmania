@@ -24,11 +24,11 @@ bool BackgroundDef::operator<(const BackgroundDef &other) const
 bool BackgroundDef::operator==(const BackgroundDef &other) const
 {
 	return
-	        m_sEffect == other.m_sEffect &&
-	        m_sFile1 == other.m_sFile1 &&
-	        m_sFile2 == other.m_sFile2 &&
-	        m_sColor1 == other.m_sColor1 &&
-	        m_sColor2 == other.m_sColor2;
+	    m_sEffect == other.m_sEffect &&
+	    m_sFile1 == other.m_sFile1 &&
+	    m_sFile2 == other.m_sFile2 &&
+	    m_sColor1 == other.m_sColor1 &&
+	    m_sColor2 == other.m_sColor2;
 }
 
 XNode *BackgroundDef::CreateNode() const
@@ -296,12 +296,12 @@ void BackgroundUtil::GetGlobalBGAnimations(const Song *pSong, const RString &sMa
 }
 
 void BackgroundUtil::GetGlobalRandomMovies(
-        const Song *pSong,
-        const RString &sMatch,
-        vector<RString> &vsPathsOut,
-        vector<RString> &vsNamesOut,
-        bool bTryInsideOfSongGroupAndGenreFirst,
-        bool bTryInsideOfSongGroupFirst)
+    const Song *pSong,
+    const RString &sMatch,
+    vector<RString> &vsPathsOut,
+    vector<RString> &vsNamesOut,
+    bool bTryInsideOfSongGroupAndGenreFirst,
+    bool bTryInsideOfSongGroupFirst)
 {
 	vsPathsOut.clear();
 	vsNamesOut.clear();

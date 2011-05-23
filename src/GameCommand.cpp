@@ -554,7 +554,7 @@ static bool AreStyleAndPlayModeCompatible(const Style *style, PlayMode pm)
 
 			// Don't allow battle modes if the style takes both sides.
 			if (style->m_StyleType == StyleType_OnePlayerTwoSides ||
-			                style->m_StyleType == StyleType_TwoPlayersSharedSides)
+			        style->m_StyleType == StyleType_TwoPlayersSharedSides)
 			{
 				return false;
 			}
@@ -626,7 +626,7 @@ bool GameCommand::IsPlayable(RString *why) const
 		/* If both sides are joined, disallow singles modes, since easy to select
 		 * them accidentally, instead of versus mode. */
 		if (m_pStyle->m_StyleType == StyleType_OnePlayerOneSide &&
-		                GAMESTATE->GetNumSidesJoined() > 1)
+		        GAMESTATE->GetNumSidesJoined() > 1)
 		{
 			if (why)
 			{
@@ -668,8 +668,8 @@ bool GameCommand::IsPlayable(RString *why) const
 	}
 
 	if ((!m_sScreen.CompareNoCase("ScreenJukeboxMenu") ||
-	                !m_sScreen.CompareNoCase("ScreenEditMenu") ||
-	                !m_sScreen.CompareNoCase("ScreenEditCoursesMenu")))
+	        !m_sScreen.CompareNoCase("ScreenEditMenu") ||
+	        !m_sScreen.CompareNoCase("ScreenEditCoursesMenu")))
 	{
 		if (SONGMAN->GetNumSongs() == 0)
 		{
@@ -935,8 +935,8 @@ void GameCommand::ApplySelf(const vector<PlayerNumber> &vpns) const
 	// HACK: Set life type to BATTERY just once here so it happens once and
 	// we don't override the user's changes if they back out.
 	if (GAMESTATE->m_PlayMode == PLAY_MODE_ONI &&
-	                GAMESTATE->m_PlayMode != OldPlayMode &&
-	                GAMESTATE->m_SongOptions.GetStage().m_LifeType == SongOptions::LIFE_BAR)
+	        GAMESTATE->m_PlayMode != OldPlayMode &&
+	        GAMESTATE->m_SongOptions.GetStage().m_LifeType == SongOptions::LIFE_BAR)
 	{
 		SO_GROUP_ASSIGN(GAMESTATE->m_SongOptions, ModsLevel_Stage, m_LifeType, SongOptions::LIFE_BATTERY);
 	}
@@ -945,24 +945,24 @@ void GameCommand::ApplySelf(const vector<PlayerNumber> &vpns) const
 bool GameCommand::IsZero() const
 {
 	if (m_pm != PlayMode_Invalid ||
-	                m_pStyle != NULL ||
-	                m_dc != Difficulty_Invalid ||
-	                m_sAnnouncer != "" ||
-	                m_sPreferredModifiers != "" ||
-	                m_sStageModifiers != "" ||
-	                m_pSong != NULL ||
-	                m_pSteps != NULL ||
-	                m_pCourse != NULL ||
-	                m_pTrail != NULL ||
-	                m_pCharacter != NULL ||
-	                m_CourseDifficulty != Difficulty_Invalid ||
-	                !m_sSongGroup.empty() ||
-	                m_SortOrder != SortOrder_Invalid ||
-	                m_iWeightPounds != -1 ||
-	                m_iGoalCalories != -1 ||
-	                m_GoalType != GoalType_Invalid ||
-	                !m_sProfileID.empty() ||
-	                !m_sUrl.empty())
+	        m_pStyle != NULL ||
+	        m_dc != Difficulty_Invalid ||
+	        m_sAnnouncer != "" ||
+	        m_sPreferredModifiers != "" ||
+	        m_sStageModifiers != "" ||
+	        m_pSong != NULL ||
+	        m_pSteps != NULL ||
+	        m_pCourse != NULL ||
+	        m_pTrail != NULL ||
+	        m_pCharacter != NULL ||
+	        m_CourseDifficulty != Difficulty_Invalid ||
+	        !m_sSongGroup.empty() ||
+	        m_SortOrder != SortOrder_Invalid ||
+	        m_iWeightPounds != -1 ||
+	        m_iGoalCalories != -1 ||
+	        m_GoalType != GoalType_Invalid ||
+	        !m_sProfileID.empty() ||
+	        !m_sUrl.empty())
 	{
 		return false;
 	}

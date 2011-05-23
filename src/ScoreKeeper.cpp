@@ -11,7 +11,7 @@ ScoreKeeper::ScoreKeeper(PlayerState *pPlayerState, PlayerStageStats *pPlayerSta
 }
 
 void ScoreKeeper::GetScoreOfLastTapInRow(const NoteData &nd, int iRow,
-                TapNoteScore &tnsOut, int &iNumTapsInRowOut)
+        TapNoteScore &tnsOut, int &iNumTapsInRowOut)
 {
 	int iNum = 0;
 

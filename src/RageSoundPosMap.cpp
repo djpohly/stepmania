@@ -63,8 +63,8 @@ void pos_map_queue::Insert(int64_t iSourceFrame, int iFrames, int64_t iDestFrame
 		/* Optimization: If the last entry lines up with this new entry, just merge them. */
 		pos_map_t &last = m_pImpl->m_Queue.back();
 		if (last.m_iSourceFrame + last.m_iFrames == iSourceFrame &&
-		                last.m_fSourceToDestRatio == fSourceToDestRatio &&
-		                llabs(last.m_iDestFrame + lrintf(last.m_iFrames * last.m_fSourceToDestRatio) - iDestFrame) <= 1)
+		        last.m_fSourceToDestRatio == fSourceToDestRatio &&
+		        llabs(last.m_iDestFrame + lrintf(last.m_iFrames * last.m_fSourceToDestRatio) - iDestFrame) <= 1)
 		{
 			last.m_iFrames += iFrames;
 
@@ -150,7 +150,7 @@ int64_t pos_map_queue::Search(int64_t iSourceFrame, bool *bApproximate) const
 		const pos_map_t &pm = *it;
 
 		if (iSourceFrame >= pm.m_iSourceFrame &&
-		                iSourceFrame < pm.m_iSourceFrame + pm.m_iFrames)
+		        iSourceFrame < pm.m_iSourceFrame + pm.m_iFrames)
 		{
 			/* iSourceFrame lies in this block; it's an exact match.  Figure
 			 * out the exact position. */

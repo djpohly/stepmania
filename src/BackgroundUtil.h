@@ -51,12 +51,12 @@ struct BackgroundChange
 		m_sTransition("") {}
 
 	BackgroundChange(
-	        float s,
-	        RString f1,
-	        RString f2 = RString(),
-	        float r = 1.f,
-	        RString e = SBE_Centered,
-	        RString t = RString()
+	    float s,
+	    RString f1,
+	    RString f2 = RString(),
+	    float r = 1.f,
+	    RString e = SBE_Centered,
+	    RString t = RString()
 	):
 		m_def(e, f1, f2), m_fStartBeat(s),
 		m_fRate(r), m_sTransition(t) {}

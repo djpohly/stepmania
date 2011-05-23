@@ -213,7 +213,7 @@ static void FindAlphaRGB(const RageSurface *img, uint8_t &r, uint8_t &g, uint8_t
 
 	// Eww. Sorry. Iterate front-to-back or in reverse.
 	for (int y = reverse ? img->h - 1 : 0;
-	                reverse ? (y >= 0) : (y < img->h); reverse ? (--y) : (++y))
+	        reverse ? (y >= 0) : (y < img->h); reverse ? (--y) : (++y))
 	{
 		uint8_t *row = (uint8_t *)img->pixels + img->pitch * y;
 		if (reverse)
@@ -543,10 +543,10 @@ void RageSurfaceUtils::BlitTransform(const RageSurface *src, RageSurface *dst,
 static bool blit_same_type(const RageSurface *src_surf, const RageSurface *dst_surf, int width, int height)
 {
 	if (src_surf->format->BytesPerPixel != dst_surf->format->BytesPerPixel ||
-	                src_surf->format->Rmask != dst_surf->format->Rmask ||
-	                src_surf->format->Gmask != dst_surf->format->Gmask ||
-	                src_surf->format->Bmask != dst_surf->format->Bmask ||
-	                src_surf->format->Amask != dst_surf->format->Amask)
+	        src_surf->format->Rmask != dst_surf->format->Rmask ||
+	        src_surf->format->Gmask != dst_surf->format->Gmask ||
+	        src_surf->format->Bmask != dst_surf->format->Bmask ||
+	        src_surf->format->Amask != dst_surf->format->Amask)
 	{
 		return false;
 	}

@@ -231,7 +231,7 @@ void DancingCharacters::Update(float fDelta)
 	static float fLastBeat = GAMESTATE->m_Position.m_fSongBeat;
 	float fThisBeat = GAMESTATE->m_Position.m_fSongBeat;
 	if (fLastBeat < GAMESTATE->m_pCurSong->m_fFirstBeat &&
-	                fThisBeat >= GAMESTATE->m_pCurSong->m_fFirstBeat)
+	        fThisBeat >= GAMESTATE->m_pCurSong->m_fFirstBeat)
 	{
 		FOREACH_PlayerNumber(p)
 		m_pCharacter[p]->PlayAnimation("dance");
@@ -363,11 +363,11 @@ void DancingCharacters::DrawPrimitives()
 		RageColor diffuse  = bFailed ? RageColor(0.4f, 0.1f, 0.1f, 1) : (bDanger ? RageColor(0.8f, 0.1f, 0.1f, 1) : RageColor(1, 0.95f, 0.925f, 1));
 		RageColor specular = RageColor(0.8f, 0.8f, 0.8f, 1);
 		DISPLAY->SetLightDirectional(
-		        0,
-		        ambient,
-		        diffuse,
-		        specular,
-		        RageVector3(-3, -7.5, +9));
+		    0,
+		    ambient,
+		    diffuse,
+		    specular,
+		    RageVector3(-3, -7.5, +9));
 
 		if (PREFSMAN->m_bCelShadeModels)
 		{

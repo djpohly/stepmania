@@ -139,7 +139,7 @@ namespace
 
 			// close tag
 			if (iOffset < xml.size() &&
-			                (xml[iOffset] == chXMLTagClose || xml[iOffset] == chXMLTagPre || xml[iOffset] == chXMLQuestion || xml[iOffset] == chXMLDash))
+			        (xml[iOffset] == chXMLTagClose || xml[iOffset] == chXMLTagPre || xml[iOffset] == chXMLQuestion || xml[iOffset] == chXMLDash))
 			{
 				return iOffset;        // well-formed tag
 			}

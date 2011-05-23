@@ -145,7 +145,7 @@ static void StartMusic(MusicToPlay &ToPlay)
 		LOG->Trace("Found '%s'", ToPlay.m_sTimingFile.c_str());
 		Song song;
 		if (GetExtension(ToPlay.m_sTimingFile) == ".ssc" &&
-		                SSCLoader::LoadFromSSCFile(ToPlay.m_sTimingFile, song))
+		        SSCLoader::LoadFromSSCFile(ToPlay.m_sTimingFile, song))
 		{
 			ToPlay.HasTiming = true;
 			ToPlay.m_TimingData = song.m_SongTiming;
@@ -157,7 +157,7 @@ static void StartMusic(MusicToPlay &ToPlay)
 			}
 		}
 		else if (GetExtension(ToPlay.m_sTimingFile) == ".sm" &&
-		                SMLoader::LoadFromSMFile(ToPlay.m_sTimingFile, song))
+		         SMLoader::LoadFromSMFile(ToPlay.m_sTimingFile, song))
 		{
 			ToPlay.HasTiming = true;
 			ToPlay.m_TimingData = song.m_SongTiming;
@@ -721,14 +721,14 @@ RString GameSoundManager::GetMusicPath() const
 }
 
 void GameSoundManager::PlayMusic(
-        RString sFile,
-        const TimingData *pTiming,
-        bool bForceLoop,
-        float fStartSecond,
-        float fLengthSeconds,
-        float fFadeInLengthSeconds,
-        float fFadeOutLengthSeconds,
-        bool bAlignBeat
+    RString sFile,
+    const TimingData *pTiming,
+    bool bForceLoop,
+    float fStartSecond,
+    float fLengthSeconds,
+    float fFadeInLengthSeconds,
+    float fFadeOutLengthSeconds,
+    bool bAlignBeat
 )
 {
 	PlayMusicParams params;

@@ -43,9 +43,9 @@ RageVector4 RageQuatFromP(float theta);
 RageVector4 RageQuatFromR(float theta);
 void RageQuatMultiply(RageVector4* pOut, const RageVector4 &pA, const RageVector4 &pB);
 RageMatrix RageLookAt(
-        float eyex, float eyey, float eyez,
-        float centerx, float centery, float centerz,
-        float upx, float upy, float upz);
+    float eyex, float eyey, float eyez,
+    float centerx, float centery, float centerz,
+    float upx, float upy, float upz);
 void RageMatrixAngles(RageMatrix* pOut, const RageVector3 &angles);
 void RageMatrixTranspose(RageMatrix* pOut, const RageMatrix* pIn);
 

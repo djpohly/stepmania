@@ -76,7 +76,7 @@ void ScreenDemonstration::Init()
 void ScreenDemonstration::HandleScreenMessage(const ScreenMessage SM)
 {
 	if (SM == SM_NotesEnded ||
-	                SM == SM_BeginFadingOut)
+	        SM == SM_BeginFadingOut)
 	{
 		if (!m_Out.IsTransitioning())
 		{

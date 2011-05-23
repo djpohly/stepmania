@@ -79,7 +79,7 @@ static void jpeg_RageFile_dest(jpeg::j_compress_ptr cinfo, RageFile &f)
 
 	cinfo->dest = (struct jpeg::jpeg_destination_mgr *)
 	              (*cinfo->mem->alloc_small)((jpeg::j_common_ptr) cinfo, JPOOL_PERMANENT,
-	                              sizeof(my_destination_mgr));
+	                      sizeof(my_destination_mgr));
 
 	my_destination_mgr *dest = (my_destination_mgr *) cinfo->dest;
 	dest->pub.init_destination = init_destination;

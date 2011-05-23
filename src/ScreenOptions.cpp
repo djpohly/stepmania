@@ -473,8 +473,8 @@ void ScreenOptions::TweenCursor(PlayerNumber pn)
 
 	OptionsCursor &cursor = m_Cursor[pn];
 	if (cursor.GetDestX() != (float) iX  ||
-	                cursor.GetDestY() != (float) iY  ||
-	                cursor.GetBarWidth() != iWidth)
+	        cursor.GetDestY() != (float) iY  ||
+	        cursor.GetBarWidth() != iWidth)
 	{
 		cursor.StopTweening();
 		cursor.BeginTweening(CURSOR_TWEEN_SECONDS);
@@ -713,9 +713,9 @@ void ScreenOptions::PositionRows(bool bTween)
 		Actor::TweenState tsDestination = m_exprRowPositionTransformFunction.GetTransformCached(fPos, i, min((int)Rows.size(), (int)NUM_ROWS_SHOWN));
 
 		bool bHidden =
-		        i < first_start ||
-		        (i >= first_end && i < second_start) ||
-		        i >= second_end;
+		    i < first_start ||
+		    (i >= first_end && i < second_start) ||
+		    i >= second_end;
 		for (int j = 0; j < 4; j++)
 		{
 			tsDestination.diffuse[j].a = bHidden ? 0.0f : 1.0f;
@@ -865,8 +865,8 @@ void ScreenOptions::MenuStart(const InputEventPlus &input)
 		case NAV_TOGGLE_THREE_KEY:
 		{
 			bool bHoldingLeftAndRight =
-			        INPUTMAPPER->IsBeingPressed(GAME_BUTTON_RIGHT, pn) &&
-			        INPUTMAPPER->IsBeingPressed(GAME_BUTTON_LEFT, pn);
+			    INPUTMAPPER->IsBeingPressed(GAME_BUTTON_RIGHT, pn) &&
+			    INPUTMAPPER->IsBeingPressed(GAME_BUTTON_LEFT, pn);
 			if (bHoldingLeftAndRight)
 			{
 				if (MoveRowRelative(pn, -1, input.type != IET_FIRST_PRESS))
@@ -925,7 +925,7 @@ void ScreenOptions::ProcessMenuStart(const InputEventPlus &input)
 
 		// Don't accept START to go to the next screen if we're still transitioning in.
 		if (bEndThisScreen &&
-		                (input.type != IET_FIRST_PRESS || IsTransitioning()))
+		        (input.type != IET_FIRST_PRESS || IsTransitioning()))
 		{
 			return;
 		}
@@ -1187,8 +1187,8 @@ void ScreenOptions::ChangeValueInRowRelative(int iRow, PlayerNumber pn, int iDel
 		 * and the current focus are detached. */
 		bool bForceFocusedChoiceTogether = false;
 		if (m_OptionsNavigation != NAV_TOGGLE_THREE_KEY &&
-		                m_OptionsNavigation != NAV_TOGGLE_FIVE_KEY &&
-		                row.GetRowDef().m_bOneChoiceForAllPlayers)
+		        m_OptionsNavigation != NAV_TOGGLE_FIVE_KEY &&
+		        row.GetRowDef().m_bOneChoiceForAllPlayers)
 		{
 			bForceFocusedChoiceTogether = true;
 		}
@@ -1428,7 +1428,7 @@ void ScreenOptions::MenuUpDown(const InputEventPlus &input, int iDir)
 		if (iDir == +1)
 		{
 			if (INPUTMAPPER->IsBeingPressed(GAME_BUTTON_MENUUP, pn) ||
-			                INPUTMAPPER->IsBeingPressed(GAME_BUTTON_SELECT, pn))
+			        INPUTMAPPER->IsBeingPressed(GAME_BUTTON_SELECT, pn))
 			{
 				return;
 			}
@@ -1436,7 +1436,7 @@ void ScreenOptions::MenuUpDown(const InputEventPlus &input, int iDir)
 		else
 		{
 			if (INPUTMAPPER->IsBeingPressed(GAME_BUTTON_MENUDOWN, pn) ||
-			                INPUTMAPPER->IsBeingPressed(GAME_BUTTON_START, pn))
+			        INPUTMAPPER->IsBeingPressed(GAME_BUTTON_START, pn))
 			{
 				return;
 			}

@@ -358,10 +358,10 @@ void ScreenDebugOverlay::Update(float fDeltaTime)
 	if (bCenteringNeedsUpdate)
 	{
 		DISPLAY->ChangeCentering(
-		        PREFSMAN->m_iCenterImageTranslateX,
-		        PREFSMAN->m_iCenterImageTranslateY,
-		        PREFSMAN->m_fCenterImageAddWidth - (int)SCREEN_WIDTH + (int)(g_fImageScaleCurrent * SCREEN_WIDTH),
-		        PREFSMAN->m_fCenterImageAddHeight - (int)SCREEN_HEIGHT + (int)(g_fImageScaleCurrent * SCREEN_HEIGHT));
+		    PREFSMAN->m_iCenterImageTranslateX,
+		    PREFSMAN->m_iCenterImageTranslateY,
+		    PREFSMAN->m_fCenterImageAddWidth - (int)SCREEN_WIDTH + (int)(g_fImageScaleCurrent * SCREEN_WIDTH),
+		    PREFSMAN->m_fCenterImageAddHeight - (int)SCREEN_HEIGHT + (int)(g_fImageScaleCurrent * SCREEN_HEIGHT));
 	}
 
 	Screen::Update(fDeltaTime);
@@ -460,14 +460,14 @@ static bool GetValueFromMap(const map<U, V> &m, const U &key, V &val)
 bool ScreenDebugOverlay::OverlayInput(const InputEventPlus &input)
 {
 	if (input.DeviceI == g_Mappings.holdForDebug1 ||
-	                input.DeviceI == g_Mappings.holdForDebug2)
+	        input.DeviceI == g_Mappings.holdForDebug2)
 	{
 		bool bHoldingNeither =
-		        (!g_Mappings.holdForDebug1.IsValid() || !INPUTFILTER->IsBeingPressed(g_Mappings.holdForDebug1)) &&
-		        (!g_Mappings.holdForDebug2.IsValid() || !INPUTFILTER->IsBeingPressed(g_Mappings.holdForDebug2));
+		    (!g_Mappings.holdForDebug1.IsValid() || !INPUTFILTER->IsBeingPressed(g_Mappings.holdForDebug1)) &&
+		    (!g_Mappings.holdForDebug2.IsValid() || !INPUTFILTER->IsBeingPressed(g_Mappings.holdForDebug2));
 		bool bHoldingBoth =
-		        (!g_Mappings.holdForDebug1.IsValid() || INPUTFILTER->IsBeingPressed(g_Mappings.holdForDebug1)) &&
-		        (!g_Mappings.holdForDebug2.IsValid() || INPUTFILTER->IsBeingPressed(g_Mappings.holdForDebug2));
+		    (!g_Mappings.holdForDebug1.IsValid() || INPUTFILTER->IsBeingPressed(g_Mappings.holdForDebug1)) &&
+		    (!g_Mappings.holdForDebug2.IsValid() || INPUTFILTER->IsBeingPressed(g_Mappings.holdForDebug2));
 		if (bHoldingNeither)
 		{
 			m_bForcedHidden = false;
@@ -669,8 +669,8 @@ class DebugLineAutoplay : public IDebugLine
 		ASSERT(GAMESTATE->m_MasterPlayerNumber != PLAYER_INVALID);
 		PlayerController pc = GAMESTATE->m_pPlayerState[GAMESTATE->m_MasterPlayerNumber]->m_PlayerController;
 		bool bHoldingShift =
-		        INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LSHIFT)) ||
-		        INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RSHIFT));
+		    INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LSHIFT)) ||
+		    INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RSHIFT));
 		if (bHoldingShift)
 		{
 			pc = (pc == PC_CPU) ? PC_HUMAN : PC_CPU;
@@ -687,8 +687,8 @@ class DebugLineAutoplay : public IDebugLine
 
 		// Hide Autoplay if Alt is held down
 		bool bHoldingAlt =
-		        INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LALT)) ||
-		        INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RALT));
+		    INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LALT)) ||
+		    INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RALT));
 		ScreenSyncOverlay::SetShowAutoplay(!bHoldingAlt);
 
 		IDebugLine::DoAndLog(sMessageOut);
@@ -788,7 +788,7 @@ class DebugLineAutosync : public IDebugLine
 		int as = GAMESTATE->m_SongOptions.GetSong().m_AutosyncType + 1;
 		bool bAllowSongAutosync = !GAMESTATE->IsCourseMode();
 		if (!bAllowSongAutosync  &&
-		                (as == SongOptions::AUTOSYNC_SONG || as == SongOptions::AUTOSYNC_TEMPO))
+		        (as == SongOptions::AUTOSYNC_SONG || as == SongOptions::AUTOSYNC_TEMPO))
 		{
 			as = SongOptions::AUTOSYNC_MACHINE;
 		}

@@ -145,8 +145,8 @@ int OptionToPreferredColumn(RString sOptionText)
 {
 	// Speedups always go in column 0. digit ... x
 	if (sOptionText.size() > 1 &&
-	                isdigit(sOptionText[0])    &&
-	                tolower(sOptionText[sOptionText.size() - 1]) == 'x')
+	        isdigit(sOptionText[0])    &&
+	        tolower(sOptionText[sOptionText.size() - 1]) == 'x')
 	{
 		return 0;
 	}

@@ -96,8 +96,8 @@ RString DateTime::GetString() const
 	                     tm_mday);
 
 	if (tm_hour != 0 ||
-	                tm_min != 0 ||
-	                tm_sec != 0)
+	        tm_min != 0 ||
+	        tm_sec != 0)
 	{
 		s += ssprintf(" %02d:%02d:%02d",
 		              tm_hour,

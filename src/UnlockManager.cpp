@@ -400,10 +400,10 @@ UnlockEntryStatus UnlockEntry::GetUnlockEntryStatus() const
 		Song *pSong = m_Song.ToSong();
 		vector<Steps*> vp;
 		SongUtil::GetSteps(
-		        pSong,
-		        vp,
-		        StepsType_Invalid,
-		        Difficulty_Hard
+		    pSong,
+		    vp,
+		    StepsType_Invalid,
+		    Difficulty_Hard
 		);
 		FOREACH_CONST(Steps*, vp, s)
 		if (PROFILEMAN->GetMachineProfile()->HasPassedSteps(pSong, *s))

@@ -275,8 +275,8 @@ void ScreenMapControllers::Input(const InputEventPlus &input)
 		else
 		{
 			if (m_DeviceIToMap.IsValid() &&
-			                !IsAxis(m_DeviceIToMap) &&
-			                IsAxis(input.DeviceI))
+			        !IsAxis(m_DeviceIToMap) &&
+			        IsAxis(input.DeviceI))
 			{
 				LOG->Trace("Ignored input; non-axis event already received");
 				return;	// ignore this press

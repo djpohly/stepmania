@@ -236,7 +236,7 @@ void NoteSkinManager::GetAllNoteSkinNamesForGame(const Game *pGame, vector<RStri
 	{
 		// Faster:
 		for (map<RString, NoteSkinData>::const_iterator iter = g_mapNameToData.begin();
-		                iter != g_mapNameToData.end(); ++iter)
+		        iter != g_mapNameToData.end(); ++iter)
 		{
 			AddTo.push_back(iter->second.sName);
 		}
@@ -351,9 +351,9 @@ try_again:
 		}
 
 		RString message = ssprintf(
-		                          "The NoteSkin element \"%s %s\" could not be found in any of the following directories:\n%s",
-		                          sButtonName.c_str(), sElement.c_str(),
-		                          sPaths.c_str());
+		                      "The NoteSkin element \"%s %s\" could not be found in any of the following directories:\n%s",
+		                      sButtonName.c_str(), sElement.c_str(),
+		                      sPaths.c_str());
 
 		if (Dialog::AbortRetryIgnore(message) == Dialog::retry)
 		{
@@ -388,9 +388,9 @@ try_again:
 		if (sRealPath == "")
 		{
 			RString message = ssprintf(
-			                          "NoteSkinManager:  The redirect \"%s\" points to the file \"%s\", which does not exist. "
-			                          "Verify that this redirect is correct.",
-			                          sPath.c_str(), sNewFileName.c_str());
+			                      "NoteSkinManager:  The redirect \"%s\" points to the file \"%s\", which does not exist. "
+			                      "Verify that this redirect is correct.",
+			                      sPath.c_str(), sNewFileName.c_str());
 
 			if (Dialog::AbortRetryIgnore(message) == Dialog::retry)
 			{

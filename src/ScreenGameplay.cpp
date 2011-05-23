@@ -767,16 +767,16 @@ void ScreenGameplay::Init()
 			sType += "Dummy";
 		}
 		pi->m_pPlayer->Init(
-		        sType,
-		        pi->GetPlayerState(),
-		        pi->GetPlayerStageStats(),
-		        pi->m_pLifeMeter,
-		        m_pCombinedLifeMeter,
-		        pi->m_pPrimaryScoreDisplay,
-		        pi->m_pSecondaryScoreDisplay,
-		        pi->m_pInventory,
-		        pi->m_pPrimaryScoreKeeper,
-		        pi->m_pSecondaryScoreKeeper);
+		    sType,
+		    pi->GetPlayerState(),
+		    pi->GetPlayerStageStats(),
+		    pi->m_pLifeMeter,
+		    m_pCombinedLifeMeter,
+		    pi->m_pPrimaryScoreDisplay,
+		    pi->m_pSecondaryScoreDisplay,
+		    pi->m_pInventory,
+		    pi->m_pPrimaryScoreKeeper,
+		    pi->m_pSecondaryScoreKeeper);
 	}
 
 	// fill in m_apSongsQueue, m_vpStepsQueue, m_asModifiersQueue
@@ -882,7 +882,7 @@ void ScreenGameplay::InitSongQueues()
 			pi->m_vpStepsQueue.push_back(pSteps);
 
 			if (pi->GetPlayerState()->m_PlayerOptions.GetCurrent().m_fSongAttack != 0 &&
-			                GAMESTATE->m_pCurSong->m_Attacks.size() > 0)
+			        GAMESTATE->m_pCurSong->m_Attacks.size() > 0)
 			{
 				pi->m_asModifiersQueue.push_back(GAMESTATE->m_pCurSong->m_Attacks);
 			}
@@ -1568,7 +1568,7 @@ void ScreenGameplay::PlayAnnouncer(RString type, float fSeconds)
 		return;
 	}
 	if (GAMESTATE->m_pCurSong == NULL  ||	// this will be true on ScreenDemonstration sometimes
-	                GAMESTATE->m_Position.m_fSongBeat < GAMESTATE->m_pCurSong->m_fFirstBeat)
+	        GAMESTATE->m_Position.m_fSongBeat < GAMESTATE->m_pCurSong->m_fFirstBeat)
 	{
 		return;
 	}
@@ -1741,7 +1741,7 @@ void ScreenGameplay::Update(float fDeltaTime)
 		HealthState &hs = pi->GetPlayerState()->m_HealthState;
 		HealthState OldHealthState = hs;
 		if (GAMESTATE->GetPlayerFailType(pi->GetPlayerState()) != PlayerOptions::FAIL_OFF &&
-		                pi->m_pLifeMeter && pi->m_pLifeMeter->IsFailing())
+		        pi->m_pLifeMeter && pi->m_pLifeMeter->IsFailing())
 		{
 			hs = HealthState_Dead;
 		}
@@ -1750,7 +1750,7 @@ void ScreenGameplay::Update(float fDeltaTime)
 			hs = HealthState_Hot;
 		}
 		else if (GAMESTATE->GetPlayerFailType(pi->GetPlayerState()) != PlayerOptions::FAIL_OFF &&
-		                pi->m_pLifeMeter && pi->m_pLifeMeter->IsInDanger())
+		         pi->m_pLifeMeter && pi->m_pLifeMeter->IsInDanger())
 		{
 			hs = HealthState_Danger;
 		}
@@ -2063,7 +2063,7 @@ void ScreenGameplay::Update(float fDeltaTime)
 float ScreenGameplay::GetHasteRate()
 {
 	if (GAMESTATE->m_Position.m_fMusicSeconds < GAMESTATE->m_fLastHasteUpdateMusicSeconds || // new song
-	                GAMESTATE->m_Position.m_fMusicSeconds > GAMESTATE->m_fLastHasteUpdateMusicSeconds + 4)
+	        GAMESTATE->m_Position.m_fMusicSeconds > GAMESTATE->m_fLastHasteUpdateMusicSeconds + 4)
 	{
 		bool bAnyPlayerHitAllNotes = false;
 		FOREACH_EnabledPlayerInfo(m_vPlayerInfo, pi)
@@ -2075,7 +2075,7 @@ float ScreenGameplay::GetHasteRate()
 
 			PlayerState *pPS = pi->GetPlayerState();
 			if (pPS->m_iTapsHitSinceLastHasteUpdate > 0 &&
-			                pPS->m_iTapsMissedSinceLastHasteUpdate == 0)
+			        pPS->m_iTapsMissedSinceLastHasteUpdate == 0)
 			{
 				bAnyPlayerHitAllNotes = true;
 			}
@@ -2406,8 +2406,8 @@ void ScreenGameplay::Input(const InputEventPlus &input)
 	}
 
 	if (m_DancingState != STATE_OUTRO  &&
-	                GAMESTATE->IsHumanPlayer(input.pn)  &&
-	                !m_Cancel.IsTransitioning())
+	        GAMESTATE->IsHumanPlayer(input.pn)  &&
+	        !m_Cancel.IsTransitioning())
 	{
 		/* Allow bailing out by holding any START button.
 		 * This gives a way to "give up" when a back button isn't available.
@@ -2448,8 +2448,8 @@ void ScreenGameplay::Input(const InputEventPlus &input)
 		if (bHoldingBack)
 		{
 			if (((!PREFSMAN->m_bDelayedBack && input.type == IET_FIRST_PRESS) ||
-			                (input.DeviceI.device == DEVICE_KEYBOARD && input.type == IET_REPEAT) ||
-			                (input.DeviceI.device != DEVICE_KEYBOARD && INPUTFILTER->GetSecsHeld(input.DeviceI) >= 1.0f)))
+			        (input.DeviceI.device == DEVICE_KEYBOARD && input.type == IET_REPEAT) ||
+			        (input.DeviceI.device != DEVICE_KEYBOARD && INPUTFILTER->GetSecsHeld(input.DeviceI) >= 1.0f)))
 			{
 				LOG->Trace("Player %i went back", input.pn + 1);
 				BeginBackingOutFromGameplay();
@@ -2669,7 +2669,7 @@ void ScreenGameplay::HandleScreenMessage(const ScreenMessage SM)
 		{
 			// Mark failure.
 			if (GAMESTATE->GetPlayerFailType(pi->GetPlayerState()) != PlayerOptions::FAIL_OFF &&
-			                (pi->m_pLifeMeter && pi->m_pLifeMeter->IsFailing()))
+			        (pi->m_pLifeMeter && pi->m_pLifeMeter->IsFailing()))
 			{
 				pi->GetPlayerStageStats()->m_bFailed = true;
 			}

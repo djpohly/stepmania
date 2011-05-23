@@ -69,8 +69,8 @@ void ScoreDisplayCalories::HandleMessage(const Message &msg)
 void ScoreDisplayCalories::UpdateNumber()
 {
 	float fCals =
-	        STATSMAN->GetAccumPlayedStageStats().m_player[m_PlayerNumber].m_fCaloriesBurned +
-	        STATSMAN->m_CurStageStats.m_player[m_PlayerNumber].m_fCaloriesBurned;
+	    STATSMAN->GetAccumPlayedStageStats().m_player[m_PlayerNumber].m_fCaloriesBurned +
+	    STATSMAN->m_CurStageStats.m_player[m_PlayerNumber].m_fCaloriesBurned;
 
 	SetTargetNumber(fCals);
 }

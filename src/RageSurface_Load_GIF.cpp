@@ -410,7 +410,7 @@ int LWZState::ReadByte(RageFile &f)
 			table[1][code] = firstcode;
 			++max_code;
 			if (max_code >= max_code_size &&
-			                max_code_size < (1 << MAX_LWZ_BITS))
+			        max_code_size < (1 << MAX_LWZ_BITS))
 			{
 				max_code_size *= 2;
 				++code_size;

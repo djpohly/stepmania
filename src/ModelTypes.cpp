@@ -30,9 +30,9 @@ AnimatedTexture::~AnimatedTexture()
 void AnimatedTexture::LoadBlank()
 {
 	AnimatedTextureState state(
-	        NULL,
-	        1,
-	        RageVector2(0, 0)
+	    NULL,
+	    1,
+	    RageVector2(0, 0)
 	);
 	vFrames.push_back(state);
 }
@@ -78,7 +78,7 @@ void AnimatedTexture::Load(const RString &sTexOrIniPath)
 			RString sFileName;
 			float fDelay = 0;
 			if (pAnimatedTexture->GetAttrValue(sFileKey, sFileName) &&
-			                pAnimatedTexture->GetAttrValue(sDelayKey, fDelay))
+			        pAnimatedTexture->GetAttrValue(sDelayKey, fDelay))
 			{
 				RString sTranslateXKey = ssprintf("TranslateX%04d", i);
 				RString sTranslateYKey = ssprintf("TranslateY%04d", i);
@@ -93,9 +93,9 @@ void AnimatedTexture::Load(const RString &sTexOrIniPath)
 				ID.bHotPinkColorKey = true;
 				ID.bMipMaps = true;	// use mipmaps in Models
 				AnimatedTextureState state(
-				        TEXTUREMAN->LoadTexture(ID),
-				        fDelay,
-				        vOffset
+				    TEXTUREMAN->LoadTexture(ID),
+				    fDelay,
+				    vOffset
 				);
 				vFrames.push_back(state);
 			}
@@ -113,9 +113,9 @@ void AnimatedTexture::Load(const RString &sTexOrIniPath)
 		ID.bStretch = true;
 		ID.bMipMaps = true;	// use mipmaps in Models
 		AnimatedTextureState state(
-		        TEXTUREMAN->LoadTexture(ID),
-		        1,
-		        RageVector2(0, 0)
+		    TEXTUREMAN->LoadTexture(ID),
+		    1,
+		    RageVector2(0, 0)
 		);
 		vFrames.push_back(state);
 	}
@@ -305,9 +305,9 @@ bool msAnimation::LoadMilkshapeAsciiBones(RString sAniName, RString sPath)
 
 			int nFlags;
 			if (sscanf(sLine, "%d %f %f %f %f %f %f",
-			                &nFlags,
-			                &Position[0], &Position[1], &Position[2],
-			                &Rotation[0], &Rotation[1], &Rotation[2]) != 7)
+			           &nFlags,
+			           &Position[0], &Position[1], &Position[2],
+			           &Rotation[0], &Rotation[1], &Rotation[2]) != 7)
 			{
 				THROW;
 			}

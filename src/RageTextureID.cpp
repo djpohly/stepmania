@@ -39,16 +39,16 @@ bool RageTextureID::operator==(const RageTextureID &rhs) const
 {
 #define EQUAL(a) (a==rhs.a)
 	return
-	        EQUAL(filename) &&
-	        EQUAL(iMaxSize) &&
-	        EQUAL(bMipMaps) &&
-	        EQUAL(iAlphaBits) &&
-	        EQUAL(iGrayscaleBits) &&
-	        EQUAL(iColorDepth) &&
-	        EQUAL(bDither) &&
-	        EQUAL(bStretch) &&
-	        EQUAL(bHotPinkColorKey) &&
-	        EQUAL(AdditionalTextureHints);
+	    EQUAL(filename) &&
+	    EQUAL(iMaxSize) &&
+	    EQUAL(bMipMaps) &&
+	    EQUAL(iAlphaBits) &&
+	    EQUAL(iGrayscaleBits) &&
+	    EQUAL(iColorDepth) &&
+	    EQUAL(bDither) &&
+	    EQUAL(bStretch) &&
+	    EQUAL(bHotPinkColorKey) &&
+	    EQUAL(AdditionalTextureHints);
 	// EQUAL(Policy); // don't do this
 }
 

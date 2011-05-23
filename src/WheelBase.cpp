@@ -237,7 +237,7 @@ void WheelBase::Update(float fDeltaTime)
 
 		// If it passed the selection, move again.
 		if ((m_Moving == -1 && m_fPositionOffsetFromSelection >= 0) ||
-		                (m_Moving == 1 && m_fPositionOffsetFromSelection <= 0))
+		        (m_Moving == 1 && m_fPositionOffsetFromSelection <= 0))
 		{
 			ChangeMusic(m_Moving);
 
@@ -248,7 +248,7 @@ void WheelBase::Update(float fDeltaTime)
 		}
 
 		if (PREFSMAN->m_iMusicWheelSwitchSpeed >= MAX_WHEEL_SOUND_SPEED &&
-		                m_MovingSoundTimer.PeekDeltaTime() >= 1.0f / MAX_WHEEL_SOUND_SPEED)
+		        m_MovingSoundTimer.PeekDeltaTime() >= 1.0f / MAX_WHEEL_SOUND_SPEED)
 		{
 			m_MovingSoundTimer.GetDeltaTime();
 			m_soundChangeMusic.Play();

@@ -476,7 +476,7 @@ void Sprite::DrawTexture(const TweenState *state)
 	RectF crop = state->crop;
 	// bail if cropped all the way
 	if (crop.left + crop.right >= 1  ||
-	                crop.top + crop.bottom >= 1)
+	        crop.top + crop.bottom >= 1)
 	{
 		return;
 	}
@@ -568,9 +568,9 @@ void Sprite::DrawTexture(const TweenState *state)
 
 	// Draw if we're not fully transparent
 	if (state->diffuse[0].a > 0 ||
-	                state->diffuse[1].a > 0 ||
-	                state->diffuse[2].a > 0 ||
-	                state->diffuse[3].a > 0)
+	        state->diffuse[1].a > 0 ||
+	        state->diffuse[2].a > 0 ||
+	        state->diffuse[3].a > 0)
 	{
 		DISPLAY->SetTextureMode(TextureUnit_1, TextureMode_Modulate);
 
@@ -612,9 +612,9 @@ bool Sprite::EarlyAbortDraw() const
 void Sprite::DrawPrimitives()
 {
 	if (m_pTempState->fade.top > 0 ||
-	                m_pTempState->fade.bottom > 0 ||
-	                m_pTempState->fade.left > 0 ||
-	                m_pTempState->fade.right > 0)
+	        m_pTempState->fade.bottom > 0 ||
+	        m_pTempState->fade.left > 0 ||
+	        m_pTempState->fade.right > 0)
 	{
 		// We're fading the edges.
 		const RectF &FadeDist = m_pTempState->fade;
@@ -625,7 +625,7 @@ void Sprite::DrawPrimitives()
 		// If the cropped size is less than the fade distance in either dimension, clamp.
 		const float HorizRemaining = 1.0f - (m_pTempState->crop.left + m_pTempState->crop.right);
 		if (FadeDist.left + FadeDist.right > 0 &&
-		                HorizRemaining < FadeDist.left + FadeDist.right)
+		        HorizRemaining < FadeDist.left + FadeDist.right)
 		{
 			const float LeftPercent = FadeDist.left / (FadeDist.left + FadeDist.right);
 			FadeSize.left = LeftPercent * HorizRemaining;
@@ -634,7 +634,7 @@ void Sprite::DrawPrimitives()
 
 		const float VertRemaining = 1.0f - (m_pTempState->crop.top + m_pTempState->crop.bottom);
 		if (FadeDist.top + FadeDist.bottom > 0 &&
-		                VertRemaining < FadeDist.top + FadeDist.bottom)
+		        VertRemaining < FadeDist.top + FadeDist.bottom)
 		{
 			const float TopPercent = FadeDist.top / (FadeDist.top + FadeDist.bottom);
 			FadeSize.top = TopPercent * VertRemaining;
@@ -928,10 +928,10 @@ void Sprite::ScaleToClipped(float fWidth, float fHeight)
 
 			// generate a rectangle with new texture coordinates
 			RectF fCustomImageRect(
-			        fPercentageToCutOffEachSide,
-			        0,
-			        1 - fPercentageToCutOffEachSide,
-			        1);
+			    fPercentageToCutOffEachSide,
+			    0,
+			    1 - fPercentageToCutOffEachSide,
+			    1);
 			SetCustomImageRect(fCustomImageRect);
 		}
 		else // crop Y
@@ -942,10 +942,10 @@ void Sprite::ScaleToClipped(float fWidth, float fHeight)
 
 			// generate a rectangle with new texture coordinates
 			RectF fCustomImageRect(
-			        0,
-			        fPercentageToCutOffEachSide,
-			        1,
-			        1 - fPercentageToCutOffEachSide);
+			    0,
+			    fPercentageToCutOffEachSide,
+			    1,
+			    1 - fPercentageToCutOffEachSide);
 			SetCustomImageRect(fCustomImageRect);
 		}
 		m_size = RageVector2(fWidth, fHeight);
@@ -990,10 +990,10 @@ void Sprite::CropTo(float fWidth, float fHeight)
 
 			// generate a rectangle with new texture coordinates
 			RectF fCustomImageRect(
-			        fPercentageToCutOffEachSide,
-			        0,
-			        1 - fPercentageToCutOffEachSide,
-			        1);
+			    fPercentageToCutOffEachSide,
+			    0,
+			    1 - fPercentageToCutOffEachSide,
+			    1);
 			SetCustomImageRect(fCustomImageRect);
 		}
 		else		// crop Y
@@ -1003,10 +1003,10 @@ void Sprite::CropTo(float fWidth, float fHeight)
 
 			// generate a rectangle with new texture coordinates
 			RectF fCustomImageRect(
-			        0,
-			        fPercentageToCutOffEachSide,
-			        1,
-			        1 - fPercentageToCutOffEachSide);
+			    0,
+			    fPercentageToCutOffEachSide,
+			    1,
+			    1 - fPercentageToCutOffEachSide);
 			SetCustomImageRect(fCustomImageRect);
 		}
 		m_size = RageVector2(fWidth, fHeight);

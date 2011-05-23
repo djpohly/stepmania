@@ -344,8 +344,8 @@ void DirectFilenameDB::PopulateFileSet(FileSet &fs, const RString &path)
 
 	vector<RString> vsFilesToRemove;
 	for (set<File>::iterator iter = fs.files.lower_bound(IGNORE_MARKER_BEGINNING);
-	                iter != fs.files.end();
-	                ++iter)
+	        iter != fs.files.end();
+	        ++iter)
 	{
 		if (!BeginsWith(iter->lname, IGNORE_MARKER_BEGINNING))
 		{

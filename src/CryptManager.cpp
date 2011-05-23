@@ -113,8 +113,8 @@ void CryptManager::GenerateGlobalKeys()
 	RString sKey;
 	RString sError;
 	if (!DoesFileExist(PRIVATE_KEY_PATH) ||
-	                !GetFileContents(PRIVATE_KEY_PATH, sKey) ||
-	                !key.Load(sKey, sError))
+	        !GetFileContents(PRIVATE_KEY_PATH, sKey) ||
+	        !key.Load(sKey, sError))
 	{
 		bGenerate = true;
 	}
@@ -125,8 +125,8 @@ void CryptManager::GenerateGlobalKeys()
 
 	sError.clear();
 	if (!DoesFileExist(PUBLIC_KEY_PATH) ||
-	                !GetFileContents(PUBLIC_KEY_PATH, sKey) ||
-	                !key.Load(sKey, sError))
+	        !GetFileContents(PUBLIC_KEY_PATH, sKey) ||
+	        !key.Load(sKey, sError))
 	{
 		bGenerate = true;
 	}
@@ -279,10 +279,10 @@ bool CryptManager::Sign(RString sPath, RString &sSignatureOut, RString sPrivKey)
 	unsigned long signature_len = sizeof(signature);
 
 	int iRet = rsa_sign_hash_ex(
-	                   buf_hash, sizeof(buf_hash),
-	                   signature, &signature_len,
-	                   LTC_PKCS_1_V1_5, &g_pPRNG->m_PRNG, g_pPRNG->m_iPRNG, iHash,
-	                   0, &key.m_Key);
+	               buf_hash, sizeof(buf_hash),
+	               signature, &signature_len,
+	               LTC_PKCS_1_V1_5, &g_pPRNG->m_PRNG, g_pPRNG->m_iPRNG, iHash,
+	               0, &key.m_Key);
 	if (iRet != CRYPT_OK)
 	{
 		LOG->Warn("SignFileToFile error: %s", error_to_string(iRet));

@@ -187,7 +187,7 @@ void ThreadedMemoryCardWorker::HandleRequest(int iRequest)
 		{
 			m_pDriver->Unmount(&m_RequestDevice);
 			vector<UsbStorageDevice>::iterator it =
-			        find(m_aMountedDevices.begin(), m_aMountedDevices.end(), m_RequestDevice);
+			    find(m_aMountedDevices.begin(), m_aMountedDevices.end(), m_RequestDevice);
 			if (it == m_aMountedDevices.end())
 			{
 				LOG->Warn("Unmounted a device that wasn't mounted");
@@ -405,26 +405,26 @@ void MemoryCardManager::UpdateAssignments()
 		{
 			// search for card dir match
 			if (!m_sMemoryCardOsMountPoint[p].Get().empty() &&
-			                d->sOsMountDir.CompareNoCase(m_sMemoryCardOsMountPoint[p].Get()))
+			        d->sOsMountDir.CompareNoCase(m_sMemoryCardOsMountPoint[p].Get()))
 			{
 				continue;        // not a match
 			}
 
 			// search for USB bus match
 			if (m_iMemoryCardUsbBus[p] != -1 &&
-			                m_iMemoryCardUsbBus[p] != d->iBus)
+			        m_iMemoryCardUsbBus[p] != d->iBus)
 			{
 				continue;        // not a match
 			}
 
 			if (m_iMemoryCardUsbPort[p] != -1 &&
-			                m_iMemoryCardUsbPort[p] != d->iPort)
+			        m_iMemoryCardUsbPort[p] != d->iPort)
 			{
 				continue;        // not a match
 			}
 
 			if (m_iMemoryCardUsbLevel[p] != -1 &&
-			                m_iMemoryCardUsbLevel[p] != d->iLevel)
+			        m_iMemoryCardUsbLevel[p] != d->iLevel)
 			{
 				continue;        // not a match
 			}

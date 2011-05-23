@@ -256,7 +256,7 @@ void RageTextureManager::GarbageCollect(GCType type)
 	LOG->Trace("Performing texture garbage collection.");
 
 	for (std::map<RageTextureID, RageTexture*>::iterator i = m_mapPathToTexture.begin();
-	                i != m_mapPathToTexture.end();)
+	        i != m_mapPathToTexture.end();)
 	{
 		std::map<RageTextureID, RageTexture*>::iterator j = i;
 		i++;

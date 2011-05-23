@@ -118,17 +118,17 @@ bool SongCriteria::Matches(const Song *pSong) const
 }
 
 void SongUtil::GetSteps(
-        const Song *pSong,
-        vector<Steps*>& arrayAddTo,
-        StepsType st,
-        Difficulty dc,
-        int iMeterLow,
-        int iMeterHigh,
-        const RString &sDescription,
-        const RString &sCredit,
-        bool bIncludeAutoGen,
-        unsigned uHash,
-        int iMaxToGet
+    const Song *pSong,
+    vector<Steps*>& arrayAddTo,
+    StepsType st,
+    Difficulty dc,
+    int iMeterLow,
+    int iMeterHigh,
+    const RString &sDescription,
+    const RString &sCredit,
+    bool bIncludeAutoGen,
+    unsigned uHash,
+    int iMaxToGet
 )
 {
 	if (!iMaxToGet)
@@ -184,15 +184,15 @@ void SongUtil::GetSteps(
 }
 
 Steps* SongUtil::GetOneSteps(
-        const Song *pSong,
-        StepsType st,
-        Difficulty dc,
-        int iMeterLow,
-        int iMeterHigh,
-        const RString &sDescription,
-        const RString &sCredit,
-        unsigned uHash,
-        bool bIncludeAutoGen
+    const Song *pSong,
+    StepsType st,
+    Difficulty dc,
+    int iMeterLow,
+    int iMeterHigh,
+    const RString &sDescription,
+    const RString &sCredit,
+    unsigned uHash,
+    bool bIncludeAutoGen
 )
 {
 	vector<Steps*> vpSteps;

@@ -406,8 +406,8 @@ void ScreenSelectMusic::Input(const InputEventPlus &input)
 	//	LOG->Trace( "ScreenSelectMusic::Input()" );
 
 	bool bHoldingCtrl =
-	        INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LCTRL)) ||
-	        INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RCTRL));
+	    INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LCTRL)) ||
+	    INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RCTRL));
 
 	wchar_t c = INPUTMAN->DeviceInputToChar(input.DeviceI, false);
 	MakeUpper(&c, 1);
@@ -472,9 +472,9 @@ void ScreenSelectMusic::Input(const InputEventPlus &input)
 
 	// Check for "Press START again for options" button press
 	if (m_SelectionState == SelectionState_Finalized  &&
-	                input.MenuI == GAME_BUTTON_START  &&
-	                input.type != IET_RELEASE  &&
-	                OPTIONS_MENU_AVAILABLE.GetValue())
+	        input.MenuI == GAME_BUTTON_START  &&
+	        input.type != IET_RELEASE  &&
+	        OPTIONS_MENU_AVAILABLE.GetValue())
 	{
 		if (m_bGoToOptions)
 		{
@@ -510,7 +510,7 @@ void ScreenSelectMusic::Input(const InputEventPlus &input)
 	// Handle unselect steps
 	// xxx: select button could conflict with OptionsList here -aj
 	if (m_SelectionState == SelectionState_SelectingSteps && m_bStepsChosen[input.pn]
-	                && input.MenuI == GAME_BUTTON_SELECT && input.type == IET_FIRST_PRESS)
+	        && input.MenuI == GAME_BUTTON_SELECT && input.type == IET_FIRST_PRESS)
 	{
 		Message msg("StepsUnchosen");
 		msg.SetParam("Player", input.pn);
@@ -520,7 +520,7 @@ void ScreenSelectMusic::Input(const InputEventPlus &input)
 	}
 
 	if (m_SelectionState == SelectionState_Finalized  ||
-	                m_bStepsChosen[input.pn])
+	        m_bStepsChosen[input.pn])
 	{
 		return;        // ignore
 	}
@@ -614,7 +614,7 @@ void ScreenSelectMusic::Input(const InputEventPlus &input)
 	}
 
 	if (m_SelectionState == SelectionState_SelectingSong  &&
-	                (input.MenuI == m_GameButtonNextSong || input.MenuI == m_GameButtonPreviousSong || input.MenuI == GAME_BUTTON_SELECT))
+	        (input.MenuI == m_GameButtonNextSong || input.MenuI == m_GameButtonPreviousSong || input.MenuI == GAME_BUTTON_SELECT))
 	{
 		{
 			// If we're rouletting, hands off.

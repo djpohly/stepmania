@@ -376,9 +376,9 @@ float ArrowEffects::GetYOffset(const PlayerState* pPlayerState, int iCol, float 
 		/* Random speed always increases speed: a random speed of 10 indicates
 		 * [1,11]. This keeps it consistent with other mods: 0 means no effect. */
 		fScrollSpeed *=
-		        SCALE(fRandom,
-		              0.0f, 1.0f,
-		              1.0f, pPlayerState->m_PlayerOptions.GetCurrent().m_fRandomSpeed + 1.0f);
+		    SCALE(fRandom,
+		          0.0f, 1.0f,
+		          1.0f, pPlayerState->m_PlayerOptions.GetCurrent().m_fRandomSpeed + 1.0f);
 	}
 
 	if (fAccels[PlayerOptions::ACCEL_EXPAND] != 0)
@@ -813,7 +813,7 @@ bool ArrowEffects::NeedZBuffer(const PlayerState* pPlayerState)
 	// We also need to use the Z buffer if twirl is in play, because of
 	// hold modulation. -vyhd (OpenITG r623)
 	if (fEffects[PlayerOptions::EFFECT_BUMPY] != 0 ||
-	                fEffects[PlayerOptions::EFFECT_TWIRL] != 0)
+	        fEffects[PlayerOptions::EFFECT_TWIRL] != 0)
 	{
 		return true;
 	}
@@ -826,7 +826,7 @@ float ArrowEffects::GetZoom(const PlayerState* pPlayerState)
 	float fZoom = 1.0f;
 	// FIXME: Move the zoom values into Style
 	if (GAMESTATE->GetCurrentStyle()->m_bNeedsZoomOutWith2Players &&
-	                (GAMESTATE->GetNumSidesJoined() == 2 || GAMESTATE->AnyPlayersAreCpu()))
+	        (GAMESTATE->GetNumSidesJoined() == 2 || GAMESTATE->AnyPlayersAreCpu()))
 	{
 		fZoom *= 0.6f;
 	}

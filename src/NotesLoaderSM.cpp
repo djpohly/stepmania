@@ -17,13 +17,13 @@
 const int MAX_EDIT_STEPS_SIZE_BYTES		= 60 * 1024;	// 60KB
 
 void SMLoader::LoadFromSMTokens(
-        RString sStepsType,
-        RString sDescription,
-        RString sDifficulty,
-        RString sMeter,
-        RString sRadarValues,
-        RString sNoteData,
-        Steps &out
+    RString sStepsType,
+    RString sDescription,
+    RString sDifficulty,
+    RString sMeter,
+    RString sRadarValues,
+    RString sNoteData,
+    Steps &out
 )
 {
 	// we're loading from disk, so this is by definition already saved:
@@ -70,7 +70,7 @@ void SMLoader::LoadFromSMTokens(
 		{
 			// Can't use the foreach anymore due to flexible radar lines.
 			for (RadarCategory rc = (RadarCategory)0; rc < categories;
-			                enum_add<RadarCategory>(rc, 1))
+			        enum_add<RadarCategory>(rc, 1))
 			{
 				v[pn][rc] = StringToFloat(saValues[pn * categories + rc]);
 			}
@@ -525,7 +525,7 @@ bool SMLoader::LoadFromBGChangesString(BackgroundChange &change, const RString &
 			RString tmp = aBGChangeValues[7];
 			tmp.MakeLower();
 			if ((tmp.find(".ini") != string::npos || tmp.find(".xml") != string::npos)
-			                && !PREFSMAN->m_bQuirksMode)
+			        && !PREFSMAN->m_bQuirksMode)
 			{
 				return false;
 			}
@@ -575,7 +575,7 @@ bool SMLoader::LoadFromBGChangesString(BackgroundChange &change, const RString &
 			RString tmp = aBGChangeValues[1];
 			tmp.MakeLower();
 			if ((tmp.find(".ini") != string::npos || tmp.find(".xml") != string::npos)
-			                && !PREFSMAN->m_bQuirksMode)
+			        && !PREFSMAN->m_bQuirksMode)
 			{
 				return false;
 			}
@@ -852,13 +852,13 @@ bool SMLoader::LoadFromSMFile(const RString &sPath, Song &out, bool bFromCache)
 
 			Steps* pNewNotes = out.CreateSteps();
 			LoadFromSMTokens(
-			        sParams[1],
-			        sParams[2],
-			        sParams[3],
-			        sParams[4],
-			        sParams[5],
-			        sParams[6],
-			        *pNewNotes);
+			    sParams[1],
+			    sParams[2],
+			    sParams[3],
+			    sParams[4],
+			    sParams[5],
+			    sParams[6],
+			    *pNewNotes);
 
 			out.AddSteps(pNewNotes);
 		}
@@ -992,8 +992,8 @@ bool SMLoader::LoadEditFromMsd(const MsdFile &msd, const RString &sEditFilePath,
 
 			Steps* pNewNotes = pSong->CreateSteps();
 			LoadFromSMTokens(
-			        sParams[1], sParams[2], sParams[3], sParams[4], sParams[5], sParams[6],
-			        *pNewNotes);
+			    sParams[1], sParams[2], sParams[3], sParams[4], sParams[5], sParams[6],
+			    *pNewNotes);
 
 			pNewNotes->SetLoadedFromProfile(slot);
 			pNewNotes->SetDifficulty(Difficulty_Edit);

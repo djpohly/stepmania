@@ -345,8 +345,8 @@ int RageSoundReader_Chain::Read(float *pBuffer, int iFrames)
 	}
 
 	if (m_apActiveSounds.size() == 1 &&
-	                m_apActiveSounds.front()->pSound->GetNumChannels() == m_iChannels &&
-	                m_apActiveSounds.front()->pSound->GetSampleRate() == m_iActualSampleRate)
+	        m_apActiveSounds.front()->pSound->GetNumChannels() == m_iChannels &&
+	        m_apActiveSounds.front()->pSound->GetSampleRate() == m_iActualSampleRate)
 	{
 		/* We have only one source, and it matches our target.  Don't mix; read
 		 * directly from the source into the destination.  This is to optimize

@@ -55,12 +55,12 @@ void ScoreDisplayAliveTime::UpdateNumber()
 	ASSERT(m_PlayerNumber != PLAYER_INVALID  ||  m_MultiPlayer != MultiPlayer_Invalid);
 	if (m_PlayerNumber != PLAYER_INVALID  &&  GAMESTATE->IsPlayerEnabled(m_PlayerNumber))
 		fSecsIntoPlay =
-		        STATSMAN->GetAccumPlayedStageStats().m_player[m_PlayerNumber].m_fAliveSeconds +
-		        STATSMAN->m_CurStageStats.m_player[m_PlayerNumber].m_fAliveSeconds;
+		    STATSMAN->GetAccumPlayedStageStats().m_player[m_PlayerNumber].m_fAliveSeconds +
+		    STATSMAN->m_CurStageStats.m_player[m_PlayerNumber].m_fAliveSeconds;
 	if (m_MultiPlayer != MultiPlayer_Invalid  &&  GAMESTATE->IsMultiPlayerEnabled(m_MultiPlayer))
 		fSecsIntoPlay =
-		        STATSMAN->GetAccumPlayedStageStats().m_fGameplaySeconds +
-		        STATSMAN->m_CurStageStats.m_fGameplaySeconds;
+		    STATSMAN->GetAccumPlayedStageStats().m_fGameplaySeconds +
+		    STATSMAN->m_CurStageStats.m_fGameplaySeconds;
 
 	SetText(SecondsToMMSSMsMs(fSecsIntoPlay));
 }

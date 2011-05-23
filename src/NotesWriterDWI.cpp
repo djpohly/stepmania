@@ -254,10 +254,10 @@ static void WriteDWINotesField(RageFile &f, const Steps &out, int start)
 				case StepsType_dance_couple:
 				case StepsType_dance_double:
 					str = NotesToDWIString(
-					              notedata.GetTapNote(start + 0, row),
-					              notedata.GetTapNote(start + 1, row),
-					              notedata.GetTapNote(start + 2, row),
-					              notedata.GetTapNote(start + 3, row));
+					          notedata.GetTapNote(start + 0, row),
+					          notedata.GetTapNote(start + 1, row),
+					          notedata.GetTapNote(start + 2, row),
+					          notedata.GetTapNote(start + 3, row));
 
 					// Blank out the notes so we don't write them again if the incrementer is small
 					notedata.SetTapNote(start + 0, row, TAP_EMPTY);
@@ -267,12 +267,12 @@ static void WriteDWINotesField(RageFile &f, const Steps &out, int start)
 					break;
 				case StepsType_dance_solo:
 					str = NotesToDWIString(
-					              notedata.GetTapNote(0, row),
-					              notedata.GetTapNote(1, row),
-					              notedata.GetTapNote(2, row),
-					              notedata.GetTapNote(3, row),
-					              notedata.GetTapNote(4, row),
-					              notedata.GetTapNote(5, row));
+					          notedata.GetTapNote(0, row),
+					          notedata.GetTapNote(1, row),
+					          notedata.GetTapNote(2, row),
+					          notedata.GetTapNote(3, row),
+					          notedata.GetTapNote(4, row),
+					          notedata.GetTapNote(5, row));
 
 					// Blank out the notes so we don't write them again if the incrementer is small
 					notedata.SetTapNote(start + 0, row, TAP_EMPTY);
@@ -465,7 +465,7 @@ bool NotesWriterDWI::Write(RString sPath, const Song &out)
 
 		WriteDWINotesField(f, *pSteps, 0);
 		if (pSteps->m_StepsType == StepsType_dance_double ||
-		                pSteps->m_StepsType == StepsType_dance_couple)
+		        pSteps->m_StepsType == StepsType_dance_couple)
 		{
 			f.PutLine(":");
 			WriteDWINotesField(f, *pSteps, 4);

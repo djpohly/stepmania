@@ -39,33 +39,33 @@ class ScreenTextEntry : public ScreenWithMenuElements
 {
 public:
 	static void SetTextEntrySettings(
-	        RString sQuestion,
-	        RString sInitialAnswer,
-	        int iMaxInputLength,
-	        bool(*Validate)(const RString &sAnswer, RString &sErrorOut) = NULL,
-	        void(*OnOK)(const RString &sAnswer) = NULL,
-	        void(*OnCancel)() = NULL,
-	        bool bPassword = false,
-	        bool (*ValidateAppend)(const RString &sAnswerBeforeChar, RString &sAppend) = NULL,
-	        RString(*FormatAnswerForDisplay)(const RString &sAnswer) = NULL
+	    RString sQuestion,
+	    RString sInitialAnswer,
+	    int iMaxInputLength,
+	    bool(*Validate)(const RString &sAnswer, RString &sErrorOut) = NULL,
+	    void(*OnOK)(const RString &sAnswer) = NULL,
+	    void(*OnCancel)() = NULL,
+	    bool bPassword = false,
+	    bool (*ValidateAppend)(const RString &sAnswerBeforeChar, RString &sAppend) = NULL,
+	    RString(*FormatAnswerForDisplay)(const RString &sAnswer) = NULL
 	);
 	static void TextEntry(
-	        ScreenMessage smSendOnPop,
-	        RString sQuestion,
-	        RString sInitialAnswer,
-	        int iMaxInputLength,
-	        bool(*Validate)(const RString &sAnswer, RString &sErrorOut) = NULL,
-	        void(*OnOK)(const RString &sAnswer) = NULL,
-	        void(*OnCancel)() = NULL,
-	        bool bPassword = false,
-	        bool (*ValidateAppend)(const RString &sAnswerBeforeChar, RString &sAppend) = NULL,
-	        RString(*FormatAnswerForDisplay)(const RString &sAnswer) = NULL
+	    ScreenMessage smSendOnPop,
+	    RString sQuestion,
+	    RString sInitialAnswer,
+	    int iMaxInputLength,
+	    bool(*Validate)(const RString &sAnswer, RString &sErrorOut) = NULL,
+	    void(*OnOK)(const RString &sAnswer) = NULL,
+	    void(*OnCancel)() = NULL,
+	    bool bPassword = false,
+	    bool (*ValidateAppend)(const RString &sAnswerBeforeChar, RString &sAppend) = NULL,
+	    RString(*FormatAnswerForDisplay)(const RString &sAnswer) = NULL
 	);
 	static void Password(
-	        ScreenMessage smSendOnPop,
-	        const RString &sQuestion,
-	        void(*OnOK)(const RString &sPassword) = NULL,
-	        void(*OnCancel)() = NULL)
+	    ScreenMessage smSendOnPop,
+	    const RString &sQuestion,
+	    void(*OnOK)(const RString &sPassword) = NULL,
+	    void(*OnCancel)() = NULL)
 	{
 		TextEntry(smSendOnPop, sQuestion, "", 255, NULL, OnOK, OnCancel, true);
 	}

@@ -117,9 +117,9 @@ ScoreKeeperNormal::ScoreKeeperNormal(PlayerState *pPlayerState, PlayerStageStats
 }
 
 void ScoreKeeperNormal::Load(
-        const vector<Song*>& apSongs,
-        const vector<Steps*>& apSteps,
-        const vector<AttackArray> &asModifiers)
+    const vector<Song*>& apSongs,
+    const vector<Steps*>& apSteps,
+    const vector<AttackArray> &asModifiers)
 {
 	m_apSteps = apSteps;
 	ASSERT(apSongs.size() == apSteps.size());
@@ -462,11 +462,11 @@ void ScoreKeeperNormal::HandleTapScore(const TapNote &tn)
 		}
 
 		NSMAN->ReportScore(
-		        m_pPlayerState->m_PlayerNumber,
-		        tns,
-		        m_pPlayerStageStats->m_iScore,
-		        m_pPlayerStageStats->m_iCurCombo,
-		        tn.result.fTapNoteOffset
+		    m_pPlayerState->m_PlayerNumber,
+		    tns,
+		    m_pPlayerStageStats->m_iScore,
+		    m_pPlayerStageStats->m_iCurCombo,
+		    tn.result.fTapNoteOffset
 		);
 		Message msg("ScoreChanged");
 		msg.SetParam("PlayerNumber", m_pPlayerState->m_PlayerNumber);
@@ -614,7 +614,7 @@ void ScoreKeeperNormal::HandleTapRowScore(const NoteData &nd, int iRow)
 	// handle combo logic
 #ifndef DEBUG
 	if ((GamePreferences::m_AutoPlay != PC_HUMAN || m_pPlayerState->m_PlayerOptions.GetCurrent().m_fPlayerAutoPlay != 0)
-	                && !GAMESTATE->m_bDemonstrationOrJukebox)	// cheaters always prosper >:D -aj comment edit
+	        && !GAMESTATE->m_bDemonstrationOrJukebox)	// cheaters always prosper >:D -aj comment edit
 	{
 		m_iCurToastyCombo = 0;
 		return;
@@ -650,8 +650,8 @@ void ScoreKeeperNormal::HandleTapRowScore(const NoteData &nd, int iRow)
 			*/
 
 			if (m_iCurToastyCombo >= m_ToastyTrigger &&
-			                m_iCurToastyCombo - iNumTapsInRow < m_ToastyTrigger &&
-			                !GAMESTATE->m_bDemonstrationOrJukebox)
+			        m_iCurToastyCombo - iNumTapsInRow < m_ToastyTrigger &&
+			        !GAMESTATE->m_bDemonstrationOrJukebox)
 			{
 				SCREENMAN->PostMessageToTopScreen(SM_PlayToasty, 0);
 				Message msg("ToastyAchieved");
@@ -708,11 +708,11 @@ void ScoreKeeperNormal::HandleHoldScore(const TapNote &tn)
 	// TODO: Remove indexing with PlayerNumber
 	PlayerNumber pn = m_pPlayerState->m_PlayerNumber;
 	NSMAN->ReportScore(
-	        pn,
-	        holdScore + TapNoteScore_Invalid,
-	        m_pPlayerStageStats->m_iScore,
-	        m_pPlayerStageStats->m_iCurCombo,
-	        tn.result.fTapNoteOffset);
+	    pn,
+	    holdScore + TapNoteScore_Invalid,
+	    m_pPlayerStageStats->m_iScore,
+	    m_pPlayerStageStats->m_iCurCombo,
+	    tn.result.fTapNoteOffset);
 	Message msg("ScoreChanged");
 	msg.SetParam("PlayerNumber", m_pPlayerState->m_PlayerNumber);
 	msg.SetParam("MultiPlayer", m_pPlayerState->m_mp);
@@ -730,10 +730,10 @@ int ScoreKeeperNormal::GetPossibleDancePoints(const RadarValues& radars)
 	int NumHolds = int(radars[RadarCategory_Holds]);
 	int NumRolls = int(radars[RadarCategory_Rolls]);
 	return
-	        NumTaps * TapNoteScoreToDancePoints(TNS_W1, false) +
-	        NumLifts * TapNoteScoreToDancePoints(TNS_W1, false) +
-	        NumHolds * HoldNoteScoreToDancePoints(HNS_Held, false) +
-	        NumRolls * HoldNoteScoreToDancePoints(HNS_Held, false);
+	    NumTaps * TapNoteScoreToDancePoints(TNS_W1, false) +
+	    NumLifts * TapNoteScoreToDancePoints(TNS_W1, false) +
+	    NumHolds * HoldNoteScoreToDancePoints(HNS_Held, false) +
+	    NumRolls * HoldNoteScoreToDancePoints(HNS_Held, false);
 }
 
 int ScoreKeeperNormal::GetPossibleDancePoints(const RadarValues& fOriginalRadars, const RadarValues& fPostRadars)
@@ -742,8 +742,8 @@ int ScoreKeeperNormal::GetPossibleDancePoints(const RadarValues& fOriginalRadars
 	 * have to hit the new notes to get a high grade. However, if you use one
 	 * that removes notes, they should simply be counted as misses. */
 	return max(
-	               GetPossibleDancePoints(fOriginalRadars),
-	               GetPossibleDancePoints(fPostRadars));
+	           GetPossibleDancePoints(fOriginalRadars),
+	           GetPossibleDancePoints(fPostRadars));
 }
 
 int ScoreKeeperNormal::GetPossibleGradePoints(const RadarValues& radars)
@@ -756,10 +756,10 @@ int ScoreKeeperNormal::GetPossibleGradePoints(const RadarValues& radars)
 	int NumHolds = int(radars[RadarCategory_Holds]);
 	int NumRolls = int(radars[RadarCategory_Rolls]);
 	return
-	        NumTaps * TapNoteScoreToGradePoints(TNS_W1, false) +
-	        NumLifts * TapNoteScoreToGradePoints(TNS_W1, false) +
-	        NumHolds * HoldNoteScoreToGradePoints(HNS_Held, false) +
-	        NumRolls * HoldNoteScoreToGradePoints(HNS_Held, false);
+	    NumTaps * TapNoteScoreToGradePoints(TNS_W1, false) +
+	    NumLifts * TapNoteScoreToGradePoints(TNS_W1, false) +
+	    NumHolds * HoldNoteScoreToGradePoints(HNS_Held, false) +
+	    NumRolls * HoldNoteScoreToGradePoints(HNS_Held, false);
 }
 
 int ScoreKeeperNormal::GetPossibleGradePoints(const RadarValues& fOriginalRadars, const RadarValues& fPostRadars)
@@ -768,8 +768,8 @@ int ScoreKeeperNormal::GetPossibleGradePoints(const RadarValues& fOriginalRadars
 	 * have to hit the new notes to get a high grade. However, if you use one
 	 * that removes notes, they should simply be counted as misses. */
 	return max(
-	               GetPossibleGradePoints(fOriginalRadars),
-	               GetPossibleGradePoints(fPostRadars));
+	           GetPossibleGradePoints(fOriginalRadars),
+	           GetPossibleGradePoints(fPostRadars));
 }
 
 int ScoreKeeperNormal::TapNoteScoreToDancePoints(TapNoteScore tns) const

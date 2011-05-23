@@ -300,16 +300,16 @@ Player::~Player()
 
 /* Init() does the expensive stuff: load sounds and noteskins.  Load() just loads a NoteData. */
 void Player::Init(
-        const RString &sType,
-        PlayerState* pPlayerState,
-        PlayerStageStats* pPlayerStageStats,
-        LifeMeter* pLM,
-        CombinedLifeMeter* pCombinedLM,
-        ScoreDisplay* pScoreDisplay,
-        ScoreDisplay* pSecondaryScoreDisplay,
-        Inventory* pInventory,
-        ScoreKeeper* pPrimaryScoreKeeper,
-        ScoreKeeper* pSecondaryScoreKeeper)
+    const RString &sType,
+    PlayerState* pPlayerState,
+    PlayerStageStats* pPlayerStageStats,
+    LifeMeter* pLM,
+    CombinedLifeMeter* pCombinedLM,
+    ScoreDisplay* pScoreDisplay,
+    ScoreDisplay* pSecondaryScoreDisplay,
+    Inventory* pInventory,
+    ScoreKeeper* pPrimaryScoreKeeper,
+    ScoreKeeper* pSecondaryScoreKeeper)
 {
 	GRAY_ARROWS_Y_STANDARD.Load(sType, "ReceptorArrowsYStandard");
 	GRAY_ARROWS_Y_REVERSE.Load(sType, "ReceptorArrowsYReverse");
@@ -872,7 +872,7 @@ void Player::Update(float fDeltaTime)
 
 	// Check for a strum miss
 	if (m_pPlayerState->m_fLastStrumMusicSeconds != -1  &&
-	                m_pPlayerState->m_fLastStrumMusicSeconds + g_fTimingWindowStrum < m_pPlayerState->m_Position.m_fMusicSeconds)
+	        m_pPlayerState->m_fLastStrumMusicSeconds + g_fTimingWindowStrum < m_pPlayerState->m_Position.m_fMusicSeconds)
 	{
 		DoStrumMiss();
 	}
@@ -1470,7 +1470,7 @@ void Player::DrawPrimitives()
 
 	// May have both players in doubles (for battle play); only draw primary player.
 	if (GAMESTATE->GetCurrentStyle()->m_StyleType == StyleType_OnePlayerTwoSides  &&
-	                pn != GAMESTATE->m_MasterPlayerNumber)
+	        pn != GAMESTATE->m_MasterPlayerNumber)
 	{
 		return;
 	}
@@ -1838,8 +1838,8 @@ void Player::Fret(int col, int row, const RageTimer &tm, bool bHeld, bool bRelea
 	const float fPositionSeconds = m_pPlayerState->m_Position.m_fMusicSeconds - tm.Ago();
 	int iHopoCol = -1;
 	bool bDoHopo =
-	        m_pPlayerState->m_fLastHopoNoteMusicSeconds != -1  &&
-	        fPositionSeconds <= m_pPlayerState->m_fLastHopoNoteMusicSeconds + g_fTimingWindowHopo;
+	    m_pPlayerState->m_fLastHopoNoteMusicSeconds != -1  &&
+	    fPositionSeconds <= m_pPlayerState->m_fLastHopoNoteMusicSeconds + g_fTimingWindowHopo;
 	if (bDoHopo)
 	{
 		// do a Hopo:
@@ -2241,8 +2241,8 @@ void Player::StepStrumHopo(int col, int row, const RageTimer &tm, bool bHeld, bo
 	 * "jack hammers." Hmm.
 	 */
 	const int iStepSearchRows = max(
-	                                    BeatToNoteRow(m_Timing->GetBeatFromElapsedTime(m_pPlayerState->m_Position.m_fMusicSeconds + StepSearchDistance)) - iSongRow,
-	                                    iSongRow - BeatToNoteRow(m_Timing->GetBeatFromElapsedTime(m_pPlayerState->m_Position.m_fMusicSeconds - StepSearchDistance))
+	                                BeatToNoteRow(m_Timing->GetBeatFromElapsedTime(m_pPlayerState->m_Position.m_fMusicSeconds + StepSearchDistance)) - iSongRow,
+	                                iSongRow - BeatToNoteRow(m_Timing->GetBeatFromElapsedTime(m_pPlayerState->m_Position.m_fMusicSeconds - StepSearchDistance))
 	                            ) + ROWS_PER_BEAT;
 	int iRowOfOverlappingNoteOrRow = row;
 	if (row == -1)
@@ -2318,8 +2318,8 @@ void Player::StepStrumHopo(int col, int row, const RageTimer &tm, bool bHeld, bo
 					case TapNote::mine:
 						// Stepped too close to mine?
 						if (!bRelease && (REQUIRE_STEP_ON_MINES == !bHeld) &&
-						                fSecondsFromExact <= GetWindowSeconds(TW_Mine) &&
-						                !m_Timing->IsWarpAtRow(iSongRow) && !m_Timing->IsFakeAtRow(iSongRow))
+						        fSecondsFromExact <= GetWindowSeconds(TW_Mine) &&
+						        !m_Timing->IsWarpAtRow(iSongRow) && !m_Timing->IsFakeAtRow(iSongRow))
 						{
 							score = TNS_HitMine;
 						}
@@ -2379,7 +2379,7 @@ void Player::StepStrumHopo(int col, int row, const RageTimer &tm, bool bHeld, bo
 				// GetTapNoteScore always returns TNS_W1 in autoplay.
 				// If the step is far away, don't judge it.
 				if (m_pPlayerState->m_PlayerController == PC_AUTOPLAY &&
-				                fSecondsFromExact > GetWindowSeconds(TW_W5))
+				        fSecondsFromExact > GetWindowSeconds(TW_W5))
 				{
 					score = TNS_None;
 					break;
@@ -2626,12 +2626,12 @@ done_checking_hopo:
 
 			// put attack in effect
 			Attack attack(
-			        ATTACK_LEVEL_1,
-			        -1,	// now
-			        pTN->fAttackDurationSeconds,
-			        pTN->sAttackModifiers,
-			        true,
-			        false
+			    ATTACK_LEVEL_1,
+			    -1,	// now
+			    pTN->fAttackDurationSeconds,
+			    pTN->sAttackModifiers,
+			    true,
+			    false
 			);
 
 			// TODO: Remove use of PlayerNumber

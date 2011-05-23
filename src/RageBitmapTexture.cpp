@@ -267,7 +267,7 @@ void RageBitmapTexture::Create()
 	 * on at least one color channel than the source. For example, it doesn't
 	 * make sense to do this when pixfmt is RGBA5551 if the image is only RGBA555. */
 	if (actualID.bDither &&
-	                (pixfmt == PixelFormat_RGBA4 || pixfmt == PixelFormat_RGB5A1))
+	        (pixfmt == PixelFormat_RGBA4 || pixfmt == PixelFormat_RGB5A1))
 	{
 		// Dither down to the destination format.
 		const RageDisplay::PixelFormatDesc *pfd = DISPLAY->GetPixelFormatDesc(pixfmt);
@@ -328,15 +328,15 @@ void RageBitmapTexture::Create()
 			if (fFrameWidth != fBetterFrameWidth || fFrameHeight != fBetterFrameHeight)
 			{
 				RString sWarning = ssprintf(
-				                           "The graphic '%s' has frame dimensions that aren't a multiple of %d.\n"
-				                           "The entire image is %dx%d and frame size is %.1fx%.1f.\n"
-				                           "Image quality will be much improved if you resize the graphic to %.0fx%.0f, which is a frame size of %.0fx%.0f.",
-				                           actualID.filename.c_str(),
-				                           iDimensionMultiple,
-				                           this->GetSourceWidth(), this->GetSourceHeight(),
-				                           fFrameWidth, fFrameHeight,
-				                           fBetterSourceWidth, fBetterSourceHeight,
-				                           fBetterFrameWidth, fBetterFrameHeight);
+				                       "The graphic '%s' has frame dimensions that aren't a multiple of %d.\n"
+				                       "The entire image is %dx%d and frame size is %.1fx%.1f.\n"
+				                       "Image quality will be much improved if you resize the graphic to %.0fx%.0f, which is a frame size of %.0fx%.0f.",
+				                       actualID.filename.c_str(),
+				                       iDimensionMultiple,
+				                       this->GetSourceWidth(), this->GetSourceHeight(),
+				                       fFrameWidth, fFrameHeight,
+				                       fBetterSourceWidth, fBetterSourceHeight,
+				                       fBetterFrameWidth, fBetterFrameHeight);
 				LOG->Warn("%s", sWarning.c_str());
 				Dialog::OK(sWarning, "FRAME_DIMENSIONS_WARNING");
 			}

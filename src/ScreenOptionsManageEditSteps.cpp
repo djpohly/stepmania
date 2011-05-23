@@ -42,7 +42,7 @@ XToString(StepsEditAction);
 #define FOREACH_StepsEditAction( i ) FOREACH_ENUM( StepsEditAction, i )
 
 static MenuDef g_TempMenu(
-        "ScreenMiniMenuContext"
+    "ScreenMiniMenuContext"
 );
 
 
@@ -201,11 +201,11 @@ void ScreenOptionsManageEditSteps::HandleScreenMessage(const ScreenMessage SM)
 				case StepsEditAction_Rename:
 				{
 					ScreenTextEntry::TextEntry(
-					        SM_BackFromRename,
-					        ENTER_NAME_FOR_STEPS,
-					        GAMESTATE->m_pCurSteps[PLAYER_1]->GetDescription(),
-					        MAX_EDIT_STEPS_DESCRIPTION_LENGTH,
-					        SongUtil::ValidateCurrentEditStepsDescription);
+					    SM_BackFromRename,
+					    ENTER_NAME_FOR_STEPS,
+					    GAMESTATE->m_pCurSteps[PLAYER_1]->GetDescription(),
+					    MAX_EDIT_STEPS_DESCRIPTION_LENGTH,
+					    SongUtil::ValidateCurrentEditStepsDescription);
 				}
 				break;
 				case StepsEditAction_Delete:

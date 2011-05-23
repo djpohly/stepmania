@@ -605,19 +605,19 @@ void RageDisplay::LoadMenuPerspective(float fovDegrees, float fWidth, float fHei
 
 		// It's the caller's responsibility to push first.
 		g_ProjectionStack.LoadMatrix(
-		        GetFrustumMatrix(
-		                (fVanishPointX - fWidth / 2) / fDistCameraFromImage,
-		                (fVanishPointX + fWidth / 2) / fDistCameraFromImage,
-		                (fVanishPointY + fHeight / 2) / fDistCameraFromImage,
-		                (fVanishPointY - fHeight / 2) / fDistCameraFromImage,
-		                1,
-		                fDistCameraFromImage + 1000));
+		    GetFrustumMatrix(
+		        (fVanishPointX - fWidth / 2) / fDistCameraFromImage,
+		        (fVanishPointX + fWidth / 2) / fDistCameraFromImage,
+		        (fVanishPointY + fHeight / 2) / fDistCameraFromImage,
+		        (fVanishPointY - fHeight / 2) / fDistCameraFromImage,
+		        1,
+		        fDistCameraFromImage + 1000));
 
 		g_ViewStack.LoadMatrix(
-		        RageLookAt(
-		                -fVanishPointX + fWidth / 2, -fVanishPointY + fHeight / 2, fDistCameraFromImage,
-		                -fVanishPointX + fWidth / 2, -fVanishPointY + fHeight / 2, 0,
-		                0.0f, 1.0f, 0.0f));
+		    RageLookAt(
+		        -fVanishPointX + fWidth / 2, -fVanishPointY + fHeight / 2, fDistCameraFromImage,
+		        -fVanishPointX + fWidth / 2, -fVanishPointY + fHeight / 2, 0,
+		        0.0f, 1.0f, 0.0f));
 	}
 }
 
@@ -660,14 +660,14 @@ RageMatrix RageDisplay::GetPerspectiveMatrix(float fovy, float aspect, float zNe
 }
 
 RageSurface *RageDisplay::CreateSurfaceFromPixfmt(PixelFormat pixfmt,
-                void *pixels, int width, int height, int pitch)
+        void *pixels, int width, int height, int pitch)
 {
 	const PixelFormatDesc *tpf = GetPixelFormatDesc(pixfmt);
 
 	RageSurface *surf = CreateSurfaceFrom(
-	                            width, height, tpf->bpp,
-	                            tpf->masks[0], tpf->masks[1], tpf->masks[2], tpf->masks[3],
-	                            (uint8_t *) pixels, pitch);
+	                        width, height, tpf->bpp,
+	                        tpf->masks[0], tpf->masks[1], tpf->masks[2], tpf->masks[3],
+	                        (uint8_t *) pixels, pitch);
 
 	return surf;
 }
@@ -700,10 +700,10 @@ PixelFormat RageDisplay::FindPixelFormat(int iBPP, int iRmask, int iGmask, int i
 RageMatrix RageDisplay::GetOrthoMatrix(float l, float r, float b, float t, float zn, float zf)
 {
 	RageMatrix m(
-	        2 / (r - l),      0,            0,           0,
-	        0,            2 / (t - b),      0,           0,
-	        0,            0,            -2 / (zf - zn),   0,
-	        -(r + l) / (r - l), -(t + b) / (t - b), -(zf + zn) / (zf - zn),  1);
+	    2 / (r - l),      0,            0,           0,
+	    0,            2 / (t - b),      0,           0,
+	    0,            0,            -2 / (zf - zn),   0,
+	    -(r + l) / (r - l), -(t + b) / (t - b), -(zf + zn) / (zf - zn),  1);
 	return m;
 }
 
@@ -715,10 +715,10 @@ RageMatrix RageDisplay::GetFrustumMatrix(float l, float r, float b, float t, flo
 	float C = -1 * (zf + zn) / (zf - zn);
 	float D = -1 * (2 * zf * zn) / (zf - zn);
 	RageMatrix m(
-	        2 * zn / (r - l), 0,          0,  0,
-	        0,          2 * zn / (t - b), 0,  0,
-	        A,          B,          C,  -1,
-	        0,          0,          D,  0);
+	    2 * zn / (r - l), 0,          0,  0,
+	    0,          2 * zn / (t - b), 0,  0,
+	    A,          B,          C,  -1,
+	    0,          0,          D,  0);
 	return m;
 }
 
@@ -761,15 +761,15 @@ RageMatrix RageDisplay::GetCenteringMatrix(float fTranslateX, float fTranslateY,
 	RageMatrix m1;
 	RageMatrix m2;
 	RageMatrixTranslation(
-	        &m1,
-	        fPercentShiftX,
-	        fPercentShiftY,
-	        0);
+	    &m1,
+	    fPercentShiftX,
+	    fPercentShiftY,
+	    0);
 	RageMatrixScaling(
-	        &m2,
-	        fPercentScaleX,
-	        fPercentScaleY,
-	        1);
+	    &m2,
+	    fPercentScaleX,
+	    fPercentScaleY,
+	    1);
 	RageMatrix mOut;
 	RageMatrixMultiply(&mOut, &m1, &m2);
 	return mOut;
@@ -779,7 +779,7 @@ void RageDisplay::UpdateCentering()
 {
 	const Centering &p = g_CenteringStack.back();
 	g_CenteringMatrix = GetCenteringMatrix(
-	                            (float) p.m_iTranslateX, (float) p.m_iTranslateY, (float) p.m_iAddWidth, (float) p.m_iAddHeight);
+	                        (float) p.m_iTranslateX, (float) p.m_iTranslateY, (float) p.m_iAddWidth, (float) p.m_iAddHeight);
 }
 
 bool RageDisplay::SaveScreenshot(RString sPath, GraphicsFileFormat format)

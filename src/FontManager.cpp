@@ -18,7 +18,7 @@ FontManager::FontManager()
 FontManager::~FontManager()
 {
 	for (std::map<FontName, Font*>::iterator i = g_mapPathToFont.begin();
-	                i != g_mapPathToFont.end(); ++i)
+	        i != g_mapPathToFont.end(); ++i)
 	{
 		const FontName &fn = i->first;
 		Font* pFont = i->second;
@@ -33,7 +33,7 @@ FontManager::~FontManager()
 void FontManager::ReloadFonts()
 {
 	for (map<FontName, Font*>::iterator i = g_mapPathToFont.begin();
-	                i != g_mapPathToFont.end(); ++i)
+	        i != g_mapPathToFont.end(); ++i)
 	{
 		i->second->Reload();
 	}
@@ -74,7 +74,7 @@ void FontManager::UnloadFont(Font *fp)
 	CHECKPOINT_M(ssprintf("FontManager::UnloadFont(%s).", fp->path.c_str()));
 
 	for (std::map<FontName, Font*>::iterator i = g_mapPathToFont.begin();
-	                i != g_mapPathToFont.end(); ++i)
+	        i != g_mapPathToFont.end(); ++i)
 	{
 		if (i->second != fp)
 		{

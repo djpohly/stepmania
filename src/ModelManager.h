@@ -21,7 +21,7 @@ struct ModelManagerPrefs
 	bool operator!=(const ModelManagerPrefs& rhs)
 	{
 		return
-		        m_bDelayedUnload != rhs.m_bDelayedUnload;
+		    m_bDelayedUnload != rhs.m_bDelayedUnload;
 	}
 };
 /**

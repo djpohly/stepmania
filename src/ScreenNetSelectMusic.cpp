@@ -115,9 +115,9 @@ void ScreenNetSelectMusic::Input(const InputEventPlus &input)
 	}
 
 	bool bHoldingCtrl =
-	        INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LCTRL)) ||
-	        INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RCTRL)) ||
-	        (!NSMAN->useSMserver); // If we are disconnected, assume no chatting
+	    INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LCTRL)) ||
+	    INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RCTRL)) ||
+	    (!NSMAN->useSMserver); // If we are disconnected, assume no chatting
 
 	wchar_t c = INPUTMAN->DeviceInputToChar(input.DeviceI, false);
 	MakeUpper(&c, 1);
@@ -173,8 +173,8 @@ void ScreenNetSelectMusic::HandleScreenMessage(const ScreenMessage SM)
 		if (CurSong != NULL)
 
 			if ((!CurSong->GetTranslitArtist().CompareNoCase(NSMAN->m_sArtist)) &&
-			                (!CurSong->GetTranslitMainTitle().CompareNoCase(NSMAN->m_sMainTitle)) &&
-			                (!CurSong->GetTranslitSubTitle().CompareNoCase(NSMAN->m_sSubTitle)))
+			        (!CurSong->GetTranslitMainTitle().CompareNoCase(NSMAN->m_sMainTitle)) &&
+			        (!CurSong->GetTranslitSubTitle().CompareNoCase(NSMAN->m_sSubTitle)))
 			{
 				switch (NSMAN->m_iSelectMode)
 				{
@@ -196,8 +196,8 @@ void ScreenNetSelectMusic::HandleScreenMessage(const ScreenMessage SM)
 		{
 			m_cSong = AllSongs[i];
 			if ((!m_cSong->GetTranslitArtist().CompareNoCase(NSMAN->m_sArtist)) &&
-			                (!m_cSong->GetTranslitMainTitle().CompareNoCase(NSMAN->m_sMainTitle)) &&
-			                (!m_cSong->GetTranslitSubTitle().CompareNoCase(NSMAN->m_sSubTitle)))
+			        (!m_cSong->GetTranslitMainTitle().CompareNoCase(NSMAN->m_sMainTitle)) &&
+			        (!m_cSong->GetTranslitSubTitle().CompareNoCase(NSMAN->m_sSubTitle)))
 			{
 				break;
 			}
@@ -361,7 +361,7 @@ void ScreenNetSelectMusic::MenuDown(const InputEventPlus &input)
 
 	PlayerNumber pn = input.pn;
 	if (GAMESTATE->IsPlayerEnabled(PLAYER_2) &&
-	                !GAMESTATE->IsPlayerEnabled(PLAYER_1))
+	        !GAMESTATE->IsPlayerEnabled(PLAYER_1))
 	{
 		pn = PLAYER_2;
 	}
@@ -601,11 +601,11 @@ void ScreenNetSelectMusic::MusicChanged()
 		{
 			SOUND->StopMusic();
 			SOUND->PlayMusic(
-			        GAMESTATE->m_pCurSong->GetMusicPath(),
-			        NULL,
-			        true,
-			        GAMESTATE->m_pCurSong->m_fMusicSampleStartSeconds,
-			        GAMESTATE->m_pCurSong->m_fMusicSampleLengthSeconds);
+			    GAMESTATE->m_pCurSong->GetMusicPath(),
+			    NULL,
+			    true,
+			    GAMESTATE->m_pCurSong->m_fMusicSampleStartSeconds,
+			    GAMESTATE->m_pCurSong->m_fMusicSampleLengthSeconds);
 		}
 	}
 }

@@ -165,11 +165,11 @@ void ScreenOptionsCourseOverview::ProcessMenuStart(const InputEventPlus &input)
 			if (bPromptForName)
 			{
 				ScreenTextEntry::TextEntry(
-				        SM_BackFromEnterName,
-				        ENTER_WORKOUT_NAME,
-				        GAMESTATE->m_pCurCourse->GetDisplayFullTitle(),
-				        EditCourseUtil::MAX_NAME_LENGTH,
-				        EditCourseUtil::ValidateEditCourseName);
+				    SM_BackFromEnterName,
+				    ENTER_WORKOUT_NAME,
+				    GAMESTATE->m_pCurCourse->GetDisplayFullTitle(),
+				    EditCourseUtil::MAX_NAME_LENGTH,
+				    EditCourseUtil::ValidateEditCourseName);
 			}
 			else
 			{

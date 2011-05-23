@@ -311,7 +311,7 @@ int RageSoundReader_ThreadedBuffer::FillBlock()
 		// Add the data to the buffer.
 		m_DataBuffer.advance_write_pointer(iGotFrames * iSamplesPerFrame);
 		if (iNextSourceFrame != m_StreamPosition.back().iPositionOfFirstFrame + m_StreamPosition.back().iFramesBuffered ||
-		                fRate != m_StreamPosition.back().fRate)
+		        fRate != m_StreamPosition.back().fRate)
 		{
 			m_StreamPosition.push_back(Mapping());
 			m_StreamPosition.back().iPositionOfFirstFrame = iNextSourceFrame;

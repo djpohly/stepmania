@@ -122,7 +122,7 @@ void BannerCache::LoadBanner(RString sBannerPath)
 		return;        // nothing to do
 	}
 	if (PREFSMAN->m_BannerCache != BNCACHE_LOW_RES_PRELOAD &&
-	                PREFSMAN->m_BannerCache != BNCACHE_LOW_RES_LOAD_ON_DEMAND)
+	        PREFSMAN->m_BannerCache != BNCACHE_LOW_RES_LOAD_ON_DEMAND)
 	{
 		return;
 	}
@@ -234,7 +234,7 @@ struct BannerTexture: public RageTexture
 		 * Only resize if the max texture size requires it; since these images
 		 * are already scaled down, this shouldn't happen often. */
 		if (m_pImage->w > DISPLAY->GetMaxTextureSize() ||
-		                m_pImage->h > DISPLAY->GetMaxTextureSize())
+		        m_pImage->h > DISPLAY->GetMaxTextureSize())
 		{
 			LOG->Warn("Converted %s at runtime", GetID().filename.c_str());
 			int iWidth = min(m_pImage->w, DISPLAY->GetMaxTextureSize());
@@ -357,7 +357,7 @@ static inline int closest(int num, int n1, int n2)
 void BannerCache::CacheBanner(RString sBannerPath)
 {
 	if (PREFSMAN->m_BannerCache != BNCACHE_LOW_RES_PRELOAD &&
-	                PREFSMAN->m_BannerCache != BNCACHE_LOW_RES_LOAD_ON_DEMAND)
+	        PREFSMAN->m_BannerCache != BNCACHE_LOW_RES_LOAD_ON_DEMAND)
 	{
 		return;
 	}

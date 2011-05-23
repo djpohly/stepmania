@@ -25,18 +25,18 @@ static RString BackgroundChangeToString(const BackgroundChange &bgc)
 	// TODO: Technically we need to double-escape the filename (because it might contain '=') and then
 	// unescape the value returned by the MsdFile.
 	RString s = ssprintf(
-	                    "%.3f=%s=%.3f=%d=%d=%d=%s=%s=%s=%s=%s",
-	                    bgc.m_fStartBeat,
-	                    SmEscape(bgc.m_def.m_sFile1).c_str(),
-	                    bgc.m_fRate,
-	                    bgc.m_sTransition == SBT_CrossFade,		// backward compat
-	                    bgc.m_def.m_sEffect == SBE_StretchRewind, 	// backward compat
-	                    bgc.m_def.m_sEffect != SBE_StretchNoLoop, 	// backward compat
-	                    bgc.m_def.m_sEffect.c_str(),
-	                    bgc.m_def.m_sFile2.c_str(),
-	                    bgc.m_sTransition.c_str(),
-	                    SmEscape(RageColor::NormalizeColorString(bgc.m_def.m_sColor1)).c_str(),
-	                    SmEscape(RageColor::NormalizeColorString(bgc.m_def.m_sColor2)).c_str()
+	                "%.3f=%s=%.3f=%d=%d=%d=%s=%s=%s=%s=%s",
+	                bgc.m_fStartBeat,
+	                SmEscape(bgc.m_def.m_sFile1).c_str(),
+	                bgc.m_fRate,
+	                bgc.m_sTransition == SBT_CrossFade,		// backward compat
+	                bgc.m_def.m_sEffect == SBE_StretchRewind, 	// backward compat
+	                bgc.m_def.m_sEffect != SBE_StretchNoLoop, 	// backward compat
+	                bgc.m_def.m_sEffect.c_str(),
+	                bgc.m_def.m_sFile2.c_str(),
+	                bgc.m_sTransition.c_str(),
+	                SmEscape(RageColor::NormalizeColorString(bgc.m_def.m_sColor1)).c_str(),
+	                SmEscape(RageColor::NormalizeColorString(bgc.m_def.m_sColor2)).c_str()
 	            );
 	return s;
 }
@@ -478,8 +478,8 @@ bool NotesWriterSSC::WriteEditFileToMachine(const Song *pSong, Steps *pSteps, RS
 
 	// Check to make sure that we're not clobering an existing file before opening.
 	bool bFileNameChanging =
-	        pSteps->GetSavedToDisk()  &&
-	        pSteps->GetFilename() != sPath;
+	    pSteps->GetSavedToDisk()  &&
+	    pSteps->GetFilename() != sPath;
 	if (bFileNameChanging  &&  DoesFileExist(sPath))
 	{
 		sErrorOut = ssprintf(DESTINATION_ALREADY_EXISTS.GetValue(), sPath.c_str());

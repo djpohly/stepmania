@@ -66,9 +66,9 @@ private:
 	struct AnimatedTextureState
 	{
 		AnimatedTextureState(
-		        RageTexture* pTexture_,
-		        float		fDelaySecs_,
-		        RageVector2	vTranslate_
+		    RageTexture* pTexture_,
+		    float		fDelaySecs_,
+		    RageVector2	vTranslate_
 		):
 			pTexture(pTexture_), fDelaySecs(fDelaySecs_),
 			vTranslate(vTranslate_) {}

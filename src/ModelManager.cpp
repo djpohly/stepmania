@@ -15,8 +15,8 @@ ModelManager::ModelManager()
 ModelManager::~ModelManager()
 {
 	for (std::map<RString, RageModelGeometry*>::iterator i = m_mapFileToGeometry.begin();
-	                i != m_mapFileToGeometry.end();
-	                ++i)
+	        i != m_mapFileToGeometry.end();
+	        ++i)
 	{
 		RageModelGeometry* pGeom = i->second;
 		if (pGeom->m_iRefCount)
@@ -56,8 +56,8 @@ void ModelManager::UnloadModel(RageModelGeometry *m)
 	}
 
 	for (std::map<RString, RageModelGeometry*>::iterator i = m_mapFileToGeometry.begin();
-	                i != m_mapFileToGeometry.end();
-	                ++i)
+	        i != m_mapFileToGeometry.end();
+	        ++i)
 	{
 		if (i->second == m)
 		{

@@ -313,7 +313,7 @@ void MidiFileIn :: Load(RString fileName)
 		while (event.size())
 		{
 			if ((event.size() == 6) && (event[0] == 0xff) &&
-			                (event[1] == 0x51) && (event[2] == 0x03))
+			        (event[1] == 0x51) && (event[2] == 0x03))
 			{
 				TempoChange tempoEvent;
 				tempoEvent.count = count;
@@ -330,7 +330,7 @@ void MidiFileIn :: Load(RString fileName)
 			}
 
 			if ((event.size() == 7) && (event[0] == 0xff) &&
-			                (event[1] == 0x58) && (event[2] == 0x04))
+			        (event[1] == 0x58) && (event[2] == 0x04))
 			{
 				TimeSignatureChange timeSignatureEvent;
 				timeSignatureEvent.count = count;

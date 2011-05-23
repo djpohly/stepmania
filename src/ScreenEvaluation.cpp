@@ -711,11 +711,11 @@ void ScreenEvaluation::Input(const InputEventPlus &input)
 	if (input.GameI.IsValid())
 	{
 		if (CodeDetector::EnteredCode(input.GameI.controller, CODE_SAVE_SCREENSHOT1) ||
-		                CodeDetector::EnteredCode(input.GameI.controller, CODE_SAVE_SCREENSHOT2))
+		        CodeDetector::EnteredCode(input.GameI.controller, CODE_SAVE_SCREENSHOT2))
 		{
 			PlayerNumber pn = input.pn;
 			if (!m_bSavedScreenshot[pn]  &&	// only allow one screenshot
-			                PROFILEMAN->IsPersistentProfile(pn))
+			        PROFILEMAN->IsPersistentProfile(pn))
 			{
 				if (PROFILEMAN->ProfileWasLoadedFromMemoryCard(pn))
 				{

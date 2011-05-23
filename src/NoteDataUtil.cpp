@@ -69,7 +69,7 @@ NoteType NoteDataUtil::GetSmallestNoteTypeInRange(const NoteData &n, int iStartI
 }
 
 static void LoadFromSMNoteDataStringWithPlayer(NoteData& out, const RString &sSMNoteData, int start,
-                int len, PlayerNumber pn, int iNumTracks)
+        int len, PlayerNumber pn, int iNumTracks)
 {
 	/* Don't allocate memory for the entire string, nor per measure. Instead, use the in-place
 	 * partial string split twice. By maintaining begin and end pointers to each measure line
@@ -531,7 +531,7 @@ void NoteDataUtil::SplitCompositeNoteData(const NoteData &in, vector<NoteData> &
 			 */
 			const Style *curStyle = GAMESTATE->GetCurrentStyle();
 			if ((curStyle == NULL || curStyle->m_StyleType == StyleType_TwoPlayersSharedSides)
-			                && int(tn.pn) > NUM_PlayerNumber)
+			        && int(tn.pn) > NUM_PlayerNumber)
 			{
 				tn.pn = PLAYER_1;
 			}
@@ -615,7 +615,7 @@ void NoteDataUtil::LoadTransformedSlidingWindow(const NoteData &in, NoteData &ou
 			for (int t = 0; t < in.GetNumTracks(); t++)
 			{
 				if (in.IsHoldNoteAtRow(t, r - 1) &&
-				                in.IsHoldNoteAtRow(t, r))
+				        in.IsHoldNoteAtRow(t, r))
 				{
 					bHoldCrossesThisMeasure = true;
 					break;
@@ -1034,7 +1034,7 @@ void NoteDataUtil::RemoveHoldNotes(NoteData &in, int iStartIndex, int iEndIndex)
 		for (; begin != end; ++begin)
 		{
 			if (begin->second.type != TapNote::hold_head ||
-			                begin->second.subType != TapNote::hold_head_hold)
+			        begin->second.subType != TapNote::hold_head_hold)
 			{
 				continue;
 			}
@@ -1052,7 +1052,7 @@ void NoteDataUtil::ChangeRollsToHolds(NoteData &in, int iStartIndex, int iEndInd
 		for (; begin != end; ++begin)
 		{
 			if (begin->second.type != TapNote::hold_head ||
-			                begin->second.subType != TapNote::hold_head_roll)
+			        begin->second.subType != TapNote::hold_head_roll)
 			{
 				continue;
 			}
@@ -1070,7 +1070,7 @@ void NoteDataUtil::ChangeHoldsToRolls(NoteData &in, int iStartIndex, int iEndInd
 		for (; begin != end; ++begin)
 		{
 			if (begin->second.type != TapNote::hold_head ||
-			                begin->second.subType != TapNote::hold_head_hold)
+			        begin->second.subType != TapNote::hold_head_hold)
 			{
 				continue;
 			}
@@ -1725,13 +1725,13 @@ void NoteDataUtil::Skippy(NoteData &inout, int iStartIndex, int iEndIndex)
 }
 
 void NoteDataUtil::InsertIntelligentTaps(
-        NoteData &inout,
-        int iWindowSizeRows,
-        int iInsertOffsetRows,
-        int iWindowStrideRows,
-        bool bSkippy,
-        int iStartIndex,
-        int iEndIndex)
+    NoteData &inout,
+    int iWindowSizeRows,
+    int iInsertOffsetRows,
+    int iWindowStrideRows,
+    bool bSkippy,
+    int iStartIndex,
+    int iEndIndex)
 {
 	ASSERT(iInsertOffsetRows <= iWindowSizeRows);
 	ASSERT(iWindowSizeRows <= iWindowStrideRows);
@@ -1789,7 +1789,7 @@ void NoteDataUtil::InsertIntelligentTaps(
 		inout.GetTapFirstNonEmptyTrack(iRowLater, iTrackOfNoteLater);
 		int iTrackOfNoteToAdd = 0;
 		if (bSkippy  &&
-		                iTrackOfNoteEarlier != iTrackOfNoteLater)	// Don't make skips on the same note
+		        iTrackOfNoteEarlier != iTrackOfNoteLater)	// Don't make skips on the same note
 		{
 			if (bEarlierHasNonEmptyTrack)
 			{
@@ -2584,12 +2584,12 @@ void NoteDataUtil::AddTapAttacks(NoteData &nd, Song* pSong)
 		int iBeat = (int)fBeat;
 		int iTrack = iBeat % nd.GetNumTracks();	// deterministically calculates track
 		TapNote tn(
-		        TapNote::attack,
-		        TapNote::SubType_Invalid,
-		        TapNote::original,
-		        szAttacks[RandomInt(ARRAYLEN(szAttacks))],
-		        15.0f,
-		        -1);
+		    TapNote::attack,
+		    TapNote::SubType_Invalid,
+		    TapNote::original,
+		    szAttacks[RandomInt(ARRAYLEN(szAttacks))],
+		    15.0f,
+		    -1);
 		nd.SetTapNote(iTrack, BeatToNoteRow(fBeat), tn);
 	}
 }

@@ -61,7 +61,7 @@ void SoundEffectControl::Update(float fDeltaTime)
 		if (m_bLocked)
 		{
 			if ((fLevel <= 0.0f && m_fLastLevel >= 0.0f) ||
-			                (fLevel >= 0.0f && m_fLastLevel <= 0.0f))
+			        (fLevel >= 0.0f && m_fLastLevel <= 0.0f))
 			{
 				m_bLocked = false;
 			}

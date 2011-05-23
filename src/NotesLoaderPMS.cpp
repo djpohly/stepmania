@@ -499,7 +499,7 @@ static bool LoadFromPMSFile(const RString &sPath, const NameToData_t &mapNameToD
 						// shift the auto keysound as far right as possible
 						int iLastEmptyTrack = -1;
 						if (ndNotes.GetTapLastEmptyTrack(row, iLastEmptyTrack)  &&
-						                iLastEmptyTrack >= PMS_AUTO_KEYSOUND_1)
+						        iLastEmptyTrack >= PMS_AUTO_KEYSOUND_1)
 						{
 							tn.type = TapNote::autoKeysound;
 							pmsTrack = (PmsTrack)iLastEmptyTrack;

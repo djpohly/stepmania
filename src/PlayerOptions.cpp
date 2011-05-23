@@ -699,12 +699,12 @@ bool PlayerOptions::FromOneModString(const RString &sOneMod, RString &sErrorOut)
 																																							}
 																																							else if (sBit == "randomspeed") 			SET_FLOAT(fRandomSpeed)
 																																								else if (sBit == "failarcade" ||
-																																								                sBit == "failimmediate")
+																																								         sBit == "failimmediate")
 																																								{
 																																									m_FailType = FAIL_IMMEDIATE;
 																																								}
 																																								else if (sBit == "failendofsong" ||
-																																								                sBit == "failimmediatecontinue")
+																																								         sBit == "failimmediatecontinue")
 																																								{
 																																									m_FailType = FAIL_IMMEDIATE_CONTINUE;
 																																								}

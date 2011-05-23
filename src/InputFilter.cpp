@@ -303,7 +303,7 @@ void InputFilter::Update(float fDeltaTime)
 			// If the key isn't pressed, and hasn't been pressed for a while
 			// (so debouncing isn't interested in it), purge the entry.
 			if (now - bs.m_LastReportTime > g_fInputDebounceTime &&
-			                bs.m_DeviceInput.level == 0.0f)
+			        bs.m_DeviceInput.level == 0.0f)
 			{
 				ButtonsToErase.push_back(b);
 			}

@@ -219,11 +219,11 @@ void ScreenOptionsCourseOverview::ProcessMenuStart(const InputEventPlus &input)
 		return;	// handled
 		case CourseOverviewRow_Rename:
 			ScreenTextEntry::TextEntry(
-			        SM_BackFromRename,
-			        ENTER_COURSE_NAME,
-			        GAMESTATE->m_pCurCourse->GetDisplayFullTitle(),
-			        EditCourseUtil::MAX_NAME_LENGTH,
-			        EditCourseUtil::ValidateEditCourseName);
+			    SM_BackFromRename,
+			    ENTER_COURSE_NAME,
+			    GAMESTATE->m_pCurCourse->GetDisplayFullTitle(),
+			    EditCourseUtil::MAX_NAME_LENGTH,
+			    EditCourseUtil::ValidateEditCourseName);
 			break;
 		case CourseOverviewRow_Delete:
 			ScreenPrompt::Prompt(SM_BackFromDelete, COURSE_WILL_BE_LOST.GetValue() + "\n\n" + CONTINUE_WITH_DELETE.GetValue(), PROMPT_YES_NO, ANSWER_NO);
@@ -234,11 +234,11 @@ void ScreenOptionsCourseOverview::ProcessMenuStart(const InputEventPlus &input)
 			if (bPromptForName)
 			{
 				ScreenTextEntry::TextEntry(
-				        SM_BackFromEnterName,
-				        ENTER_COURSE_NAME,
-				        GAMESTATE->m_pCurCourse->GetDisplayFullTitle(),
-				        EditCourseUtil::MAX_NAME_LENGTH,
-				        EditCourseUtil::ValidateEditCourseName);
+				    SM_BackFromEnterName,
+				    ENTER_COURSE_NAME,
+				    GAMESTATE->m_pCurCourse->GetDisplayFullTitle(),
+				    EditCourseUtil::MAX_NAME_LENGTH,
+				    EditCourseUtil::ValidateEditCourseName);
 			}
 			else
 			{

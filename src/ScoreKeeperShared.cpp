@@ -12,9 +12,9 @@ ScoreKeeperShared::ScoreKeeperShared(PlayerState *pPlayerState, PlayerStageStats
 }
 
 void ScoreKeeperShared::Load(
-        const vector<Song*> &apSongs,
-        const vector<Steps*> &apSteps,
-        const vector<AttackArray> &asModifiers)
+    const vector<Song*> &apSongs,
+    const vector<Steps*> &apSteps,
+    const vector<AttackArray> &asModifiers)
 {
 	if (m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber)
 	{

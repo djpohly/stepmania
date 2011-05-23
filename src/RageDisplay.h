@@ -92,20 +92,20 @@ public:
 	// Initialize with a constructor so to guarantee all paramters
 	// are filled (in case new params are added).
 	VideoModeParams(
-	        bool windowed_,
-	        int width_,
-	        int height_,
-	        int bpp_,
-	        int rate_,
-	        bool vsync_,
-	        bool interlaced_,
-	        bool bSmoothLines_,
-	        bool bTrilinearFiltering_,
-	        bool bAnisotropicFiltering_,
-	        RString sWindowTitle_,
-	        RString sIconFile_,
-	        bool PAL_,
-	        float fDisplayAspectRatio_
+	    bool windowed_,
+	    int width_,
+	    int height_,
+	    int bpp_,
+	    int rate_,
+	    bool vsync_,
+	    bool interlaced_,
+	    bool bSmoothLines_,
+	    bool bTrilinearFiltering_,
+	    bool bAnisotropicFiltering_,
+	    RString sWindowTitle_,
+	    RString sIconFile_,
+	    bool PAL_,
+	    float fDisplayAspectRatio_
 	):
 		windowed(windowed_),
 		width(width_),
@@ -233,14 +233,14 @@ public:
 	/* return 0 if failed or internal texture resource handle
 	 * (unsigned in OpenGL, texture pointer in D3D) */
 	virtual unsigned CreateTexture(
-	        PixelFormat pixfmt,		// format of img and of texture in video mem
-	        RageSurface* img,		// must be in pixfmt
-	        bool bGenerateMipMaps
+	    PixelFormat pixfmt,		// format of img and of texture in video mem
+	    RageSurface* img,		// must be in pixfmt
+	    bool bGenerateMipMaps
 	) = 0;
 	virtual void UpdateTexture(
-	        unsigned iTexHandle,
-	        RageSurface* img,
-	        int xoffset, int yoffset, int width, int height
+	    unsigned iTexHandle,
+	    RageSurface* img,
+	    int xoffset, int yoffset, int width, int height
 	) = 0;
 	virtual void DeleteTexture(unsigned iTexHandle) = 0;
 	/* Return an object to lock pixels for streaming. If not supported, returns NULL.
@@ -297,21 +297,21 @@ public:
 	virtual void SetAlphaTest(bool b) = 0;
 
 	virtual void SetMaterial(
-	        const RageColor &emissive,
-	        const RageColor &ambient,
-	        const RageColor &diffuse,
-	        const RageColor &specular,
-	        float shininess
+	    const RageColor &emissive,
+	    const RageColor &ambient,
+	    const RageColor &diffuse,
+	    const RageColor &specular,
+	    float shininess
 	) = 0;
 
 	virtual void SetLighting(bool b) = 0;
 	virtual void SetLightOff(int index) = 0;
 	virtual void SetLightDirectional(
-	        int index,
-	        const RageColor &ambient,
-	        const RageColor &diffuse,
-	        const RageColor &specular,
-	        const RageVector3 &dir) = 0;
+	    int index,
+	    const RageColor &ambient,
+	    const RageColor &diffuse,
+	    const RageColor &specular,
+	    const RageVector3 &dir) = 0;
 
 	virtual void SetSphereEnvironmentMapping(TextureUnit tu, bool b) = 0;
 	virtual void SetCelShaded(int stage) = 0;

@@ -47,7 +47,7 @@ int RageSoundReader_PitchChange::Read(float *pBuf, int iFrames)
 	 * resampler and the speed changer simultaneously, so they take effect as
 	 * closely together as possible. */
 	if ((m_fLastSetSpeedRatio != m_fSpeedRatio || m_fLastSetPitchRatio != m_fPitchRatio) &&
-	                m_pSpeedChange->NextReadWillStep())
+	        m_pSpeedChange->NextReadWillStep())
 	{
 		float fRate = GetStreamToSourceRatio();
 

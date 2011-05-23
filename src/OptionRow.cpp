@@ -434,7 +434,7 @@ void OptionRow::AfterImportOptions(PlayerNumber pn)
 	/* We load items for both players on start, since we don't know which players
 	 * will be joined when we're displayed. Hide items for inactive players. */
 	if (m_pHand->m_Def.m_layoutType == LAYOUT_SHOW_ONE_IN_ROW &&
-	                !m_pHand->m_Def.m_bOneChoiceForAllPlayers)
+	        !m_pHand->m_Def.m_bOneChoiceForAllPlayers)
 	{
 		m_textItems[pn]->SetVisible(GAMESTATE->IsHumanPlayer(pn));
 	}

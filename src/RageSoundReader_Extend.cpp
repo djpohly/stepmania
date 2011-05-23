@@ -100,7 +100,7 @@ int RageSoundReader_Extend::Read(float *pBuffer, int iFrames)
 	if (iFramesRead == RageSoundReader::END_OF_FILE)
 	{
 		if ((m_iLengthFrames != -1 && m_iPositionFrames < GetEndFrame()) ||
-		                m_StopMode == M_CONTINUE)
+		        m_StopMode == M_CONTINUE)
 		{
 			iFramesRead = iFrames;
 			if (m_StopMode != M_CONTINUE)

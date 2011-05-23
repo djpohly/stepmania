@@ -394,13 +394,13 @@ void SMALoader::ProcessFakes(TimingData &out, const int iRowsPerBeat, const RStr
 
 
 void SMALoader::LoadFromSMATokens(
-        RString sStepsType,
-        RString sDescription,
-        RString sDifficulty,
-        RString sMeter,
-        RString sRadarValues,
-        RString sNoteData,
-        Steps &out
+    RString sStepsType,
+    RString sDescription,
+    RString sDifficulty,
+    RString sMeter,
+    RString sRadarValues,
+    RString sNoteData,
+    Steps &out
 )
 {
 	SMLoader::LoadFromSMTokens(sStepsType, sDescription,
@@ -758,13 +758,13 @@ bool SMALoader::LoadFromSMAFile(const RString &sPath, Song &out)
 			}
 
 			LoadFromSMATokens(
-			        sParams[1],
-			        sParams[2],
-			        sParams[3],
-			        sParams[4],
-			        sParams[5],
-			        sParams[6],
-			        *pNewNotes);
+			    sParams[1],
+			    sParams[2],
+			    sParams[3],
+			    sParams[4],
+			    sParams[5],
+			    sParams[6],
+			    *pNewNotes);
 
 			out.AddSteps(pNewNotes);
 		}
@@ -873,8 +873,8 @@ bool SMALoader::LoadEditFromMsd(const MsdFile &msd, const RString &sEditFilePath
 
 			Steps* pNewNotes = pSong->CreateSteps();
 			LoadFromSMATokens(
-			        sParams[1], sParams[2], sParams[3], sParams[4], sParams[5], sParams[6],
-			        *pNewNotes);
+			    sParams[1], sParams[2], sParams[3], sParams[4], sParams[5], sParams[6],
+			    *pNewNotes);
 
 			pNewNotes->SetLoadedFromProfile(slot);
 			pNewNotes->SetDifficulty(Difficulty_Edit);

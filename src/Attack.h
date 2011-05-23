@@ -37,13 +37,13 @@ struct Attack
 		bOn(false), bGlobal(false), bShowInAttackList(true)
 	{} // MakeBlank() is effectively called here.
 	Attack(
-	        AttackLevel	level_,
-	        float fStartSecond_,
-	        float fSecsRemaining_,
-	        RString sModifiers_,
-	        bool bOn_,
-	        bool bGlobal_,
-	        bool bShowInAttackList_ = true):
+	    AttackLevel	level_,
+	    float fStartSecond_,
+	    float fSecsRemaining_,
+	    RString sModifiers_,
+	    bool bOn_,
+	    bool bGlobal_,
+	    bool bShowInAttackList_ = true):
 		level(level_), fStartSecond(fStartSecond_),
 		fSecsRemaining(fSecsRemaining_), sModifiers(sModifiers_),
 		bOn(bOn_), bGlobal(bGlobal_),

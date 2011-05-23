@@ -519,7 +519,7 @@ int NoteData::GetNumTapNotes(int iStartIndex, int iEndIndex) const
 		{
 			const TapNote &tn = GetTapNote(t, r);
 			if (tn.type != TapNote::empty && tn.type != TapNote::mine
-			                && tn.type != TapNote::lift && tn.type != TapNote::fake)
+			        && tn.type != TapNote::lift && tn.type != TapNote::fake)
 			{
 				iNumNotes++;
 			}
@@ -666,7 +666,7 @@ int NoteData::GetNumHoldNotes(int iStartIndex, int iEndIndex) const
 		for (; lBegin != lEnd; ++lBegin)
 		{
 			if (lBegin->second.type != TapNote::hold_head ||
-			                lBegin->second.subType != TapNote::hold_head_hold)
+			        lBegin->second.subType != TapNote::hold_head_hold)
 			{
 				continue;
 			}
@@ -686,7 +686,7 @@ int NoteData::GetNumRolls(int iStartIndex, int iEndIndex) const
 		for (; lBegin != lEnd; ++lBegin)
 		{
 			if (lBegin->second.type != TapNote::hold_head ||
-			                lBegin->second.subType != TapNote::hold_head_roll)
+			        lBegin->second.subType != TapNote::hold_head_roll)
 			{
 				continue;
 			}
@@ -761,7 +761,7 @@ void NoteData::LoadTransformed(const NoteData& in, int iNewNumTracks, const int 
 	{
 		const int iOriginalTrack = iOriginalTrackToTakeFrom[t];
 		ASSERT_M(iOriginalTrack < in.GetNumTracks(), ssprintf("from OriginalTrack %i >= %i (#tracks) (taking from %i)",
-		                iOriginalTrack, in.GetNumTracks(), iOriginalTrackToTakeFrom[t]));
+		         iOriginalTrack, in.GetNumTracks(), iOriginalTrackToTakeFrom[t]));
 
 		if (iOriginalTrack == -1)
 		{

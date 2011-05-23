@@ -414,31 +414,31 @@ FileType ActorUtil::GetFileType(const RString &sPath)
 		return FT_Lua;
 	}
 	else if (
-	        sExt == "png" ||
-	        sExt == "jpg" ||
-	        sExt == "gif" ||
-	        sExt == "bmp")
+	    sExt == "png" ||
+	    sExt == "jpg" ||
+	    sExt == "gif" ||
+	    sExt == "bmp")
 	{
 		return FT_Bitmap;
 	}
 	else if (
-	        sExt == "ogg" ||
-	        sExt == "oga" ||
-	        sExt == "wav" ||
-	        sExt == "mp3")
+	    sExt == "ogg" ||
+	    sExt == "oga" ||
+	    sExt == "wav" ||
+	    sExt == "mp3")
 	{
 		return FT_Sound;
 	}
 	else if (
-	        sExt == "ogv" ||
-	        sExt == "avi" ||
-	        sExt == "mpeg" ||
-	        sExt == "mpg")
+	    sExt == "ogv" ||
+	    sExt == "avi" ||
+	    sExt == "mpeg" ||
+	    sExt == "mpg")
 	{
 		return FT_Movie;
 	}
 	else if (
-	        sExt == "txt")
+	    sExt == "txt")
 	{
 		return FT_Model;
 	}

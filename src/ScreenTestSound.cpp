@@ -19,11 +19,11 @@ void ScreenTestSound::Init()
 	HEEEEEEEEELP.LoadFromFont(THEME->GetPathF("Common", "normal"));
 	HEEEEEEEEELP.SetZoom(.5);
 	HEEEEEEEEELP.SetText(
-	        "p  Play\n"
-	        "s  Stop\n"
-	        "l  Set looping\n"
-	        "a  Set autostop\n"
-	        "c  Set continue");
+	    "p  Play\n"
+	    "s  Stop\n"
+	    "l  Set looping\n"
+	    "a  Set autostop\n"
+	    "c  Set continue");
 
 	for (int i = 0; i < nsounds; ++i)
 	{
@@ -98,20 +98,20 @@ void ScreenTestSound::UpdateText(int n)
 	}
 
 	s[n].txt.SetText(ssprintf(
-	                         "%i: %s\n"
-	                         "%s\n"
-	                         "%s\n"
-	                         "(%s)\n"
-	                         "%s",
-	                         n + 1, fn.c_str(),
-	                         s[n].s.IsPlaying() ? "Playing" : "Stopped",
-	                         s[n].s.GetParams().StopMode == RageSoundParams::M_STOP ?
-	                         "Stop when finished" :
-	                         s[n].s.GetParams().StopMode == RageSoundParams::M_CONTINUE ?
-	                         "Continue until stopped" :
-	                         "Loop",
-	                         pos.size() ? pos.c_str() : "none playing",
-	                         selected == n ? "^^^^^^" : ""
+	                     "%i: %s\n"
+	                     "%s\n"
+	                     "%s\n"
+	                     "(%s)\n"
+	                     "%s",
+	                     n + 1, fn.c_str(),
+	                     s[n].s.IsPlaying() ? "Playing" : "Stopped",
+	                     s[n].s.GetParams().StopMode == RageSoundParams::M_STOP ?
+	                     "Stop when finished" :
+	                     s[n].s.GetParams().StopMode == RageSoundParams::M_CONTINUE ?
+	                     "Continue until stopped" :
+	                     "Loop",
+	                     pos.size() ? pos.c_str() : "none playing",
+	                     selected == n ? "^^^^^^" : ""
 	                 ));
 }
 

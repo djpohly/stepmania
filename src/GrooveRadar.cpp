@@ -155,7 +155,7 @@ void GrooveRadar::GrooveRadarValueMap::DrawPrimitives()
 	{
 		const int c = i % NUM_SHOWN_RADAR_CATEGORIES;
 		const float fDistFromCenter =
-		        (m_fValuesOld[c] * (1 - m_PercentTowardNew) + m_fValuesNew[c] * m_PercentTowardNew + 0.07f) * fRadius;
+		    (m_fValuesOld[c] * (1 - m_PercentTowardNew) + m_fValuesNew[c] * m_PercentTowardNew + 0.07f) * fRadius;
 		const float fRotation = RADAR_VALUE_ROTATION(i);
 		const float fX = RageFastCos(fRotation) * fDistFromCenter;
 		const float fY = -RageFastSin(fRotation) * fDistFromCenter;
@@ -171,7 +171,7 @@ void GrooveRadar::GrooveRadarValueMap::DrawPrimitives()
 	{
 		const int c = i % NUM_SHOWN_RADAR_CATEGORIES;
 		const float fDistFromCenter =
-		        (m_fValuesOld[c] * (1 - m_PercentTowardNew) + m_fValuesNew[c] * m_PercentTowardNew + 0.07f) * fRadius;
+		    (m_fValuesOld[c] * (1 - m_PercentTowardNew) + m_fValuesNew[c] * m_PercentTowardNew + 0.07f) * fRadius;
 		const float fRotation = RADAR_VALUE_ROTATION(i);
 		const float fX = RageFastCos(fRotation) * fDistFromCenter;
 		const float fY = -RageFastSin(fRotation) * fDistFromCenter;

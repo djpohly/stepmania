@@ -574,7 +574,7 @@ namespace StdString
 
 #if defined ( _MSC_VER ) && ( _MSC_VER < 1200 )
 			if (!this->empty() &&
-			                (pC < this->data() || pC > this->data() + this->capacity()))
+			        (pC < this->data() || pC > this->data() + this->capacity()))
 			{
 				this->erase();
 			}

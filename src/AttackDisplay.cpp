@@ -23,7 +23,7 @@ RString GetAttackPieceName(const RString &sAttack)
 AttackDisplay::AttackDisplay()
 {
 	if (GAMESTATE->m_PlayMode != PLAY_MODE_BATTLE &&
-	                GAMESTATE->m_PlayMode != PLAY_MODE_RAVE)
+	        GAMESTATE->m_PlayMode != PLAY_MODE_RAVE)
 	{
 		return;
 	}
@@ -41,7 +41,7 @@ void AttackDisplay::Init(const PlayerState* pPlayerState)
 	m_sprAttack.SetName(ssprintf("TextP%d", pn + 1));
 
 	if (GAMESTATE->m_PlayMode != PLAY_MODE_BATTLE &&
-	                GAMESTATE->m_PlayMode != PLAY_MODE_RAVE)
+	        GAMESTATE->m_PlayMode != PLAY_MODE_RAVE)
 	{
 		return;
 	}
@@ -77,7 +77,7 @@ void AttackDisplay::Update(float fDelta)
 	ActorFrame::Update(fDelta);
 
 	if (GAMESTATE->m_PlayMode != PLAY_MODE_BATTLE &&
-	                GAMESTATE->m_PlayMode != PLAY_MODE_RAVE)
+	        GAMESTATE->m_PlayMode != PLAY_MODE_RAVE)
 	{
 		return;
 	}

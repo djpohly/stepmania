@@ -47,7 +47,7 @@ XToLocalizedString(ProfileAction);
 #define FOREACH_ProfileAction( i ) FOREACH_ENUM( ProfileAction, i )
 
 static MenuDef g_TempMenu(
-        "ScreenMiniMenuContext"
+    "ScreenMiniMenuContext"
 );
 
 static LocalizedString PROFILE_NAME_BLANK("ScreenEditMenu", "Profile name cannot be blank.");
@@ -299,11 +299,11 @@ void ScreenOptionsManageProfiles::HandleScreenMessage(const ScreenMessage SM)
 				case ProfileAction_Rename:
 				{
 					ScreenTextEntry::TextEntry(
-					        SM_BackFromRename,
-					        ENTER_PROFILE_NAME,
-					        pProfile->m_sDisplayName,
-					        PROFILE_MAX_DISPLAY_NAME_LENGTH,
-					        ValidateLocalProfileName);
+					    SM_BackFromRename,
+					    ENTER_PROFILE_NAME,
+					    pProfile->m_sDisplayName,
+					    PROFILE_MAX_DISPLAY_NAME_LENGTH,
+					    ValidateLocalProfileName);
 				}
 				break;
 				case ProfileAction_Delete:
@@ -369,11 +369,11 @@ void ScreenOptionsManageProfiles::ProcessMenuStart(const InputEventPlus &input)
 			}
 		}
 		ScreenTextEntry::TextEntry(
-		        SM_BackFromEnterNameForNew,
-		        ENTER_PROFILE_NAME,
-		        sPotentialName,
-		        PROFILE_MAX_DISPLAY_NAME_LENGTH,
-		        ValidateLocalProfileName);
+		    SM_BackFromEnterNameForNew,
+		    ENTER_PROFILE_NAME,
+		    sPotentialName,
+		    PROFILE_MAX_DISPLAY_NAME_LENGTH,
+		    ValidateLocalProfileName);
 	}
 	else if (row.GetRowType() == OptionRow::RowType_Exit)
 	{

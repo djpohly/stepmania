@@ -331,9 +331,9 @@ bool StageStats::PlayerHasHighScore(PlayerNumber pn) const
 	}
 
 	const HighScoreList &hsl =
-	        GAMESTATE->IsCourseMode() ?
-	        PROFILEMAN->GetMachineProfile()->GetCourseHighScoreList(pCourse, pTrail) :
-	        PROFILEMAN->GetMachineProfile()->GetStepsHighScoreList(pSong, pSteps);
+	    GAMESTATE->IsCourseMode() ?
+	    PROFILEMAN->GetMachineProfile()->GetCourseHighScoreList(pCourse, pTrail) :
+	    PROFILEMAN->GetMachineProfile()->GetStepsHighScoreList(pSong, pSteps);
 
 	int iScore = m_player[pn].m_iScore;
 	float fPercentDP = m_player[pn].GetPercentDancePoints();
@@ -341,8 +341,8 @@ bool StageStats::PlayerHasHighScore(PlayerNumber pn) const
 	{
 		const HighScore &hs = hsl.vHighScores[h];
 		if (hs.GetName() == RANKING_TO_FILL_IN_MARKER[pn]  &&
-		                hs.GetPercentDP() == fPercentDP  &&
-		                hs.GetScore() == iScore)
+		        hs.GetPercentDP() == fPercentDP  &&
+		        hs.GetScore() == iScore)
 		{
 			return true;
 		}

@@ -28,10 +28,10 @@ static RString GetPromptText()
 		if (!vs.empty())
 		{
 			s += ssprintf(
-			             CHANGED_TIMING_OF.GetValue() + "\n"
-			             "%s:\n"
-			             "\n",
-			             GAMESTATE->m_pCurSong->GetDisplayFullTitle().c_str());
+			         CHANGED_TIMING_OF.GetValue() + "\n"
+			         "%s:\n"
+			         "\n",
+			         GAMESTATE->m_pCurSong->GetDisplayFullTitle().c_str());
 
 			s += join("\n", vs) + "\n\n";
 		}
@@ -57,24 +57,24 @@ void ScreenSaveSync::Init()
 	ScreenPrompt::Init();
 
 	ScreenPrompt::SetPromptSettings(
-	        GetPromptText(),
-	        PROMPT_YES_NO,
-	        ANSWER_YES,
-	        SaveSyncChanges,
-	        RevertSyncChanges,
-	        NULL);
+	    GetPromptText(),
+	    PROMPT_YES_NO,
+	    ANSWER_YES,
+	    SaveSyncChanges,
+	    RevertSyncChanges,
+	    NULL);
 }
 
 void ScreenSaveSync::PromptSaveSync(ScreenMessage sm)
 {
 	ScreenPrompt::Prompt(
-	        sm,
-	        GetPromptText(),
-	        PROMPT_YES_NO,
-	        ANSWER_YES,
-	        SaveSyncChanges,
-	        RevertSyncChanges,
-	        NULL);
+	    sm,
+	    GetPromptText(),
+	    PROMPT_YES_NO,
+	    ANSWER_YES,
+	    SaveSyncChanges,
+	    RevertSyncChanges,
+	    NULL);
 }
 
 

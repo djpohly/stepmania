@@ -613,33 +613,33 @@ void NoteDisplay::DrawHoldBody(const TapNote& tn, int iCol, float fBeat, bool bI
 
 	// Draw the top cap
 	DrawHoldPart(
-	        vpSprTop,
-	        iCol, fYStep, fPercentFadeToFail, fColorScale, bGlow,
-	        fDrawDistanceAfterTargetsPixels, fDrawDistanceBeforeTargetsPixels, fFadeInPercentOfDrawFar,
-	        tn.HoldResult.fOverlappedTime,
-	        fYHead - fFrameHeightTop, fYHead,
-	        fYStartPos, fYEndPos,
-	        false, bTopAnchor, bFlipHoldBody);
+	    vpSprTop,
+	    iCol, fYStep, fPercentFadeToFail, fColorScale, bGlow,
+	    fDrawDistanceAfterTargetsPixels, fDrawDistanceBeforeTargetsPixels, fFadeInPercentOfDrawFar,
+	    tn.HoldResult.fOverlappedTime,
+	    fYHead - fFrameHeightTop, fYHead,
+	    fYStartPos, fYEndPos,
+	    false, bTopAnchor, bFlipHoldBody);
 
 	// Draw the body
 	DrawHoldPart(
-	        vpSprBody,
-	        iCol, fYStep, fPercentFadeToFail, fColorScale, bGlow,
-	        fDrawDistanceAfterTargetsPixels, fDrawDistanceBeforeTargetsPixels, fFadeInPercentOfDrawFar,
-	        tn.HoldResult.fOverlappedTime,
-	        fYHead, fYTail,
-	        fYStartPos, fYEndPos,
-	        true, bTopAnchor, bFlipHoldBody);
+	    vpSprBody,
+	    iCol, fYStep, fPercentFadeToFail, fColorScale, bGlow,
+	    fDrawDistanceAfterTargetsPixels, fDrawDistanceBeforeTargetsPixels, fFadeInPercentOfDrawFar,
+	    tn.HoldResult.fOverlappedTime,
+	    fYHead, fYTail,
+	    fYStartPos, fYEndPos,
+	    true, bTopAnchor, bFlipHoldBody);
 
 	// Draw the bottom cap
 	DrawHoldPart(
-	        vpSprBottom,
-	        iCol, fYStep, fPercentFadeToFail, fColorScale, bGlow,
-	        fDrawDistanceAfterTargetsPixels, fDrawDistanceBeforeTargetsPixels, fFadeInPercentOfDrawFar,
-	        tn.HoldResult.fOverlappedTime,
-	        fYTail, fYTail + fFrameHeightBottom,
-	        max(fYStartPos, fYHead), fYEndPos,
-	        false, bTopAnchor, bFlipHoldBody);
+	    vpSprBottom,
+	    iCol, fYStep, fPercentFadeToFail, fColorScale, bGlow,
+	    fDrawDistanceAfterTargetsPixels, fDrawDistanceBeforeTargetsPixels, fFadeInPercentOfDrawFar,
+	    tn.HoldResult.fOverlappedTime,
+	    fYTail, fYTail + fFrameHeightBottom,
+	    max(fYStartPos, fYHead), fYEndPos,
+	    false, bTopAnchor, bFlipHoldBody);
 }
 
 void NoteDisplay::DrawHold(const TapNote &tn, int iCol, int iRow, bool bIsBeingHeld, const HoldNoteResult &Result, bool bIsAddition, float fPercentFadeToFail,

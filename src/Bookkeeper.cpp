@@ -79,8 +79,8 @@ void Bookkeeper::LoadFromNode(const XNode *pNode)
 	{
 		Date d;
 		if (!day->GetAttrValue("Hour", d.m_iHour) ||
-		                !day->GetAttrValue("Day", d.m_iDayOfYear) ||
-		                !day->GetAttrValue("Year", d.m_iYear))
+		        !day->GetAttrValue("Day", d.m_iDayOfYear) ||
+		        !day->GetAttrValue("Year", d.m_iYear))
 		{
 			LOG->Warn("Incomplete date field");
 			continue;

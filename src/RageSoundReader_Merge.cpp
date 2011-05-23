@@ -217,7 +217,7 @@ int RageSoundReader_Merge::Read(float *pBuffer, int iFrames)
 		/* Normally, m_iNextSourceFrame should already be aligned with the GetNextSourceFrame of our
 		 * sounds.  If it's not, adjust it and return. */
 		if (m_iNextSourceFrame != aNextSourceFrames[iEarliestSound] ||
-		                m_fCurrentStreamToSourceRatio != aRatios[iEarliestSound])
+		        m_fCurrentStreamToSourceRatio != aRatios[iEarliestSound])
 		{
 			m_iNextSourceFrame = aNextSourceFrames[iEarliestSound];
 			m_fCurrentStreamToSourceRatio = aRatios[iEarliestSound];

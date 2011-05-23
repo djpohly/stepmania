@@ -303,10 +303,10 @@ void AdjustSync::GetSyncChangeTextGlobal(vector<RString> &vsAddTo)
 		if (fabsf(fDelta) > 0.0001f)
 		{
 			vsAddTo.push_back(ssprintf(
-			                          GLOBAL_OFFSET_FROM.GetValue(),
-			                          fOld,
-			                          fNew,
-			                          (fDelta > 0 ? EARLIER : LATER).GetValue().c_str()));
+			                      GLOBAL_OFFSET_FROM.GetValue(),
+			                      fOld,
+			                      fNew,
+			                      (fDelta > 0 ? EARLIER : LATER).GetValue().c_str()));
 		}
 	}
 }
@@ -325,10 +325,10 @@ void AdjustSync::GetSyncChangeTextSong(vector<RString> &vsAddTo)
 			if (fabsf(fDelta) > 0.0001f)
 			{
 				vsAddTo.push_back(ssprintf(
-				                          SONG_OFFSET_FROM.GetValue(),
-				                          fOld,
-				                          fNew,
-				                          (fDelta > 0 ? EARLIER : LATER).GetValue().c_str()));
+				                      SONG_OFFSET_FROM.GetValue(),
+				                      fOld,
+				                      fNew,
+				                      (fDelta > 0 ? EARLIER : LATER).GetValue().c_str()));
 			}
 		}
 
@@ -346,10 +346,10 @@ void AdjustSync::GetSyncChangeTextSong(vector<RString> &vsAddTo)
 					break;
 				}
 				vsAddTo.push_back(ssprintf(
-				                          TEMPO_SEGMENT_FROM.GetValue(),
-				                          FormatNumberAndSuffix(i + 1).c_str(),
-				                          fOld,
-				                          fNew));
+				                      TEMPO_SEGMENT_FROM.GetValue(),
+				                      FormatNumberAndSuffix(i + 1).c_str(),
+				                      fOld,
+				                      fNew));
 			}
 		}
 
@@ -367,10 +367,10 @@ void AdjustSync::GetSyncChangeTextSong(vector<RString> &vsAddTo)
 					break;
 				}
 				vsAddTo.push_back(ssprintf(
-				                          CHANGED_STOP.GetValue(),
-				                          i + 1,
-				                          fOld,
-				                          fNew));
+				                      CHANGED_STOP.GetValue(),
+				                      i + 1,
+				                      fOld,
+				                      fNew));
 			}
 		}
 

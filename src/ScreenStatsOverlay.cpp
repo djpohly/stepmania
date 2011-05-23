@@ -32,10 +32,10 @@ void ScreenStatsOverlay::Init()
 		SKIP_WIDTH.Load(m_sName, "SkipWidth");
 
 		RectF rectSkips = RectF(
-		                          SKIP_X - SKIP_WIDTH / 2,
-		                          SKIP_Y - (SKIP_SPACING_Y * NUM_SKIPS_TO_SHOW) / 2 - 10,
-		                          SKIP_X + SKIP_WIDTH / 2,
-		                          SKIP_Y + (SKIP_SPACING_Y * NUM_SKIPS_TO_SHOW) / 2 + 10
+		                      SKIP_X - SKIP_WIDTH / 2,
+		                      SKIP_Y - (SKIP_SPACING_Y * NUM_SKIPS_TO_SHOW) / 2 - 10,
+		                      SKIP_X + SKIP_WIDTH / 2,
+		                      SKIP_Y + (SKIP_SPACING_Y * NUM_SKIPS_TO_SHOW) / 2 + 10
 		                  );
 		m_quadSkipBackground.StretchTo(rectSkips);
 		m_quadSkipBackground.SetDiffuse(RageColor(0, 0, 0, 0.4f));
@@ -49,7 +49,7 @@ void ScreenStatsOverlay::Init()
 			m_textSkips[i].LoadFromFont(THEME->GetPathF("Common", "normal"));
 			m_textSkips[i].SetX(SKIP_X);
 			m_textSkips[i].SetY(
-			        SCALE(i, 0, NUM_SKIPS_TO_SHOW - 1, rectSkips.top + 10, rectSkips.bottom - 10)
+			    SCALE(i, 0, NUM_SKIPS_TO_SHOW - 1, rectSkips.top + 10, rectSkips.bottom - 10)
 			);
 			m_textSkips[i].SetDiffuse(RageColor(1, 1, 1, 0));
 			m_textSkips[i].SetShadowLength(0);

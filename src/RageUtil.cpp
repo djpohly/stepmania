@@ -153,7 +153,7 @@ bool IsHexVal(const RString &s)
 
 	for (size_t i = 0; i < s.size(); ++i)
 		if (!(s[i] >= '0' && s[i] <= '9') &&
-		                !(toupper(s[i]) >= 'A' && toupper(s[i]) <= 'F'))
+		        !(toupper(s[i]) >= 'A' && toupper(s[i]) <= 'F'))
 		{
 			return false;
 		}
@@ -853,7 +853,7 @@ void do_split(const S &Source, const S &Delimitor, int &begin, int &size, int le
 	{
 		/* Skip delims. */
 		while (begin + Delimitor.size() < Source.size() &&
-		                !Source.compare(begin, Delimitor.size(), Delimitor))
+		        !Source.compare(begin, Delimitor.size(), Delimitor))
 		{
 			++begin;
 		}
@@ -979,8 +979,8 @@ void MakeValidFilename(RString &sName)
 	{
 		wchar_t w = wsName[i];
 		if (w >= 32 &&
-		                w < 126 &&
-		                wsInvalid.find_first_of(w) == wsInvalid.npos)
+		        w < 126 &&
+		        wsInvalid.find_first_of(w) == wsInvalid.npos)
 		{
 			continue;
 		}
@@ -1607,7 +1607,7 @@ bool utf8_to_wchar_ec(const RString &s, unsigned &start, wchar_t &ch)
 	}
 
 	if (is_utf8_continuation_byte(s[start]) ||   /* misplaced continuation byte */
-	                (s[start] & 0xFE) == 0xFE)  /* 0xFE, 0xFF */
+	        (s[start] & 0xFE) == 0xFE)  /* 0xFE, 0xFF */
 	{
 		start += 1;
 		return false;
@@ -1646,10 +1646,10 @@ bool utf8_to_wchar_ec(const RString &s, unsigned &start, wchar_t &ch)
 		unsigned c2 = (unsigned) s[start + 1] & 0xFF;
 		int c = (c1 << 8) + c2;
 		if ((c & 0xFE00) == 0xC000 ||
-		                (c & 0xFFE0) == 0xE080 ||
-		                (c & 0xFFF0) == 0xF080 ||
-		                (c & 0xFFF8) == 0xF880 ||
-		                (c & 0xFFFC) == 0xFC80)
+		        (c & 0xFFE0) == 0xE080 ||
+		        (c & 0xFFF0) == 0xF080 ||
+		        (c & 0xFFF8) == 0xF880 ||
+		        (c & 0xFFFC) == 0xFC80)
 		{
 			bValid = false;
 		}

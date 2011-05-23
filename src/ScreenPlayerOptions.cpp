@@ -31,7 +31,7 @@ void ScreenPlayerOptions::Init()
 	}
 
 	m_bAskOptionsMessage =
-	        !GAMESTATE->IsEditing() && PREFSMAN->m_ShowSongOptions == Maybe_ASK;
+	    !GAMESTATE->IsEditing() && PREFSMAN->m_ShowSongOptions == Maybe_ASK;
 
 	m_bAcceptedChoices = false;
 	m_bGoToOptions = (PREFSMAN->m_ShowSongOptions == Maybe_YES);
@@ -62,9 +62,9 @@ void ScreenPlayerOptions::BeginScreen()
 void ScreenPlayerOptions::Input(const InputEventPlus &input)
 {
 	if (m_bAskOptionsMessage &&
-	                input.type == IET_FIRST_PRESS  &&
-	                !m_In.IsTransitioning()  &&
-	                input.MenuI == GAME_BUTTON_START)
+	        input.type == IET_FIRST_PRESS  &&
+	        !m_In.IsTransitioning()  &&
+	        input.MenuI == GAME_BUTTON_START)
 	{
 		if (m_bAcceptedChoices  &&  !m_bGoToOptions)
 		{

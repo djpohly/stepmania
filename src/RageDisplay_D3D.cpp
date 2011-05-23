@@ -205,7 +205,7 @@ RageDisplay_D3D::RageDisplay_D3D()
 static LocalizedString D3D_NOT_INSTALLED("RageDisplay_D3D", "DirectX 8.1 or greater is not installed.  You can download it from:");
 const RString D3D_URL = "http://www.microsoft.com/downloads/details.aspx?FamilyID=a19bed22-0b25-4e5d-a584-6389d8a3dad0&displaylang=en";
 static LocalizedString HARDWARE_ACCELERATION_NOT_AVAILABLE("RageDisplay_D3D",
-                "Your system is reporting that Direct3D hardware acceleration is not available.  Please obtain an updated driver from your video card manufacturer.");
+        "Your system is reporting that Direct3D hardware acceleration is not available.  Please obtain an updated driver from your video card manufacturer.");
 RString RageDisplay_D3D::Init(const VideoModeParams &p, bool bAllowUnacceleratedRenderer)
 {
 	GraphicsWindow::Initialize(true);
@@ -246,14 +246,14 @@ RString RageDisplay_D3D::Init(const VideoModeParams &p, bool bAllowUnaccelerated
 	g_pd3d->GetAdapterIdentifier(D3DADAPTER_DEFAULT, 0, &identifier);
 
 	LOG->Trace(
-	        "Driver: %s\n"
-	        "Description: %s\n"
-	        "Max texture size: %d\n"
-	        "Alpha in palette: %s\n",
-	        identifier.Driver,
-	        identifier.Description,
-	        g_DeviceCaps.MaxTextureWidth,
-	        (g_DeviceCaps.TextureCaps & D3DPTEXTURECAPS_ALPHAPALETTE) ? "yes" : "no");
+	    "Driver: %s\n"
+	    "Description: %s\n"
+	    "Max texture size: %d\n"
+	    "Alpha in palette: %s\n",
+	    identifier.Driver,
+	    identifier.Description,
+	    g_DeviceCaps.MaxTextureWidth,
+	    (g_DeviceCaps.TextureCaps & D3DPTEXTURECAPS_ALPHAPALETTE) ? "yes" : "no");
 
 	LOG->Trace("This display adaptor supports the following modes:");
 	D3DDISPLAYMODE mode;
@@ -389,12 +389,12 @@ RString SetD3DParams(bool &bNewDeviceOut)
 	{
 		bNewDeviceOut = true;
 		HRESULT hr = g_pd3d->CreateDevice(
-		                     D3DADAPTER_DEFAULT,
-		                     D3DDEVTYPE_HAL,
-		                     GraphicsWindow::GetHwnd(),
-		                     D3DCREATE_SOFTWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED,
-		                     &g_d3dpp,
-		                     &g_pd3dDevice);
+		                 D3DADAPTER_DEFAULT,
+		                 D3DDEVTYPE_HAL,
+		                 GraphicsWindow::GetHwnd(),
+		                 D3DCREATE_SOFTWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED,
+		                 &g_d3dpp,
+		                 &g_pd3dDevice);
 		if (FAILED(hr))
 		{
 			// Likely D3D_ERR_INVALIDCALL.  The driver probably doesn't support this video mode.
@@ -677,12 +677,12 @@ bool RageDisplay_D3D::SupportsTextureFormat(PixelFormat pixfmt, bool realtime)
 
 	D3DFORMAT d3dfmt = D3DFORMATS[pixfmt];
 	HRESULT hr = g_pd3d->CheckDeviceFormat(
-	                     D3DADAPTER_DEFAULT,
-	                     D3DDEVTYPE_HAL,
-	                     g_d3dpp.BackBufferFormat,
-	                     0,
-	                     D3DRTYPE_TEXTURE,
-	                     d3dfmt);
+	                 D3DADAPTER_DEFAULT,
+	                 D3DDEVTYPE_HAL,
+	                 g_d3dpp.BackBufferFormat,
+	                 0,
+	                 D3DRTYPE_TEXTURE,
+	                 d3dfmt);
 
 	return SUCCEEDED(hr);
 }
@@ -729,10 +729,10 @@ RageSurface* RageDisplay_D3D::CreateScreenshot()
 
 	// We need to make a copy, since lr.pBits will go away when we call UnlockRect().
 	RageSurface *SurfaceCopy =
-	        CreateSurface(surface->w, surface->h,
-	                      surface->format->BitsPerPixel,
-	                      surface->format->Rmask, surface->format->Gmask,
-	                      surface->format->Bmask, surface->format->Amask);
+	    CreateSurface(surface->w, surface->h,
+	                  surface->format->BitsPerPixel,
+	                  surface->format->Rmask, surface->format->Gmask,
+	                  surface->format->Bmask, surface->format->Amask);
 	RageSurfaceUtils::CopySurface(surface, SurfaceCopy);
 	delete surface;
 
@@ -780,10 +780,10 @@ void RageDisplay_D3D::SendCurrentMatrices()
 		{
 			static const RageMatrix tex = RageMatrix
 			                              (
-			                                      0.5f,   0.0f,  0.0f, 0.0f,
-			                                      0.0f,  -0.5f,  0.0f, 0.0f,
-			                                      0.0f,   0.0f,  0.0f, 0.0f,
-			                                      0.5f,  -0.5f,  0.0f, 1.0f
+			                                  0.5f,   0.0f,  0.0f, 0.0f,
+			                                  0.0f,  -0.5f,  0.0f, 0.0f,
+			                                  0.0f,   0.0f,  0.0f, 0.0f,
+			                                  0.5f,  -0.5f,  0.0f, 1.0f
 			                              );
 			g_pd3dDevice->SetTransform((D3DTRANSFORMSTATETYPE)(D3DTS_TEXTURE0 + tu), (D3DMATRIX*)&tex);
 
@@ -801,10 +801,10 @@ void RageDisplay_D3D::SendCurrentMatrices()
 			const RageMatrix &tex1 = *GetTextureTop();
 			const RageMatrix tex2 = RageMatrix
 			                        (
-			                                tex1.m[0][0], tex1.m[0][1],  tex1.m[0][3],	0,
-			                                tex1.m[1][0], tex1.m[1][1],  tex1.m[1][3],	0,
-			                                tex1.m[3][0], tex1.m[3][1],  tex1.m[3][3],	0,
-			                                0,				0,			0,		0
+			                            tex1.m[0][0], tex1.m[0][1],  tex1.m[0][3],	0,
+			                            tex1.m[1][0], tex1.m[1][1],  tex1.m[1][3],	0,
+			                            tex1.m[3][0], tex1.m[3][1],  tex1.m[3][3],	0,
+			                            0,				0,			0,		0
 			                        );
 			g_pd3dDevice->SetTransform(D3DTRANSFORMSTATETYPE(D3DTS_TEXTURE0 + tu), (D3DMATRIX*)&tex2);
 
@@ -861,14 +861,14 @@ public:
 
 		g_pd3dDevice->SetVertexShader(D3DFVF_RageModelVertex);
 		g_pd3dDevice->DrawIndexedPrimitiveUP(
-		        D3DPT_TRIANGLELIST,			// PrimitiveType
-		        meshInfo.iVertexStart,		// MinIndex
-		        meshInfo.iVertexCount,		// NumVertices
-		        meshInfo.iTriangleCount,	// PrimitiveCount,
-		        &m_vTriangles[0] + meshInfo.iTriangleStart, // pIndexData,
-		        D3DFMT_INDEX16,				// IndexDataFormat,
-		        &m_vVertex[0],				// pVertexStreamZeroData,
-		        sizeof(m_vVertex[0])		// VertexStreamZeroStride
+		    D3DPT_TRIANGLELIST,			// PrimitiveType
+		    meshInfo.iVertexStart,		// MinIndex
+		    meshInfo.iVertexCount,		// NumVertices
+		    meshInfo.iTriangleCount,	// PrimitiveCount,
+		    &m_vTriangles[0] + meshInfo.iTriangleStart, // pIndexData,
+		    D3DFMT_INDEX16,				// IndexDataFormat,
+		    &m_vVertex[0],				// pVertexStreamZeroData,
+		    sizeof(m_vVertex[0])		// VertexStreamZeroStride
 		);
 	}
 
@@ -912,14 +912,14 @@ void RageDisplay_D3D::DrawQuadsInternal(const RageSpriteVertex v[], int iNumVert
 	g_pd3dDevice->SetVertexShader(D3DFVF_RageSpriteVertex);
 	SendCurrentMatrices();
 	g_pd3dDevice->DrawIndexedPrimitiveUP(
-	        D3DPT_TRIANGLELIST, // PrimitiveType
-	        0, // MinIndex
-	        iNumVerts, // NumVertices
-	        iNumTriangles, // PrimitiveCount,
-	        &vIndices[0], // pIndexData,
-	        D3DFMT_INDEX16, // IndexDataFormat,
-	        v, // pVertexStreamZeroData,
-	        sizeof(RageSpriteVertex) // VertexStreamZeroStride
+	    D3DPT_TRIANGLELIST, // PrimitiveType
+	    0, // MinIndex
+	    iNumVerts, // NumVertices
+	    iNumTriangles, // PrimitiveCount,
+	    &vIndices[0], // pIndexData,
+	    D3DFMT_INDEX16, // IndexDataFormat,
+	    v, // pVertexStreamZeroData,
+	    sizeof(RageSpriteVertex) // VertexStreamZeroStride
 	);
 }
 
@@ -948,14 +948,14 @@ void RageDisplay_D3D::DrawQuadStripInternal(const RageSpriteVertex v[], int iNum
 	g_pd3dDevice->SetVertexShader(D3DFVF_RageSpriteVertex);
 	SendCurrentMatrices();
 	g_pd3dDevice->DrawIndexedPrimitiveUP(
-	        D3DPT_TRIANGLELIST, // PrimitiveType
-	        0, // MinIndex
-	        iNumVerts, // NumVertices
-	        iNumTriangles, // PrimitiveCount,
-	        &vIndices[0], // pIndexData,
-	        D3DFMT_INDEX16, // IndexDataFormat,
-	        v, // pVertexStreamZeroData,
-	        sizeof(RageSpriteVertex) // VertexStreamZeroStride
+	    D3DPT_TRIANGLELIST, // PrimitiveType
+	    0, // MinIndex
+	    iNumVerts, // NumVertices
+	    iNumTriangles, // PrimitiveCount,
+	    &vIndices[0], // pIndexData,
+	    D3DFMT_INDEX16, // IndexDataFormat,
+	    v, // pVertexStreamZeroData,
+	    sizeof(RageSpriteVertex) // VertexStreamZeroStride
 	);
 }
 
@@ -990,14 +990,14 @@ void RageDisplay_D3D::DrawSymmetricQuadStripInternal(const RageSpriteVertex v[],
 	g_pd3dDevice->SetVertexShader(D3DFVF_RageSpriteVertex);
 	SendCurrentMatrices();
 	g_pd3dDevice->DrawIndexedPrimitiveUP(
-	        D3DPT_TRIANGLELIST, // PrimitiveType
-	        0, // MinIndex
-	        iNumVerts, // NumVertices
-	        iNumTriangles, // PrimitiveCount,
-	        &vIndices[0], // pIndexData,
-	        D3DFMT_INDEX16, // IndexDataFormat,
-	        v, // pVertexStreamZeroData,
-	        sizeof(RageSpriteVertex) // VertexStreamZeroStride
+	    D3DPT_TRIANGLELIST, // PrimitiveType
+	    0, // MinIndex
+	    iNumVerts, // NumVertices
+	    iNumTriangles, // PrimitiveCount,
+	    &vIndices[0], // pIndexData,
+	    D3DFMT_INDEX16, // IndexDataFormat,
+	    v, // pVertexStreamZeroData,
+	    sizeof(RageSpriteVertex) // VertexStreamZeroStride
 	);
 }
 
@@ -1006,10 +1006,10 @@ void RageDisplay_D3D::DrawFanInternal(const RageSpriteVertex v[], int iNumVerts)
 	g_pd3dDevice->SetVertexShader(D3DFVF_RageSpriteVertex);
 	SendCurrentMatrices();
 	g_pd3dDevice->DrawPrimitiveUP(
-	        D3DPT_TRIANGLEFAN, // PrimitiveType
-	        iNumVerts - 2, // PrimitiveCount,
-	        v, // pVertexStreamZeroData,
-	        sizeof(RageSpriteVertex)
+	    D3DPT_TRIANGLEFAN, // PrimitiveType
+	    iNumVerts - 2, // PrimitiveCount,
+	    v, // pVertexStreamZeroData,
+	    sizeof(RageSpriteVertex)
 	);
 }
 
@@ -1018,10 +1018,10 @@ void RageDisplay_D3D::DrawStripInternal(const RageSpriteVertex v[], int iNumVert
 	g_pd3dDevice->SetVertexShader(D3DFVF_RageSpriteVertex);
 	SendCurrentMatrices();
 	g_pd3dDevice->DrawPrimitiveUP(
-	        D3DPT_TRIANGLESTRIP, // PrimitiveType
-	        iNumVerts - 2, // PrimitiveCount,
-	        v, // pVertexStreamZeroData,
-	        sizeof(RageSpriteVertex)
+	    D3DPT_TRIANGLESTRIP, // PrimitiveType
+	    iNumVerts - 2, // PrimitiveCount,
+	    v, // pVertexStreamZeroData,
+	    sizeof(RageSpriteVertex)
 	);
 }
 
@@ -1030,10 +1030,10 @@ void RageDisplay_D3D::DrawTrianglesInternal(const RageSpriteVertex v[], int iNum
 	g_pd3dDevice->SetVertexShader(D3DFVF_RageSpriteVertex);
 	SendCurrentMatrices();
 	g_pd3dDevice->DrawPrimitiveUP(
-	        D3DPT_TRIANGLELIST, // PrimitiveType
-	        iNumVerts / 3, // PrimitiveCount,
-	        v, // pVertexStreamZeroData,
-	        sizeof(RageSpriteVertex)
+	    D3DPT_TRIANGLELIST, // PrimitiveType
+	    iNumVerts / 3, // PrimitiveCount,
+	    v, // pVertexStreamZeroData,
+	    sizeof(RageSpriteVertex)
 	);
 }
 
@@ -1318,11 +1318,11 @@ void RageDisplay_D3D::SetTextureWrapping(TextureUnit tu, bool b)
 }
 
 void RageDisplay_D3D::SetMaterial(
-        const RageColor &emissive,
-        const RageColor &ambient,
-        const RageColor &diffuse,
-        const RageColor &specular,
-        float shininess
+    const RageColor &emissive,
+    const RageColor &ambient,
+    const RageColor &diffuse,
+    const RageColor &specular,
+    float shininess
 )
 {
 	/* If lighting is off, then the current material will have no effect.
@@ -1364,11 +1364,11 @@ void RageDisplay_D3D::SetLightOff(int index)
 	g_pd3dDevice->LightEnable(index, false);
 }
 void RageDisplay_D3D::SetLightDirectional(
-        int index,
-        const RageColor &ambient,
-        const RageColor &diffuse,
-        const RageColor &specular,
-        const RageVector3 &dir)
+    int index,
+    const RageColor &ambient,
+    const RageColor &diffuse,
+    const RageColor &specular,
+    const RageVector3 &dir)
 {
 	g_pd3dDevice->LightEnable(index, true);
 
@@ -1435,9 +1435,9 @@ void RageDisplay_D3D::DeleteTexture(unsigned iTexHandle)
 
 
 unsigned RageDisplay_D3D::CreateTexture(
-        PixelFormat pixfmt,
-        RageSurface* img,
-        bool bGenerateMipMaps)
+    PixelFormat pixfmt,
+    RageSurface* img,
+    bool bGenerateMipMaps)
 {
 	HRESULT hr;
 	IDirect3DTexture8* pTex;
@@ -1473,9 +1473,9 @@ unsigned RageDisplay_D3D::CreateTexture(
 }
 
 void RageDisplay_D3D::UpdateTexture(
-        unsigned uTexHandle,
-        RageSurface* img,
-        int xoffset, int yoffset, int width, int height)
+    unsigned uTexHandle,
+    RageSurface* img,
+    int xoffset, int yoffset, int width, int height)
 {
 	IDirect3DTexture8* pTex = (IDirect3DTexture8*)uTexHandle;
 	ASSERT(pTex != NULL);

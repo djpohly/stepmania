@@ -329,7 +329,7 @@ bool CourseLoaderCRS::LoadFromMsd(const RString &sPath, const MsdFile &msd, Cour
 			out.m_vEntries.push_back(new_entry);
 		}
 		else if (!sValueName.EqualsNoCase("DISPLAYCOURSE") || !sValueName.EqualsNoCase("COMBO") ||
-		                !sValueName.EqualsNoCase("COMBOMODE"))
+		         !sValueName.EqualsNoCase("COMBOMODE"))
 		{
 			// Ignore
 		}

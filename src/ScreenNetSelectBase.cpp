@@ -81,9 +81,9 @@ void ScreenNetSelectBase::Input(const InputEventPlus &input)
 	}
 
 	bool bHoldingCtrl =
-	        INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LCTRL)) ||
-	        INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RCTRL)) ||
-	        (!NSMAN->useSMserver);	// If we are disconnected, assume no chatting.
+	    INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LCTRL)) ||
+	    INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RCTRL)) ||
+	    (!NSMAN->useSMserver);	// If we are disconnected, assume no chatting.
 
 	switch (input.DeviceI.button)
 	{

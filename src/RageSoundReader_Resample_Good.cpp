@@ -307,10 +307,10 @@ void PolyphaseFilter::Generate(const float *pFIR)
  * consuming an input.
  */
 int PolyphaseFilter::RunPolyphaseFilter(
-        State &State,
-        const float *pIn, int iSamplesIn, int iDownFactor,
-        float *pOut, int iSamplesOut,
-        int iSampleStride) const
+    State &State,
+    const float *pIn, int iSamplesIn, int iDownFactor,
+    float *pOut, int iSamplesOut,
+    int iSampleStride) const
 {
 	ASSERT(iSamplesIn >= 0);
 

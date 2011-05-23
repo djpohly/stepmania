@@ -172,10 +172,10 @@ void HighScore::Unset()
 bool HighScore::IsEmpty() const
 {
 	if (m_Impl->iTapNoteScores[TNS_W1] ||
-	                m_Impl->iTapNoteScores[TNS_W2] ||
-	                m_Impl->iTapNoteScores[TNS_W3] ||
-	                m_Impl->iTapNoteScores[TNS_W4] ||
-	                m_Impl->iTapNoteScores[TNS_W5])
+	        m_Impl->iTapNoteScores[TNS_W2] ||
+	        m_Impl->iTapNoteScores[TNS_W3] ||
+	        m_Impl->iTapNoteScores[TNS_W4] ||
+	        m_Impl->iTapNoteScores[TNS_W5])
 	{
 		return false;
 	}

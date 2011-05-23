@@ -61,13 +61,13 @@ void ScoreDisplayBattle::Update(float fDelta)
 				m_ItemIcon[s].Load(THEME->GetPathG("ScoreDisplayBattle", "icon " + sNewModifier));
 				m_ItemIcon[s].StopTweening();
 				apActorCommands acmds = ActorUtil::ParseActorCommands(
-				                                "diffuse,1,1,1,1;zoom,1;"
-				                                "sleep,0.1;linear,0;diffusealpha,0;"
-				                                "sleep,0.1;linear,0;diffusealpha,1;"
-				                                "sleep,0.1;linear,0;diffusealpha,0;"
-				                                "sleep,0.1;linear,0;diffusealpha,1;"
-				                                "sleep,0.1;linear,0;diffusealpha,0;"
-				                                "sleep,0.1;linear,0;diffusealpha,1;");
+				                            "diffuse,1,1,1,1;zoom,1;"
+				                            "sleep,0.1;linear,0;diffusealpha,0;"
+				                            "sleep,0.1;linear,0;diffusealpha,1;"
+				                            "sleep,0.1;linear,0;diffusealpha,0;"
+				                            "sleep,0.1;linear,0;diffusealpha,1;"
+				                            "sleep,0.1;linear,0;diffusealpha,0;"
+				                            "sleep,0.1;linear,0;diffusealpha,1;");
 				m_ItemIcon[s].RunCommands(acmds);
 			}
 		}

@@ -35,16 +35,16 @@ public:
 		return false;
 	}
 	unsigned CreateTexture(
-	        PixelFormat pixfmt,
-	        RageSurface* img,
-	        bool bGenerateMipMaps)
+	    PixelFormat pixfmt,
+	    RageSurface* img,
+	    bool bGenerateMipMaps)
 	{
 		return 1;
 	}
 	void UpdateTexture(
-	        unsigned iTexHandle,
-	        RageSurface* img,
-	        int xoffset, int yoffset, int width, int height
+	    unsigned iTexHandle,
+	    RageSurface* img,
+	    int xoffset, int yoffset, int width, int height
 	) { }
 	void DeleteTexture(unsigned iTexHandle) { }
 	void ClearAllTextures() { }
@@ -75,20 +75,20 @@ public:
 	void SetCullMode(CullMode mode) { }
 	void SetAlphaTest(bool b) { }
 	void SetMaterial(
-	        const RageColor &emissive,
-	        const RageColor &ambient,
-	        const RageColor &diffuse,
-	        const RageColor &specular,
-	        float shininess
+	    const RageColor &emissive,
+	    const RageColor &ambient,
+	    const RageColor &diffuse,
+	    const RageColor &specular,
+	    float shininess
 	) { }
 	void SetLighting(bool b) { }
 	void SetLightOff(int index) { }
 	void SetLightDirectional(
-	        int index,
-	        const RageColor &ambient,
-	        const RageColor &diffuse,
-	        const RageColor &specular,
-	        const RageVector3 &dir) { }
+	    int index,
+	    const RageColor &ambient,
+	    const RageColor &diffuse,
+	    const RageColor &specular,
+	    const RageVector3 &dir) { }
 
 	void SetSphereEnvironmentMapping(TextureUnit tu, bool b) { }
 	void SetCelShaded(int stage) { }

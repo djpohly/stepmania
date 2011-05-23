@@ -5,8 +5,8 @@
 struct TitleFields
 {
 	void SaveToStrings(
-	        RString &sTitle, RString &sSubtitle, RString &sArtist,
-	        RString &sTitleTranslit, RString &sSubtitleTranslit, RString &sArtistTranslit) const
+	    RString &sTitle, RString &sSubtitle, RString &sArtist,
+	    RString &sTitleTranslit, RString &sSubtitleTranslit, RString &sArtistTranslit) const
 	{
 		sTitle = Title;
 		sSubtitle = Subtitle;
@@ -17,8 +17,8 @@ struct TitleFields
 	}
 
 	void LoadFromStrings(
-	        RString sTitle, RString sSubtitle, RString sArtist,
-	        RString sTitleTranslit, RString sSubtitleTranslit, RString sArtistTranslit)
+	    RString sTitle, RString sSubtitle, RString sArtist,
+	    RString sTitleTranslit, RString sSubtitleTranslit, RString sArtistTranslit)
 	{
 		Title = sTitle;
 		Subtitle = sSubtitle;

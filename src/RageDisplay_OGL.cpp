@@ -1078,10 +1078,10 @@ public:
 		}
 
 		glDrawElements(
-		        GL_TRIANGLES,
-		        meshInfo.iTriangleCount * 3,
-		        GL_UNSIGNED_SHORT,
-		        &m_vTriangles[0] + meshInfo.iTriangleStart);
+		    GL_TRIANGLES,
+		    meshInfo.iTriangleCount * 3,
+		    GL_UNSIGNED_SHORT,
+		    &m_vTriangles[0] + meshInfo.iTriangleStart);
 	}
 
 protected:
@@ -1208,37 +1208,37 @@ void RageCompiledGeometryHWOGL::UploadData()
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nPositions);
 	DebugAssertNoGLError();
 	glBufferDataARB(
-	        GL_ARRAY_BUFFER_ARB,
-	        GetTotalVertices()*sizeof(RageVector3),
-	        &m_vPosition[0],
-	        GL_STATIC_DRAW_ARB);
+	    GL_ARRAY_BUFFER_ARB,
+	    GetTotalVertices()*sizeof(RageVector3),
+	    &m_vPosition[0],
+	    GL_STATIC_DRAW_ARB);
 	DebugAssertNoGLError();
 
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nTextureCoords);
 	DebugAssertNoGLError();
 	glBufferDataARB(
-	        GL_ARRAY_BUFFER_ARB,
-	        GetTotalVertices()*sizeof(RageVector2),
-	        &m_vTexture[0],
-	        GL_STATIC_DRAW_ARB);
+	    GL_ARRAY_BUFFER_ARB,
+	    GetTotalVertices()*sizeof(RageVector2),
+	    &m_vTexture[0],
+	    GL_STATIC_DRAW_ARB);
 	DebugAssertNoGLError();
 
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nNormals);
 	DebugAssertNoGLError();
 	glBufferDataARB(
-	        GL_ARRAY_BUFFER_ARB,
-	        GetTotalVertices()*sizeof(RageVector3),
-	        &m_vNormal[0],
-	        GL_STATIC_DRAW_ARB);
+	    GL_ARRAY_BUFFER_ARB,
+	    GetTotalVertices()*sizeof(RageVector3),
+	    &m_vNormal[0],
+	    GL_STATIC_DRAW_ARB);
 	DebugAssertNoGLError();
 
 	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, m_nTriangles);
 	DebugAssertNoGLError();
 	glBufferDataARB(
-	        GL_ELEMENT_ARRAY_BUFFER_ARB,
-	        GetTotalTriangles()*sizeof(msTriangle),
-	        &m_vTriangles[0],
-	        GL_STATIC_DRAW_ARB);
+	    GL_ELEMENT_ARRAY_BUFFER_ARB,
+	    GetTotalTriangles()*sizeof(msTriangle),
+	    &m_vTriangles[0],
+	    GL_STATIC_DRAW_ARB);
 	DebugAssertNoGLError();
 
 
@@ -1247,10 +1247,10 @@ void RageCompiledGeometryHWOGL::UploadData()
 		glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nTextureMatrixScale);
 		DebugAssertNoGLError();
 		glBufferDataARB(
-		        GL_ARRAY_BUFFER_ARB,
-		        GetTotalVertices()*sizeof(RageVector2),
-		        &m_vTexMatrixScale[0],
-		        GL_STATIC_DRAW_ARB);
+		    GL_ARRAY_BUFFER_ARB,
+		    GetTotalVertices()*sizeof(RageVector2),
+		    &m_vTexMatrixScale[0],
+		    GL_STATIC_DRAW_ARB);
 		DebugAssertNoGLError();
 	}
 }
@@ -1275,46 +1275,46 @@ void RageCompiledGeometryHWOGL::Allocate(const vector<msMesh> &vMeshes)
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nPositions);
 	DebugAssertNoGLError();
 	glBufferDataARB(
-	        GL_ARRAY_BUFFER_ARB,
-	        GetTotalVertices()*sizeof(RageVector3),
-	        NULL,
-	        GL_STATIC_DRAW_ARB);
+	    GL_ARRAY_BUFFER_ARB,
+	    GetTotalVertices()*sizeof(RageVector3),
+	    NULL,
+	    GL_STATIC_DRAW_ARB);
 	DebugAssertNoGLError();
 
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nTextureCoords);
 	DebugAssertNoGLError();
 	glBufferDataARB(
-	        GL_ARRAY_BUFFER_ARB,
-	        GetTotalVertices()*sizeof(RageVector2),
-	        NULL,
-	        GL_STATIC_DRAW_ARB);
+	    GL_ARRAY_BUFFER_ARB,
+	    GetTotalVertices()*sizeof(RageVector2),
+	    NULL,
+	    GL_STATIC_DRAW_ARB);
 	DebugAssertNoGLError();
 
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nNormals);
 	DebugAssertNoGLError();
 	glBufferDataARB(
-	        GL_ARRAY_BUFFER_ARB,
-	        GetTotalVertices()*sizeof(RageVector3),
-	        NULL,
-	        GL_STATIC_DRAW_ARB);
+	    GL_ARRAY_BUFFER_ARB,
+	    GetTotalVertices()*sizeof(RageVector3),
+	    NULL,
+	    GL_STATIC_DRAW_ARB);
 	DebugAssertNoGLError();
 
 	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, m_nTriangles);
 	DebugAssertNoGLError();
 	glBufferDataARB(
-	        GL_ELEMENT_ARRAY_BUFFER_ARB,
-	        GetTotalTriangles()*sizeof(msTriangle),
-	        NULL,
-	        GL_STATIC_DRAW_ARB);
+	    GL_ELEMENT_ARRAY_BUFFER_ARB,
+	    GetTotalTriangles()*sizeof(msTriangle),
+	    NULL,
+	    GL_STATIC_DRAW_ARB);
 	DebugAssertNoGLError();
 
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nTextureMatrixScale);
 	DebugAssertNoGLError();
 	glBufferDataARB(
-	        GL_ARRAY_BUFFER_ARB,
-	        GetTotalVertices()*sizeof(RageVector2),
-	        NULL,
-	        GL_STATIC_DRAW_ARB);
+	    GL_ARRAY_BUFFER_ARB,
+	    GetTotalVertices()*sizeof(RageVector2),
+	    NULL,
+	    GL_STATIC_DRAW_ARB);
 }
 
 void RageCompiledGeometryHWOGL::Change(const vector<msMesh> &vMeshes)
@@ -1427,13 +1427,13 @@ void RageCompiledGeometryHWOGL::Draw(int iMeshIndex) const
 
 	ASSERT(glDrawRangeElements);
 	glDrawRangeElements(
-	        GL_TRIANGLES,
-	        meshInfo.iVertexStart,	// minimum array index contained in indices
-	        meshInfo.iVertexStart + meshInfo.iVertexCount - 1,
-	        // maximum array index contained in indices
-	        meshInfo.iTriangleCount * 3,	// number of elements to be rendered
-	        GL_UNSIGNED_SHORT,
-	        BUFFER_OFFSET(meshInfo.iTriangleStart * sizeof(msTriangle)));
+	    GL_TRIANGLES,
+	    meshInfo.iVertexStart,	// minimum array index contained in indices
+	    meshInfo.iVertexStart + meshInfo.iVertexCount - 1,
+	    // maximum array index contained in indices
+	    meshInfo.iTriangleCount * 3,	// number of elements to be rendered
+	    GL_UNSIGNED_SHORT,
+	    BUFFER_OFFSET(meshInfo.iTriangleStart * sizeof(msTriangle)));
 	DebugAssertNoGLError();
 
 	if (meshInfo.m_bNeedsTextureMatrixScale && g_bTextureMatrixShader != 0)
@@ -1511,10 +1511,10 @@ void RageDisplay_Legacy::DrawSymmetricQuadStripInternal(const RageSpriteVertex v
 
 	SetupVertices(v, iNumVerts);
 	glDrawElements(
-	        GL_TRIANGLES,
-	        iNumIndices,
-	        GL_UNSIGNED_SHORT,
-	        &vIndices[0]);
+	    GL_TRIANGLES,
+	    iNumIndices,
+	    GL_UNSIGNED_SHORT,
+	    &vIndices[0]);
 }
 
 void RageDisplay_Legacy::DrawFanInternal(const RageSpriteVertex v[], int iNumVerts)
@@ -2011,11 +2011,11 @@ void RageDisplay_Legacy::SetTextureWrapping(TextureUnit tu, bool b)
 }
 
 void RageDisplay_Legacy::SetMaterial(
-        const RageColor &emissive,
-        const RageColor &ambient,
-        const RageColor &diffuse,
-        const RageColor &specular,
-        float shininess
+    const RageColor &emissive,
+    const RageColor &ambient,
+    const RageColor &diffuse,
+    const RageColor &specular,
+    float shininess
 )
 {
 	// TRICKY:  If lighting is off, then setting the material
@@ -2062,11 +2062,11 @@ void RageDisplay_Legacy::SetLightOff(int index)
 }
 
 void RageDisplay_Legacy::SetLightDirectional(
-        int index,
-        const RageColor &ambient,
-        const RageColor &diffuse,
-        const RageColor &specular,
-        const RageVector3 &dir)
+    int index,
+    const RageColor &ambient,
+    const RageColor &diffuse,
+    const RageColor &specular,
+    const RageVector3 &dir)
 {
 	// Light coordinates are transformed by the modelview matrix, but
 	// we are being passed in world-space coords.
@@ -2229,9 +2229,9 @@ void SetPixelMapForSurface(int glImageFormat, int glTexFormat, const RageSurface
 }
 
 unsigned RageDisplay_Legacy::CreateTexture(
-        PixelFormat pixfmt,
-        RageSurface* pImg,
-        bool bGenerateMipMaps)
+    PixelFormat pixfmt,
+    RageSurface* pImg,
+    bool bGenerateMipMaps)
 {
 	ASSERT(pixfmt < NUM_PixelFormat);
 
@@ -2280,7 +2280,7 @@ unsigned RageDisplay_Legacy::CreateTexture(
 	glBindTexture(GL_TEXTURE_2D, iTexHandle);
 
 	if (g_pWind->GetActualVideoModeParams().bAnisotropicFiltering &&
-	                GLEW_EXT_texture_filter_anisotropic)
+	        GLEW_EXT_texture_filter_anisotropic)
 	{
 		GLfloat fLargestSupportedAnisotropy;
 		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &fLargestSupportedAnisotropy);
@@ -2328,17 +2328,17 @@ unsigned RageDisplay_Legacy::CreateTexture(
 	if (bGenerateMipMaps)
 	{
 		GLenum error = gluBuild2DMipmaps(
-		                       GL_TEXTURE_2D, glTexFormat,
-		                       pImg->w, pImg->h,
-		                       glImageFormat, glImageType, pImg->pixels);
+		                   GL_TEXTURE_2D, glTexFormat,
+		                   pImg->w, pImg->h,
+		                   glImageFormat, glImageType, pImg->pixels);
 		ASSERT_M(error == 0, (char *) gluErrorString(error));
 	}
 	else
 	{
 		glTexImage2D(
-		        GL_TEXTURE_2D, 0, glTexFormat,
-		        power_of_two(pImg->w), power_of_two(pImg->h), 0,
-		        glImageFormat, glImageType, NULL);
+		    GL_TEXTURE_2D, 0, glTexFormat,
+		    power_of_two(pImg->w), power_of_two(pImg->h), 0,
+		    glImageFormat, glImageType, NULL);
 		if (pImg->pixels)
 			glTexSubImage2D(GL_TEXTURE_2D, 0,
 			                0, 0,
@@ -2457,9 +2457,9 @@ RageTextureLock *RageDisplay_Legacy::CreateTextureLock()
 }
 
 void RageDisplay_Legacy::UpdateTexture(
-        unsigned iTexHandle,
-        RageSurface* pImg,
-        int iXOffset, int iYOffset, int iWidth, int iHeight)
+    unsigned iTexHandle,
+    RageSurface* pImg,
+    int iXOffset, int iYOffset, int iWidth, int iHeight)
 {
 	glBindTexture(GL_TEXTURE_2D, iTexHandle);
 

@@ -324,13 +324,13 @@ Difficulty DwiCompatibleStringToDifficulty(const RString& sDC)
  * @return the success or failure of the operation.
  */
 static bool LoadFromDWITokens(
-        RString sMode,
-        RString sDescription,
-        RString sNumFeet,
-        RString sStepData1,
-        RString sStepData2,
-        Steps &out,
-        const RString &sPath)
+    RString sMode,
+    RString sDescription,
+    RString sNumFeet,
+    RString sStepData1,
+    RString sStepData2,
+    Steps &out,
+    const RString &sPath)
 {
 	CHECKPOINT_M("DWILoader::LoadFromDWITokens()");
 
@@ -800,19 +800,19 @@ bool DWILoader::LoadFromDir(const RString &sPath_, Song &out, set<RString> &Blac
 		}
 
 		else if (sValueName.EqualsNoCase("SINGLE")  ||
-		                sValueName.EqualsNoCase("DOUBLE")  ||
-		                sValueName.EqualsNoCase("COUPLE")  ||
-		                sValueName.EqualsNoCase("SOLO"))
+		         sValueName.EqualsNoCase("DOUBLE")  ||
+		         sValueName.EqualsNoCase("COUPLE")  ||
+		         sValueName.EqualsNoCase("SOLO"))
 		{
 			Steps* pNewNotes = out.CreateSteps();
 			LoadFromDWITokens(
-			        sParams[0],
-			        sParams[1],
-			        sParams[2],
-			        sParams[3],
-			        (iNumParams == 5) ? sParams[4] : RString(""),
-			        *pNewNotes,
-			        sPath
+			    sParams[0],
+			    sParams[1],
+			    sParams[2],
+			    sParams[3],
+			    (iNumParams == 5) ? sParams[4] : RString(""),
+			    *pNewNotes,
+			    sPath
 			);
 			if (pNewNotes->m_StepsType != StepsType_Invalid)
 			{
@@ -824,7 +824,7 @@ bool DWILoader::LoadFromDir(const RString &sPath_, Song &out, set<RString> &Blac
 			}
 		}
 		else if (sValueName.EqualsNoCase("DISPLAYTITLE") ||
-		                sValueName.EqualsNoCase("DISPLAYARTIST"))
+		         sValueName.EqualsNoCase("DISPLAYARTIST"))
 		{
 			/* We don't want to support these tags.  However, we don't want
 			 * to pick up images used here as song images (eg. banners). */

@@ -169,9 +169,9 @@ void RageSurfaceUtils::Zoom(RageSurface *&src, int dstwidth, int dstheight)
 		int target_height = lrintf(src->h * yscale);
 
 		RageSurface *dst =
-		        CreateSurface(target_width, target_height, 32,
-		                      src->format->Rmask, src->format->Gmask,
-		                      src->format->Bmask, src->format->Amask);
+		    CreateSurface(target_width, target_height, 32,
+		                  src->format->Rmask, src->format->Gmask,
+		                  src->format->Bmask, src->format->Amask);
 
 		ZoomSurface(src, dst);
 

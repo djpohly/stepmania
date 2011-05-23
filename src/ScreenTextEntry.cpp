@@ -50,15 +50,15 @@ namespace
 };
 
 void ScreenTextEntry::SetTextEntrySettings(
-        RString sQuestion,
-        RString sInitialAnswer,
-        int iMaxInputLength,
-        bool(*Validate)(const RString &sAnswer, RString &sErrorOut),
-        void(*OnOK)(const RString &sAnswer),
-        void(*OnCancel)(),
-        bool bPassword,
-        bool (*ValidateAppend)(const RString &sAnswerBeforeChar, RString &sAppend),
-        RString(*FormatAnswerForDisplay)(const RString &sAnswer)
+    RString sQuestion,
+    RString sInitialAnswer,
+    int iMaxInputLength,
+    bool(*Validate)(const RString &sAnswer, RString &sErrorOut),
+    void(*OnOK)(const RString &sAnswer),
+    void(*OnCancel)(),
+    bool bPassword,
+    bool (*ValidateAppend)(const RString &sAnswerBeforeChar, RString &sAppend),
+    RString(*FormatAnswerForDisplay)(const RString &sAnswer)
 )
 {
 	g_sQuestion = sQuestion;
@@ -72,16 +72,16 @@ void ScreenTextEntry::SetTextEntrySettings(
 }
 
 void ScreenTextEntry::TextEntry(
-        ScreenMessage smSendOnPop,
-        RString sQuestion,
-        RString sInitialAnswer,
-        int iMaxInputLength,
-        bool(*Validate)(const RString &sAnswer, RString &sErrorOut),
-        void(*OnOK)(const RString &sAnswer),
-        void(*OnCancel)(),
-        bool bPassword,
-        bool (*ValidateAppend)(const RString &sAnswerBeforeChar, RString &sAppend),
-        RString(*FormatAnswerForDisplay)(const RString &sAnswer)
+    ScreenMessage smSendOnPop,
+    RString sQuestion,
+    RString sInitialAnswer,
+    int iMaxInputLength,
+    bool(*Validate)(const RString &sAnswer, RString &sErrorOut),
+    void(*OnOK)(const RString &sAnswer),
+    void(*OnCancel)(),
+    bool bPassword,
+    bool (*ValidateAppend)(const RString &sAnswerBeforeChar, RString &sAppend),
+    RString(*FormatAnswerForDisplay)(const RString &sAnswer)
 )
 {
 	g_sQuestion = sQuestion;
@@ -573,15 +573,15 @@ void ScreenTextEntry::LoadFromTextEntrySettings(const TextEntrySettings &setting
 
 	// set functions
 	SetTextEntrySettings(
-	        settings.sQuestion,
-	        settings.sInitialAnswer,
-	        settings.iMaxInputLength,
-	        ValidateFromLua,				// Validate
-	        OnOKFromLua,					// OnOK
-	        OnCancelFromLua,				// OnCancel
-	        settings.bPassword,
-	        ValidateAppendFromLua,			// ValidateAppend
-	        FormatAnswerForDisplayFromLua	// FormatAnswerForDisplay
+	    settings.sQuestion,
+	    settings.sInitialAnswer,
+	    settings.iMaxInputLength,
+	    ValidateFromLua,				// Validate
+	    OnOKFromLua,					// OnOK
+	    OnCancelFromLua,				// OnCancel
+	    settings.bPassword,
+	    ValidateAppendFromLua,			// ValidateAppend
+	    FormatAnswerForDisplayFromLua	// FormatAnswerForDisplay
 	);
 
 	// Hack: reload screen with new info

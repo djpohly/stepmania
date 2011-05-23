@@ -40,14 +40,14 @@ public:
 	};
 	void PlayMusic(PlayMusicParams params, PlayMusicParams FallbackMusicParams = PlayMusicParams());
 	void PlayMusic(
-	        RString sFile,
-	        const TimingData *pTiming = NULL,
-	        bool force_loop = false,
-	        float start_sec = 0,
-	        float length_sec = -1,
-	        float fFadeInLengthSeconds = 0,
-	        float fade_len = 0,
-	        bool align_beat = true);
+	    RString sFile,
+	    const TimingData *pTiming = NULL,
+	    bool force_loop = false,
+	    float start_sec = 0,
+	    float length_sec = -1,
+	    float fFadeInLengthSeconds = 0,
+	    float fade_len = 0,
+	    bool align_beat = true);
 	void StopMusic()
 	{
 		PlayMusic("");

@@ -2111,13 +2111,13 @@ XNode* Profile::SaveCoinDataCreateNode() const
 void Profile::MoveBackupToDir(RString sFromDir, RString sToDir)
 {
 	if (FILEMAN->IsAFile(sFromDir + STATS_XML) &&
-	                FILEMAN->IsAFile(sFromDir + STATS_XML + SIGNATURE_APPEND))
+	        FILEMAN->IsAFile(sFromDir + STATS_XML + SIGNATURE_APPEND))
 	{
 		FILEMAN->Move(sFromDir + STATS_XML,					sToDir + STATS_XML);
 		FILEMAN->Move(sFromDir + STATS_XML + SIGNATURE_APPEND,	sToDir + STATS_XML + SIGNATURE_APPEND);
 	}
 	else if (FILEMAN->IsAFile(sFromDir + STATS_XML_GZ) &&
-	                FILEMAN->IsAFile(sFromDir + STATS_XML_GZ + SIGNATURE_APPEND))
+	         FILEMAN->IsAFile(sFromDir + STATS_XML_GZ + SIGNATURE_APPEND))
 	{
 		FILEMAN->Move(sFromDir + STATS_XML_GZ,					sToDir + STATS_XML);
 		FILEMAN->Move(sFromDir + STATS_XML_GZ + SIGNATURE_APPEND,	sToDir + STATS_XML + SIGNATURE_APPEND);
