@@ -30,15 +30,16 @@ ThemeManager*	THEME = NULL;	// global object accessable from anywhere in the pro
 
 static const RString THEME_INFO_INI = "ThemeInfo.ini";
 
-static const char *ElementCategoryNames[] = {
+static const char *ElementCategoryNames[] =
+{
 	"BGAnimations",
 	"Fonts",
 	"Graphics",
 	"Sounds",
 	"Other"
 };
-XToString( ElementCategory );
-StringToX( ElementCategory );
+XToString(ElementCategory);
+StringToX(ElementCategory);
 
 
 struct Theme
@@ -68,46 +69,55 @@ static SubscriptionManager<IThemeMetric> g_Subscribers;
 class LocalizedStringImplThemeMetric : public ILocalizedStringImpl, public ThemeMetric<RString>
 {
 public:
-	static ILocalizedStringImpl *Create() { return new LocalizedStringImplThemeMetric; }
-
-	void Load( const RString& sGroup, const RString& sName )
+	static ILocalizedStringImpl *Create()
 	{
-		ThemeMetric<RString>::Load( sGroup, sName );
+		return new LocalizedStringImplThemeMetric;
+	}
+
+	void Load(const RString& sGroup, const RString& sName)
+	{
+		ThemeMetric<RString>::Load(sGroup, sName);
 	}
 
 	virtual void Read()
 	{
-		if( m_sName != ""  &&  THEME  &&   THEME->IsThemeLoaded() )
+		if (m_sName != ""  &&  THEME  &&   THEME->IsThemeLoaded())
 		{
-			THEME->GetString( m_sGroup, m_sName, m_currentValue );
+			THEME->GetString(m_sGroup, m_sName, m_currentValue);
 			m_Value.SetFromNil();
 		}
 	}
 
 	const RString &GetLocalized() const
 	{
-		if( IsLoaded() )
+		if (IsLoaded())
+		{
 			return GetValue();
+		}
 		else
+		{
 			return m_sName;
+		}
 	}
 };
 
-void ThemeManager::Subscribe( IThemeMetric *p )
+void ThemeManager::Subscribe(IThemeMetric *p)
 {
-	g_Subscribers.Subscribe( p );
+	g_Subscribers.Subscribe(p);
 
 	// It's ThemeManager's responsibility to make sure all of its subscribers
-	// are updated with current data.  If a metric is created after 
+	// are updated with current data.  If a metric is created after
 	// a theme is loaded, ThemeManager should update it right away (not just
 	// when the theme changes).
-	if( THEME && THEME->GetCurThemeName().size() )
+	if (THEME && THEME->GetCurThemeName().size())
+	{
 		p->Read();
+	}
 }
 
-void ThemeManager::Unsubscribe( IThemeMetric *p )
+void ThemeManager::Unsubscribe(IThemeMetric *p)
 {
-	g_Subscribers.Unsubscribe( p );
+	g_Subscribers.Unsubscribe(p);
 }
 
 
@@ -115,33 +125,39 @@ void ThemeManager::Unsubscribe( IThemeMetric *p )
 static map<RString, ThemeManager::PathInfo> g_ThemePathCache[NUM_ElementCategory];
 void ThemeManager::ClearThemePathCache()
 {
-	for( int i = 0; i < NUM_ElementCategory; ++i )
+	for (int i = 0; i < NUM_ElementCategory; ++i)
+	{
 		g_ThemePathCache[i].clear();
+	}
 }
 
-static void FileNameToMetricsGroupAndElement( const RString &sFileName, RString &sMetricsGroupOut, RString &sElementOut )
+static void FileNameToMetricsGroupAndElement(const RString &sFileName, RString &sMetricsGroupOut, RString &sElementOut)
 {
 	// split into class name and file name
 	RString::size_type iIndexOfFirstSpace = sFileName.find(" ");
-	if( iIndexOfFirstSpace == string::npos ) // no space
+	if (iIndexOfFirstSpace == string::npos)  // no space
 	{
 		sMetricsGroupOut = "";
 		sElementOut = sFileName;
 	}
 	else
 	{
-		sMetricsGroupOut = sFileName.Left( iIndexOfFirstSpace );
-		sElementOut = sFileName.Right( sFileName.size() - iIndexOfFirstSpace - 1 );
+		sMetricsGroupOut = sFileName.Left(iIndexOfFirstSpace);
+		sElementOut = sFileName.Right(sFileName.size() - iIndexOfFirstSpace - 1);
 	}
 }
 
 
-static RString MetricsGroupAndElementToFileName( const RString &sMetricsGroup, const RString &sElement )
+static RString MetricsGroupAndElementToFileName(const RString &sMetricsGroup, const RString &sElement)
 {
-	if( sMetricsGroup.empty() )
+	if (sMetricsGroup.empty())
+	{
 		return sElement;
+	}
 	else
+	{
 		return sMetricsGroup + " " + sElement;
+	}
 }
 
 ThemeManager::ThemeManager()
@@ -152,9 +168,9 @@ ThemeManager::ThemeManager()
 	{
 		Lua *L = LUA->Get();
 		lua_pushstring(L, "THEME");
-		this->PushSelf( L );
-		lua_settable( L, LUA_GLOBALSINDEX );
-		LUA->Release( L );
+		this->PushSelf(L);
+		lua_settable(L, LUA_GLOBALSINDEX);
+		LUA->Release(L);
 	}
 
 	// We don't have any theme loaded until SwitchThemeAndLanguage is called.
@@ -162,122 +178,138 @@ ThemeManager::ThemeManager()
 	m_bPseudoLocalize = false;
 
 	vector<RString> arrayThemeNames;
-	GetThemeNames( arrayThemeNames );
+	GetThemeNames(arrayThemeNames);
 }
 
 ThemeManager::~ThemeManager()
 {
 	g_vThemes.clear();
-	SAFE_DELETE( g_pLoadedThemeData );
+	SAFE_DELETE(g_pLoadedThemeData);
 
 	// Unregister with Lua.
-	LUA->UnsetGlobal( "THEME" );
+	LUA->UnsetGlobal("THEME");
 }
 
-void ThemeManager::GetThemeNames( vector<RString>& AddTo )
+void ThemeManager::GetThemeNames(vector<RString>& AddTo)
 {
-	GetDirListing( SpecialFiles::THEMES_DIR + "*", AddTo, true );
-	StripCvsAndSvn( AddTo );
-	StripMacResourceForks( AddTo );
+	GetDirListing(SpecialFiles::THEMES_DIR + "*", AddTo, true);
+	StripCvsAndSvn(AddTo);
+	StripMacResourceForks(AddTo);
 }
 
-void ThemeManager::GetSelectableThemeNames( vector<RString>& AddTo )
+void ThemeManager::GetSelectableThemeNames(vector<RString>& AddTo)
 {
-	GetThemeNames( AddTo );
-	for( int i=AddTo.size()-1; i>=0; i-- )
+	GetThemeNames(AddTo);
+	for (int i = AddTo.size() - 1; i >= 0; i--)
 	{
-		if( !IsThemeSelectable(AddTo[i]) )
-			AddTo.erase( AddTo.begin()+i );
+		if (!IsThemeSelectable(AddTo[i]))
+		{
+			AddTo.erase(AddTo.begin() + i);
+		}
 	}
 }
 
 int ThemeManager::GetNumSelectableThemes()
 {
 	vector<RString> vs;
-	GetSelectableThemeNames( vs );
+	GetSelectableThemeNames(vs);
 	return vs.size();
 }
 
-bool ThemeManager::DoesThemeExist( const RString &sThemeName )
+bool ThemeManager::DoesThemeExist(const RString &sThemeName)
 {
 	vector<RString> asThemeNames;
-	GetThemeNames( asThemeNames );
-	for( unsigned i=0; i<asThemeNames.size(); i++ )
+	GetThemeNames(asThemeNames);
+	for (unsigned i = 0; i < asThemeNames.size(); i++)
 	{
-		if( !sThemeName.CompareNoCase(asThemeNames[i]) )
+		if (!sThemeName.CompareNoCase(asThemeNames[i]))
+		{
 			return true;
+		}
 	}
 	return false;
 }
 
-bool ThemeManager::IsThemeSelectable( const RString &sThemeName )
+bool ThemeManager::IsThemeSelectable(const RString &sThemeName)
 {
-	if( !DoesThemeExist(sThemeName) )
+	if (!DoesThemeExist(sThemeName))
+	{
 		return false;
+	}
 
 	return sThemeName.Left(1) != "_";
 }
 
-RString ThemeManager::GetThemeDisplayName( const RString &sThemeName )
+RString ThemeManager::GetThemeDisplayName(const RString &sThemeName)
 {
 	RString sDir = GetThemeDirFromName(sThemeName);
 	IniFile ini;
-	ini.ReadFile( sDir + THEME_INFO_INI );
+	ini.ReadFile(sDir + THEME_INFO_INI);
 
 	RString s;
-	if( ini.GetValue("ThemeInfo","DisplayName",s) )
+	if (ini.GetValue("ThemeInfo", "DisplayName", s))
+	{
 		return s;
+	}
 
 	return sThemeName;
 }
 
-RString ThemeManager::GetThemeAuthor( const RString &sThemeName )
+RString ThemeManager::GetThemeAuthor(const RString &sThemeName)
 {
 	RString sDir = GetThemeDirFromName(sThemeName);
 	IniFile ini;
-	ini.ReadFile( sDir + THEME_INFO_INI );
+	ini.ReadFile(sDir + THEME_INFO_INI);
 
 	RString s;
-	if( ini.GetValue("ThemeInfo","Author",s) )
+	if (ini.GetValue("ThemeInfo", "Author", s))
+	{
 		return s;
+	}
 
 	return "[unknown author]";
 }
 
-static bool EqualsNoCase( const RString &s1, const RString &s2 )
+static bool EqualsNoCase(const RString &s1, const RString &s2)
 {
 	return s1.EqualsNoCase(s2);
 }
-void ThemeManager::GetLanguages( vector<RString>& AddTo )
+void ThemeManager::GetLanguages(vector<RString>& AddTo)
 {
 	AddTo.clear();
 
-	for( unsigned i = 0; i < g_vThemes.size(); ++i )
-		GetLanguagesForTheme( g_vThemes[i].sThemeName, AddTo );
+	for (unsigned i = 0; i < g_vThemes.size(); ++i)
+	{
+		GetLanguagesForTheme(g_vThemes[i].sThemeName, AddTo);
+	}
 
 	// remove dupes
-	sort( AddTo.begin(), AddTo.end() );
-	vector<RString>::iterator it = unique( AddTo.begin(), AddTo.end(), EqualsNoCase );
+	sort(AddTo.begin(), AddTo.end());
+	vector<RString>::iterator it = unique(AddTo.begin(), AddTo.end(), EqualsNoCase);
 	AddTo.erase(it, AddTo.end());
 }
 
-bool ThemeManager::DoesLanguageExist( const RString &sLanguage )
+bool ThemeManager::DoesLanguageExist(const RString &sLanguage)
 {
 	vector<RString> asLanguages;
-	GetLanguages( asLanguages );
+	GetLanguages(asLanguages);
 
-	for( unsigned i=0; i<asLanguages.size(); i++ )
-		if( sLanguage.CompareNoCase(asLanguages[i])==0 )
+	for (unsigned i = 0; i < asLanguages.size(); i++)
+		if (sLanguage.CompareNoCase(asLanguages[i]) == 0)
+		{
 			return true;
+		}
 	return false;
 }
 
-void ThemeManager::LoadThemeMetrics( const RString &sThemeName_, const RString &sLanguage_ )
+void ThemeManager::LoadThemeMetrics(const RString &sThemeName_, const RString &sLanguage_)
 {
-	if( g_pLoadedThemeData == NULL )
+	if (g_pLoadedThemeData == NULL)
+	{
 		g_pLoadedThemeData = new LoadedThemeData;
+	}
 
-	// Don't delete and recreate LoadedThemeData.  There are references iniMetrics and iniStrings 
+	// Don't delete and recreate LoadedThemeData.  There are references iniMetrics and iniStrings
 	// on the stack, so Clear them instead.
 	g_pLoadedThemeData->ClearAll();
 	g_vThemes.clear();
@@ -289,42 +321,48 @@ void ThemeManager::LoadThemeMetrics( const RString &sThemeName_, const RString &
 	m_sCurLanguage = sLanguage;
 
 	bool bLoadedBase = false;
-	while(1)
+	while (1)
 	{
-		ASSERT_M( g_vThemes.size() < 20, "Circular theme fallback references detected." );
+		ASSERT_M(g_vThemes.size() < 20, "Circular theme fallback references detected.");
 
-		g_vThemes.push_back( Theme() );
+		g_vThemes.push_back(Theme());
 		Theme &t = g_vThemes.back();
 		t.sThemeName = sThemeName;
 
 		IniFile iniMetrics;
 		IniFile iniStrings;
-		iniMetrics.ReadFile( GetMetricsIniPath(sThemeName) );
+		iniMetrics.ReadFile(GetMetricsIniPath(sThemeName));
 		// Load optional language inis (probably mounted by a package) first so that they can be overridden by the current theme.
 		{
 			vector<RString> vs;
-			GetOptionalLanguageIniPaths(vs,sThemeName,sLanguage);
-			FOREACH_CONST(RString,vs,s)
-				iniStrings.ReadFile( *s );
+			GetOptionalLanguageIniPaths(vs, sThemeName, sLanguage);
+			FOREACH_CONST(RString, vs, s)
+			iniStrings.ReadFile(*s);
 		}
-		iniStrings.ReadFile( GetLanguageIniPath(sThemeName,SpecialFiles::BASE_LANGUAGE) );
-		if( sLanguage.CompareNoCase(SpecialFiles::BASE_LANGUAGE) )
-			iniStrings.ReadFile( GetLanguageIniPath(sThemeName,sLanguage) );
+		iniStrings.ReadFile(GetLanguageIniPath(sThemeName, SpecialFiles::BASE_LANGUAGE));
+		if (sLanguage.CompareNoCase(SpecialFiles::BASE_LANGUAGE))
+		{
+			iniStrings.ReadFile(GetLanguageIniPath(sThemeName, sLanguage));
+		}
 
 		bool bIsBaseTheme = !sThemeName.CompareNoCase(SpecialFiles::BASE_THEME_NAME);
-		iniMetrics.GetValue( "Global", "IsBaseTheme", bIsBaseTheme );
-		if( bIsBaseTheme )
+		iniMetrics.GetValue("Global", "IsBaseTheme", bIsBaseTheme);
+		if (bIsBaseTheme)
+		{
 			bLoadedBase = true;
+		}
 
 		/* Read the fallback theme. If no fallback theme is specified, and we haven't
 		 * already loaded it, fall back on SpecialFiles::BASE_THEME_NAME.
 		 * That way, default theme fallbacks can be disabled with
 		 * "FallbackTheme=". */
 		RString sFallback;
-		if( !iniMetrics.GetValue("Global","FallbackTheme",sFallback) )
+		if (!iniMetrics.GetValue("Global", "FallbackTheme", sFallback))
 		{
-			if( sThemeName.CompareNoCase( SpecialFiles::BASE_THEME_NAME ) && !bLoadedBase )
+			if (sThemeName.CompareNoCase(SpecialFiles::BASE_THEME_NAME) && !bLoadedBase)
+			{
 				sFallback = SpecialFiles::BASE_THEME_NAME;
+			}
 		}
 
 		/* We actually want to load themes bottom-to-top, loading fallback themes
@@ -332,31 +370,35 @@ void ThemeManager::LoadThemeMetrics( const RString &sThemeName_, const RString &
 		 * need to load the derived theme first, to find out the name of the fallback
 		 * theme.  Avoid having to load IniFile twice, merging the fallback theme
 		 * into the derived theme that we've already loaded. */
-		XmlFileUtil::MergeIniUnder( &iniMetrics, &g_pLoadedThemeData->iniMetrics );
-		XmlFileUtil::MergeIniUnder( &iniStrings, &g_pLoadedThemeData->iniStrings );
+		XmlFileUtil::MergeIniUnder(&iniMetrics, &g_pLoadedThemeData->iniMetrics);
+		XmlFileUtil::MergeIniUnder(&iniStrings, &g_pLoadedThemeData->iniStrings);
 
-		if( sFallback.empty() )
+		if (sFallback.empty())
+		{
 			break;
+		}
 		sThemeName = sFallback;
 	}
 
 	// Overlay metrics from the command line.
 	RString sMetric;
-	for( int i = 0; GetCommandlineArgument( "metric", &sMetric, i ); ++i )
+	for (int i = 0; GetCommandlineArgument("metric", &sMetric, i); ++i)
 	{
 		/* sMetric must be "foo::bar=baz". "foo" and "bar" never contain "=", so
 		 * in "foo::bar=1+1=2", "baz" is always "1+1=2". Neither foo nor bar may
 		 * be empty, but baz may be. */
-		Regex re( "^([^=]+)::([^=]+)=(.*)$" );
+		Regex re("^([^=]+)::([^=]+)=(.*)$");
 		vector<RString> sBits;
-		if( !re.Compare( sMetric, sBits ) )
-			RageException::Throw( "Invalid argument \"--metric=%s\".", sMetric.c_str() );
+		if (!re.Compare(sMetric, sBits))
+		{
+			RageException::Throw("Invalid argument \"--metric=%s\".", sMetric.c_str());
+		}
 
-		g_pLoadedThemeData->iniMetrics.SetValue( sBits[0], sBits[1], sBits[2] );
+		g_pLoadedThemeData->iniMetrics.SetValue(sBits[0], sBits[1], sBits[2]);
 	}
 
-	LOG->MapLog( "theme", "Theme: %s", m_sCurThemeName.c_str() );
-	LOG->MapLog( "language", "Language: %s", m_sCurLanguage.c_str() );
+	LOG->MapLog("theme", "Theme: %s", m_sCurThemeName.c_str());
+	LOG->MapLog("language", "Language: %s", m_sCurLanguage.c_str());
 }
 
 RString ThemeManager::GetDefaultLanguage()
@@ -365,7 +407,7 @@ RString ThemeManager::GetDefaultLanguage()
 	return sLangCode;
 }
 
-void ThemeManager::SwitchThemeAndLanguage( const RString &sThemeName_, const RString &sLanguage_, bool bPseudoLocalize, bool bForceThemeReload )
+void ThemeManager::SwitchThemeAndLanguage(const RString &sThemeName_, const RString &sLanguage_, bool bPseudoLocalize, bool bForceThemeReload)
 {
 	RString sThemeName = sThemeName_;
 	RString sLanguage = sLanguage_;
@@ -373,46 +415,56 @@ void ThemeManager::SwitchThemeAndLanguage( const RString &sThemeName_, const RSt
 	// and change to that instead of asserting/crashing since
 	// SpecialFiles::BASE_THEME_NAME is _fallback now. -aj
 #if !defined(SMPACKAGE)
-	if( !IsThemeSelectable(sThemeName) )
+	if (!IsThemeSelectable(sThemeName))
+	{
 		sThemeName = PREFSMAN->m_sTheme.GetDefault();
+	}
 
 	// sm-ssc's SpecialFiles::BASE_THEME_NAME is _fallback, which you can't
 	// select. This requires a preference, which allows it to be adapted for
 	// other purposes (e.g. PARASTAR).
-	if( !IsThemeSelectable(sThemeName) )
+	if (!IsThemeSelectable(sThemeName))
+	{
 		sThemeName = PREFSMAN->m_sDefaultTheme;
-		//sThemeName = SpecialFiles::BASE_THEME_NAME;
+	}
+	//sThemeName = SpecialFiles::BASE_THEME_NAME;
 #endif
 
-	ASSERT( IsThemeSelectable(sThemeName) );
+	ASSERT(IsThemeSelectable(sThemeName));
 
 	/* We haven't actually loaded the theme yet, so we can't check whether
 	 * sLanguage exists. Just check for empty. */
-	if( sLanguage.empty() )
+	if (sLanguage.empty())
+	{
 		sLanguage = GetDefaultLanguage();
+	}
 	LOG->Trace("ThemeManager::SwitchThemeAndLanguage: \"%s\", \"%s\"",
-		sThemeName.c_str(), sLanguage.c_str() );
+	           sThemeName.c_str(), sLanguage.c_str());
 
 	bool bNothingChanging = sThemeName == m_sCurThemeName && sLanguage == m_sCurLanguage && m_bPseudoLocalize == bPseudoLocalize;
-	if( bNothingChanging && !bForceThemeReload )
+	if (bNothingChanging && !bForceThemeReload)
+	{
 		return;
+	}
 
 	m_bPseudoLocalize = bPseudoLocalize;
 
 	// Load theme metrics. If only the language is changing, this is all
 	// we need to reload.
 	bool bThemeChanging = (sThemeName != m_sCurThemeName);
-	LoadThemeMetrics( sThemeName, sLanguage );
+	LoadThemeMetrics(sThemeName, sLanguage);
 
 	// Clear the theme path cache. This caches language-specific graphic paths,
 	// so do this even if only the language is changing.
 	ClearThemePathCache();
-	if( bThemeChanging )
+	if (bThemeChanging)
 	{
 #if !defined(SMPACKAGE)
 		// reload common sounds
-		if( SCREENMAN != NULL )
+		if (SCREENMAN != NULL)
+		{
 			SCREENMAN->ThemeChanged();
+		}
 #endif
 
 		/* Lua globals can use metrics which are cached, and vice versa.  Update Lua
@@ -422,7 +474,7 @@ void ThemeManager::SwitchThemeAndLanguage( const RString &sThemeName_, const RSt
 	}
 
 	// Use theme metrics for localization.
-	LocalizedString::RegisterLocalizer( LocalizedStringImplThemeMetric::Create );
+	LocalizedString::RegisterLocalizer(LocalizedStringImplThemeMetric::Create);
 
 	ReloadSubscribers();
 }
@@ -430,23 +482,23 @@ void ThemeManager::SwitchThemeAndLanguage( const RString &sThemeName_, const RSt
 void ThemeManager::ReloadSubscribers()
 {
 	// reload subscribers
-	if( g_Subscribers.m_pSubscribers )
+	if (g_Subscribers.m_pSubscribers)
 	{
-		FOREACHS_CONST( IThemeMetric*, *g_Subscribers.m_pSubscribers, p )
-			(*p)->Read();
+		FOREACHS_CONST(IThemeMetric*, *g_Subscribers.m_pSubscribers, p)
+		(*p)->Read();
 	}
 }
 
 void ThemeManager::ClearSubscribers()
 {
-	if( g_Subscribers.m_pSubscribers )
+	if (g_Subscribers.m_pSubscribers)
 	{
-		FOREACHS_CONST( IThemeMetric*, *g_Subscribers.m_pSubscribers, p )
-			(*p)->Clear();
+		FOREACHS_CONST(IThemeMetric*, *g_Subscribers.m_pSubscribers, p)
+		(*p)->Clear();
 	}
 }
 
-void ThemeManager::RunLuaScripts( const RString &sMask )
+void ThemeManager::RunLuaScripts(const RString &sMask)
 {
 	/* Run all script files with the given mask in Lua for all themes.  Start
 	 * from the deepest fallback theme and work outwards. */
@@ -464,22 +516,22 @@ void ThemeManager::RunLuaScripts( const RString &sMask )
 		 * scripts call GetThemeName(), it'll return the theme the script is in. */
 
 		m_sCurThemeName = iter->sThemeName;
-		const RString &sThemeDir = GetThemeDirFromName( m_sCurThemeName );
+		const RString &sThemeDir = GetThemeDirFromName(m_sCurThemeName);
 
 		vector<RString> asElementPaths;
 		// get files from directories
 		vector<RString> asElementChildPaths;
 		vector<RString> arrayScriptDirs;
-		GetDirListing( sThemeDir + "Scripts/*", arrayScriptDirs, true );
-		SortRStringArray( arrayScriptDirs );
-		StripCvsAndSvn( arrayScriptDirs );
-		StripMacResourceForks( arrayScriptDirs );
-		FOREACH_CONST( RString, arrayScriptDirs, s )	// foreach dir in /Scripts/
+		GetDirListing(sThemeDir + "Scripts/*", arrayScriptDirs, true);
+		SortRStringArray(arrayScriptDirs);
+		StripCvsAndSvn(arrayScriptDirs);
+		StripMacResourceForks(arrayScriptDirs);
+		FOREACH_CONST(RString, arrayScriptDirs, s)	// foreach dir in /Scripts/
 		{
 			// Find all Lua files in this directory, add them to asElementPaths
 			RString sScriptDirName = *s;
-			GetDirListing( sThemeDir + "Scripts/" + sScriptDirName + "/" + sMask, asElementChildPaths, false, true );
-			for( unsigned i = 0; i < asElementChildPaths.size(); ++i )
+			GetDirListing(sThemeDir + "Scripts/" + sScriptDirName + "/" + sMask, asElementChildPaths, false, true);
+			for (unsigned i = 0; i < asElementChildPaths.size(); ++i)
 			{
 				// push these Lua files into the main element paths
 				const RString &sPath = asElementChildPaths[i];
@@ -488,22 +540,22 @@ void ThemeManager::RunLuaScripts( const RString &sMask )
 		}
 
 		// get regular Lua files
-		GetDirListing( sThemeDir + "Scripts/" + sMask, asElementPaths, false, true );
+		GetDirListing(sThemeDir + "Scripts/" + sMask, asElementPaths, false, true);
 
 		// load Lua files
-		for( unsigned i = 0; i < asElementPaths.size(); ++i )
+		for (unsigned i = 0; i < asElementPaths.size(); ++i)
 		{
 			const RString &sPath = asElementPaths[i];
-			LOG->Trace( "Loading \"%s\" ...", sPath.c_str() );
-			LuaHelpers::RunScriptFile( sPath );
+			LOG->Trace("Loading \"%s\" ...", sPath.c_str());
+			LuaHelpers::RunScriptFile(sPath);
 		}
 	}
-	while( iter != g_vThemes.begin() );
+	while (iter != g_vThemes.begin());
 
 	/* TODO: verify whether this final check is necessary. */
-	if( sCurThemeName != m_sCurThemeName )
+	if (sCurThemeName != m_sCurThemeName)
 	{
-		LOG->Warn( "ThemeManager: theme name was not restored after RunLuaScripts" );
+		LOG->Warn("ThemeManager: theme name was not restored after RunLuaScripts");
 		m_sCurThemeName = sCurThemeName;
 	}
 }
@@ -514,11 +566,11 @@ void ThemeManager::UpdateLuaGlobals()
 	// explicitly refresh cached metrics that we use.
 	ScreenDimensions::ReloadScreenDimensions();
 
-	RunLuaScripts( "*.lua" );
+	RunLuaScripts("*.lua");
 #endif
 }
 
-RString ThemeManager::GetThemeDirFromName( const RString &sThemeName )
+RString ThemeManager::GetThemeDirFromName(const RString &sThemeName)
 {
 	return SpecialFiles::THEMES_DIR + sThemeName + "/";
 }
@@ -526,18 +578,18 @@ RString ThemeManager::GetThemeDirFromName( const RString &sThemeName )
 struct CompareLanguageTag
 {
 	RString m_sLanguageString;
-	CompareLanguageTag( const RString &sLang )
+	CompareLanguageTag(const RString &sLang)
 	{
 		m_sLanguageString = RString("(lang ") + sLang + ")";
-		LOG->Trace( "try \"%s\"", sLang.c_str() );
+		LOG->Trace("try \"%s\"", sLang.c_str());
 		m_sLanguageString.MakeLower();
 	}
 
-	bool operator()( const RString &sFile ) const
+	bool operator()(const RString &sFile) const
 	{
-		RString sLower( sFile );
+		RString sLower(sFile);
 		sLower.MakeLower();
-		size_t iPos = sLower.find( m_sLanguageString );
+		size_t iPos = sLower.find(m_sLanguageString);
 		return iPos != RString::npos;
 	}
 };
@@ -551,26 +603,30 @@ struct CompareLanguageTag
  * files with the current language tag to the top, so choosing "ignore" from
  * the multiple-match dialog will cause it to default to the first entry, so
  * it'll still use a preferred language match if there were any. */
-void ThemeManager::FilterFileLanguages( vector<RString> &asPaths )
+void ThemeManager::FilterFileLanguages(vector<RString> &asPaths)
 {
-	if( asPaths.size() <= 1 )
+	if (asPaths.size() <= 1)
+	{
 		return;
+	}
 	vector<RString>::iterator it =
-		partition( asPaths.begin(), asPaths.end(), CompareLanguageTag(m_sCurLanguage) );
+	        partition(asPaths.begin(), asPaths.end(), CompareLanguageTag(m_sCurLanguage));
 
-	int iDist = distance( asPaths.begin(), it );
-	if( iDist == 0 )
+	int iDist = distance(asPaths.begin(), it);
+	if (iDist == 0)
 	{
 		// We didn't find any for the current language.  Try BASE_LANGUAGE.
-		it = partition( asPaths.begin(), asPaths.end(), CompareLanguageTag(SpecialFiles::BASE_LANGUAGE) );
-		iDist = distance( asPaths.begin(), it );
+		it = partition(asPaths.begin(), asPaths.end(), CompareLanguageTag(SpecialFiles::BASE_LANGUAGE));
+		iDist = distance(asPaths.begin(), it);
 	}
 
-	if( iDist == 1 )
-		asPaths.erase( it, asPaths.end() );
+	if (iDist == 1)
+	{
+		asPaths.erase(it, asPaths.end());
+	}
 }
 
-bool ThemeManager::GetPathInfoToRaw( PathInfo &out, const RString &sThemeName_, ElementCategory category, const RString &sMetricsGroup_, const RString &sElement_ ) 
+bool ThemeManager::GetPathInfoToRaw(PathInfo &out, const RString &sThemeName_, ElementCategory category, const RString &sMetricsGroup_, const RString &sElement_)
 {
 	/* Ugly: the parameters to this function may be a reference into g_vThemes,
 	 * or something else that might suddenly go away when we call ReloadMetrics,
@@ -581,7 +637,7 @@ bool ThemeManager::GetPathInfoToRaw( PathInfo &out, const RString &sThemeName_, 
 
 try_element_again:
 
-	const RString sThemeDir = GetThemeDirFromName( sThemeName );
+	const RString sThemeDir = GetThemeDirFromName(sThemeName);
 	const RString &sCategory = ElementCategoryToString(category);
 
 	vector<RString> asElementPaths;
@@ -589,20 +645,21 @@ try_element_again:
 	// If sFileName already has an extension, we're looking for a specific file
 	bool bLookingForSpecificFile = sElement.find_last_of('.') != sElement.npos;
 
-	if( bLookingForSpecificFile )
+	if (bLookingForSpecificFile)
 	{
-		GetDirListing( sThemeDir + sCategory+"/"+MetricsGroupAndElementToFileName(sMetricsGroup,sElement), asElementPaths, false, true );
+		GetDirListing(sThemeDir + sCategory + "/" + MetricsGroupAndElementToFileName(sMetricsGroup, sElement), asElementPaths, false, true);
 	}
 	else	// look for all files starting with sFileName that have types we can use
 	{
 		vector<RString> asPaths;
-		GetDirListing( sThemeDir + sCategory + "/" + MetricsGroupAndElementToFileName(sMetricsGroup,sElement) + "*",
-						asPaths, false, true );
+		GetDirListing(sThemeDir + sCategory + "/" + MetricsGroupAndElementToFileName(sMetricsGroup, sElement) + "*",
+		              asPaths, false, true);
 
-		for( unsigned p = 0; p < asPaths.size(); ++p )
+		for (unsigned p = 0; p < asPaths.size(); ++p)
 		{
 			// BGAnimations, Fonts, Graphics, Sounds, Other
-			static const char *masks[NUM_ElementCategory][14] = {
+			static const char *masks[NUM_ElementCategory][14] =
+			{
 				{ "redir", "lua", "xml", "png", "jpg", "bmp", "gif", "ogv", "avi", "mpg", "mpeg", "txt", "", NULL},
 				{ "redir", "ini", NULL },
 				{ "redir", "lua", "xml", "png", "jpg", "bmp", "gif", "ogv", "avi", "mpg", "mpeg", "txt", "", NULL},
@@ -611,72 +668,76 @@ try_element_again:
 			};
 			const char **asset_masks = masks[category];
 
-			const RString ext = GetExtension( asPaths[p] );
+			const RString ext = GetExtension(asPaths[p]);
 
-			for( int i = 0; asset_masks[i]; ++i )
+			for (int i = 0; asset_masks[i]; ++i)
 			{
 				// No extension means directories.
-				if( asset_masks[i][0] == 0 )
+				if (asset_masks[i][0] == 0)
 				{
-					if( !IsADirectory(asPaths[p]) )
+					if (!IsADirectory(asPaths[p]))
+					{
 						continue;
+					}
 
 					RString sXMLPath = asPaths[p] + "/default.xml";
-					if( DoesFileExist(sXMLPath) )
+					if (DoesFileExist(sXMLPath))
 					{
-						asElementPaths.push_back( sXMLPath );
+						asElementPaths.push_back(sXMLPath);
 						break;
 					}
 
 					RString sLuaPath = asPaths[p] + "/default.lua";
-					if( DoesFileExist(sLuaPath) )
+					if (DoesFileExist(sLuaPath))
 					{
-						asElementPaths.push_back( sLuaPath );
+						asElementPaths.push_back(sLuaPath);
 						break;
 					}
 				}
 
-				if( ext == asset_masks[i] || !strcmp(asset_masks[i], "*") )
+				if (ext == asset_masks[i] || !strcmp(asset_masks[i], "*"))
 				{
-					asElementPaths.push_back( asPaths[p] );
+					asElementPaths.push_back(asPaths[p]);
 					break;
 				}
 			}
 		}
 	}
 
-	if( asElementPaths.size() == 0 )
-		return false;	// This isn't fatal.
+	if (asElementPaths.size() == 0)
+	{
+		return false;        // This isn't fatal.
+	}
 
-	FilterFileLanguages( asElementPaths );
+	FilterFileLanguages(asElementPaths);
 
-	if( asElementPaths.size() > 1 )
+	if (asElementPaths.size() > 1)
 	{
 		g_ThemePathCache[category].clear();
 
-		RString message = ssprintf( 
-			"ThemeManager:  There is more than one theme element that matches "
-			"'%s/%s/%s'.  Please remove all but one of these matches.",
-			sThemeName.c_str(), sCategory.c_str(), MetricsGroupAndElementToFileName(sMetricsGroup,sElement).c_str() );
+		RString message = ssprintf(
+		                          "ThemeManager:  There is more than one theme element that matches "
+		                          "'%s/%s/%s'.  Please remove all but one of these matches.",
+		                          sThemeName.c_str(), sCategory.c_str(), MetricsGroupAndElementToFileName(sMetricsGroup, sElement).c_str());
 
-		switch( Dialog::AbortRetryIgnore(message) )
+		switch (Dialog::AbortRetryIgnore(message))
 		{
-		case Dialog::abort:
-			RageException::Throw( "%s", message.c_str() ); 
-			break;
-		case Dialog::retry:
-			ReloadMetrics();
-			goto try_element_again;
-		case Dialog::ignore:
-			break;
+			case Dialog::abort:
+				RageException::Throw("%s", message.c_str());
+				break;
+			case Dialog::retry:
+				ReloadMetrics();
+				goto try_element_again;
+			case Dialog::ignore:
+				break;
 		}
 	}
 
 
 	RString sPath = asElementPaths[0];
-	bool bIsARedirect = GetExtension(sPath).CompareNoCase("redir")==0;
+	bool bIsARedirect = GetExtension(sPath).CompareNoCase("redir") == 0;
 
-	if( !bIsARedirect )
+	if (!bIsARedirect)
 	{
 		out.sResolvedPath = sPath;
 		out.sMatchingMetricsGroup = sMetricsGroup;
@@ -685,83 +746,91 @@ try_element_again:
 	}
 
 	RString sNewFileName;
-	GetFileContents( sPath, sNewFileName, true );
+	GetFileContents(sPath, sNewFileName, true);
 
 	RString sNewClassName, sNewFile;
 	FileNameToMetricsGroupAndElement(sNewFileName, sNewClassName, sNewFile);
-	
+
 	/* Important: We need to do a full search.  For example, BG redirs in
 	 * the default theme point to "_shared background", and themes override
 	 * just "_shared background"; the redirs in the default theme should end
 	 * up resolving to the overridden background. */
 	/* Use GetPathToOptional because we don't want report that there's an
 	 * element missing. Instead we want to report that the redirect is invalid. */
-	if( GetPathInfo(out,category,sNewClassName,sNewFile,true) )
+	if (GetPathInfo(out, category, sNewClassName, sNewFile, true))
+	{
 		return true;
+	}
 
 	RString sMessage = ssprintf(
-			"ThemeManager:  The redirect '%s' points to the file '%s', which does not exist. "
-			"Verify that this redirect is correct.",
-			sPath.c_str(), sNewFileName.c_str());
+	                           "ThemeManager:  The redirect '%s' points to the file '%s', which does not exist. "
+	                           "Verify that this redirect is correct.",
+	                           sPath.c_str(), sNewFileName.c_str());
 
-	switch( Dialog::AbortRetryIgnore(sMessage) )
+	switch (Dialog::AbortRetryIgnore(sMessage))
 	{
-	case Dialog::retry:
-		ReloadMetrics();
-		goto try_element_again;
-	case Dialog::ignore:
-		GetPathInfo( out, category, "", "_missing" );
-		return true;
+		case Dialog::retry:
+			ReloadMetrics();
+			goto try_element_again;
+		case Dialog::ignore:
+			GetPathInfo(out, category, "", "_missing");
+			return true;
 	}
 
-	RageException::Throw( "%s", sMessage.c_str() ); 
+	RageException::Throw("%s", sMessage.c_str());
 }
 
-bool ThemeManager::GetPathInfoToAndFallback( PathInfo &out, ElementCategory category, const RString &sMetricsGroup_, const RString &sElement ) 
+bool ThemeManager::GetPathInfoToAndFallback(PathInfo &out, ElementCategory category, const RString &sMetricsGroup_, const RString &sElement)
 {
-	RString sMetricsGroup( sMetricsGroup_ );
+	RString sMetricsGroup(sMetricsGroup_);
 
 	int n = 100;
-	while( n-- )
+	while (n--)
 	{
-		FOREACHD_CONST( Theme, g_vThemes, iter )
+		FOREACHD_CONST(Theme, g_vThemes, iter)
 		{
 			// search with requested name
-			if( GetPathInfoToRaw( out, iter->sThemeName, category, sMetricsGroup, sElement ) )
+			if (GetPathInfoToRaw(out, iter->sThemeName, category, sMetricsGroup, sElement))
+			{
 				return true;
+			}
 		}
 
-		if( sMetricsGroup.empty() )
+		if (sMetricsGroup.empty())
+		{
 			return false;
+		}
 
 		// search fallback name (if any)
-		sMetricsGroup = GetMetricsGroupFallback( sMetricsGroup );
-		if( sMetricsGroup.empty() )
+		sMetricsGroup = GetMetricsGroupFallback(sMetricsGroup);
+		if (sMetricsGroup.empty())
+		{
 			return false;
+		}
 	}
 
-	RageException::Throw( "Infinite recursion looking up theme element \"%s\"",
-		MetricsGroupAndElementToFileName(sMetricsGroup, sElement).c_str() );
+	RageException::Throw("Infinite recursion looking up theme element \"%s\"",
+	                     MetricsGroupAndElementToFileName(sMetricsGroup, sElement).c_str());
 	/* Not really reached, but Appple's gcc 4 can't figure that out without
 	 * optimization even though RE:Throw() is correctly annotated. */
-	while( true ) {}
+	while (true) {}
 }
 
-bool ThemeManager::GetPathInfo( PathInfo &out, ElementCategory category, const RString &sMetricsGroup_, const RString &sElement_, bool bOptional ) 
+bool ThemeManager::GetPathInfo(PathInfo &out, ElementCategory category, const RString &sMetricsGroup_, const RString &sElement_, bool bOptional)
 {
 	/* Ugly: the parameters to this function may be a reference into g_vThemes,
 	 * or something else that might suddenly go away when we call ReloadMetrics. */
 	const RString sMetricsGroup = sMetricsGroup_;
 	const RString sElement = sElement_;
 
-	RString sFileName = MetricsGroupAndElementToFileName( sMetricsGroup, sElement );
+	RString sFileName = MetricsGroupAndElementToFileName(sMetricsGroup, sElement);
 
 	map<RString, PathInfo> &Cache = g_ThemePathCache[category];
 	{
 		map<RString, PathInfo>::const_iterator i;
 
-		i = Cache.find( sFileName );
-		if( i != Cache.end() )
+		i = Cache.find(sFileName);
+		if (i != Cache.end())
 		{
 			out = i->second;
 			return true;
@@ -771,13 +840,13 @@ bool ThemeManager::GetPathInfo( PathInfo &out, ElementCategory category, const R
 try_element_again:
 
 	// search the current theme
-	if( GetPathInfoToAndFallback( out, category, sMetricsGroup, sElement ) )	// we found something
+	if (GetPathInfoToAndFallback(out, category, sMetricsGroup, sElement))	// we found something
 	{
 		Cache[sFileName] = out;
 		return true;
 	}
 
-	if( bOptional )
+	if (bOptional)
 	{
 		Cache[sFileName] = PathInfo();	// clear cache entry
 		return false;
@@ -786,178 +855,202 @@ try_element_again:
 	const RString &sCategory = ElementCategoryToString(category);
 
 	// We can't fall back on _missing in Other: the file types are unknown.
-	RString sMessage = "The theme element \"" + sCategory + "/" + sFileName +"\" is missing.";
+	RString sMessage = "The theme element \"" + sCategory + "/" + sFileName + "\" is missing.";
 	Dialog::Result res;
-	if( category != EC_OTHER )
-		res = Dialog::AbortRetryIgnore( sMessage, "MissingThemeElement" );
-	else
-		res = Dialog::AbortRetry( sMessage, "MissingThemeElement" );
-	switch( res )
+	if (category != EC_OTHER)
 	{
-	case Dialog::retry:
-		ReloadMetrics();
-		goto try_element_again;
-	case Dialog::ignore:
-		LOG->UserLog( "Theme element", sCategory + '/' + sFileName,
-					"could not be found in \"%s\" or \"%s\".",
-					GetThemeDirFromName(m_sCurThemeName).c_str(), 
-					GetThemeDirFromName(SpecialFiles::BASE_THEME_NAME).c_str() );
-
-		// Err?
-		if( sFileName == "_missing" )
-			RageException::Throw( "\"_missing\" isn't present in \"%s%s\".", GetThemeDirFromName(SpecialFiles::BASE_THEME_NAME).c_str(), sCategory.c_str() );
-
-		GetPathInfo( out, category, "", "_missing" );
-		Cache[sFileName] = out;
-		return true;
-	case Dialog::abort:
-		LOG->UserLog( "Theme element", sCategory + '/' + sFileName,
-					"could not be found in \"%s\" or \"%s\".",
-					GetThemeDirFromName(m_sCurThemeName).c_str(), 
-					GetThemeDirFromName(SpecialFiles::BASE_THEME_NAME).c_str() );
-		RageException::Throw( "Theme element \"%s/%s\" could not be found in \"%s\" or \"%s\".", 
-			sCategory.c_str(),
-			sFileName.c_str(), 
-			GetThemeDirFromName(m_sCurThemeName).c_str(), 
-			GetThemeDirFromName(SpecialFiles::BASE_THEME_NAME).c_str() );
-	DEFAULT_FAIL( res );
+		res = Dialog::AbortRetryIgnore(sMessage, "MissingThemeElement");
 	}
-	FAIL_M( "" ); // Silence gcc 4.
+	else
+	{
+		res = Dialog::AbortRetry(sMessage, "MissingThemeElement");
+	}
+	switch (res)
+	{
+		case Dialog::retry:
+			ReloadMetrics();
+			goto try_element_again;
+		case Dialog::ignore:
+			LOG->UserLog("Theme element", sCategory + '/' + sFileName,
+			             "could not be found in \"%s\" or \"%s\".",
+			             GetThemeDirFromName(m_sCurThemeName).c_str(),
+			             GetThemeDirFromName(SpecialFiles::BASE_THEME_NAME).c_str());
+
+			// Err?
+			if (sFileName == "_missing")
+			{
+				RageException::Throw("\"_missing\" isn't present in \"%s%s\".", GetThemeDirFromName(SpecialFiles::BASE_THEME_NAME).c_str(), sCategory.c_str());
+			}
+
+			GetPathInfo(out, category, "", "_missing");
+			Cache[sFileName] = out;
+			return true;
+		case Dialog::abort:
+			LOG->UserLog("Theme element", sCategory + '/' + sFileName,
+			             "could not be found in \"%s\" or \"%s\".",
+			             GetThemeDirFromName(m_sCurThemeName).c_str(),
+			             GetThemeDirFromName(SpecialFiles::BASE_THEME_NAME).c_str());
+			RageException::Throw("Theme element \"%s/%s\" could not be found in \"%s\" or \"%s\".",
+			                     sCategory.c_str(),
+			                     sFileName.c_str(),
+			                     GetThemeDirFromName(m_sCurThemeName).c_str(),
+			                     GetThemeDirFromName(SpecialFiles::BASE_THEME_NAME).c_str());
+			DEFAULT_FAIL(res);
+	}
+	FAIL_M("");   // Silence gcc 4.
 }
 
-RString ThemeManager::GetPath( ElementCategory category, const RString &sMetricsGroup, const RString &sElement, bool bOptional )
+RString ThemeManager::GetPath(ElementCategory category, const RString &sMetricsGroup, const RString &sElement, bool bOptional)
 {
 	PathInfo pi;
-	GetPathInfo( pi, category, sMetricsGroup, sElement, bOptional );
-	if(!bOptional)
-		ASSERT( !pi.sResolvedPath.empty() );
+	GetPathInfo(pi, category, sMetricsGroup, sElement, bOptional);
+	if (!bOptional)
+	{
+		ASSERT(!pi.sResolvedPath.empty());
+	}
 	return pi.sResolvedPath;
 }
 
-RString ThemeManager::GetMetricsIniPath( const RString &sThemeName )
+RString ThemeManager::GetMetricsIniPath(const RString &sThemeName)
 {
-	return GetThemeDirFromName( sThemeName ) + SpecialFiles::METRICS_FILE;
+	return GetThemeDirFromName(sThemeName) + SpecialFiles::METRICS_FILE;
 }
 
-bool ThemeManager::HasMetric( const RString &sMetricsGroup, const RString &sValueName )
+bool ThemeManager::HasMetric(const RString &sMetricsGroup, const RString &sValueName)
 {
 	RString sThrowAway;
-	return GetMetricRawRecursive( g_pLoadedThemeData->iniMetrics, sMetricsGroup, sValueName, sThrowAway );
+	return GetMetricRawRecursive(g_pLoadedThemeData->iniMetrics, sMetricsGroup, sValueName, sThrowAway);
 }
 
-bool ThemeManager::HasString( const RString &sMetricsGroup, const RString &sValueName )
+bool ThemeManager::HasString(const RString &sMetricsGroup, const RString &sValueName)
 {
 	RString sThrowAway;
-	return GetMetricRawRecursive( g_pLoadedThemeData->iniStrings, sMetricsGroup, sValueName, sThrowAway );
+	return GetMetricRawRecursive(g_pLoadedThemeData->iniStrings, sMetricsGroup, sValueName, sThrowAway);
 }
 
 // the strings that were here before were moved to StepMania.cpp;
 // sorry for the inconvienence/sloppy coding. -aj
 void ThemeManager::ReloadMetrics()
 {
-	FILEMAN->FlushDirCache( GetCurThemeDir() );
+	FILEMAN->FlushDirCache(GetCurThemeDir());
 
 	// Reloading Lua scripts can cause crashes; don't do this. -aj
 	//UpdateLuaGlobals();
 
 	// force a reload of the metrics cache
-	LoadThemeMetrics( m_sCurThemeName, m_sCurLanguage );
+	LoadThemeMetrics(m_sCurThemeName, m_sCurLanguage);
 	ReloadSubscribers();
 
 	ClearThemePathCache();
 }
 
 
-RString ThemeManager::GetMetricsGroupFallback( const RString &sMetricsGroup )
+RString ThemeManager::GetMetricsGroupFallback(const RString &sMetricsGroup)
 {
-	ASSERT( g_pLoadedThemeData );
+	ASSERT(g_pLoadedThemeData);
 
 	// always look in iniMetrics for "Fallback"
 	RString sFallback;
-	if( !GetMetricRawRecursive(g_pLoadedThemeData->iniMetrics,sMetricsGroup,"Fallback",sFallback) )
+	if (!GetMetricRawRecursive(g_pLoadedThemeData->iniMetrics, sMetricsGroup, "Fallback", sFallback))
+	{
 		return RString();
+	}
 
 	Lua *L = LUA->Get();
-	LuaHelpers::RunExpression( L, sFallback );
+	LuaHelpers::RunExpression(L, sFallback);
 	RString sRet;
-	LuaHelpers::Pop( L, sRet );
-	LUA->Release( L );
+	LuaHelpers::Pop(L, sRet);
+	LUA->Release(L);
 
 	return sRet;
 }
 
-bool ThemeManager::GetMetricRawRecursive( const IniFile &ini, const RString &sMetricsGroup_, const RString &sValueName, RString &sOut )
+bool ThemeManager::GetMetricRawRecursive(const IniFile &ini, const RString &sMetricsGroup_, const RString &sValueName, RString &sOut)
 {
-	ASSERT( sValueName != "" );
-	RString sMetricsGroup( sMetricsGroup_ );
+	ASSERT(sValueName != "");
+	RString sMetricsGroup(sMetricsGroup_);
 
 	int n = 100;
-	while( n-- )
+	while (n--)
 	{
-		if( ini.GetValue(sMetricsGroup,sValueName,sOut) )
+		if (ini.GetValue(sMetricsGroup, sValueName, sOut))
+		{
 			return true;
+		}
 
-		if( !sValueName.compare("Fallback") )
+		if (!sValueName.compare("Fallback"))
+		{
 			return false;
+		}
 
-		sMetricsGroup = GetMetricsGroupFallback( sMetricsGroup );
-		if( sMetricsGroup.empty() )
+		sMetricsGroup = GetMetricsGroupFallback(sMetricsGroup);
+		if (sMetricsGroup.empty())
+		{
 			return false;
+		}
 	}
 
-	RageException::Throw( "Infinite recursion looking up theme metric \"%s::%s\".", sMetricsGroup.c_str(), sValueName.c_str() );
+	RageException::Throw("Infinite recursion looking up theme metric \"%s::%s\".", sMetricsGroup.c_str(), sValueName.c_str());
 }
 
-RString ThemeManager::GetMetricRaw( const IniFile &ini, const RString &sMetricsGroup_, const RString &sValueName_ )
+RString ThemeManager::GetMetricRaw(const IniFile &ini, const RString &sMetricsGroup_, const RString &sValueName_)
 {
 	/* Ugly: the parameters to this function may be a reference into g_vThemes, or something
 	 * else that might suddenly go away when we call ReloadMetrics. */
 	const RString sMetricsGroup = sMetricsGroup_;
 	const RString sValueName = sValueName_;
 
-	while( true )
+	while (true)
 	{
 		RString ret;
-		if( ThemeManager::GetMetricRawRecursive(ini, sMetricsGroup, sValueName, ret) )
+		if (ThemeManager::GetMetricRawRecursive(ini, sMetricsGroup, sValueName, ret))
+		{
 			return ret;
-		
-		RString sCurMetricPath = GetMetricsIniPath( m_sCurThemeName );
-		RString sDefaultMetricPath = GetMetricsIniPath( SpecialFiles::BASE_THEME_NAME );
-		
+		}
+
+		RString sCurMetricPath = GetMetricsIniPath(m_sCurThemeName);
+		RString sDefaultMetricPath = GetMetricsIniPath(SpecialFiles::BASE_THEME_NAME);
+
 		RString sType;
-		if( &ini == &g_pLoadedThemeData->iniStrings )
+		if (&ini == &g_pLoadedThemeData->iniStrings)
+		{
 			sType = "String";
-		else if( &ini == &g_pLoadedThemeData->iniMetrics )
+		}
+		else if (&ini == &g_pLoadedThemeData->iniMetrics)
+		{
 			sType = "Metric";
+		}
 		else
+		{
 			FAIL_M("");
-		
-		RString sMessage = ssprintf( "%s \"%s::%s\" is missing.  Correct this and click Retry, or Cancel to break.",
-			sType.c_str(), 
-			sMetricsGroup.c_str(), 
-			sValueName.c_str() );
-			
-		switch( Dialog::AbortRetryIgnore(sMessage) )
+		}
+
+		RString sMessage = ssprintf("%s \"%s::%s\" is missing.  Correct this and click Retry, or Cancel to break.",
+		                            sType.c_str(),
+		                            sMetricsGroup.c_str(),
+		                            sValueName.c_str());
+
+		switch (Dialog::AbortRetryIgnore(sMessage))
 		{
 			case Dialog::abort:
-				{
-					RageException::Throw( "%s \"%s::%s\" could not be found in \"%s\"' or \"%s\".", 
-						sType.c_str(),
-						sMetricsGroup.c_str(), 
-						sValueName.c_str(), 
-						sCurMetricPath.c_str(), 
-						sDefaultMetricPath.c_str() );
-				}
+			{
+				RageException::Throw("%s \"%s::%s\" could not be found in \"%s\"' or \"%s\".",
+				                     sType.c_str(),
+				                     sMetricsGroup.c_str(),
+				                     sValueName.c_str(),
+				                     sCurMetricPath.c_str(),
+				                     sDefaultMetricPath.c_str());
+			}
 			case Dialog::retry:
 				ReloadMetrics();
 				continue;
 			case Dialog::ignore:
-				LOG->UserLog( 
-					sType, 
-					sMetricsGroup + "::" + sValueName,
-					"could not be found in \"%s\" or \"%s\".",
-					sCurMetricPath.c_str(), 
-					sDefaultMetricPath.c_str() );
+				LOG->UserLog(
+				        sType,
+				        sMetricsGroup + "::" + sValueName,
+				        "could not be found in \"%s\" or \"%s\".",
+				        sCurMetricPath.c_str(),
+				        sDefaultMetricPath.c_str());
 				return RString();
 			default:
 				ASSERT(0);
@@ -966,236 +1059,246 @@ RString ThemeManager::GetMetricRaw( const IniFile &ini, const RString &sMetricsG
 }
 
 template<typename T>
-void GetAndConvertMetric( const RString &sMetricsGroup, const RString &sValueName, T &out )
+void GetAndConvertMetric(const RString &sMetricsGroup, const RString &sValueName, T &out)
 {
 	Lua *L = LUA->Get();
 
-	THEME->PushMetric( L, sMetricsGroup, sValueName );
-	LuaHelpers::FromStack( L, out, -1 );
-	lua_pop( L, 1 );
+	THEME->PushMetric(L, sMetricsGroup, sValueName);
+	LuaHelpers::FromStack(L, out, -1);
+	lua_pop(L, 1);
 
 	LUA->Release(L);
 }
 
 /* Get a string metric. */
-RString ThemeManager::GetMetric( const RString &sMetricsGroup, const RString &sValueName )
+RString ThemeManager::GetMetric(const RString &sMetricsGroup, const RString &sValueName)
 {
 	RString sRet;
-	GetAndConvertMetric( sMetricsGroup, sValueName, sRet );
+	GetAndConvertMetric(sMetricsGroup, sValueName, sRet);
 	return sRet;
 }
 
-int ThemeManager::GetMetricI( const RString &sMetricsGroup, const RString &sValueName )
+int ThemeManager::GetMetricI(const RString &sMetricsGroup, const RString &sValueName)
 {
 	int iRet = 0;
-	GetAndConvertMetric( sMetricsGroup, sValueName, iRet );
+	GetAndConvertMetric(sMetricsGroup, sValueName, iRet);
 	return iRet;
 }
 
-float ThemeManager::GetMetricF( const RString &sMetricsGroup, const RString &sValueName )
+float ThemeManager::GetMetricF(const RString &sMetricsGroup, const RString &sValueName)
 {
 	float fRet = 0;
-	GetAndConvertMetric( sMetricsGroup, sValueName, fRet );
+	GetAndConvertMetric(sMetricsGroup, sValueName, fRet);
 	return fRet;
 }
 
-bool ThemeManager::GetMetricB( const RString &sMetricsGroup, const RString &sValueName )
+bool ThemeManager::GetMetricB(const RString &sMetricsGroup, const RString &sValueName)
 {
 	bool bRet = 0;
-	GetAndConvertMetric( sMetricsGroup, sValueName, bRet );
+	GetAndConvertMetric(sMetricsGroup, sValueName, bRet);
 	return bRet;
 }
 
-RageColor ThemeManager::GetMetricC( const RString &sMetricsGroup, const RString &sValueName )
+RageColor ThemeManager::GetMetricC(const RString &sMetricsGroup, const RString &sValueName)
 {
 	RageColor ret;
-	GetAndConvertMetric( sMetricsGroup, sValueName, ret );
+	GetAndConvertMetric(sMetricsGroup, sValueName, ret);
 	return ret;
 }
 
-LuaReference ThemeManager::GetMetricR( const RString &sMetricsGroup, const RString &sValueName )
+LuaReference ThemeManager::GetMetricR(const RString &sMetricsGroup, const RString &sValueName)
 {
 	LuaReference ref;
-	GetMetric( sMetricsGroup, sValueName, ref );
+	GetMetric(sMetricsGroup, sValueName, ref);
 	return ref;
 }
 
-void ThemeManager::PushMetric( Lua *L, const RString &sMetricsGroup, const RString &sValueName )
+void ThemeManager::PushMetric(Lua *L, const RString &sMetricsGroup, const RString &sValueName)
 {
-	RString sValue = GetMetricRaw( g_pLoadedThemeData->iniMetrics, sMetricsGroup, sValueName );
+	RString sValue = GetMetricRaw(g_pLoadedThemeData->iniMetrics, sMetricsGroup, sValueName);
 
-	RString sName = ssprintf( "%s::%s", sMetricsGroup.c_str(), sValueName.c_str() );
-	if( EndsWith(sValueName, "Command") )
+	RString sName = ssprintf("%s::%s", sMetricsGroup.c_str(), sValueName.c_str());
+	if (EndsWith(sValueName, "Command"))
 	{
-		LuaHelpers::ParseCommandList( L, sValue, sName );
+		LuaHelpers::ParseCommandList(L, sValue, sName);
 	}
 	else
 	{
 		// Remove unary +, eg. "+50"; Lua doesn't support that.
-		if( sValue.size() >= 1 && sValue[0] == '+' )
-			sValue.erase( 0, 1 );
+		if (sValue.size() >= 1 && sValue[0] == '+')
+		{
+			sValue.erase(0, 1);
+		}
 
-		LuaHelpers::RunExpression( L, sValue, sName );
+		LuaHelpers::RunExpression(L, sValue, sName);
 	}
 }
 
-void ThemeManager::GetMetric( const RString &sMetricsGroup, const RString &sValueName, LuaReference &valueOut )
+void ThemeManager::GetMetric(const RString &sMetricsGroup, const RString &sValueName, LuaReference &valueOut)
 {
 	Lua *L = LUA->Get();
-	PushMetric( L, sMetricsGroup, sValueName );
-	valueOut.SetFromStack( L );
-	LUA->Release( L );
+	PushMetric(L, sMetricsGroup, sValueName);
+	valueOut.SetFromStack(L);
+	LUA->Release(L);
 }
 
 #if !defined(SMPACKAGE)
-apActorCommands ThemeManager::GetMetricA( const RString &sMetricsGroup, const RString &sValueName )
+apActorCommands ThemeManager::GetMetricA(const RString &sMetricsGroup, const RString &sValueName)
 {
 	LuaReference *pRef = new LuaReference;
-	GetMetric( sMetricsGroup, sValueName, *pRef );
-	return apActorCommands( pRef );
+	GetMetric(sMetricsGroup, sValueName, *pRef);
+	return apActorCommands(pRef);
 }
 #endif
 
-void ThemeManager::EvaluateString( RString &sText )
+void ThemeManager::EvaluateString(RString &sText)
 {
-	FontCharAliases::ReplaceMarkers( sText );
+	FontCharAliases::ReplaceMarkers(sText);
 }
 
 RString ThemeManager::GetNextTheme()
 {
 	vector<RString> as;
-	GetThemeNames( as );
+	GetThemeNames(as);
 	unsigned i;
-	for( i=0; i<as.size(); i++ )
-		if( as[i].CompareNoCase(m_sCurThemeName)==0 )
+	for (i = 0; i < as.size(); i++)
+		if (as[i].CompareNoCase(m_sCurThemeName) == 0)
+		{
 			break;
-	int iNewIndex = (i+1)%as.size();
+		}
+	int iNewIndex = (i + 1) % as.size();
 	return as[iNewIndex];
 }
 
 RString ThemeManager::GetNextSelectableTheme()
 {
 	vector<RString> as;
-	GetSelectableThemeNames( as );
+	GetSelectableThemeNames(as);
 	unsigned i;
-	for( i=0; i<as.size(); i++ )
-		if( as[i].CompareNoCase(m_sCurThemeName)==0 )
+	for (i = 0; i < as.size(); i++)
+		if (as[i].CompareNoCase(m_sCurThemeName) == 0)
+		{
 			break;
-	int iNewIndex = (i+1)%as.size();
+		}
+	int iNewIndex = (i + 1) % as.size();
 	return as[iNewIndex];
 }
 
-void ThemeManager::GetLanguagesForTheme( const RString &sThemeName, vector<RString>& asLanguagesOut )
+void ThemeManager::GetLanguagesForTheme(const RString &sThemeName, vector<RString>& asLanguagesOut)
 {
 	RString sLanguageDir = GetThemeDirFromName(sThemeName) + SpecialFiles::LANGUAGES_SUBDIR;
 	vector<RString> as;
-	GetDirListing( sLanguageDir + "*.ini", as );
-	
-	FOREACH_CONST( RString, as, s )
+	GetDirListing(sLanguageDir + "*.ini", as);
+
+	FOREACH_CONST(RString, as, s)
 	{
 		// ignore metrics.ini
-		if( s->CompareNoCase(SpecialFiles::METRICS_FILE)==0 )
+		if (s->CompareNoCase(SpecialFiles::METRICS_FILE) == 0)
+		{
 			continue;
+		}
 
 		// Ignore filenames with a space.  These are optional language inis that probably came from a mounted package.
-		if( s->find(" ") != RString::npos )
+		if (s->find(" ") != RString::npos)
+		{
 			continue;
+		}
 
 		// strip ".ini"
-		RString s2 = s->Left( s->size()-4 );
+		RString s2 = s->Left(s->size() - 4);
 
-		asLanguagesOut.push_back( s2 );
+		asLanguagesOut.push_back(s2);
 	}
 }
 
-RString ThemeManager::GetLanguageIniPath( const RString &sThemeName, const RString &sLanguage )
+RString ThemeManager::GetLanguageIniPath(const RString &sThemeName, const RString &sLanguage)
 {
 	return GetThemeDirFromName(sThemeName) + SpecialFiles::LANGUAGES_SUBDIR + sLanguage + ".ini";
 }
 
-void ThemeManager::GetOptionalLanguageIniPaths( vector<RString> &vsPathsOut, const RString &sThemeName, const RString &sLanguage )
+void ThemeManager::GetOptionalLanguageIniPaths(vector<RString> &vsPathsOut, const RString &sThemeName, const RString &sLanguage)
 {
 	// optional ini names look like: "en PackageName.ini"
-	GetDirListing( GetThemeDirFromName(sThemeName) + SpecialFiles::LANGUAGES_SUBDIR + sLanguage + " *.ini", vsPathsOut, false, true );
+	GetDirListing(GetThemeDirFromName(sThemeName) + SpecialFiles::LANGUAGES_SUBDIR + sLanguage + " *.ini", vsPathsOut, false, true);
 }
 
-void ThemeManager::GetOptionNames( vector<RString>& AddTo )
+void ThemeManager::GetOptionNames(vector<RString>& AddTo)
 {
-	const XNode *cur = g_pLoadedThemeData->iniStrings.GetChild( "OptionNames" );
-	if( cur )
+	const XNode *cur = g_pLoadedThemeData->iniStrings.GetChild("OptionNames");
+	if (cur)
 	{
-		FOREACH_CONST_Attr( cur, p )
-			AddTo.push_back( p->first );
+		FOREACH_CONST_Attr(cur, p)
+		AddTo.push_back(p->first);
 	}
 }
 
-static RString PseudoLocalize( RString s )
+static RString PseudoLocalize(RString s)
 {
-	s.Replace( "a", "àá" );
-	s.Replace( "A", "ÀÀ" );
-	s.Replace( "e", "éé" );
-	s.Replace( "E", "ÉÉ" );
-	s.Replace( "i", "íí" );
-	s.Replace( "I", "ÍÍ" );
-	s.Replace( "o", "óó" );
-	s.Replace( "O", "ÓÓ" );
-	s.Replace( "u", "üü" );
-	s.Replace( "U", "ÜÜ" );
-	s.Replace( "n", "ñ" );
-	s.Replace( "N", "Ñ" );
-	s.Replace( "c", "ç" );
-	s.Replace( "C", "Ç" );
+	s.Replace("a", "àá");
+	s.Replace("A", "ÀÀ");
+	s.Replace("e", "éé");
+	s.Replace("E", "ÉÉ");
+	s.Replace("i", "íí");
+	s.Replace("I", "ÍÍ");
+	s.Replace("o", "óó");
+	s.Replace("O", "ÓÓ");
+	s.Replace("u", "üü");
+	s.Replace("U", "ÜÜ");
+	s.Replace("n", "ñ");
+	s.Replace("N", "Ñ");
+	s.Replace("c", "ç");
+	s.Replace("C", "Ç");
 	// transformations that help expose punctuation assumptions
 	//s.Replace( ":", " :" );	// this messes up "::" help text tip separator markers
-	s.Replace( "?", " ?" );
-	s.Replace( "!", " !" );
+	s.Replace("?", " ?");
+	s.Replace("!", " !");
 
 	return s;
 }
 
-RString ThemeManager::GetString( const RString &sMetricsGroup, const RString &sValueName_ )
+RString ThemeManager::GetString(const RString &sMetricsGroup, const RString &sValueName_)
 {
 	RString sValueName = sValueName_;
 
 	// TODO: Are there escape rules for this?
-	DEBUG_ASSERT( sValueName.find('=') == sValueName.npos );
+	DEBUG_ASSERT(sValueName.find('=') == sValueName.npos);
 
 	// TODO: Move this escaping into IniFile?
-	sValueName.Replace( "\r\n", "\\n" );
-	sValueName.Replace( "\n", "\\n" );
+	sValueName.Replace("\r\n", "\\n");
+	sValueName.Replace("\n", "\\n");
 
-	ASSERT( g_pLoadedThemeData );
-	RString s = GetMetricRaw( g_pLoadedThemeData->iniStrings, sMetricsGroup, sValueName );
-	FontCharAliases::ReplaceMarkers( s );
+	ASSERT(g_pLoadedThemeData);
+	RString s = GetMetricRaw(g_pLoadedThemeData->iniStrings, sMetricsGroup, sValueName);
+	FontCharAliases::ReplaceMarkers(s);
 
 	// Don't EvalulateString.  Strings are raw and shouldn't allow Lua.
 	//EvaluateString( s );
 
-	s.Replace( "\\n", "\n" );
+	s.Replace("\\n", "\n");
 
-	if( m_bPseudoLocalize )
+	if (m_bPseudoLocalize)
 	{
 		// pseudolocalize ignoring replace markers.  e.g.: "%{steps} steps: %{author}"
 		RString sTranslated;
 
-		for( ; true; )
+		for (; true;)
 		{
-			RString::size_type pos = s.find( "%{" );
-			if( pos == s.npos )
+			RString::size_type pos = s.find("%{");
+			if (pos == s.npos)
 			{
-				sTranslated += PseudoLocalize( s );
+				sTranslated += PseudoLocalize(s);
 				s = RString();
 				break;
 			}
 			else
 			{
-				sTranslated += PseudoLocalize( s.substr(0,pos) );
-				s.erase( s.begin(), s.begin()+pos );
+				sTranslated += PseudoLocalize(s.substr(0, pos));
+				s.erase(s.begin(), s.begin() + pos);
 			}
-			
-			pos = s.find( "}" );
-			sTranslated += s.substr(0,pos+1);
-			s.erase( s.begin(), s.begin()+pos+1 );
+
+			pos = s.find("}");
+			sTranslated += s.substr(0, pos + 1);
+			s.erase(s.begin(), s.begin() + pos + 1);
 		}
 
 		s = sTranslated;
@@ -1204,27 +1307,31 @@ RString ThemeManager::GetString( const RString &sMetricsGroup, const RString &sV
 	return s;
 }
 
-void ThemeManager::GetMetricsThatBeginWith( const RString &sMetricsGroup_, const RString &sValueName, set<RString> &vsValueNamesOut )
+void ThemeManager::GetMetricsThatBeginWith(const RString &sMetricsGroup_, const RString &sValueName, set<RString> &vsValueNamesOut)
 {
-	RString sMetricsGroup( sMetricsGroup_ );
-	while( !sMetricsGroup.empty() )
+	RString sMetricsGroup(sMetricsGroup_);
+	while (!sMetricsGroup.empty())
 	{
-		const XNode *cur = g_pLoadedThemeData->iniMetrics.GetChild( sMetricsGroup );
-		if( cur != NULL )
+		const XNode *cur = g_pLoadedThemeData->iniMetrics.GetChild(sMetricsGroup);
+		if (cur != NULL)
 		{
 			// Iterate over all metrics that match.
-			for( XAttrs::const_iterator j = cur->m_attrs.lower_bound( sValueName ); j != cur->m_attrs.end(); ++j )
+			for (XAttrs::const_iterator j = cur->m_attrs.lower_bound(sValueName); j != cur->m_attrs.end(); ++j)
 			{
 				const RString &sv = j->first;
-				if( sv.Left(sValueName.size()) == sValueName )
-					vsValueNamesOut.insert( sv );
+				if (sv.Left(sValueName.size()) == sValueName)
+				{
+					vsValueNamesOut.insert(sv);
+				}
 				else	// we passed the last metric that matched sValueName
+				{
 					break;
+				}
 			}
 		}
 
 		// put the fallback (if any) in sMetricsGroup
-		sMetricsGroup = GetMetricsGroupFallback( sMetricsGroup );
+		sMetricsGroup = GetMetricsGroupFallback(sMetricsGroup);
 	}
 }
 
@@ -1237,74 +1344,118 @@ RString ThemeManager::GetBlankGraphicPath()
 // lua start
 #include "LuaBinding.h"
 
-/** @brief Allow Lua to have access to the ThemeManager. */ 
+/** @brief Allow Lua to have access to the ThemeManager. */
 class LunaThemeManager: public Luna<ThemeManager>
 {
 public:
-	static int ReloadMetrics( T* p, lua_State *L )		{ p->ReloadMetrics(); return 0; }
+	static int ReloadMetrics(T* p, lua_State *L)
+	{
+		p->ReloadMetrics();
+		return 0;
+	}
 
-	static int GetMetric( T* p, lua_State *L )			{ p->PushMetric( L, SArg(1),SArg(2) ); return 1; }
-	static int GetString( T* p, lua_State *L )			{ lua_pushstring(L, p->GetString(SArg(1),SArg(2)) ); return 1; }
-	static int GetPathInfoB( T* p, lua_State *L )
+	static int GetMetric(T* p, lua_State *L)
+	{
+		p->PushMetric(L, SArg(1), SArg(2));
+		return 1;
+	}
+	static int GetString(T* p, lua_State *L)
+	{
+		lua_pushstring(L, p->GetString(SArg(1), SArg(2)));
+		return 1;
+	}
+	static int GetPathInfoB(T* p, lua_State *L)
 	{
 		ThemeManager::PathInfo pi;
-		p->GetPathInfo( pi, EC_BGANIMATIONS, SArg(1), SArg(2) );
+		p->GetPathInfo(pi, EC_BGANIMATIONS, SArg(1), SArg(2));
 		lua_pushstring(L, pi.sResolvedPath);
 		lua_pushstring(L, pi.sMatchingMetricsGroup);
 		lua_pushstring(L, pi.sMatchingElement);
 		return 3;
 	}
-	static int GetPathF( T* p, lua_State *L )			{ lua_pushstring(L, p->GetPathF(SArg(1),SArg(2)) ); return 1; }
-	static int GetPathG( T* p, lua_State *L )			{ lua_pushstring(L, p->GetPathG(SArg(1),SArg(2)) ); return 1; }
-	static int GetPathB( T* p, lua_State *L )			{ lua_pushstring(L, p->GetPathB(SArg(1),SArg(2)) ); return 1; }
-	static int GetPathS( T* p, lua_State *L )			{ lua_pushstring(L, p->GetPathS(SArg(1),SArg(2)) ); return 1; }
-	static int GetPathO( T* p, lua_State *L )			{ lua_pushstring(L, p->GetPathO(SArg(1),SArg(2)) ); return 1; }
+	static int GetPathF(T* p, lua_State *L)
+	{
+		lua_pushstring(L, p->GetPathF(SArg(1), SArg(2)));
+		return 1;
+	}
+	static int GetPathG(T* p, lua_State *L)
+	{
+		lua_pushstring(L, p->GetPathG(SArg(1), SArg(2)));
+		return 1;
+	}
+	static int GetPathB(T* p, lua_State *L)
+	{
+		lua_pushstring(L, p->GetPathB(SArg(1), SArg(2)));
+		return 1;
+	}
+	static int GetPathS(T* p, lua_State *L)
+	{
+		lua_pushstring(L, p->GetPathS(SArg(1), SArg(2)));
+		return 1;
+	}
+	static int GetPathO(T* p, lua_State *L)
+	{
+		lua_pushstring(L, p->GetPathO(SArg(1), SArg(2)));
+		return 1;
+	}
 
-	static int GetSelectableThemeNames( T* p, lua_State *L )
+	static int GetSelectableThemeNames(T* p, lua_State *L)
 	{
 		// pushes a table of theme folders from GetSelectableThemeNames()
 		//lua_pushnumber(L, p->GetNumSelectableThemes() );
 		vector<RString> sThemes;
 		p->GetSelectableThemeNames(sThemes);
-		LuaHelpers::CreateTableFromArray<RString>( sThemes, L );
+		LuaHelpers::CreateTableFromArray<RString>(sThemes, L);
 		return 1;
 	}
 
-	static int GetNumSelectableThemes( T* p, lua_State *L )		{ lua_pushnumber(L, p->GetNumSelectableThemes() ); return 1; }
+	static int GetNumSelectableThemes(T* p, lua_State *L)
+	{
+		lua_pushnumber(L, p->GetNumSelectableThemes());
+		return 1;
+	}
 
-	DEFINE_METHOD( GetCurrentThemeDirectory, GetCurThemeDir() );
-	DEFINE_METHOD( GetCurLanguage, GetCurLanguage() );
-	static int GetThemeDisplayName( T* p, lua_State *L )			{  lua_pushstring(L, p->GetThemeDisplayName(p->GetCurThemeName())); return 1; }
-	static int GetThemeAuthor( T* p, lua_State *L )			{  lua_pushstring(L, p->GetThemeAuthor(p->GetCurThemeName())); return 1; }
+	DEFINE_METHOD(GetCurrentThemeDirectory, GetCurThemeDir());
+	DEFINE_METHOD(GetCurLanguage, GetCurLanguage());
+	static int GetThemeDisplayName(T* p, lua_State *L)
+	{
+		lua_pushstring(L, p->GetThemeDisplayName(p->GetCurThemeName()));
+		return 1;
+	}
+	static int GetThemeAuthor(T* p, lua_State *L)
+	{
+		lua_pushstring(L, p->GetThemeAuthor(p->GetCurThemeName()));
+		return 1;
+	}
 
 	LunaThemeManager()
 	{
-		ADD_METHOD( ReloadMetrics );
-		ADD_METHOD( GetMetric );
-		ADD_METHOD( GetString );
-		ADD_METHOD( GetPathInfoB );
-		ADD_METHOD( GetPathF );
-		ADD_METHOD( GetPathG );
-		ADD_METHOD( GetPathB );
-		ADD_METHOD( GetPathS );
-		ADD_METHOD( GetPathO );
-		ADD_METHOD( GetSelectableThemeNames );
-		ADD_METHOD( GetNumSelectableThemes );
-		ADD_METHOD( GetCurrentThemeDirectory );
-		ADD_METHOD( GetCurLanguage );
-		ADD_METHOD( GetThemeDisplayName );
-		ADD_METHOD( GetThemeAuthor );
+		ADD_METHOD(ReloadMetrics);
+		ADD_METHOD(GetMetric);
+		ADD_METHOD(GetString);
+		ADD_METHOD(GetPathInfoB);
+		ADD_METHOD(GetPathF);
+		ADD_METHOD(GetPathG);
+		ADD_METHOD(GetPathB);
+		ADD_METHOD(GetPathS);
+		ADD_METHOD(GetPathO);
+		ADD_METHOD(GetSelectableThemeNames);
+		ADD_METHOD(GetNumSelectableThemes);
+		ADD_METHOD(GetCurrentThemeDirectory);
+		ADD_METHOD(GetCurLanguage);
+		ADD_METHOD(GetThemeDisplayName);
+		ADD_METHOD(GetThemeAuthor);
 	}
 };
 
-LUA_REGISTER_CLASS( ThemeManager )
+LUA_REGISTER_CLASS(ThemeManager)
 // lua end
 
 
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -1314,7 +1465,7 @@ LUA_REGISTER_CLASS( ThemeManager )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

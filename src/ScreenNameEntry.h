@@ -12,24 +12,30 @@ class ScreenNameEntry : public ScreenWithMenuElements
 public:
 	ScreenNameEntry();
 	virtual void Init();
-	virtual void Update( float fDeltaTime );
-	virtual void Input( const InputEventPlus &input );
-	virtual void HandleScreenMessage( const ScreenMessage SM );
+	virtual void Update(float fDeltaTime);
+	virtual void Input(const InputEventPlus &input);
+	virtual void HandleScreenMessage(const ScreenMessage SM);
 
-	virtual void MenuStart( const InputEventPlus &input );
+	virtual void MenuStart(const InputEventPlus &input);
 private:
 	class ScrollingText : public Actor
 	{
 	public:
 		ScrollingText() : m_bDone(true) { }
-		inline void SetDone() { m_bDone = true; }
-		void Init( const RString &sName, const vector<float> &xs );
-		virtual bool EarlyAbortDraw() const { return m_bDone; }
+		inline void SetDone()
+		{
+			m_bDone = true;
+		}
+		void Init(const RString &sName, const vector<float> &xs);
+		virtual bool EarlyAbortDraw() const
+		{
+			return m_bDone;
+		}
 		virtual void DrawPrimitives();
-		char GetClosestChar( float fFakeBeat ) const;
+		char GetClosestChar(float fFakeBeat) const;
 
 	private:
-		float GetClosestCharYOffset( float fFakeBeat ) const;
+		float GetClosestCharYOffset(float fFakeBeat) const;
 
 		vector<float>	m_Xs;
 		bool		m_bDone;
@@ -58,7 +64,7 @@ private:
 /*
  * (c) 2001-2006 Chris Danford, Steve Checkoway
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -68,7 +74,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

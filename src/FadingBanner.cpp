@@ -11,7 +11,7 @@
 #include "ThemeMetric.h"
 #include "ActorUtil.h"
 
-REGISTER_ACTOR_CLASS( FadingBanner );
+REGISTER_ACTOR_CLASS(FadingBanner);
 
 /* Allow fading from one banner to another. We can handle two fades at once;
  * this is used to fade from an old banner to a low-quality banner to a high-
@@ -24,30 +24,34 @@ FadingBanner::FadingBanner()
 	m_bMovingFast = false;
 	m_bSkipNextBannerUpdate = false;
 	m_iIndexLatest = 0;
-	for( int i=0; i<NUM_BANNERS; i++ )
+	for (int i = 0; i < NUM_BANNERS; i++)
 	{
-		m_Banner[i].SetName( "Banner" );
-		ActorUtil::LoadAllCommandsAndOnCommand( m_Banner[i], "FadingBanner" );
-		this->AddChild( &m_Banner[i] );
+		m_Banner[i].SetName("Banner");
+		ActorUtil::LoadAllCommandsAndOnCommand(m_Banner[i], "FadingBanner");
+		this->AddChild(&m_Banner[i]);
 	}
 }
 
-void FadingBanner::ScaleToClipped( float fWidth, float fHeight )
+void FadingBanner::ScaleToClipped(float fWidth, float fHeight)
 {
-	for( int i=0; i<NUM_BANNERS; i++ )
-		m_Banner[i].ScaleToClipped( fWidth, fHeight );
+	for (int i = 0; i < NUM_BANNERS; i++)
+	{
+		m_Banner[i].ScaleToClipped(fWidth, fHeight);
+	}
 }
 
-void FadingBanner::UpdateInternal( float fDeltaTime )
+void FadingBanner::UpdateInternal(float fDeltaTime)
 {
 	// update children manually
 	// ActorFrame::UpdateInternal( fDeltaTime );
-	Actor::UpdateInternal( fDeltaTime );
+	Actor::UpdateInternal(fDeltaTime);
 
-	if( !m_bSkipNextBannerUpdate )
+	if (!m_bSkipNextBannerUpdate)
 	{
-		for( int i = 0; i < NUM_BANNERS; ++i )
-			m_Banner[i].Update( fDeltaTime );
+		for (int i = 0; i < NUM_BANNERS; ++i)
+		{
+			m_Banner[i].Update(fDeltaTime);
+		}
 	}
 
 	m_bSkipNextBannerUpdate = false;
@@ -56,20 +60,20 @@ void FadingBanner::UpdateInternal( float fDeltaTime )
 void FadingBanner::DrawPrimitives()
 {
 	// draw manually
-//	ActorFrame::DrawPrimitives();
+	//	ActorFrame::DrawPrimitives();
 
 	// Render the latest banner first.
-	for( int i = 0; i < NUM_BANNERS; ++i )
+	for (int i = 0; i < NUM_BANNERS; ++i)
 	{
 		int index = m_iIndexLatest - i;
-		wrap( index, NUM_BANNERS );
+		wrap(index, NUM_BANNERS);
 		m_Banner[index].Draw();
 	}
 }
 
-void FadingBanner::Load( RageTextureID ID, bool bLowResToHighRes )
+void FadingBanner::Load(RageTextureID ID, bool bLowResToHighRes)
 {
-	BeforeChange( bLowResToHighRes );
+	BeforeChange(bLowResToHighRes);
 	m_Banner[m_iIndexLatest].Load(ID);
 
 	/* XXX: Hack to keep movies from updating multiple times.
@@ -78,33 +82,41 @@ void FadingBanner::Load( RageTextureID ID, bool bLowResToHighRes )
 	 * wild. If we wanted to support them, then perhaps we should use an
 	 * all-black texture for the low quality texture. */
 	RageTexture *pTexture = m_Banner[m_iIndexLatest].GetTexture();
-	if( !pTexture || !pTexture->IsAMovie() )
+	if (!pTexture || !pTexture->IsAMovie())
+	{
 		return;
-	m_Banner[m_iIndexLatest].SetSecondsIntoAnimation( 0.f );
-	for( int i = 1; i < NUM_BANNERS; ++i )
+	}
+	m_Banner[m_iIndexLatest].SetSecondsIntoAnimation(0.f);
+	for (int i = 1; i < NUM_BANNERS; ++i)
 	{
 		int index = m_iIndexLatest - i;
-		wrap( index, NUM_BANNERS );
-		if( m_Banner[index].GetTexturePath() == ID.filename )
+		wrap(index, NUM_BANNERS);
+		if (m_Banner[index].GetTexturePath() == ID.filename)
+		{
 			m_Banner[index].UnloadTexture();
+		}
 	}
 }
 
 /* If bLowResToHighRes is true, we're fading from a low-res banner to the
  * corresponding high-res banner. */
-void FadingBanner::BeforeChange( bool bLowResToHighRes )
+void FadingBanner::BeforeChange(bool bLowResToHighRes)
 {
 	RString sCommand;
-	if( bLowResToHighRes )
+	if (bLowResToHighRes)
+	{
 		sCommand = "FadeFromCached";
+	}
 	else
+	{
 		sCommand = "FadeOff";
+	}
 
-	m_Banner[m_iIndexLatest].PlayCommand( sCommand );
+	m_Banner[m_iIndexLatest].PlayCommand(sCommand);
 	++m_iIndexLatest;
-	wrap( m_iIndexLatest, NUM_BANNERS );
+	wrap(m_iIndexLatest, NUM_BANNERS);
 
-	m_Banner[m_iIndexLatest].PlayCommand( "ResetFade" );
+	m_Banner[m_iIndexLatest].PlayCommand("ResetFade");
 
 	/* We're about to load a banner. It'll probably cause a frame skip or two.
 	 * Skip an update, so the fade-in doesn't skip. */
@@ -113,13 +125,15 @@ void FadingBanner::BeforeChange( bool bLowResToHighRes )
 
 /* If this returns true, a low-resolution banner was loaded, and the full-res
  * banner should be loaded later. */
-bool FadingBanner::LoadFromCachedBanner( const RString &path )
+bool FadingBanner::LoadFromCachedBanner(const RString &path)
 {
 	// If we're already on the given banner, don't fade again.
-	if( path != "" && m_Banner[m_iIndexLatest].GetTexturePath() == path )
+	if (path != "" && m_Banner[m_iIndexLatest].GetTexturePath() == path)
+	{
 		return false;
+	}
 
-	if( path == "" )
+	if (path == "")
 	{
 		LoadFallback();
 		return false;
@@ -130,17 +144,17 @@ bool FadingBanner::LoadFromCachedBanner( const RString &path )
 
 	RageTextureID ID;
 	bool bLowRes = (PREFSMAN->m_BannerCache != BNCACHE_FULL);
-	if( !bLowRes )
+	if (!bLowRes)
 	{
-		ID = Sprite::SongBannerTexture( path );
+		ID = Sprite::SongBannerTexture(path);
 	}
 	else
 	{
 		// Try to load the low quality version.
-		ID = BANNERCACHE->LoadCachedBanner( path );
+		ID = BANNERCACHE->LoadCachedBanner(path);
 	}
 
-	if( !TEXTUREMAN->IsTextureRegistered(ID) )
+	if (!TEXTUREMAN->IsTextureRegistered(ID))
 	{
 		/* Oops. We couldn't load a banner quickly. We can load the actual
 		 * banner, but that's slow, so we don't want to do that when we're moving
@@ -148,25 +162,31 @@ bool FadingBanner::LoadFromCachedBanner( const RString &path )
 		 * that's there (or load a "moving fast" banner). Once we settle down,
 		 * we'll get called again and load the real banner. */
 
-		if( m_bMovingFast )
+		if (m_bMovingFast)
+		{
 			return false;
+		}
 
-		if( IsAFile(path) )
-			Load( path );
+		if (IsAFile(path))
+		{
+			Load(path);
+		}
 		else
+		{
 			LoadFallback();
+		}
 
 		return false;
 	}
 
-	Load( ID );
+	Load(ID);
 
 	return bLowRes;
 }
 
-void FadingBanner::LoadFromSong( const Song* pSong )
+void FadingBanner::LoadFromSong(const Song* pSong)
 {
-	if( pSong == NULL )
+	if (pSong == NULL)
 	{
 		LoadFallback();
 		return;
@@ -175,10 +195,14 @@ void FadingBanner::LoadFromSong( const Song* pSong )
 	/* Don't call HasBanner. That'll do disk access and cause the music wheel
 	 * to skip. */
 	RString sPath = pSong->GetBannerPath();
-	if( sPath.empty() )
+	if (sPath.empty())
+	{
 		LoadFallback();
+	}
 	else
-		LoadFromCachedBanner( sPath );
+	{
+		LoadFromCachedBanner(sPath);
+	}
 }
 
 void FadingBanner::LoadMode()
@@ -187,15 +211,15 @@ void FadingBanner::LoadMode()
 	m_Banner[m_iIndexLatest].LoadMode();
 }
 
-void FadingBanner::LoadFromSongGroup( RString sSongGroup )
+void FadingBanner::LoadFromSongGroup(RString sSongGroup)
 {
-	const RString sGroupBannerPath = SONGMAN->GetSongGroupBannerPath( sSongGroup );
-	LoadFromCachedBanner( sGroupBannerPath );
+	const RString sGroupBannerPath = SONGMAN->GetSongGroupBannerPath(sSongGroup);
+	LoadFromCachedBanner(sGroupBannerPath);
 }
 
-void FadingBanner::LoadFromCourse( const Course* pCourse )
+void FadingBanner::LoadFromCourse(const Course* pCourse)
 {
-	if( pCourse == NULL )
+	if (pCourse == NULL)
 	{
 		LoadFallback();
 		return;
@@ -204,39 +228,43 @@ void FadingBanner::LoadFromCourse( const Course* pCourse )
 	/* Don't call HasBanner. That'll do disk access and cause the music wheel
 	 * to skip. */
 	RString sPath = pCourse->GetBannerPath();
-	if( sPath.empty() )
+	if (sPath.empty())
+	{
 		LoadCourseFallback();
+	}
 	else
-		LoadFromCachedBanner( sPath );
+	{
+		LoadFromCachedBanner(sPath);
+	}
 }
 
-void FadingBanner::LoadIconFromCharacter( Character* pCharacter )
+void FadingBanner::LoadIconFromCharacter(Character* pCharacter)
 {
 	BeforeChange();
-	m_Banner[m_iIndexLatest].LoadIconFromCharacter( pCharacter );
+	m_Banner[m_iIndexLatest].LoadIconFromCharacter(pCharacter);
 }
 
-void FadingBanner::LoadBannerFromUnlockEntry( const UnlockEntry* pUE )
+void FadingBanner::LoadBannerFromUnlockEntry(const UnlockEntry* pUE)
 {
 	BeforeChange();
-	m_Banner[m_iIndexLatest].LoadBannerFromUnlockEntry( pUE );
+	m_Banner[m_iIndexLatest].LoadBannerFromUnlockEntry(pUE);
 }
 
 void FadingBanner::LoadRoulette()
 {
 	BeforeChange();
 	m_Banner[m_iIndexLatest].LoadRoulette();
-	m_Banner[m_iIndexLatest].PlayCommand( "Roulette" );
+	m_Banner[m_iIndexLatest].PlayCommand("Roulette");
 }
 
 void FadingBanner::LoadRandom()
 {
 	BeforeChange();
 	m_Banner[m_iIndexLatest].LoadRandom();
-	m_Banner[m_iIndexLatest].PlayCommand( "Random" );
+	m_Banner[m_iIndexLatest].PlayCommand("Random");
 }
 
-void FadingBanner::LoadFromSortOrder( SortOrder so )
+void FadingBanner::LoadFromSortOrder(SortOrder so)
 {
 	BeforeChange();
 	m_Banner[m_iIndexLatest].LoadFromSortOrder(so);
@@ -254,69 +282,113 @@ void FadingBanner::LoadCourseFallback()
 	m_Banner[m_iIndexLatest].LoadCourseFallback();
 }
 
-void FadingBanner::LoadCustom( RString sBanner )
+void FadingBanner::LoadCustom(RString sBanner)
 {
 	BeforeChange();
-	m_Banner[m_iIndexLatest].Load( THEME->GetPathG( "Banner", sBanner ) );
-	m_Banner[m_iIndexLatest].PlayCommand( sBanner );
+	m_Banner[m_iIndexLatest].Load(THEME->GetPathG("Banner", sBanner));
+	m_Banner[m_iIndexLatest].PlayCommand(sBanner);
 }
 
 // lua start
 #include "LuaBinding.h"
 
-/** @brief Allow Lua to have access to the FadingBanner. */ 
+/** @brief Allow Lua to have access to the FadingBanner. */
 class LunaFadingBanner: public Luna<FadingBanner>
 {
 public:
-	static int scaletoclipped( T* p, lua_State *L )			{ p->ScaleToClipped(FArg(1),FArg(2)); return 0; }
-	static int ScaleToClipped( T* p, lua_State *L )			{ p->ScaleToClipped(FArg(1),FArg(2)); return 0; }
-	static int LoadFromSong( T* p, lua_State *L )
-	{ 
-		if( lua_isnil(L,1) ) { p->LoadFromSong( NULL ); }
-		else { Song *pS = Luna<Song>::check(L,1); p->LoadFromSong( pS ); }
+	static int scaletoclipped(T* p, lua_State *L)
+	{
+		p->ScaleToClipped(FArg(1), FArg(2));
 		return 0;
 	}
-	static int LoadFromCourse( T* p, lua_State *L )
-	{ 
-		if( lua_isnil(L,1) ) { p->LoadFromCourse( NULL ); }
-		else { Course *pC = Luna<Course>::check(L,1); p->LoadFromCourse( pC ); }
+	static int ScaleToClipped(T* p, lua_State *L)
+	{
+		p->ScaleToClipped(FArg(1), FArg(2));
 		return 0;
 	}
-	static int LoadIconFromCharacter( T* p, lua_State *L )
-	{ 
-		if( lua_isnil(L,1) ) { p->LoadIconFromCharacter( NULL ); }
-		else { Character *pC = Luna<Character>::check(L,1); p->LoadIconFromCharacter( pC ); }
+	static int LoadFromSong(T* p, lua_State *L)
+	{
+		if (lua_isnil(L, 1))
+		{
+			p->LoadFromSong(NULL);
+		}
+		else
+		{
+			Song *pS = Luna<Song>::check(L, 1);
+			p->LoadFromSong(pS);
+		}
 		return 0;
 	}
-	static int LoadCardFromCharacter( T* p, lua_State *L )
-	{ 
-		if( lua_isnil(L,1) ) { p->LoadIconFromCharacter( NULL ); }
-		else { Character *pC = Luna<Character>::check(L,1); p->LoadIconFromCharacter( pC ); }
+	static int LoadFromCourse(T* p, lua_State *L)
+	{
+		if (lua_isnil(L, 1))
+		{
+			p->LoadFromCourse(NULL);
+		}
+		else
+		{
+			Course *pC = Luna<Course>::check(L, 1);
+			p->LoadFromCourse(pC);
+		}
 		return 0;
 	}
-	static int LoadFromSongGroup( T* p, lua_State *L )	{ p->LoadFromSongGroup( SArg(1) ); return 0; }
-	static int GetLatestIndex( T* p, lua_State *L ){ lua_pushnumber( L, p->GetLatestIndex() ); return 1; }
+	static int LoadIconFromCharacter(T* p, lua_State *L)
+	{
+		if (lua_isnil(L, 1))
+		{
+			p->LoadIconFromCharacter(NULL);
+		}
+		else
+		{
+			Character *pC = Luna<Character>::check(L, 1);
+			p->LoadIconFromCharacter(pC);
+		}
+		return 0;
+	}
+	static int LoadCardFromCharacter(T* p, lua_State *L)
+	{
+		if (lua_isnil(L, 1))
+		{
+			p->LoadIconFromCharacter(NULL);
+		}
+		else
+		{
+			Character *pC = Luna<Character>::check(L, 1);
+			p->LoadIconFromCharacter(pC);
+		}
+		return 0;
+	}
+	static int LoadFromSongGroup(T* p, lua_State *L)
+	{
+		p->LoadFromSongGroup(SArg(1));
+		return 0;
+	}
+	static int GetLatestIndex(T* p, lua_State *L)
+	{
+		lua_pushnumber(L, p->GetLatestIndex());
+		return 1;
+	}
 
 	LunaFadingBanner()
 	{
-		ADD_METHOD( scaletoclipped );
-		ADD_METHOD( ScaleToClipped );
-		ADD_METHOD( LoadFromSong );
-		ADD_METHOD( LoadFromSongGroup );
-		ADD_METHOD( LoadFromCourse );
-		ADD_METHOD( LoadIconFromCharacter );
-		ADD_METHOD( LoadCardFromCharacter );
-		ADD_METHOD( GetLatestIndex );
+		ADD_METHOD(scaletoclipped);
+		ADD_METHOD(ScaleToClipped);
+		ADD_METHOD(LoadFromSong);
+		ADD_METHOD(LoadFromSongGroup);
+		ADD_METHOD(LoadFromCourse);
+		ADD_METHOD(LoadIconFromCharacter);
+		ADD_METHOD(LoadCardFromCharacter);
+		ADD_METHOD(GetLatestIndex);
 	}
 };
 
-LUA_REGISTER_DERIVED_CLASS( FadingBanner, ActorFrame )
+LUA_REGISTER_DERIVED_CLASS(FadingBanner, ActorFrame)
 // lua end
 
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -326,7 +398,7 @@ LUA_REGISTER_DERIVED_CLASS( FadingBanner, ActorFrame )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

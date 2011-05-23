@@ -5,36 +5,40 @@
 #include "RageLog.h"
 #include "ScreenManager.h"
 
-REGISTER_SCREEN_CLASS( ScreenPackagesSSC );
+REGISTER_SCREEN_CLASS(ScreenPackagesSSC);
 
 void ScreenPackagesSSC::Init()
 {
 	ScreenWithMenuElements::Init();
 }
 
-void ScreenPackagesSSC::HandleScreenMessage( const ScreenMessage SM )
+void ScreenPackagesSSC::HandleScreenMessage(const ScreenMessage SM)
 {
-	if( SM == SM_GoToPrevScreen )
-		SCREENMAN->SetNewScreen( THEME->GetMetric (m_sName, "PrevScreen") );
-	else if( SM ==SM_GoToNextScreen )
-		SCREENMAN->SetNewScreen( THEME->GetMetric (m_sName, "NextScreen") );
+	if (SM == SM_GoToPrevScreen)
+	{
+		SCREENMAN->SetNewScreen(THEME->GetMetric(m_sName, "PrevScreen"));
+	}
+	else if (SM == SM_GoToNextScreen)
+	{
+		SCREENMAN->SetNewScreen(THEME->GetMetric(m_sName, "NextScreen"));
+	}
 
-	ScreenWithMenuElements::HandleScreenMessage( SM );
+	ScreenWithMenuElements::HandleScreenMessage(SM);
 }
 
-void ScreenPackagesSSC::Input( const InputEventPlus &input )
+void ScreenPackagesSSC::Input(const InputEventPlus &input)
 {
-	ScreenWithMenuElements::Input( input );
+	ScreenWithMenuElements::Input(input);
 }
 
-void ScreenPackagesSSC::MenuBack( const InputEventPlus &input )
+void ScreenPackagesSSC::MenuBack(const InputEventPlus &input)
 {
 	TweenOffScreen();
-	Cancel( SM_GoToPrevScreen );
-	ScreenWithMenuElements::MenuBack( input );
+	Cancel(SM_GoToPrevScreen);
+	ScreenWithMenuElements::MenuBack(input);
 }
 
-void ScreenPackagesSSC::Update( float fDeltaTime )
+void ScreenPackagesSSC::Update(float fDeltaTime)
 {
 	ScreenWithMenuElements::Update(fDeltaTime);
 }
@@ -44,7 +48,7 @@ void ScreenPackagesSSC::DrawPrimitives()
 	ScreenWithMenuElements::DrawPrimitives();
 }
 
-RString ScreenPackagesSSC::JSONParse( const RString &string_in )
+RString ScreenPackagesSSC::JSONParse(const RString &string_in)
 {
 	/* json++ stuff here */
 	return "";
@@ -53,7 +57,7 @@ RString ScreenPackagesSSC::JSONParse( const RString &string_in )
 /*
  * (c) 2009 Colby Klein
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -63,7 +67,7 @@ RString ScreenPackagesSSC::JSONParse( const RString &string_in )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

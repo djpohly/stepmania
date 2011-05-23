@@ -16,44 +16,50 @@
 
 void ScreenSelect::Init()
 {
-	IDLE_COMMENT_SECONDS.Load( m_sName, "IdleCommentSeconds" );
-	IDLE_TIMEOUT_SECONDS.Load( m_sName, "IdleTimeoutSeconds" );
-	ALLOW_DISABLED_PLAYER_INPUT.Load( m_sName, "AllowDisabledPlayerInput" );
+	IDLE_COMMENT_SECONDS.Load(m_sName, "IdleCommentSeconds");
+	IDLE_TIMEOUT_SECONDS.Load(m_sName, "IdleTimeoutSeconds");
+	ALLOW_DISABLED_PLAYER_INPUT.Load(m_sName, "AllowDisabledPlayerInput");
 
 	ScreenWithMenuElements::Init();
 
 	// Load messages to update on
-	split( UPDATE_ON_MESSAGE, ",", m_asSubscribedMessages );
-	for( unsigned i = 0; i < m_asSubscribedMessages.size(); ++i )
-		MESSAGEMAN->Subscribe( this, m_asSubscribedMessages[i] );
+	split(UPDATE_ON_MESSAGE, ",", m_asSubscribedMessages);
+	for (unsigned i = 0; i < m_asSubscribedMessages.size(); ++i)
+	{
+		MESSAGEMAN->Subscribe(this, m_asSubscribedMessages[i]);
+	}
 	// Subscribe to PlayerJoined, if not already.
-	if( !MESSAGEMAN->IsSubscribedToMessage(this, Message_PlayerJoined) )
-		this->SubscribeToMessage( Message_PlayerJoined );
+	if (!MESSAGEMAN->IsSubscribedToMessage(this, Message_PlayerJoined))
+	{
+		this->SubscribeToMessage(Message_PlayerJoined);
+	}
 
 	// Load choices
 	{
 		// Instead of using NUM_CHOICES, use a comma-separated list of choices.
-		// Each element in the list is a choice name. This level of indirection 
+		// Each element in the list is a choice name. This level of indirection
 		// makes it easier to add or remove items without having to change a
 		// bunch of indices.
 		vector<RString> asChoiceNames;
-		split( CHOICE_NAMES, ",", asChoiceNames, true );
+		split(CHOICE_NAMES, ",", asChoiceNames, true);
 
-		for( unsigned c=0; c<asChoiceNames.size(); c++ )
+		for (unsigned c = 0; c < asChoiceNames.size(); c++)
 		{
 			RString sChoiceName = asChoiceNames[c];
 
 			GameCommand mc;
-			mc.ApplyCommitsScreens( false );
+			mc.ApplyCommitsScreens(false);
 			mc.m_sName = sChoiceName;
-			Commands cmd = ParseCommands( CHOICE(sChoiceName) );
-			mc.Load( c, cmd );
-			m_aGameCommands.push_back( mc );
+			Commands cmd = ParseCommands(CHOICE(sChoiceName));
+			mc.Load(c, cmd);
+			m_aGameCommands.push_back(mc);
 		}
 	}
 
-	if( !m_aGameCommands.size() )
-		RageException::Throw( "Screen \"%s\" does not set any choices.", m_sName.c_str() );
+	if (!m_aGameCommands.size())
+	{
+		RageException::Throw("Screen \"%s\" does not set any choices.", m_sName.c_str());
+	}
 }
 
 void ScreenSelect::BeginScreen()
@@ -67,112 +73,128 @@ void ScreenSelect::BeginScreen()
 
 ScreenSelect::~ScreenSelect()
 {
-	LOG->Trace( "ScreenSelect::~ScreenSelect()" );
-	for( unsigned i = 0; i < m_asSubscribedMessages.size(); ++i )
-		MESSAGEMAN->Unsubscribe( this, m_asSubscribedMessages[i] );
+	LOG->Trace("ScreenSelect::~ScreenSelect()");
+	for (unsigned i = 0; i < m_asSubscribedMessages.size(); ++i)
+	{
+		MESSAGEMAN->Unsubscribe(this, m_asSubscribedMessages[i]);
+	}
 }
 
-void ScreenSelect::Update( float fDelta )
+void ScreenSelect::Update(float fDelta)
 {
-	if( !IsTransitioning() )
+	if (!IsTransitioning())
 	{
-		if( IDLE_COMMENT_SECONDS > 0  &&  m_timerIdleComment.PeekDeltaTime() >= IDLE_COMMENT_SECONDS )
+		if (IDLE_COMMENT_SECONDS > 0  &&  m_timerIdleComment.PeekDeltaTime() >= IDLE_COMMENT_SECONDS)
 		{
-			SOUND->PlayOnceFromAnnouncer( m_sName+" IdleComment" );
+			SOUND->PlayOnceFromAnnouncer(m_sName + " IdleComment");
 			m_timerIdleComment.GetDeltaTime();
 		}
 
-		if( IDLE_TIMEOUT_SECONDS > 0  &&  m_timerIdleTimeout.PeekDeltaTime() >= IDLE_TIMEOUT_SECONDS )
+		if (IDLE_TIMEOUT_SECONDS > 0  &&  m_timerIdleTimeout.PeekDeltaTime() >= IDLE_TIMEOUT_SECONDS)
 		{
-			SCREENMAN->SetNewScreen( IDLE_TIMEOUT_SCREEN );
+			SCREENMAN->SetNewScreen(IDLE_TIMEOUT_SCREEN);
 			m_timerIdleTimeout.GetDeltaTime();
 			return;
 		}
 	}
 
-	ScreenWithMenuElements::Update( fDelta );
+	ScreenWithMenuElements::Update(fDelta);
 }
 
-void ScreenSelect::Input( const InputEventPlus &input )
+void ScreenSelect::Input(const InputEventPlus &input)
 {
-//	LOG->Trace( "ScreenSelect::Input()" );
+	//	LOG->Trace( "ScreenSelect::Input()" );
 
 	/* Reset the announcer timers when a key is pressed. */
 	m_timerIdleComment.GetDeltaTime();
 	m_timerIdleTimeout.GetDeltaTime();
 
 	/* Choices may change when more coins are inserted. */
-	if( input.MenuI == GAME_BUTTON_COIN && input.type == IET_FIRST_PRESS )
-		this->UpdateSelectableChoices();
-
-	if( input.MenuI == GAME_BUTTON_START && input.type == IET_FIRST_PRESS && GAMESTATE->JoinInput(input.pn) )
+	if (input.MenuI == GAME_BUTTON_COIN && input.type == IET_FIRST_PRESS)
 	{
-		// HACK: Only play start sound for the 2nd player who joins. The 
-		// start sound for the 1st player will be played by ScreenTitleMenu 
-		// when the player makes a selection on the screen.
-		if( GAMESTATE->GetNumSidesJoined() > 1 )
-			SCREENMAN->PlayStartSound();
-
-		if( !ALLOW_DISABLED_PLAYER_INPUT )
-			return;	// don't let the screen handle the MENU_START press
+		this->UpdateSelectableChoices();
 	}
 
-	if( !GAMESTATE->IsPlayerEnabled(input.pn) )
+	if (input.MenuI == GAME_BUTTON_START && input.type == IET_FIRST_PRESS && GAMESTATE->JoinInput(input.pn))
+	{
+		// HACK: Only play start sound for the 2nd player who joins. The
+		// start sound for the 1st player will be played by ScreenTitleMenu
+		// when the player makes a selection on the screen.
+		if (GAMESTATE->GetNumSidesJoined() > 1)
+		{
+			SCREENMAN->PlayStartSound();
+		}
+
+		if (!ALLOW_DISABLED_PLAYER_INPUT)
+		{
+			return;        // don't let the screen handle the MENU_START press
+		}
+	}
+
+	if (!GAMESTATE->IsPlayerEnabled(input.pn))
 	{
 		// block input of disabled players
-		if( !ALLOW_DISABLED_PLAYER_INPUT )
+		if (!ALLOW_DISABLED_PLAYER_INPUT)
+		{
 			return;
+		}
 
 		/* Never allow a START press by a player that's still not joined, even if
 		 * ALLOW_DISABLED_PLAYER_INPUT would allow other types of input. If we
 		 * let a non-joined player start, we might start the game with no
 		 * players joined (eg. if ScreenTitleJoin is started in pay with no
 		 * credits). */
-		if( input.MenuI == GAME_BUTTON_START )
+		if (input.MenuI == GAME_BUTTON_START)
+		{
 			return;
+		}
 	}
 
-	ScreenWithMenuElements::Input( input ); // default input handler
+	ScreenWithMenuElements::Input(input);   // default input handler
 }
 
-void ScreenSelect::HandleScreenMessage( const ScreenMessage SM )
+void ScreenSelect::HandleScreenMessage(const ScreenMessage SM)
 {
-	if( SM == SM_BeginFadingOut )	// Screen is starting to tween out.
+	if (SM == SM_BeginFadingOut)	// Screen is starting to tween out.
 	{
-		/* Don't call GameCommand::Apply once per player on screens that 
+		/* Don't call GameCommand::Apply once per player on screens that
 		 * have a shared selection. This can cause change messages to be
 		 * broadcast multiple times. Detect whether all players have the
 		 * same choice, and  if so, call ApplyToAll instead.
 		 * TODO: Think of a better way to handle this.
 		 */
-		ASSERT( GAMESTATE->m_MasterPlayerNumber != PlayerNumber_Invalid );
-		int iMastersIndex = this->GetSelectionIndex( GAMESTATE->m_MasterPlayerNumber );
+		ASSERT(GAMESTATE->m_MasterPlayerNumber != PlayerNumber_Invalid);
+		int iMastersIndex = this->GetSelectionIndex(GAMESTATE->m_MasterPlayerNumber);
 		bool bAllPlayersChoseTheSame = true;
-		FOREACH_HumanPlayer( p )
+		FOREACH_HumanPlayer(p)
 		{
-			if( this->GetSelectionIndex(p) != iMastersIndex )
+			if (this->GetSelectionIndex(p) != iMastersIndex)
 			{
 				bAllPlayersChoseTheSame = false;
 				break;
 			}
 		}
 
-		if( bAllPlayersChoseTheSame )
+		if (bAllPlayersChoseTheSame)
 		{
 			const GameCommand &gc = m_aGameCommands[iMastersIndex];
 			m_sNextScreen = gc.m_sScreen;
-			if( !gc.m_bInvalid )
+			if (!gc.m_bInvalid)
+			{
 				gc.ApplyToAllPlayers();
+			}
 		}
 		else
 		{
-			FOREACH_HumanPlayer( p )
+			FOREACH_HumanPlayer(p)
 			{
 				int iIndex = this->GetSelectionIndex(p);
 				const GameCommand &gc = m_aGameCommands[iIndex];
 				m_sNextScreen = gc.m_sScreen;
-				if( !gc.m_bInvalid )
-					gc.Apply( p );
+				if (!gc.m_bInvalid)
+				{
+					gc.Apply(p);
+				}
 			}
 		}
 
@@ -180,30 +202,32 @@ void ScreenSelect::HandleScreenMessage( const ScreenMessage SM )
 
 		SCREENMAN->RefreshCreditsMessages();
 
-		ASSERT( !IsTransitioning() );
-		StartTransitioningScreen( SM_GoToNextScreen );
+		ASSERT(!IsTransitioning());
+		StartTransitioningScreen(SM_GoToNextScreen);
 	}
 
-	ScreenWithMenuElements::HandleScreenMessage( SM );
+	ScreenWithMenuElements::HandleScreenMessage(SM);
 }
 
-void ScreenSelect::HandleMessage( const Message &msg )
+void ScreenSelect::HandleMessage(const Message &msg)
 {
-	if( find(m_asSubscribedMessages.begin(), m_asSubscribedMessages.end(), msg.GetName()) != m_asSubscribedMessages.end() )
+	if (find(m_asSubscribedMessages.begin(), m_asSubscribedMessages.end(), msg.GetName()) != m_asSubscribedMessages.end())
+	{
 		this->UpdateSelectableChoices();
+	}
 
-	ScreenWithMenuElements::HandleMessage( msg );
+	ScreenWithMenuElements::HandleMessage(msg);
 }
 
-void ScreenSelect::MenuBack( const InputEventPlus &input )
+void ScreenSelect::MenuBack(const InputEventPlus &input)
 {
-	Cancel( SM_GoToPrevScreen );
+	Cancel(SM_GoToPrevScreen);
 }
 
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -213,7 +237,7 @@ void ScreenSelect::MenuBack( const InputEventPlus &input )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

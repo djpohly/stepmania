@@ -6,89 +6,109 @@
 
 /* In Routine, we have two Players, but the master one handles all of the scoring.  The other
  * one will just receive misses for everything, and shouldn't do anything. */
-ScoreKeeperShared::ScoreKeeperShared( PlayerState *pPlayerState, PlayerStageStats *pPlayerStageStats ) :
-	ScoreKeeperNormal( pPlayerState, pPlayerStageStats )
+ScoreKeeperShared::ScoreKeeperShared(PlayerState *pPlayerState, PlayerStageStats *pPlayerStageStats) :
+	ScoreKeeperNormal(pPlayerState, pPlayerStageStats)
 {
 }
 
 void ScoreKeeperShared::Load(
-	const vector<Song*> &apSongs,
-	const vector<Steps*> &apSteps,
-	const vector<AttackArray> &asModifiers )
+        const vector<Song*> &apSongs,
+        const vector<Steps*> &apSteps,
+        const vector<AttackArray> &asModifiers)
 {
-	if( m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber )
+	if (m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber)
+	{
 		return;
-	ScoreKeeperNormal::Load( apSongs, apSteps, asModifiers );
+	}
+	ScoreKeeperNormal::Load(apSongs, apSteps, asModifiers);
 }
 
 // These ScoreKeepers don't get to draw.
 void ScoreKeeperShared::DrawPrimitives()
 {
-	if( m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber )
+	if (m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber)
+	{
 		return;
+	}
 	ScoreKeeperNormal::DrawPrimitives();
 }
 
-void ScoreKeeperShared::Update( float fDelta )
+void ScoreKeeperShared::Update(float fDelta)
 {
-	if( m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber )
+	if (m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber)
+	{
 		return;
-	ScoreKeeperNormal::Update( fDelta );
+	}
+	ScoreKeeperNormal::Update(fDelta);
 }
 
-void ScoreKeeperShared::OnNextSong( int iSongInCourseIndex, const Steps* pSteps, const NoteData* pNoteData )
+void ScoreKeeperShared::OnNextSong(int iSongInCourseIndex, const Steps* pSteps, const NoteData* pNoteData)
 {
-	if( m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber )
+	if (m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber)
+	{
 		return;
-	ScoreKeeperNormal::OnNextSong( iSongInCourseIndex, pSteps, pNoteData );
+	}
+	ScoreKeeperNormal::OnNextSong(iSongInCourseIndex, pSteps, pNoteData);
 }
 
-void ScoreKeeperShared::HandleTapScore( const TapNote &tn )
+void ScoreKeeperShared::HandleTapScore(const TapNote &tn)
 {
-	if( m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber )
+	if (m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber)
+	{
 		return;
-	ScoreKeeperNormal::HandleTapScore( tn );
+	}
+	ScoreKeeperNormal::HandleTapScore(tn);
 }
 
-void ScoreKeeperShared::HandleTapRowScore( const NoteData &nd, int iRow )
+void ScoreKeeperShared::HandleTapRowScore(const NoteData &nd, int iRow)
 {
-	if( m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber )
+	if (m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber)
+	{
 		return;
-	ScoreKeeperNormal::HandleTapRowScore( nd, iRow );
+	}
+	ScoreKeeperNormal::HandleTapRowScore(nd, iRow);
 }
 
-void ScoreKeeperShared::HandleHoldScore( const TapNote &tn )
+void ScoreKeeperShared::HandleHoldScore(const TapNote &tn)
 {
-	if( m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber )
+	if (m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber)
+	{
 		return;
-	ScoreKeeperNormal::HandleHoldScore( tn );
+	}
+	ScoreKeeperNormal::HandleHoldScore(tn);
 }
 
-void ScoreKeeperShared::HandleHoldActiveSeconds( float fMusicSecondsHeld )
+void ScoreKeeperShared::HandleHoldActiveSeconds(float fMusicSecondsHeld)
 {
-	if( m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber )
+	if (m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber)
+	{
 		return;
-	ScoreKeeperNormal::HandleHoldActiveSeconds( fMusicSecondsHeld );
+	}
+	ScoreKeeperNormal::HandleHoldActiveSeconds(fMusicSecondsHeld);
 }
 
-void ScoreKeeperShared::HandleHoldCheckpointScore( const NoteData &nd, int iRow, int iNumHoldsHeldThisRow, int iNumHoldsMissedThisRow )
+void ScoreKeeperShared::HandleHoldCheckpointScore(const NoteData &nd, int iRow, int iNumHoldsHeldThisRow, int iNumHoldsMissedThisRow)
 {
-	if( m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber )
+	if (m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber)
+	{
 		return;
-	ScoreKeeperNormal::HandleHoldCheckpointScore( nd, iRow, iNumHoldsHeldThisRow,  iNumHoldsMissedThisRow );
+	}
+	ScoreKeeperNormal::HandleHoldCheckpointScore(nd, iRow, iNumHoldsHeldThisRow,  iNumHoldsMissedThisRow);
 }
 
 void ScoreKeeperShared::HandleTapScoreNone()
 {
-	if( m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber )
+	if (m_pPlayerState->m_PlayerNumber != GAMESTATE->m_MasterPlayerNumber)
+	{
 		return;
+	}
 	ScoreKeeperNormal::HandleTapScoreNone();
 }
 
 /*
  * (c) 2006-2010 Steve Checkoway, Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -98,7 +118,7 @@ void ScoreKeeperShared::HandleTapScoreNone()
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

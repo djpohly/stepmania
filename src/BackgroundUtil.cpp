@@ -9,42 +9,52 @@
 #include "Background.h"
 
 
-bool BackgroundDef::operator<( const BackgroundDef &other ) const
+bool BackgroundDef::operator<(const BackgroundDef &other) const
 {
 #define COMPARE(x) if( x < other.x ) return true; else if( x > other.x ) return false;
-	COMPARE( m_sEffect );
-	COMPARE( m_sFile1 );
-	COMPARE( m_sFile2 );
-	COMPARE( m_sColor1 );
-	COMPARE( m_sColor2 );
+	COMPARE(m_sEffect);
+	COMPARE(m_sFile1);
+	COMPARE(m_sFile2);
+	COMPARE(m_sColor1);
+	COMPARE(m_sColor2);
 #undef COMPARE
 	return false;
 }
 
-bool BackgroundDef::operator==( const BackgroundDef &other ) const
+bool BackgroundDef::operator==(const BackgroundDef &other) const
 {
-	return 
-		m_sEffect == other.m_sEffect &&
-		m_sFile1 == other.m_sFile1 &&
-		m_sFile2 == other.m_sFile2 &&
-		m_sColor1 == other.m_sColor1 &&
-		m_sColor2 == other.m_sColor2;
+	return
+	        m_sEffect == other.m_sEffect &&
+	        m_sFile1 == other.m_sFile1 &&
+	        m_sFile2 == other.m_sFile2 &&
+	        m_sColor1 == other.m_sColor1 &&
+	        m_sColor2 == other.m_sColor2;
 }
 
 XNode *BackgroundDef::CreateNode() const
 {
-	XNode* pNode = new XNode( "BackgroundDef" );
+	XNode* pNode = new XNode("BackgroundDef");
 
-	if( !m_sEffect.empty() )
-		pNode->AppendAttr( "Effect", m_sEffect );
-	if( !m_sFile1.empty() )
-		pNode->AppendAttr( "File1", m_sFile1 );
-	if( !m_sFile2.empty() )
-		pNode->AppendAttr( "File2", m_sFile2 );
-	if( !m_sColor1.empty() )
-		pNode->AppendAttr( "Color1", m_sColor1 );
-	if( !m_sColor2.empty() )
-		pNode->AppendAttr( "Color2", m_sColor2 );
+	if (!m_sEffect.empty())
+	{
+		pNode->AppendAttr("Effect", m_sEffect);
+	}
+	if (!m_sFile1.empty())
+	{
+		pNode->AppendAttr("File1", m_sFile1);
+	}
+	if (!m_sFile2.empty())
+	{
+		pNode->AppendAttr("File2", m_sFile2);
+	}
+	if (!m_sColor1.empty())
+	{
+		pNode->AppendAttr("Color1", m_sColor1);
+	}
+	if (!m_sColor2.empty())
+	{
+		pNode->AppendAttr("Color2", m_sColor2);
+	}
 
 	return pNode;
 }
@@ -53,18 +63,41 @@ XNode *BackgroundDef::CreateNode() const
 RString BackgroundChange::GetTextDescription() const
 {
 	vector<RString> vsParts;
-	if( !m_def.m_sFile1.empty() )	vsParts.push_back( m_def.m_sFile1 );
-	if( !m_def.m_sFile2.empty() )	vsParts.push_back( m_def.m_sFile2 );
-	if( m_fRate!=1.0f )				vsParts.push_back( ssprintf("%.2f%%",m_fRate*100) );
-	if( !m_sTransition.empty() )	vsParts.push_back( m_sTransition );
-	if( !m_def.m_sEffect.empty() )	vsParts.push_back( m_def.m_sEffect );
-	if( !m_def.m_sColor1.empty() )	vsParts.push_back( m_def.m_sColor1 );
-	if( !m_def.m_sColor2.empty() )	vsParts.push_back( m_def.m_sColor2 );
+	if (!m_def.m_sFile1.empty())
+	{
+		vsParts.push_back(m_def.m_sFile1);
+	}
+	if (!m_def.m_sFile2.empty())
+	{
+		vsParts.push_back(m_def.m_sFile2);
+	}
+	if (m_fRate != 1.0f)
+	{
+		vsParts.push_back(ssprintf("%.2f%%", m_fRate * 100));
+	}
+	if (!m_sTransition.empty())
+	{
+		vsParts.push_back(m_sTransition);
+	}
+	if (!m_def.m_sEffect.empty())
+	{
+		vsParts.push_back(m_def.m_sEffect);
+	}
+	if (!m_def.m_sColor1.empty())
+	{
+		vsParts.push_back(m_def.m_sColor1);
+	}
+	if (!m_def.m_sColor2.empty())
+	{
+		vsParts.push_back(m_def.m_sColor2);
+	}
 
-	if( vsParts.empty() )
-		vsParts.push_back( "(empty)" );
+	if (vsParts.empty())
+	{
+		vsParts.push_back("(empty)");
+	}
 
-	RString s = join( "\n", vsParts );
+	RString s = join("\n", vsParts);
 	return s;
 }
 
@@ -87,15 +120,15 @@ const RString SBE_StretchNoLoop         = "StretchNoLoop";
 const RString SBE_StretchRewind         = "StretchRewind";
 const RString SBT_CrossFade             = "CrossFade";
 
-static void StripCvsAndSvn( vector<RString> &vsPathsToStrip, vector<RString> &vsNamesToStrip )
+static void StripCvsAndSvn(vector<RString> &vsPathsToStrip, vector<RString> &vsNamesToStrip)
 {
-	ASSERT( vsPathsToStrip.size() == vsNamesToStrip.size() );
-	for( unsigned i=0; i<vsNamesToStrip.size(); i++ )
+	ASSERT(vsPathsToStrip.size() == vsNamesToStrip.size());
+	for (unsigned i = 0; i < vsNamesToStrip.size(); i++)
 	{
-		if( vsNamesToStrip[i].Right(3).CompareNoCase("CVS") == 0 || vsNamesToStrip[i] == ".svn" )
+		if (vsNamesToStrip[i].Right(3).CompareNoCase("CVS") == 0 || vsNamesToStrip[i] == ".svn")
 		{
-			vsPathsToStrip.erase( vsPathsToStrip.begin()+i );
-			vsNamesToStrip.erase( vsNamesToStrip.begin()+i );
+			vsPathsToStrip.erase(vsPathsToStrip.begin() + i);
+			vsNamesToStrip.erase(vsNamesToStrip.begin() + i);
 		}
 	}
 }
@@ -105,244 +138,266 @@ int CompareBackgroundChanges(const BackgroundChange &seg1, const BackgroundChang
 	return seg1.m_fStartBeat < seg2.m_fStartBeat;
 }
 
-void BackgroundUtil::SortBackgroundChangesArray( vector<BackgroundChange> &vBackgroundChanges )
+void BackgroundUtil::SortBackgroundChangesArray(vector<BackgroundChange> &vBackgroundChanges)
 {
-	sort( vBackgroundChanges.begin(), vBackgroundChanges.end(), CompareBackgroundChanges );
+	sort(vBackgroundChanges.begin(), vBackgroundChanges.end(), CompareBackgroundChanges);
 }
 
-void BackgroundUtil::GetBackgroundEffects( const RString &_sName, vector<RString> &vsPathsOut, vector<RString> &vsNamesOut )
-{
-	RString sName = _sName;
-	if( sName == "" )
-		sName = "*";
-
-	vsPathsOut.clear();
-	GetDirListing( BACKGROUND_EFFECTS_DIR+sName+".lua", vsPathsOut, false, true );
-
-	vsNamesOut.clear();
-	FOREACH_CONST( RString, vsPathsOut, s )
-		vsNamesOut.push_back( GetFileNameWithoutExtension(*s) );
-
-	StripCvsAndSvn( vsPathsOut, vsNamesOut );
-}
-
-void BackgroundUtil::GetBackgroundTransitions( const RString &_sName, vector<RString> &vsPathsOut, vector<RString> &vsNamesOut )
+void BackgroundUtil::GetBackgroundEffects(const RString &_sName, vector<RString> &vsPathsOut, vector<RString> &vsNamesOut)
 {
 	RString sName = _sName;
-	if( sName == "" )
+	if (sName == "")
+	{
 		sName = "*";
+	}
 
 	vsPathsOut.clear();
-	if( true )
-		GetDirListing( BACKGROUND_TRANSITIONS_DIR+sName+".xml", vsPathsOut, false, true );
-	GetDirListing( BACKGROUND_TRANSITIONS_DIR+sName+".lua", vsPathsOut, false, true );
+	GetDirListing(BACKGROUND_EFFECTS_DIR + sName + ".lua", vsPathsOut, false, true);
 
 	vsNamesOut.clear();
-	FOREACH_CONST( RString, vsPathsOut, s )
-		vsNamesOut.push_back( GetFileNameWithoutExtension(*s) );
+	FOREACH_CONST(RString, vsPathsOut, s)
+	vsNamesOut.push_back(GetFileNameWithoutExtension(*s));
 
-	StripCvsAndSvn( vsPathsOut, vsNamesOut );
+	StripCvsAndSvn(vsPathsOut, vsNamesOut);
 }
 
-void BackgroundUtil::GetSongBGAnimations( const Song *pSong, const RString &sMatch, vector<RString> &vsPathsOut, vector<RString> &vsNamesOut )
+void BackgroundUtil::GetBackgroundTransitions(const RString &_sName, vector<RString> &vsPathsOut, vector<RString> &vsNamesOut)
+{
+	RString sName = _sName;
+	if (sName == "")
+	{
+		sName = "*";
+	}
+
+	vsPathsOut.clear();
+	if (true)
+	{
+		GetDirListing(BACKGROUND_TRANSITIONS_DIR + sName + ".xml", vsPathsOut, false, true);
+	}
+	GetDirListing(BACKGROUND_TRANSITIONS_DIR + sName + ".lua", vsPathsOut, false, true);
+
+	vsNamesOut.clear();
+	FOREACH_CONST(RString, vsPathsOut, s)
+	vsNamesOut.push_back(GetFileNameWithoutExtension(*s));
+
+	StripCvsAndSvn(vsPathsOut, vsNamesOut);
+}
+
+void BackgroundUtil::GetSongBGAnimations(const Song *pSong, const RString &sMatch, vector<RString> &vsPathsOut, vector<RString> &vsNamesOut)
 {
 	vsPathsOut.clear();
-	if( sMatch.empty() )
+	if (sMatch.empty())
 	{
-		GetDirListing( pSong->GetSongDir()+"*",    vsPathsOut, true, true );
+		GetDirListing(pSong->GetSongDir() + "*",    vsPathsOut, true, true);
 	}
 	else
 	{
-		GetDirListing( pSong->GetSongDir()+sMatch, vsPathsOut, true, true );
+		GetDirListing(pSong->GetSongDir() + sMatch, vsPathsOut, true, true);
 	}
 
 	vsNamesOut.clear();
-	FOREACH_CONST( RString, vsPathsOut, s )
-		vsNamesOut.push_back( Basename(*s) );
+	FOREACH_CONST(RString, vsPathsOut, s)
+	vsNamesOut.push_back(Basename(*s));
 
-	StripCvsAndSvn( vsPathsOut, vsNamesOut );
+	StripCvsAndSvn(vsPathsOut, vsNamesOut);
 }
 
-void BackgroundUtil::GetSongMovies( const Song *pSong, const RString &sMatch, vector<RString> &vsPathsOut, vector<RString> &vsNamesOut )
+void BackgroundUtil::GetSongMovies(const Song *pSong, const RString &sMatch, vector<RString> &vsPathsOut, vector<RString> &vsNamesOut)
 {
 	vsPathsOut.clear();
-	if( sMatch.empty() )
+	if (sMatch.empty())
 	{
-		GetDirListing( pSong->GetSongDir()+sMatch+"*.ogv",	vsPathsOut, false, true );
-		GetDirListing( pSong->GetSongDir()+sMatch+"*.avi",	vsPathsOut, false, true );
-		GetDirListing( pSong->GetSongDir()+sMatch+"*.mpg",	vsPathsOut, false, true );
-		GetDirListing( pSong->GetSongDir()+sMatch+"*.mpeg", vsPathsOut, false, true );
+		GetDirListing(pSong->GetSongDir() + sMatch + "*.ogv",	vsPathsOut, false, true);
+		GetDirListing(pSong->GetSongDir() + sMatch + "*.avi",	vsPathsOut, false, true);
+		GetDirListing(pSong->GetSongDir() + sMatch + "*.mpg",	vsPathsOut, false, true);
+		GetDirListing(pSong->GetSongDir() + sMatch + "*.mpeg", vsPathsOut, false, true);
 	}
 	else
 	{
-		GetDirListing( pSong->GetSongDir()+sMatch,			vsPathsOut, false, true );
+		GetDirListing(pSong->GetSongDir() + sMatch,			vsPathsOut, false, true);
 	}
 
 	vsNamesOut.clear();
-	FOREACH_CONST( RString, vsPathsOut, s )
-		vsNamesOut.push_back( Basename(*s) );
+	FOREACH_CONST(RString, vsPathsOut, s)
+	vsNamesOut.push_back(Basename(*s));
 
-	StripCvsAndSvn( vsPathsOut, vsNamesOut );
+	StripCvsAndSvn(vsPathsOut, vsNamesOut);
 }
 
-void BackgroundUtil::GetSongBitmaps( const Song *pSong, const RString &sMatch, vector<RString> &vsPathsOut, vector<RString> &vsNamesOut )
+void BackgroundUtil::GetSongBitmaps(const Song *pSong, const RString &sMatch, vector<RString> &vsPathsOut, vector<RString> &vsNamesOut)
 {
 	vsPathsOut.clear();
-	if( sMatch.empty() )
+	if (sMatch.empty())
 	{
-		GetDirListing( pSong->GetSongDir()+sMatch+"*.png",	vsPathsOut, false, true );
-		GetDirListing( pSong->GetSongDir()+sMatch+"*.jpg",	vsPathsOut, false, true );
-		GetDirListing( pSong->GetSongDir()+sMatch+"*.gif",	vsPathsOut, false, true );
-		GetDirListing( pSong->GetSongDir()+sMatch+"*.bmp",	vsPathsOut, false, true );
+		GetDirListing(pSong->GetSongDir() + sMatch + "*.png",	vsPathsOut, false, true);
+		GetDirListing(pSong->GetSongDir() + sMatch + "*.jpg",	vsPathsOut, false, true);
+		GetDirListing(pSong->GetSongDir() + sMatch + "*.gif",	vsPathsOut, false, true);
+		GetDirListing(pSong->GetSongDir() + sMatch + "*.bmp",	vsPathsOut, false, true);
 	}
 	else
 	{
-		GetDirListing( pSong->GetSongDir()+sMatch,			vsPathsOut, false, true );
+		GetDirListing(pSong->GetSongDir() + sMatch,			vsPathsOut, false, true);
 	}
 
 	vsNamesOut.clear();
-	FOREACH_CONST( RString, vsPathsOut, s )
-		vsNamesOut.push_back( Basename(*s) );
+	FOREACH_CONST(RString, vsPathsOut, s)
+	vsNamesOut.push_back(Basename(*s));
 
-	StripCvsAndSvn( vsPathsOut, vsNamesOut );
+	StripCvsAndSvn(vsPathsOut, vsNamesOut);
 }
 
-static void GetFilterToFileNames( const RString sBaseDir, const Song *pSong, set<RString> &vsPossibleFileNamesOut )
+static void GetFilterToFileNames(const RString sBaseDir, const Song *pSong, set<RString> &vsPossibleFileNamesOut)
 {
 	vsPossibleFileNamesOut.clear();
 
-	if( pSong->m_sGenre.empty() )
+	if (pSong->m_sGenre.empty())
+	{
 		return;
+	}
 
-	ASSERT( !pSong->m_sGroupName.empty() );
+	ASSERT(!pSong->m_sGroupName.empty());
 	IniFile ini;
-	RString sPath = sBaseDir+pSong->m_sGroupName+"/"+"BackgroundMapping.ini";
-	ini.ReadFile( sPath );
+	RString sPath = sBaseDir + pSong->m_sGroupName + "/" + "BackgroundMapping.ini";
+	ini.ReadFile(sPath);
 
 	RString sSection;
-	bool bSuccess = ini.GetValue( "GenreToSection", pSong->m_sGenre, sSection );
-	if( !bSuccess )
+	bool bSuccess = ini.GetValue("GenreToSection", pSong->m_sGenre, sSection);
+	if (!bSuccess)
 	{
-		LOG->Warn( "Genre '%s' isn't mapped", pSong->m_sGenre.c_str() );
+		LOG->Warn("Genre '%s' isn't mapped", pSong->m_sGenre.c_str());
 		return;
 	}
 
-	XNode *pSection = ini.GetChild( sSection );
-	if( pSection == NULL )
+	XNode *pSection = ini.GetChild(sSection);
+	if (pSection == NULL)
 	{
-		ASSERT_M( 0, ssprintf("File '%s' refers to a section '%s' that is missing.", sPath.c_str(), sSection.c_str()) );
+		ASSERT_M(0, ssprintf("File '%s' refers to a section '%s' that is missing.", sPath.c_str(), sSection.c_str()));
 		return;
 	}
 
-	FOREACH_CONST_Attr( pSection, p )
-		vsPossibleFileNamesOut.insert( p->first );
+	FOREACH_CONST_Attr(pSection, p)
+	vsPossibleFileNamesOut.insert(p->first);
 }
 
-void BackgroundUtil::GetGlobalBGAnimations( const Song *pSong, const RString &sMatch, vector<RString> &vsPathsOut, vector<RString> &vsNamesOut )
+void BackgroundUtil::GetGlobalBGAnimations(const Song *pSong, const RString &sMatch, vector<RString> &vsPathsOut, vector<RString> &vsNamesOut)
 {
 	vsPathsOut.clear();
-	GetDirListing( BG_ANIMS_DIR+sMatch+"*", vsPathsOut, true, true );
-	if( true )
-		GetDirListing( BG_ANIMS_DIR+sMatch+"*.xml", vsPathsOut, false, true );
+	GetDirListing(BG_ANIMS_DIR + sMatch + "*", vsPathsOut, true, true);
+	if (true)
+	{
+		GetDirListing(BG_ANIMS_DIR + sMatch + "*.xml", vsPathsOut, false, true);
+	}
 
 	vsNamesOut.clear();
-	FOREACH_CONST( RString, vsPathsOut, s )
-		vsNamesOut.push_back( Basename(*s) );
+	FOREACH_CONST(RString, vsPathsOut, s)
+	vsNamesOut.push_back(Basename(*s));
 
-	StripCvsAndSvn( vsPathsOut, vsNamesOut );
+	StripCvsAndSvn(vsPathsOut, vsNamesOut);
 }
 
-void BackgroundUtil::GetGlobalRandomMovies( 
-	const Song *pSong, 
-	const RString &sMatch, 
-	vector<RString> &vsPathsOut, 
-	vector<RString> &vsNamesOut,
-	bool bTryInsideOfSongGroupAndGenreFirst,
-	bool bTryInsideOfSongGroupFirst )
+void BackgroundUtil::GetGlobalRandomMovies(
+        const Song *pSong,
+        const RString &sMatch,
+        vector<RString> &vsPathsOut,
+        vector<RString> &vsNamesOut,
+        bool bTryInsideOfSongGroupAndGenreFirst,
+        bool bTryInsideOfSongGroupFirst)
 {
 	vsPathsOut.clear();
 	vsNamesOut.clear();
 
 	// Check for an exact match
-	if( !sMatch.empty() )
+	if (!sMatch.empty())
 	{
-		GetDirListing( SONG_MOVIES_DIR+pSong->m_sGroupName+"/"+sMatch, vsPathsOut, false, true );	// search in SongMovies/SongGroupName/ first
-		GetDirListing( SONG_MOVIES_DIR+sMatch, vsPathsOut, false, true );
-		GetDirListing( RANDOMMOVIES_DIR+sMatch, vsPathsOut, false, true );
-		if( !vsPathsOut.empty() )
+		GetDirListing(SONG_MOVIES_DIR + pSong->m_sGroupName + "/" + sMatch, vsPathsOut, false, true);	// search in SongMovies/SongGroupName/ first
+		GetDirListing(SONG_MOVIES_DIR + sMatch, vsPathsOut, false, true);
+		GetDirListing(RANDOMMOVIES_DIR + sMatch, vsPathsOut, false, true);
+		if (!vsPathsOut.empty())
+		{
 			goto found_files;
+		}
 
-		if( sMatch != NO_SONG_BG_FILE )
-			LOG->Warn( "Background missing: %s", sMatch.c_str() );
+		if (sMatch != NO_SONG_BG_FILE)
+		{
+			LOG->Warn("Background missing: %s", sMatch.c_str());
+		}
 		return;
 	}
 
 	// Search for the most appropriate background
 	{
 		set<RString> ssFileNameWhitelist;
-		if( bTryInsideOfSongGroupAndGenreFirst  &&  pSong  &&  !pSong->m_sGenre.empty() )
-			GetFilterToFileNames( RANDOMMOVIES_DIR, pSong, ssFileNameWhitelist );
+		if (bTryInsideOfSongGroupAndGenreFirst  &&  pSong  &&  !pSong->m_sGenre.empty())
+		{
+			GetFilterToFileNames(RANDOMMOVIES_DIR, pSong, ssFileNameWhitelist);
+		}
 
 		vector<RString> vsDirsToTry;
-		if( bTryInsideOfSongGroupFirst && pSong )
+		if (bTryInsideOfSongGroupFirst && pSong)
 		{
-			ASSERT( !pSong->m_sGroupName.empty() );
-			vsDirsToTry.push_back( RANDOMMOVIES_DIR+pSong->m_sGroupName+"/" );
+			ASSERT(!pSong->m_sGroupName.empty());
+			vsDirsToTry.push_back(RANDOMMOVIES_DIR + pSong->m_sGroupName + "/");
 		}
-		vsDirsToTry.push_back( RANDOMMOVIES_DIR );
+		vsDirsToTry.push_back(RANDOMMOVIES_DIR);
 
-		FOREACH_CONST( RString, vsDirsToTry, sDir )
+		FOREACH_CONST(RString, vsDirsToTry, sDir)
 		{
-			GetDirListing( *sDir+"*.ogv", vsPathsOut, false, true );
-			GetDirListing( *sDir+"*.avi", vsPathsOut, false, true );
-			GetDirListing( *sDir+"*.mpg", vsPathsOut, false, true );
-			GetDirListing( *sDir+"*.mpeg", vsPathsOut, false, true );
+			GetDirListing(*sDir + "*.ogv", vsPathsOut, false, true);
+			GetDirListing(*sDir + "*.avi", vsPathsOut, false, true);
+			GetDirListing(*sDir + "*.mpg", vsPathsOut, false, true);
+			GetDirListing(*sDir + "*.mpeg", vsPathsOut, false, true);
 
-			if( !ssFileNameWhitelist.empty() )
+			if (!ssFileNameWhitelist.empty())
 			{
 				vector<RString> vsMatches;
-				FOREACH_CONST( RString, vsPathsOut, s )
+				FOREACH_CONST(RString, vsPathsOut, s)
 				{
-					RString sBasename = Basename( *s );
+					RString sBasename = Basename(*s);
 					bool bFound = ssFileNameWhitelist.find(sBasename) != ssFileNameWhitelist.end();
-					if( bFound )
+					if (bFound)
+					{
 						vsMatches.push_back(*s);
+					}
 				}
 				// If we found any that match the whitelist, use only them.
 				// If none match the whitelist, ignore the whitelist..
-				if( !vsMatches.empty() )
+				if (!vsMatches.empty())
+				{
 					vsPathsOut = vsMatches;
+				}
 			}
 
-			if( !vsPathsOut.empty() )
+			if (!vsPathsOut.empty())
+			{
 				goto found_files;
+			}
 		}
 	}
 
 found_files:
 
-	FOREACH_CONST( RString, vsPathsOut, s )
+	FOREACH_CONST(RString, vsPathsOut, s)
 	{
-		RString sName = s->Right( s->size() - RANDOMMOVIES_DIR.size() - 1 );
-		vsNamesOut.push_back( sName );
+		RString sName = s->Right(s->size() - RANDOMMOVIES_DIR.size() - 1);
+		vsNamesOut.push_back(sName);
 	}
-	StripCvsAndSvn( vsPathsOut, vsNamesOut );
+	StripCvsAndSvn(vsPathsOut, vsNamesOut);
 }
 
-void BackgroundUtil::BakeAllBackgroundChanges( Song *pSong )
+void BackgroundUtil::BakeAllBackgroundChanges(Song *pSong)
 {
 	Background bg;
-	bg.LoadFromSong( pSong );
+	bg.LoadFromSong(pSong);
 	vector<BackgroundChange> *vBGChanges[NUM_BackgroundLayer];
-	FOREACH_BackgroundLayer( i )
-		vBGChanges[i] = &pSong->GetBackgroundChanges(i);
-	bg.GetLoadedBackgroundChanges( vBGChanges );
+	FOREACH_BackgroundLayer(i)
+	vBGChanges[i] = &pSong->GetBackgroundChanges(i);
+	bg.GetLoadedBackgroundChanges(vBGChanges);
 }
 
 /*
  * (c) 2001-2004 Chris Danford, Ben Nordstrom
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -352,7 +407,7 @@ void BackgroundUtil::BakeAllBackgroundChanges( Song *pSong )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

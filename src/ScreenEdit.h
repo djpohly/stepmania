@@ -34,8 +34,8 @@ enum EditState
 	NUM_EditState,
 	EditState_Invalid
 };
-const RString& EditStateToString( EditState es );
-LuaDeclareType( EditState );
+const RString& EditStateToString(EditState es);
+LuaDeclareType(EditState);
 
 enum EditButton
 {
@@ -55,7 +55,7 @@ enum EditButton
 	EDIT_BUTTON_LAY_ROLL,
 	EDIT_BUTTON_LAY_TAP_ATTACK,
 	EDIT_BUTTON_REMOVE_NOTE,
-	
+
 	// These are modifiers to change the present tap note.
 	EDIT_BUTTON_CYCLE_TAP_LEFT, /**< Rotate the available tap notes once to the "left". */
 	EDIT_BUTTON_CYCLE_TAP_RIGHT, /**< Rotate the available tap notes once to the "right". */
@@ -73,7 +73,7 @@ enum EditButton
 
 	EDIT_BUTTON_LABEL_NEXT, /**< Jump to the start of the next label downward. */
 	EDIT_BUTTON_LABEL_PREV, /**< Jump to the start of the previous label upward. */
-	
+
 	// These are modifiers to EDIT_BUTTON_SCROLL_*.
 	EDIT_BUTTON_SCROLL_SELECT,
 
@@ -134,11 +134,11 @@ enum EditButton
 	EDIT_BUTTON_SAVE, /**< Save the present changes into the chart. */
 
 	EDIT_BUTTON_UNDO, /**< Undo a recent change. */
-	
+
 	EDIT_BUTTON_ADD_COURSE_MODS,
-	
+
 	EDIT_BUTTON_SWITCH_PLAYERS, /**< Allow entering notes for a different Player. */
-	
+
 	EDIT_BUTTON_SWITCH_TIMINGS, /**< Allow switching between Song and Step TimingData. */
 
 	NUM_EditButton, // leave this at the end
@@ -160,11 +160,11 @@ struct MapEditToDI
 	void Clear()
 	{
 		FOREACH_EditButton(e)
-			for( int slot = 0; slot < NUM_EDIT_TO_DEVICE_SLOTS; ++slot )
-			{
-				button[e][slot].MakeInvalid();
-				hold[e][slot].MakeInvalid();
-			}
+		for (int slot = 0; slot < NUM_EDIT_TO_DEVICE_SLOTS; ++slot)
+		{
+			button[e][slot].MakeInvalid();
+			hold[e][slot].MakeInvalid();
+		}
 	}
 };
 
@@ -177,8 +177,10 @@ struct MapEditButtonToMenuButton
 	void Clear()
 	{
 		FOREACH_EditButton(e)
-			for( int slot = 0; slot < NUM_EDIT_TO_MENU_SLOTS; ++slot )
-				button[e][slot] = GameButton_Invalid;
+		for (int slot = 0; slot < NUM_EDIT_TO_MENU_SLOTS; ++slot)
+		{
+			button[e][slot] = GameButton_Invalid;
+		}
 	}
 };
 /** @brief Edit, record, playback, and synchronize notes. */
@@ -190,29 +192,41 @@ public:
 	virtual void EndScreen();
 
 	virtual ~ScreenEdit();
-	virtual void Update( float fDeltaTime );
+	virtual void Update(float fDeltaTime);
 	virtual void DrawPrimitives();
-	virtual void Input( const InputEventPlus &input );
-	void InputEdit( const InputEventPlus &input, EditButton EditB );
-	void InputRecord( const InputEventPlus &input, EditButton EditB );
-	void InputRecordPaused( const InputEventPlus &input, EditButton EditB );
-	void InputPlay( const InputEventPlus &input, EditButton EditB );
-	virtual void HandleMessage( const Message &msg );
-	virtual void HandleScreenMessage( const ScreenMessage SM );
+	virtual void Input(const InputEventPlus &input);
+	void InputEdit(const InputEventPlus &input, EditButton EditB);
+	void InputRecord(const InputEventPlus &input, EditButton EditB);
+	void InputRecordPaused(const InputEventPlus &input, EditButton EditB);
+	void InputPlay(const InputEventPlus &input, EditButton EditB);
+	virtual void HandleMessage(const Message &msg);
+	virtual void HandleScreenMessage(const ScreenMessage SM);
 
-	void SetDirty( bool bDirty ) { m_bDirty = bDirty; }
-	bool IsDirty() const { return m_bDirty; }
+	void SetDirty(bool bDirty)
+	{
+		m_bDirty = bDirty;
+	}
+	bool IsDirty() const
+	{
+		return m_bDirty;
+	}
 
-	EditState GetEditState(){ return m_EditState; }
+	EditState GetEditState()
+	{
+		return m_EditState;
+	}
 
 	// Lua
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 protected:
-	virtual ScreenType GetScreenType() const { return m_EditState==STATE_PLAYING ? gameplay : ScreenWithMenuElements::GetScreenType(); }
+	virtual ScreenType GetScreenType() const
+	{
+		return m_EditState == STATE_PLAYING ? gameplay : ScreenWithMenuElements::GetScreenType();
+	}
 
-	void TransitionEditState( EditState em );
-	void ScrollTo( float fDestinationBeat );
+	void TransitionEditState(EditState em);
+	void ScrollTo(float fDestinationBeat);
 	void PlayTicks();
 	void PlayPreviewMusic();
 
@@ -234,7 +248,7 @@ protected:
 	float GetMaximumBeatForMoving() const;	// don't allow Down key to go past this beat.
 
 	void DoHelp();
-	
+
 	/** @brief Display the TimingData menu for editing song and step timing. */
 	void DisplayTimingMenu();
 
@@ -250,7 +264,7 @@ protected:
 	SnapDisplay		m_SnapDisplay;
 
 	BitmapText		m_textInputTips;
-	
+
 	/** @brief The current TapNote that would be inserted. */
 	TapNote			m_selectedTap;
 
@@ -308,20 +322,20 @@ protected:
 	vector<Steps> m_vStepsLastSave;
 
 
-// for MODE_RECORD
+	// for MODE_RECORD
 	NoteField		m_NoteFieldRecord;
 	NoteData		m_NoteDataRecord;
 	RageTimer		m_RemoveNoteButtonLastChanged;
 	bool			m_bRemoveNoteButtonDown;
 
-// for MODE_PLAY
+	// for MODE_PLAY
 	void SetupCourseAttacks();
 	PlayerPlus		m_Player;
 	Background		m_Background;
 	Foreground		m_Foreground;
 	bool			m_bReturnToRecordMenuAfterPlay;
 
-// for MODE_RECORD and MODE_PLAY
+	// for MODE_RECORD and MODE_PLAY
 	int				m_iStartPlayingAt, m_iStopPlayingAt;
 	float			m_fBeatToReturnTo;
 
@@ -354,8 +368,12 @@ public:
 		NUM_MAIN_MENU_CHOICES,
 		MAIN_MENU_CHOICE_INVALID
 	};
-	void HandleMainMenuChoice( MainMenuChoice c, const vector<int> &iAnswers );
-	void HandleMainMenuChoice( MainMenuChoice c ) { const vector<int> v; HandleMainMenuChoice( c, v ); }
+	void HandleMainMenuChoice(MainMenuChoice c, const vector<int> &iAnswers);
+	void HandleMainMenuChoice(MainMenuChoice c)
+	{
+		const vector<int> v;
+		HandleMainMenuChoice(c, v);
+	}
 	MainMenuChoice m_CurrentAction;
 
 	enum AreaMenuChoice
@@ -381,8 +399,12 @@ public:
 		undo,
 		NUM_AREA_MENU_CHOICES
 	};
-	void HandleAreaMenuChoice( AreaMenuChoice c, const vector<int> &iAnswers, bool bAllowUndo = true );
-	void HandleAreaMenuChoice( AreaMenuChoice c, bool bAllowUndo = true ) { const vector<int> v; HandleAreaMenuChoice( c, v, bAllowUndo ); }
+	void HandleAreaMenuChoice(AreaMenuChoice c, const vector<int> &iAnswers, bool bAllowUndo = true);
+	void HandleAreaMenuChoice(AreaMenuChoice c, bool bAllowUndo = true)
+	{
+		const vector<int> v;
+		HandleAreaMenuChoice(c, v, bAllowUndo);
+	}
 	/** @brief How should the selected notes be transformed? */
 	enum TurnType
 	{
@@ -391,53 +413,53 @@ public:
 		mirror, /**< Turn the notes as if you were facing away from the machine. */
 		shuffle, /**< Replace one column with another column. */
 		super_shuffle, /**< Replace each note individually. */
-		NUM_TURN_TYPES 
+		NUM_TURN_TYPES
 	};
 	enum TransformType
 	{
-		noholds, 
-		nomines, 
-		little, 
-		wide, 
-		big, 
-		quick, 
-		skippy, 
-		add_mines, 
-		echo, 
-		stomp, 
-		planted, 
-		floored, 
-		twister, 
-		nojumps, 
-		nohands, 
-		noquads, 
+		noholds,
+		nomines,
+		little,
+		wide,
+		big,
+		quick,
+		skippy,
+		add_mines,
+		echo,
+		stomp,
+		planted,
+		floored,
+		twister,
+		nojumps,
+		nohands,
+		noquads,
 		nostretch,
-		NUM_TRANSFORM_TYPES 
+		NUM_TRANSFORM_TYPES
 	};
-	enum AlterType 
+	enum AlterType
 	{
 		autogen_to_fill_width,
-		backwards, 
-		swap_sides, 
-		copy_left_to_right, 
-		copy_right_to_left, 
-		clear_left, 
-		clear_right, 
-		collapse_to_one, 
-		collapse_left, 
-		shift_left, 
-		shift_right, 
-		NUM_ALTER_TYPES 
+		backwards,
+		swap_sides,
+		copy_left_to_right,
+		copy_right_to_left,
+		clear_left,
+		clear_right,
+		collapse_to_one,
+		collapse_left,
+		shift_left,
+		shift_right,
+		NUM_ALTER_TYPES
 	};
-	enum TempoType 
-	{ 
-		compress_2x, 
-		compress_3_2, 
-		compress_4_3, 
-		expand_4_3, 
-		expand_3_2, 
-		expand_2x, 
-		NUM_TEMPO_TYPES 
+	enum TempoType
+	{
+		compress_2x,
+		compress_3_2,
+		compress_4_3,
+		expand_4_3,
+		expand_3_2,
+		expand_2x,
+		NUM_TEMPO_TYPES
 	};
 
 	enum StepsInformationChoice
@@ -461,7 +483,7 @@ public:
 		chaos,
 		NUM_STEPS_INFORMATION_CHOICES
 	};
-	void HandleStepsInformationChoice( StepsInformationChoice c, const vector<int> &iAnswers );
+	void HandleStepsInformationChoice(StepsInformationChoice c, const vector<int> &iAnswers);
 
 	enum SongInformationChoice
 	{
@@ -481,8 +503,8 @@ public:
 		max_bpm,
 		NUM_SONG_INFORMATION_CHOICES
 	};
-	void HandleSongInformationChoice( SongInformationChoice c, const vector<int> &iAnswers );
-	
+	void HandleSongInformationChoice(SongInformationChoice c, const vector<int> &iAnswers);
+
 	enum TimingDataInformationChoice
 	{
 		beat_0_offset,
@@ -494,7 +516,7 @@ public:
 		tickcount,
 		combo,
 		warp,
-//		speed,
+		//		speed,
 		speed_percent,
 		speed_wait,
 		speed_mode,
@@ -502,8 +524,8 @@ public:
 		erase_step_timing,
 		NUM_TIMING_DATA_INFORMATION_CHOICES
 	};
-	
-	void HandleTimingDataInformationChoice ( TimingDataInformationChoice c, const vector<int> &iAnswers );
+
+	void HandleTimingDataInformationChoice(TimingDataInformationChoice c, const vector<int> &iAnswers);
 
 	enum BGChangeChoice
 	{
@@ -532,7 +554,7 @@ public:
 		delete_change,
 		NUM_BGCHANGE_CHOICES
 	};
-	
+
 	enum SpeedSegmentModes
 	{
 		SSMODE_Beats,
@@ -545,7 +567,7 @@ public:
 	 * It is important that this is only called in Song Timing mode.
 	 * @param c the Background Change style requested.
 	 * @param iAnswers the other settings involving the change. */
-	void HandleBGChangeChoice( BGChangeChoice c, const vector<int> &iAnswers );
+	void HandleBGChangeChoice(BGChangeChoice c, const vector<int> &iAnswers);
 
 	enum CourseAttackChoice
 	{
@@ -556,11 +578,11 @@ public:
 	};
 
 	void InitEditMappings();
-	EditButton DeviceToEdit( const DeviceInput &DeviceI ) const;
-	EditButton MenuButtonToEditButton( GameButton MenuI ) const;
-	bool EditToDevice( EditButton button, int iSlotNum, DeviceInput &DeviceI ) const;
-	bool EditPressed( EditButton button, const DeviceInput &DeviceI );
-	bool EditIsBeingPressed( EditButton button ) const;
+	EditButton DeviceToEdit(const DeviceInput &DeviceI) const;
+	EditButton MenuButtonToEditButton(GameButton MenuI) const;
+	bool EditToDevice(EditButton button, int iSlotNum, DeviceInput &DeviceI) const;
+	bool EditPressed(EditButton button, const DeviceInput &DeviceI);
+	bool EditIsBeingPressed(EditButton button) const;
 	const MapEditToDI *GetCurrentDeviceInputMap() const;
 	const MapEditButtonToMenuButton *GetCurrentMenuButtonMap() const;
 	MapEditToDI		m_EditMappingsDeviceInput;
@@ -572,8 +594,8 @@ public:
 	MapEditButtonToMenuButton m_RecordMappingsMenuButton;
 	MapEditButtonToMenuButton m_RecordPausedMappingsMenuButton;
 
-	void MakeFilteredMenuDef( const MenuDef* pDef, MenuDef &menu );
-	void EditMiniMenu( const MenuDef* pDef, ScreenMessage SM_SendOnOK = SM_None, ScreenMessage SM_SendOnCancel = SM_None );
+	void MakeFilteredMenuDef(const MenuDef* pDef, MenuDef &menu);
+	void EditMiniMenu(const MenuDef* pDef, ScreenMessage SM_SendOnOK = SM_None, ScreenMessage SM_SendOnCancel = SM_None);
 private:
 	/**
 	 * @brief Retrieve the appropriate TimingData based on GAMESTATE.
@@ -581,7 +603,7 @@ private:
 	TimingData & GetAppropriateTiming() const;
 	void SetBeat(float fBeat);
 	float GetBeat();
-	
+
 };
 
 #endif
@@ -589,7 +611,7 @@ private:
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -599,7 +621,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

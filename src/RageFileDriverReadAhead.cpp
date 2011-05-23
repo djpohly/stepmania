@@ -50,27 +50,29 @@
 #endif
 
 /* If GetFD() isn't supported on the underlying file, this filter won't do anything. */
-bool RageFileDriverReadAhead::FileSupported( RageFileBasic *pFile )
+bool RageFileDriverReadAhead::FileSupported(RageFileBasic *pFile)
 {
 	return pFile->GetFD() != -1;
 }
 
 /* iReadAheadBytes is the number of bytes to cache at the start of the file, to serve data while
  * the readahead is taking place.  iPostBufferReadAhead is the number of bytes to actually read ahead. */
-RageFileDriverReadAhead::RageFileDriverReadAhead( RageFileBasic *pFile, int iCacheBytes, int iPostBufferReadAhead )
+RageFileDriverReadAhead::RageFileDriverReadAhead(RageFileBasic *pFile, int iCacheBytes, int iPostBufferReadAhead)
 {
-	if( iPostBufferReadAhead == -1 )
+	if (iPostBufferReadAhead == -1)
+	{
 		iPostBufferReadAhead = iCacheBytes;
+	}
 
 	m_pFile = pFile;
 	m_iFilePos = pFile->Tell();
 	m_bFileOwned = false;
 	m_iPostBufferReadAhead = iPostBufferReadAhead;
 
-	FillBuffer( iCacheBytes );
+	FillBuffer(iCacheBytes);
 }
 
-RageFileDriverReadAhead::RageFileDriverReadAhead( const RageFileDriverReadAhead &cpy ):
+RageFileDriverReadAhead::RageFileDriverReadAhead(const RageFileDriverReadAhead &cpy):
 	RageFileObj(cpy)
 {
 	m_pFile = cpy.m_pFile->Copy();
@@ -79,64 +81,70 @@ RageFileDriverReadAhead::RageFileDriverReadAhead( const RageFileDriverReadAhead 
 	m_bFileOwned = true;
 	m_iPostBufferReadAhead = cpy.m_iPostBufferReadAhead;
 
-	RageFileManagerReadAhead::CacheHintStreaming( m_pFile );
+	RageFileManagerReadAhead::CacheHintStreaming(m_pFile);
 }
 
 RageFileDriverReadAhead::~RageFileDriverReadAhead()
 {
-	if( m_bFileOwned )
+	if (m_bFileOwned)
+	{
 		delete m_pFile;
+	}
 }
 
 RageFileDriverReadAhead *RageFileDriverReadAhead::Copy() const
 {
-	RageFileDriverReadAhead *pRet = new RageFileDriverReadAhead( *this );
+	RageFileDriverReadAhead *pRet = new RageFileDriverReadAhead(*this);
 	return pRet;
 }
 
-void RageFileDriverReadAhead::FillBuffer( int iBytes )
+void RageFileDriverReadAhead::FillBuffer(int iBytes)
 {
 	int iOldPos = m_pFile->Tell();
-	m_pFile->Seek( 0 );
+	m_pFile->Seek(0);
 
 	m_sBuffer = "";
-	m_pFile->Read( m_sBuffer, iBytes );
+	m_pFile->Read(m_sBuffer, iBytes);
 
 	/* Seek back to where we were.  If we're going back to the cached region, seek past it,
 	 * like SeekInternal does. */
-	if( iOldPos < (int) m_sBuffer.size() )
+	if (iOldPos < (int) m_sBuffer.size())
+	{
 		iOldPos = m_sBuffer.size();
-	m_pFile->Seek( iOldPos );
+	}
+	m_pFile->Seek(iOldPos);
 
 	/* Now that we're done moving the file pointer around, set the file's read-ahead hint,
 	 * if supported. */
-	RageFileManagerReadAhead::CacheHintStreaming( m_pFile );
+	RageFileManagerReadAhead::CacheHintStreaming(m_pFile);
 }
 
-int RageFileDriverReadAhead::ReadInternal( void *pBuffer, size_t iBytes )
+int RageFileDriverReadAhead::ReadInternal(void *pBuffer, size_t iBytes)
 {
 	int iRet = -1;
-	if( m_bReadAheadNeeded && m_iFilePos < (int) m_sBuffer.size() )
+	if (m_bReadAheadNeeded && m_iFilePos < (int) m_sBuffer.size())
 	{
 		// If we can serve data out of the buffer, use it.
-		iRet = min( iBytes, m_sBuffer.size() - m_iFilePos );
-		memcpy( pBuffer, m_sBuffer.data() + m_iFilePos, iRet );
+		iRet = min(iBytes, m_sBuffer.size() - m_iFilePos);
+		memcpy(pBuffer, m_sBuffer.data() + m_iFilePos, iRet);
 	}
 	else
 	{
 		// Read out of the underlying file.
-		iRet = m_pFile->Read( pBuffer, iBytes );
+		iRet = m_pFile->Read(pBuffer, iBytes);
 	}
 
-	if( iRet != -1 )
+	if (iRet != -1)
+	{
 		m_iFilePos += iRet;
+	}
 
 	/*
 	 * Hint the read-ahead.  We only strictly need to do this when reading data from
 	 * m_sBuffer, so the kernel knows to start reading data ahead of it.  Always
 	 * doing it is simpler, and reduces some skips when under I/O load.
 	 */
-	RageFileManagerReadAhead::ReadAhead( m_pFile, m_iPostBufferReadAhead );
+	RageFileManagerReadAhead::ReadAhead(m_pFile, m_iPostBufferReadAhead);
 
 	/*
 	 * We're streaming the file, so we don't need data that we've already read in cache.
@@ -146,25 +154,25 @@ int RageFileDriverReadAhead::ReadInternal( void *pBuffer, size_t iBytes )
 	 * the end of the file, flush the cache, then try to read (resulting in 0 bytes), it'll
 	 * hit the disk if we've flushed.
 	 */
-	RageFileManagerReadAhead::DiscardCache( m_pFile, -m_iPostBufferReadAhead - 1024*32, m_iPostBufferReadAhead );
+	RageFileManagerReadAhead::DiscardCache(m_pFile, -m_iPostBufferReadAhead - 1024 * 32, m_iPostBufferReadAhead);
 
 	return iRet;
 
 }
 
-int RageFileDriverReadAhead::SeekInternal( int iOffset )
+int RageFileDriverReadAhead::SeekInternal(int iOffset)
 {
-	if( iOffset < (int) m_sBuffer.size() )
+	if (iOffset < (int) m_sBuffer.size())
 	{
 		/* This assumes that seeking the file won't block.  This seems to be true in Linux, at least.
 		 * Seek the actual file to just past our buffer, so the RageFileManagerReadAhead::ReadAhead
 		 * call will read ahead from the correct position. */
-		m_pFile->Seek( m_sBuffer.size() );
+		m_pFile->Seek(m_sBuffer.size());
 		m_iFilePos = iOffset;
 		return iOffset;
 	}
 
-	m_iFilePos = m_pFile->Seek( iOffset );
+	m_iFilePos = m_pFile->Seek(iOffset);
 	return m_iFilePos;
 }
 

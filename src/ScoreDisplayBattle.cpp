@@ -13,60 +13,62 @@
 
 ScoreDisplayBattle::ScoreDisplayBattle()
 {
-	LOG->Trace( "ScoreDisplayBattle::ScoreDisplayBattle()" );
+	LOG->Trace("ScoreDisplayBattle::ScoreDisplayBattle()");
 
-	m_sprFrame.Load( THEME->GetPathG("ScoreDisplayBattle","frame") );
-	this->AddChild( &m_sprFrame );
+	m_sprFrame.Load(THEME->GetPathG("ScoreDisplayBattle", "frame"));
+	this->AddChild(&m_sprFrame);
 
-	for( int i=0; i<NUM_INVENTORY_SLOTS; i++ )
+	for (int i = 0; i < NUM_INVENTORY_SLOTS; i++)
 	{
-		m_ItemIcon[i].SetXY( ITEM_X(i), ITEM_Y(i) );
+		m_ItemIcon[i].SetXY(ITEM_X(i), ITEM_Y(i));
 		m_ItemIcon[i].StopAnimating();
-		this->AddChild( &m_ItemIcon[i] );
+		this->AddChild(&m_ItemIcon[i]);
 	}
 
 	vector<RString> asIconPaths;
-	GetDirListing( THEME->GetCurThemeDir()+"Graphic/ScoreDisplayBattle icon*", asIconPaths );
-	for( unsigned j=0; j<asIconPaths.size(); j++ )
-		m_TexturePreload.Load( asIconPaths[j] );
+	GetDirListing(THEME->GetCurThemeDir() + "Graphic/ScoreDisplayBattle icon*", asIconPaths);
+	for (unsigned j = 0; j < asIconPaths.size(); j++)
+	{
+		m_TexturePreload.Load(asIconPaths[j]);
+	}
 }
 
-void ScoreDisplayBattle::Init( const PlayerState* pPlayerState, const PlayerStageStats* pPlayerStageStats )
+void ScoreDisplayBattle::Init(const PlayerState* pPlayerState, const PlayerStageStats* pPlayerStageStats)
 {
-	ScoreDisplay::Init( pPlayerState, pPlayerStageStats );
+	ScoreDisplay::Init(pPlayerState, pPlayerStageStats);
 }
 
-void ScoreDisplayBattle::Update( float fDelta )
+void ScoreDisplayBattle::Update(float fDelta)
 {
-	ScoreDisplay::Update( fDelta );
+	ScoreDisplay::Update(fDelta);
 
-	for( int s=0; s<NUM_INVENTORY_SLOTS; s++ )
+	for (int s = 0; s < NUM_INVENTORY_SLOTS; s++)
 	{
 		const Attack& attack = m_pPlayerState->m_Inventory[s];
 		RString sNewModifier = attack.sModifiers;
 
-		if( sNewModifier != m_iLastSeenInventory[s] )
+		if (sNewModifier != m_iLastSeenInventory[s])
 		{
 			m_iLastSeenInventory[s] = sNewModifier;
 
-			if( sNewModifier == "" )
+			if (sNewModifier == "")
 			{
-				m_ItemIcon[s].RunCommands( ActorUtil::ParseActorCommands( "linear,0.25;zoom,0" ) );
+				m_ItemIcon[s].RunCommands(ActorUtil::ParseActorCommands("linear,0.25;zoom,0"));
 			}
 			else
 			{
 				// TODO:  Cache all of the icon graphics so we don't load them dynamically from disk.
-				m_ItemIcon[s].Load( THEME->GetPathG("ScoreDisplayBattle","icon "+sNewModifier) );
+				m_ItemIcon[s].Load(THEME->GetPathG("ScoreDisplayBattle", "icon " + sNewModifier));
 				m_ItemIcon[s].StopTweening();
 				apActorCommands acmds = ActorUtil::ParseActorCommands(
-					"diffuse,1,1,1,1;zoom,1;"
-					"sleep,0.1;linear,0;diffusealpha,0;"
-					"sleep,0.1;linear,0;diffusealpha,1;"
-					"sleep,0.1;linear,0;diffusealpha,0;"
-					"sleep,0.1;linear,0;diffusealpha,1;"
-					"sleep,0.1;linear,0;diffusealpha,0;"
-					"sleep,0.1;linear,0;diffusealpha,1;" );
-				m_ItemIcon[s].RunCommands( acmds );
+				                                "diffuse,1,1,1,1;zoom,1;"
+				                                "sleep,0.1;linear,0;diffusealpha,0;"
+				                                "sleep,0.1;linear,0;diffusealpha,1;"
+				                                "sleep,0.1;linear,0;diffusealpha,0;"
+				                                "sleep,0.1;linear,0;diffusealpha,1;"
+				                                "sleep,0.1;linear,0;diffusealpha,0;"
+				                                "sleep,0.1;linear,0;diffusealpha,1;");
+				m_ItemIcon[s].RunCommands(acmds);
 			}
 		}
 	}
@@ -75,7 +77,7 @@ void ScoreDisplayBattle::Update( float fDelta )
 /*
  * (c) 2001-2003 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -85,7 +87,7 @@ void ScoreDisplayBattle::Update( float fDelta )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

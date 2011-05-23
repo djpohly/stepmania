@@ -14,57 +14,57 @@ struct lua_State;
 class RageFileManager
 {
 public:
-	RageFileManager( const RString &argv0 );
+	RageFileManager(const RString &argv0);
 	~RageFileManager();
 	void MountInitialFilesystems();
 	void MountUserFilesystems();
 
-	void GetDirListing( const RString &sPath, vector<RString> &AddTo, bool bOnlyDirs, bool bReturnPathToo );
-	bool Move( const RString &sOldPath, const RString &sNewPath );
-	bool Remove( const RString &sPath );
-	void CreateDir( const RString &sDir );
-	
+	void GetDirListing(const RString &sPath, vector<RString> &AddTo, bool bOnlyDirs, bool bReturnPathToo);
+	bool Move(const RString &sOldPath, const RString &sNewPath);
+	bool Remove(const RString &sPath);
+	void CreateDir(const RString &sDir);
+
 	enum FileType { TYPE_FILE, TYPE_DIR, TYPE_NONE };
-	FileType GetFileType( const RString &sPath );
+	FileType GetFileType(const RString &sPath);
 
-	bool IsAFile( const RString &sPath );
-	bool IsADirectory( const RString &sPath );
-	bool DoesFileExist( const RString &sPath );
+	bool IsAFile(const RString &sPath);
+	bool IsADirectory(const RString &sPath);
+	bool DoesFileExist(const RString &sPath);
 
-	int GetFileSizeInBytes( const RString &sPath );
-	int GetFileHash( const RString &sPath );
+	int GetFileSizeInBytes(const RString &sPath);
+	int GetFileHash(const RString &sPath);
 
-	bool Mount( const RString &sType, const RString &sRealPath, const RString &sMountPoint, bool bAddToEnd = true );
-	void Mount( RageFileDriver *pDriver, const RString &sMountPoint, bool bAddToEnd = true );
-	void Unmount( const RString &sType, const RString &sRoot, const RString &sMountPoint );
+	bool Mount(const RString &sType, const RString &sRealPath, const RString &sMountPoint, bool bAddToEnd = true);
+	void Mount(RageFileDriver *pDriver, const RString &sMountPoint, bool bAddToEnd = true);
+	void Unmount(const RString &sType, const RString &sRoot, const RString &sMountPoint);
 
 	/* Change the root of a filesystem.  Only a couple drivers support this; it's
 	 * used to change memory card mountpoints without having to actually unmount
 	 * the driver. */
-	void Remount( RString sMountpoint, RString sPath );
-	bool IsMounted( RString MountPoint );
+	void Remount(RString sMountpoint, RString sPath);
+	bool IsMounted(RString MountPoint);
 	struct DriverLocation
 	{
 		RString Type, Root, MountPoint;
 	};
-	void GetLoadedDrivers( vector<DriverLocation> &asMounts );
+	void GetLoadedDrivers(vector<DriverLocation> &asMounts);
 
-	void FlushDirCache( const RString &sPath = RString() );
+	void FlushDirCache(const RString &sPath = RString());
 
 	/* Used only by RageFile: */
-	RageFileBasic *Open( const RString &sPath, int iMode, int &iError );
-	void CacheFile( const RageFileBasic *fb, const RString &sPath );
+	RageFileBasic *Open(const RString &sPath, int iMode, int &iError);
+	void CacheFile(const RageFileBasic *fb, const RString &sPath);
 
 	/* Retrieve or release a reference to the low-level driver for a mountpoint. */
-	RageFileDriver *GetFileDriver( RString sMountpoint );
-	void ReleaseFileDriver( RageFileDriver *pDriver );
+	RageFileDriver *GetFileDriver(RString sMountpoint);
+	void ReleaseFileDriver(RageFileDriver *pDriver);
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
 private:
-	RageFileBasic *OpenForReading( const RString &sPath, int iMode, int &iError );
-	RageFileBasic *OpenForWriting( const RString &sPath, int iMode, int &iError );
+	RageFileBasic *OpenForReading(const RString &sPath, int iMode, int &iError);
+	RageFileBasic *OpenForWriting(const RString &sPath, int iMode, int &iError);
 };
 
 extern RageFileManager *FILEMAN;

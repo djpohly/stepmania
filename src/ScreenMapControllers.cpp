@@ -10,57 +10,57 @@
 #include "LocalizedString.h"
 
 #define BUTTONS_TO_MAP			THEME->GetMetric ( m_sName, "ButtonsToMap" )
-static LocalizedString INVALID_BUTTON   ( "ScreenMapControllers", "InvalidButton" );
+static LocalizedString INVALID_BUTTON("ScreenMapControllers", "InvalidButton");
 #define MAPPED_TO_COMMAND(gc,slot)	THEME->GetMetricA( m_sName, ssprintf("MappedToP%iS%iCommand", gc+1, slot+1) )
 
 static const float g_fSecondsToWaitForInput = 0.05f;
 
 // reserve the 3rd slot for hard-coded keys
-static const int NUM_CHANGABLE_SLOTS = NUM_SHOWN_GAME_TO_DEVICE_SLOTS-1;
+static const int NUM_CHANGABLE_SLOTS = NUM_SHOWN_GAME_TO_DEVICE_SLOTS - 1;
 
-REGISTER_SCREEN_CLASS( ScreenMapControllers );
+REGISTER_SCREEN_CLASS(ScreenMapControllers);
 
 ScreenMapControllers::ScreenMapControllers()
 {
-	this->SubscribeToMessage( Message_AutoJoyMappingApplied );
+	this->SubscribeToMessage(Message_AutoJoyMappingApplied);
 }
 
-static LocalizedString PLAYER_SLOTS( "ScreenMapControllers", "%s slots" );
+static LocalizedString PLAYER_SLOTS("ScreenMapControllers", "%s slots");
 void ScreenMapControllers::Init()
 {
 	ScreenWithMenuElements::Init();
 
-	m_soundChange.Load( THEME->GetPathS(m_sName,"change"), true );
-	m_soundDelete.Load( THEME->GetPathS(m_sName,"delete"), true );
+	m_soundChange.Load(THEME->GetPathS(m_sName, "change"), true);
+	m_soundDelete.Load(THEME->GetPathS(m_sName, "delete"), true);
 
 
-	m_textDevices.LoadFromFont( THEME->GetPathF(m_sName,"devices") );
-	m_textDevices.SetName( "Devices" );
-	LOAD_ALL_COMMANDS_AND_SET_XY( m_textDevices );
-	this->AddChild( &m_textDevices );
+	m_textDevices.LoadFromFont(THEME->GetPathF(m_sName, "devices"));
+	m_textDevices.SetName("Devices");
+	LOAD_ALL_COMMANDS_AND_SET_XY(m_textDevices);
+	this->AddChild(&m_textDevices);
 
 
 	RString sButtons = BUTTONS_TO_MAP;
-	if( sButtons.empty() )
+	if (sButtons.empty())
 	{
 		/* Map all buttons for this game. */
-		FOREACH_GameButtonInScheme( INPUTMAPPER->GetInputScheme(), gb )
+		FOREACH_GameButtonInScheme(INPUTMAPPER->GetInputScheme(), gb)
 		{
 			KeyToMap k;
 			k.m_GameButton = gb;
-			m_KeysToMap.push_back( k );
+			m_KeysToMap.push_back(k);
 		}
 	}
 	else
 	{
 		/* Map the specified buttons. */
 		vector<RString> asBits;
-		split( sButtons, ",", asBits );
-		for( unsigned i=0; i<asBits.size(); ++i )
+		split(sButtons, ",", asBits);
+		for (unsigned i = 0; i < asBits.size(); ++i)
 		{
 			KeyToMap k;
-			k.m_GameButton = StringToGameButton( INPUTMAPPER->GetInputScheme(), asBits[i] );
-			m_KeysToMap.push_back( k );
+			k.m_GameButton = StringToGameButton(INPUTMAPPER->GetInputScheme(), asBits[i]);
+			m_KeysToMap.push_back(k);
 		}
 	}
 
@@ -68,86 +68,88 @@ void ScreenMapControllers::Init()
 
 	// header row
 	{
-		FOREACH_ENUM( GameController,  c )
-		{			
+		FOREACH_ENUM(GameController,  c)
+		{
 			BitmapText &text = m_textLabel[c];
-			text.LoadFromFont( THEME->GetPathF(m_sName,"title") );
+			text.LoadFromFont(THEME->GetPathF(m_sName, "title"));
 			PlayerNumber pn = (PlayerNumber)c;
-			text.SetName( "Label"+PlayerNumberToString(pn) );
+			text.SetName("Label" + PlayerNumberToString(pn));
 			RString sText = ssprintf(PLAYER_SLOTS.GetValue(), PlayerNumberToLocalizedString(pn).c_str());
-			text.SetText( sText );
-			ActorUtil::LoadAllCommands( text, m_sName );
-			m_Line[iRow].AddChild( &m_textLabel[c] );
+			text.SetText(sText);
+			ActorUtil::LoadAllCommands(text, m_sName);
+			m_Line[iRow].AddChild(&m_textLabel[c]);
 		}
-		m_LineScroller.AddChild( &m_Line[iRow] );
+		m_LineScroller.AddChild(&m_Line[iRow]);
 
 		iRow++;
 	}
 
 	// normal rows
-	for( unsigned b=0; b<m_KeysToMap.size(); b++ )
+	for (unsigned b = 0; b < m_KeysToMap.size(); b++)
 	{
 		KeyToMap *pKey = &m_KeysToMap[b];
 
 		{
 			BitmapText *pName = new BitmapText;
-			pName->SetName( "Primary" );
-			pName->LoadFromFont( THEME->GetPathF(m_sName,"title") );
-			RString sText = GameButtonToLocalizedString( INPUTMAPPER->GetInputScheme(), pKey->m_GameButton );
-			pName->SetText( sText );
-			ActorUtil::LoadAllCommands( *pName, m_sName );
-			m_Line[iRow].AddChild( pName );
+			pName->SetName("Primary");
+			pName->LoadFromFont(THEME->GetPathF(m_sName, "title"));
+			RString sText = GameButtonToLocalizedString(INPUTMAPPER->GetInputScheme(), pKey->m_GameButton);
+			pName->SetText(sText);
+			ActorUtil::LoadAllCommands(*pName, m_sName);
+			m_Line[iRow].AddChild(pName);
 		}
 		{
 			BitmapText *pSecondary = new BitmapText;
-			pSecondary->SetName( "Secondary" );
-			pSecondary->LoadFromFont( THEME->GetPathF(m_sName,"title") );
-			GameButton mb = INPUTMAPPER->GetInputScheme()->GameButtonToMenuButton( pKey->m_GameButton );
+			pSecondary->SetName("Secondary");
+			pSecondary->LoadFromFont(THEME->GetPathF(m_sName, "title"));
+			GameButton mb = INPUTMAPPER->GetInputScheme()->GameButtonToMenuButton(pKey->m_GameButton);
 			RString sText;
-			if( mb != GameButton_Invalid && mb != pKey->m_GameButton )
-				sText = GameButtonToLocalizedString( INPUTMAPPER->GetInputScheme(), mb );
-			ActorUtil::LoadAllCommands( *pSecondary, m_sName );
-			pSecondary->SetText( sText );
-			m_Line[iRow].AddChild( pSecondary );
+			if (mb != GameButton_Invalid && mb != pKey->m_GameButton)
+			{
+				sText = GameButtonToLocalizedString(INPUTMAPPER->GetInputScheme(), mb);
+			}
+			ActorUtil::LoadAllCommands(*pSecondary, m_sName);
+			pSecondary->SetText(sText);
+			m_Line[iRow].AddChild(pSecondary);
 		}
 
-		FOREACH_ENUM( GameController,  c )
-		{			
-			for( int s=0; s<NUM_SHOWN_GAME_TO_DEVICE_SLOTS; s++ ) 
+		FOREACH_ENUM(GameController,  c)
+		{
+			for (int s = 0; s < NUM_SHOWN_GAME_TO_DEVICE_SLOTS; s++)
 			{
 				pKey->m_textMappedTo[c][s] = new BitmapText;
-				pKey->m_textMappedTo[c][s]->SetName( "MappedTo" );
-				pKey->m_textMappedTo[c][s]->LoadFromFont( THEME->GetPathF(m_sName,"entry") );
-				pKey->m_textMappedTo[c][s]->RunCommands( MAPPED_TO_COMMAND(c,s) );
-				ActorUtil::LoadAllCommands( *pKey->m_textMappedTo[c][s], m_sName );
-				m_Line[iRow].AddChild( pKey->m_textMappedTo[c][s] );
+				pKey->m_textMappedTo[c][s]->SetName("MappedTo");
+				pKey->m_textMappedTo[c][s]->LoadFromFont(THEME->GetPathF(m_sName, "entry"));
+				pKey->m_textMappedTo[c][s]->RunCommands(MAPPED_TO_COMMAND(c, s));
+				ActorUtil::LoadAllCommands(*pKey->m_textMappedTo[c][s], m_sName);
+				m_Line[iRow].AddChild(pKey->m_textMappedTo[c][s]);
 			}
 		}
 		m_Line[iRow].DeleteChildrenWhenDone();
-		m_Line[iRow].SetName( "Line" );
-		ActorUtil::LoadAllCommands( m_Line[iRow], m_sName );
-		m_LineScroller.AddChild( &m_Line[iRow] );
-
-		iRow++;
-	}	
-
-	// exit row
-	{
-		m_sprExit.Load( THEME->GetPathG(m_sName,"exit") );
-		m_sprExit->SetName( "Exit" );
-		ActorUtil::LoadAllCommands( *m_sprExit, m_sName );
-
-		m_Line[iRow].AddChild( m_sprExit );
-		m_LineScroller.AddChild( &m_Line[iRow] );
+		m_Line[iRow].SetName("Line");
+		ActorUtil::LoadAllCommands(m_Line[iRow], m_sName);
+		m_LineScroller.AddChild(&m_Line[iRow]);
 
 		iRow++;
 	}
 
-	m_LineScroller.SetName( "LineScroller" );
-	ActorUtil::LoadAllCommands( m_LineScroller, m_sName );
-	m_LineScroller.SetNumItemsToDraw( (float) m_LineScroller.GetNumChildren()*2 );
+	// exit row
+	{
+		m_sprExit.Load(THEME->GetPathG(m_sName, "exit"));
+		m_sprExit->SetName("Exit");
+		ActorUtil::LoadAllCommands(*m_sprExit, m_sName);
+
+		m_Line[iRow].AddChild(m_sprExit);
+		m_LineScroller.AddChild(&m_Line[iRow]);
+
+		iRow++;
+	}
+
+	m_LineScroller.SetName("LineScroller");
+	ActorUtil::LoadAllCommands(m_LineScroller, m_sName);
+	m_LineScroller.SetNumItemsToDraw((float) m_LineScroller.GetNumChildren() * 2);
 	m_LineScroller.Load2();
-	this->AddChild( &m_LineScroller );
+	this->AddChild(&m_LineScroller);
 }
 
 void ScreenMapControllers::BeginScreen()
@@ -165,29 +167,31 @@ void ScreenMapControllers::BeginScreen()
 }
 
 
-void ScreenMapControllers::Update( float fDeltaTime )
+void ScreenMapControllers::Update(float fDeltaTime)
 {
-	ScreenWithMenuElements::Update( fDeltaTime );
+	ScreenWithMenuElements::Update(fDeltaTime);
 
-	
+
 	//
 	// Update devices text
 	//
-	m_textDevices.SetText( INPUTMAN->GetDisplayDevicesString() );
+	m_textDevices.SetText(INPUTMAN->GetDisplayDevicesString());
 
 
-	if( !m_WaitingForPress.IsZero() && m_DeviceIToMap.IsValid() ) // we're going to map an input
-	{	
-		if( m_WaitingForPress.PeekDeltaTime() < g_fSecondsToWaitForInput )
-			return; /* keep waiting */
+	if (!m_WaitingForPress.IsZero() && m_DeviceIToMap.IsValid())  // we're going to map an input
+	{
+		if (m_WaitingForPress.PeekDeltaTime() < g_fSecondsToWaitForInput)
+		{
+			return;        /* keep waiting */
+		}
 		m_WaitingForPress.SetZero();
 
-		ASSERT( m_iCurButton < (int) m_KeysToMap.size() );
+		ASSERT(m_iCurButton < (int) m_KeysToMap.size());
 		const KeyToMap *pKey = &m_KeysToMap[m_iCurButton];
-		
-		GameInput curGameI( (GameController)m_iCurController, pKey->m_GameButton );
 
-		INPUTMAPPER->SetInputMap( m_DeviceIToMap, curGameI, m_iCurSlot );
+		GameInput curGameI((GameController)m_iCurController, pKey->m_GameButton);
+
+		INPUTMAPPER->SetInputMap(m_DeviceIToMap, curGameI, m_iCurSlot);
 		INPUTMAPPER->AddDefaultMappingsForCurrentGameIfUnmapped();
 
 		// commit to disk after each change
@@ -196,7 +200,7 @@ void ScreenMapControllers::Update( float fDeltaTime )
 		Refresh();
 
 		BitmapText *pText = pKey->m_textMappedTo[m_iCurController][m_iCurSlot];
-		pText->PlayCommand( "MappedInput" );
+		pText->PlayCommand("MappedInput");
 		SCREENMAN->PlayStartSound();
 	}
 }
@@ -205,38 +209,46 @@ void ScreenMapControllers::Update( float fDeltaTime )
 /* Note that this isn't necessarily correct.  For example, JOY_LEFT might actually be
  * a D-pad and not an axis.  All this is actually doing is giving priority to some
  * inputs over others; this function is unsuitable for other use. */
-static bool IsAxis( const DeviceInput& DeviceI )
+static bool IsAxis(const DeviceInput& DeviceI)
 {
-	if( !DeviceI.IsJoystick() )
+	if (!DeviceI.IsJoystick())
+	{
 		return false;
+	}
 
-	static int axes[] = 
+	static int axes[] =
 	{
 		JOY_LEFT, JOY_RIGHT, JOY_UP, JOY_DOWN,
 		JOY_LEFT_2, JOY_RIGHT_2, JOY_UP_2, JOY_DOWN_2,
 		JOY_Z_UP, JOY_Z_DOWN,
 		JOY_ROT_UP, JOY_ROT_DOWN, JOY_ROT_LEFT, JOY_ROT_RIGHT, JOY_ROT_Z_UP, JOY_ROT_Z_DOWN,
-		JOY_HAT_LEFT, JOY_HAT_RIGHT, JOY_HAT_UP, JOY_HAT_DOWN, 
+		JOY_HAT_LEFT, JOY_HAT_RIGHT, JOY_HAT_UP, JOY_HAT_DOWN,
 		JOY_AUX_1, JOY_AUX_2, JOY_AUX_3, JOY_AUX_4,
 		-1
 	};
 
-	for( int ax = 0; axes[ax] != -1; ++ax )
-		if( DeviceI.button == axes[ax] )
+	for (int ax = 0; axes[ax] != -1; ++ax)
+		if (DeviceI.button == axes[ax])
+		{
 			return true;
+		}
 
 	return false;
 }
 
-void ScreenMapControllers::Input( const InputEventPlus &input )
+void ScreenMapControllers::Input(const InputEventPlus &input)
 {
-	if( input.type != IET_FIRST_PRESS && input.type != IET_REPEAT )
-		return;	// ignore
-	if( IsTransitioning() )
-		return;	// ignore
+	if (input.type != IET_FIRST_PRESS && input.type != IET_REPEAT)
+	{
+		return;        // ignore
+	}
+	if (IsTransitioning())
+	{
+		return;        // ignore
+	}
 
-	LOG->Trace( "ScreenMapControllers::Input():  device: %d, button: %d", 
-		input.DeviceI.device, input.DeviceI.button );
+	LOG->Trace("ScreenMapControllers::Input():  device: %d, button: %d",
+	           input.DeviceI.device, input.DeviceI.button);
 
 	int button = input.DeviceI.button;
 
@@ -245,24 +257,26 @@ void ScreenMapControllers::Input( const InputEventPlus &input )
 	 * because presses of buttons aren't mutually exclusive and presses of axes
 	 * are (e.g. can't read presses of both Left and Right simultaneously). So,
 	 * when the user presses a button, we'll wait until the next Update before
-	 * adding a mapping so that we get a chance to see all input events the 
+	 * adding a mapping so that we get a chance to see all input events the
 	 * user's press of a panel. Prefer non-axis events over axis events. */
-	if( !m_WaitingForPress.IsZero() )
+	if (!m_WaitingForPress.IsZero())
 	{
-		if( input.type != IET_FIRST_PRESS )
+		if (input.type != IET_FIRST_PRESS)
+		{
 			return;
+		}
 
 		// Don't allow function keys to be mapped.
-		if( input.DeviceI.device == DEVICE_KEYBOARD && (input.DeviceI.button >= KEY_F1 && input.DeviceI.button <= KEY_F12) )
+		if (input.DeviceI.device == DEVICE_KEYBOARD && (input.DeviceI.button >= KEY_F1 && input.DeviceI.button <= KEY_F12))
 		{
-			SCREENMAN->SystemMessage( INVALID_BUTTON );
+			SCREENMAN->SystemMessage(INVALID_BUTTON);
 			SCREENMAN->PlayInvalidSound();
 		}
 		else
 		{
-			if( m_DeviceIToMap.IsValid() &&
-				!IsAxis(m_DeviceIToMap) &&
-				IsAxis(input.DeviceI) )
+			if (m_DeviceIToMap.IsValid() &&
+			                !IsAxis(m_DeviceIToMap) &&
+			                IsAxis(input.DeviceI))
 			{
 				LOG->Trace("Ignored input; non-axis event already received");
 				return;	// ignore this press
@@ -271,120 +285,138 @@ void ScreenMapControllers::Input( const InputEventPlus &input )
 			m_DeviceIToMap = input.DeviceI;
 		}
 	}
-	else if( input.DeviceI.device == DEVICE_KEYBOARD )
+	else if (input.DeviceI.device == DEVICE_KEYBOARD)
 	{
-		switch( button )
+		switch (button)
 		{
-		/* We only advertise space as doing this, but most games use either delete
-		 * or backspace, and I find them more intuitive, so allow them, too. -gm */
+				/* We only advertise space as doing this, but most games use either delete
+				 * or backspace, and I find them more intuitive, so allow them, too. -gm */
 
-		/* XXX: For some reason that eludes me, this function gets sent an
-		 * KEY_SPACE button press every time the JOY_HAT_UP button is pressed.
-		 * Had to put this in to prevent mappings being erased everytime the user
-		 * pressed up on the joypad. */
+				/* XXX: For some reason that eludes me, this function gets sent an
+				 * KEY_SPACE button press every time the JOY_HAT_UP button is pressed.
+				 * Had to put this in to prevent mappings being erased everytime the user
+				 * pressed up on the joypad. */
 
-		case KEY_DEL:
-		case KEY_SPACE:
-		case KEY_BACK: // Clear the selected input mapping.
-			if( m_iCurButton == (int) m_KeysToMap.size() )
-				break; // on exit
+			case KEY_DEL:
+			case KEY_SPACE:
+			case KEY_BACK: // Clear the selected input mapping.
+				if (m_iCurButton == (int) m_KeysToMap.size())
+				{
+					break;        // on exit
+				}
 
-			{
-				const KeyToMap *pKey = &m_KeysToMap[m_iCurButton];
-				GameInput curGameI( (GameController)m_iCurController, pKey->m_GameButton );
-				if( !INPUTMAPPER->ClearFromInputMap(curGameI, m_iCurSlot) )
-					break;
+				{
+					const KeyToMap *pKey = &m_KeysToMap[m_iCurButton];
+					GameInput curGameI((GameController)m_iCurController, pKey->m_GameButton);
+					if (!INPUTMAPPER->ClearFromInputMap(curGameI, m_iCurSlot))
+					{
+						break;
+					}
 
-				INPUTMAPPER->AddDefaultMappingsForCurrentGameIfUnmapped();
+					INPUTMAPPER->AddDefaultMappingsForCurrentGameIfUnmapped();
 
-				m_soundDelete.Play();
+					m_soundDelete.Play();
 
-				// commit to disk after each change
-				INPUTMAPPER->SaveMappingsToDisk();
-			}
-			break;
-		case KEY_LEFT: // Move the selection left, wrapping up.
-			if( m_iCurButton == (int) m_KeysToMap.size() )
-				break; // on exit
-			if( m_iCurSlot == 0 && m_iCurController == 0 )
-				break;	// can't go left any more
-			BeforeChangeFocus();
-			m_iCurSlot--;
-			if( m_iCurSlot < 0 )
-			{
-				m_iCurSlot = NUM_CHANGABLE_SLOTS-1;
-				m_iCurController--;
-			}
-			AfterChangeFocus();
-			m_soundChange.Play();
-			break;
-		case KEY_RIGHT:	// Move the selection right, wrapping down.
-			if( m_iCurButton == (int) m_KeysToMap.size() )
-				break; // on exit
-			if( m_iCurSlot == NUM_CHANGABLE_SLOTS-1 && m_iCurController == NUM_GameController-1 )
-				break;	// can't go right any more
-			BeforeChangeFocus();
-			m_iCurSlot++;
-			if( m_iCurSlot > NUM_CHANGABLE_SLOTS-1 )
-			{
-				m_iCurSlot = 0;
-				m_iCurController++;
-			}
-			AfterChangeFocus();
-			m_soundChange.Play();
-			break;
-		case KEY_UP: // Move the selection up.
-			if( m_iCurButton == 0 )
-				break;	// can't go up any more
-			BeforeChangeFocus();
-			m_iCurButton--;
-			AfterChangeFocus();
-			m_soundChange.Play();
-			break;
-		case KEY_DOWN: // Move the selection down.
-			if( m_iCurButton == (int) m_KeysToMap.size() )
-				break;	// can't go down any more
-			BeforeChangeFocus();
-			m_iCurButton++;
-			AfterChangeFocus();
-			m_soundChange.Play();
-			break;
-		case KEY_ESC: // Quit the screen.
-			SCREENMAN->PlayStartSound();
-			StartTransitioningScreen( SM_GoToNextScreen );
-			break;
-		case KEY_ENTER: // Change the selection.
-		case KEY_KP_ENTER:
-			if( m_iCurButton == (int) m_KeysToMap.size() )
-			{
-				SCREENMAN->PlayStartSound();
-				StartTransitioningScreen( SM_GoToNextScreen );
+					// commit to disk after each change
+					INPUTMAPPER->SaveMappingsToDisk();
+				}
 				break;
-			}
+			case KEY_LEFT: // Move the selection left, wrapping up.
+				if (m_iCurButton == (int) m_KeysToMap.size())
+				{
+					break;        // on exit
+				}
+				if (m_iCurSlot == 0 && m_iCurController == 0)
+				{
+					break;        // can't go left any more
+				}
+				BeforeChangeFocus();
+				m_iCurSlot--;
+				if (m_iCurSlot < 0)
+				{
+					m_iCurSlot = NUM_CHANGABLE_SLOTS - 1;
+					m_iCurController--;
+				}
+				AfterChangeFocus();
+				m_soundChange.Play();
+				break;
+			case KEY_RIGHT:	// Move the selection right, wrapping down.
+				if (m_iCurButton == (int) m_KeysToMap.size())
+				{
+					break;        // on exit
+				}
+				if (m_iCurSlot == NUM_CHANGABLE_SLOTS - 1 && m_iCurController == NUM_GameController - 1)
+				{
+					break;        // can't go right any more
+				}
+				BeforeChangeFocus();
+				m_iCurSlot++;
+				if (m_iCurSlot > NUM_CHANGABLE_SLOTS - 1)
+				{
+					m_iCurSlot = 0;
+					m_iCurController++;
+				}
+				AfterChangeFocus();
+				m_soundChange.Play();
+				break;
+			case KEY_UP: // Move the selection up.
+				if (m_iCurButton == 0)
+				{
+					break;        // can't go up any more
+				}
+				BeforeChangeFocus();
+				m_iCurButton--;
+				AfterChangeFocus();
+				m_soundChange.Play();
+				break;
+			case KEY_DOWN: // Move the selection down.
+				if (m_iCurButton == (int) m_KeysToMap.size())
+				{
+					break;        // can't go down any more
+				}
+				BeforeChangeFocus();
+				m_iCurButton++;
+				AfterChangeFocus();
+				m_soundChange.Play();
+				break;
+			case KEY_ESC: // Quit the screen.
+				SCREENMAN->PlayStartSound();
+				StartTransitioningScreen(SM_GoToNextScreen);
+				break;
+			case KEY_ENTER: // Change the selection.
+			case KEY_KP_ENTER:
+				if (m_iCurButton == (int) m_KeysToMap.size())
+				{
+					SCREENMAN->PlayStartSound();
+					StartTransitioningScreen(SM_GoToNextScreen);
+					break;
+				}
 
-			{
-				const KeyToMap *pKey = &m_KeysToMap[m_iCurButton];
-				BitmapText *pText = pKey->m_textMappedTo[m_iCurController][m_iCurSlot];
-				pText->PlayCommand( "Waiting" );
-			}
-			m_WaitingForPress.Touch();
-			m_DeviceIToMap.MakeInvalid();
-			SCREENMAN->PlayStartSound();
-			break;
+				{
+					const KeyToMap *pKey = &m_KeysToMap[m_iCurButton];
+					BitmapText *pText = pKey->m_textMappedTo[m_iCurController][m_iCurSlot];
+					pText->PlayCommand("Waiting");
+				}
+				m_WaitingForPress.Touch();
+				m_DeviceIToMap.MakeInvalid();
+				SCREENMAN->PlayStartSound();
+				break;
 		}
 	}
 
-//	ScreenWithMenuElements::Input( input );	// default handler
+	//	ScreenWithMenuElements::Input( input );	// default handler
 
-	LOG->Trace( "m_iCurSlot: %d m_iCurController: %d m_iCurButton: %d", m_iCurSlot, m_iCurController, m_iCurButton );
+	LOG->Trace("m_iCurSlot: %d m_iCurController: %d m_iCurButton: %d", m_iCurSlot, m_iCurController, m_iCurButton);
 
 	Refresh();
 }
 
 Actor *ScreenMapControllers::GetActorWithFocus()
 {
-	if( m_iCurButton == (int) m_KeysToMap.size() )
+	if (m_iCurButton == (int) m_KeysToMap.size())
+	{
 		return m_sprExit;
+	}
 
 	const KeyToMap *pKey = &m_KeysToMap[m_iCurButton];
 	return pKey->m_textMappedTo[m_iCurController][m_iCurSlot];
@@ -393,53 +425,55 @@ Actor *ScreenMapControllers::GetActorWithFocus()
 void ScreenMapControllers::BeforeChangeFocus()
 {
 	Actor *pActor = GetActorWithFocus();
-	pActor->PlayCommand( "LoseFocus" );
+	pActor->PlayCommand("LoseFocus");
 }
 
 void ScreenMapControllers::AfterChangeFocus()
 {
 	Actor *pActor = GetActorWithFocus();
-	pActor->PlayCommand( "GainFocus" );
+	pActor->PlayCommand("GainFocus");
 }
 
 void ScreenMapControllers::Refresh()
 {
-	FOREACH_ENUM( GameController,  p )
+	FOREACH_ENUM(GameController,  p)
 	{
-		for( unsigned b=0; b<m_KeysToMap.size(); b++ )
+		for (unsigned b = 0; b < m_KeysToMap.size(); b++)
 		{
 			const KeyToMap *pKey = &m_KeysToMap[b];
-			for( int s=0; s<NUM_SHOWN_GAME_TO_DEVICE_SLOTS; s++ ) 
+			for (int s = 0; s < NUM_SHOWN_GAME_TO_DEVICE_SLOTS; s++)
 			{
 				BitmapText *pText = pKey->m_textMappedTo[p][s];
-				GameInput cur_gi( p, pKey->m_GameButton );
+				GameInput cur_gi(p, pKey->m_GameButton);
 				DeviceInput di;
 				RString sText = "-----------";
-				if( INPUTMAPPER->GameToDevice( cur_gi, s, di ) )
-					sText = INPUTMAN->GetDeviceSpecificInputString( di );
-				pText->SetText( sText );
+				if (INPUTMAPPER->GameToDevice(cur_gi, s, di))
+				{
+					sText = INPUTMAN->GetDeviceSpecificInputString(di);
+				}
+				pText->SetText(sText);
 			}
 		}
 	}
 
-	m_LineScroller.SetDestinationItem( (float) m_iCurButton );
+	m_LineScroller.SetDestinationItem((float) m_iCurButton);
 }
 
-void ScreenMapControllers::HandleMessage( const Message &msg )
+void ScreenMapControllers::HandleMessage(const Message &msg)
 {
-	if( msg == Message_AutoJoyMappingApplied )
+	if (msg == Message_AutoJoyMappingApplied)
 	{
 		Refresh();
 	}
 
-	ScreenWithMenuElements::HandleMessage( msg );
+	ScreenWithMenuElements::HandleMessage(msg);
 }
 
 
 /*
  * (c) 2001-2005 Chris Danford, Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -449,7 +483,7 @@ void ScreenMapControllers::HandleMessage( const Message &msg )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

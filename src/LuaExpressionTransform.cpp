@@ -12,54 +12,56 @@ LuaExpressionTransform::~LuaExpressionTransform()
 {
 }
 
-void LuaExpressionTransform::SetFromReference( const LuaReference &ref )
+void LuaExpressionTransform::SetFromReference(const LuaReference &ref)
 {
 	m_exprTransformFunction = ref;
 }
 
-void LuaExpressionTransform::TransformItemDirect( Actor &a, float fPositionOffsetFromCenter, int iItemIndex, int iNumItems ) const
+void LuaExpressionTransform::TransformItemDirect(Actor &a, float fPositionOffsetFromCenter, int iItemIndex, int iNumItems) const
 {
 	Lua *L = LUA->Get();
-	m_exprTransformFunction.PushSelf( L );
-	ASSERT( !lua_isnil(L, -1) );
-	a.PushSelf( L );
-	LuaHelpers::Push( L, fPositionOffsetFromCenter );
-	LuaHelpers::Push( L, iItemIndex );
-	LuaHelpers::Push( L, iNumItems );
-	lua_call( L, 4, 0 ); // 4 args, 0 results
+	m_exprTransformFunction.PushSelf(L);
+	ASSERT(!lua_isnil(L, -1));
+	a.PushSelf(L);
+	LuaHelpers::Push(L, fPositionOffsetFromCenter);
+	LuaHelpers::Push(L, iItemIndex);
+	LuaHelpers::Push(L, iNumItems);
+	lua_call(L, 4, 0);   // 4 args, 0 results
 	LUA->Release(L);
 }
 
-const Actor::TweenState &LuaExpressionTransform::GetTransformCached( float fPositionOffsetFromCenter, int iItemIndex, int iNumItems ) const
+const Actor::TweenState &LuaExpressionTransform::GetTransformCached(float fPositionOffsetFromCenter, int iItemIndex, int iNumItems) const
 {
 	PositionOffsetAndItemIndex key = { fPositionOffsetFromCenter, iItemIndex };
 
-	map<PositionOffsetAndItemIndex,Actor::TweenState>::const_iterator iter = m_mapPositionToTweenStateCache.find( key );
-	if( iter != m_mapPositionToTweenStateCache.end() )
+	map<PositionOffsetAndItemIndex, Actor::TweenState>::const_iterator iter = m_mapPositionToTweenStateCache.find(key);
+	if (iter != m_mapPositionToTweenStateCache.end())
+	{
 		return iter->second;
+	}
 
 	Actor a;
-	TransformItemDirect( a, fPositionOffsetFromCenter, iItemIndex, iNumItems );
+	TransformItemDirect(a, fPositionOffsetFromCenter, iItemIndex, iNumItems);
 	return m_mapPositionToTweenStateCache[key] = a.DestTweenState();
 }
 
-void LuaExpressionTransform::TransformItemCached( Actor &a, float fPositionOffsetFromCenter, int iItemIndex, int iNumItems )
+void LuaExpressionTransform::TransformItemCached(Actor &a, float fPositionOffsetFromCenter, int iItemIndex, int iNumItems)
 {
 	float fInterval = 1.0f / m_iNumSubdivisions;
-	float fFloor = QuantizeDown( fPositionOffsetFromCenter, fInterval );
-	float fCeil = QuantizeUp( fPositionOffsetFromCenter, fInterval );
+	float fFloor = QuantizeDown(fPositionOffsetFromCenter, fInterval);
+	float fCeil = QuantizeUp(fPositionOffsetFromCenter, fInterval);
 
-	if( fFloor == fCeil )
+	if (fFloor == fCeil)
 	{
-		a.DestTweenState() = GetTransformCached( fCeil, iItemIndex, iNumItems );
+		a.DestTweenState() = GetTransformCached(fCeil, iItemIndex, iNumItems);
 	}
 	else
 	{
-		const Actor::TweenState &tsFloor = GetTransformCached( fFloor, iItemIndex, iNumItems );
-		const Actor::TweenState &tsCeil = GetTransformCached( fCeil, iItemIndex, iNumItems );
+		const Actor::TweenState &tsFloor = GetTransformCached(fFloor, iItemIndex, iNumItems);
+		const Actor::TweenState &tsCeil = GetTransformCached(fCeil, iItemIndex, iNumItems);
 
-		float fPercentTowardCeil = SCALE( fPositionOffsetFromCenter, fFloor, fCeil, 0.0f, 1.0f );
-		Actor::TweenState::MakeWeightedAverage( a.DestTweenState(), tsFloor, tsCeil, fPercentTowardCeil );
+		float fPercentTowardCeil = SCALE(fPositionOffsetFromCenter, fFloor, fCeil, 0.0f, 1.0f);
+		Actor::TweenState::MakeWeightedAverage(a.DestTweenState(), tsFloor, tsCeil, fPercentTowardCeil);
 	}
 }
 
@@ -67,7 +69,7 @@ void LuaExpressionTransform::TransformItemCached( Actor &a, float fPositionOffse
 /*
  * (c) 2003-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -77,7 +79,7 @@ void LuaExpressionTransform::TransformItemCached( Actor &a, float fPositionOffse
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

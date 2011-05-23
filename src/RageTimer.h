@@ -6,37 +6,61 @@
 class RageTimer
 {
 public:
-	RageTimer(): m_secs(0), m_us(0) { Touch(); }
-	RageTimer( int secs, int us ): m_secs(secs), m_us(us) { }
+	RageTimer(): m_secs(0), m_us(0)
+	{
+		Touch();
+	}
+	RageTimer(int secs, int us): m_secs(secs), m_us(us) { }
 
 	/* Time ago this RageTimer represents. */
 	float Ago() const;
 	void Touch();
-	inline bool IsZero() const { return m_secs == 0 && m_us == 0; }
-	inline void SetZero() { m_secs = m_us = 0; }
+	inline bool IsZero() const
+	{
+		return m_secs == 0 && m_us == 0;
+	}
+	inline void SetZero()
+	{
+		m_secs = m_us = 0;
+	}
 
 	/* Time between last call to GetDeltaTime() (Ago() + Touch()): */
 	float GetDeltaTime();
 	/* (alias) */
-	float PeekDeltaTime() const { return Ago(); }
+	float PeekDeltaTime() const
+	{
+		return Ago();
+	}
 
 	/* deprecated: */
-	static float GetTimeSinceStart( bool bAccurate = true );	// seconds since the program was started
-	static float GetTimeSinceStartFast() { return GetTimeSinceStart(false); }
+	static float GetTimeSinceStart(bool bAccurate = true);	// seconds since the program was started
+	static float GetTimeSinceStartFast()
+	{
+		return GetTimeSinceStart(false);
+	}
 
 	/* Get a timer representing half of the time ago as this one. */
 	RageTimer Half() const;
 
 	/* Add (or subtract) a duration from a timestamp.  The result is another timestamp. */
-	RageTimer operator+( float tm ) const;
-	RageTimer operator-( float tm ) const { return *this + -tm; }
-	void operator+=( float tm ) { *this = *this + tm; }
-	void operator-=( float tm ) { *this = *this + -tm; }
+	RageTimer operator+(float tm) const;
+	RageTimer operator-(float tm) const
+	{
+		return *this + -tm;
+	}
+	void operator+=(float tm)
+	{
+		*this = *this + tm;
+	}
+	void operator-=(float tm)
+	{
+		*this = *this + -tm;
+	}
 
 	/* Find the amount of time between two timestamps.  The result is a duration. */
-	float operator-( const RageTimer &rhs ) const;
+	float operator-(const RageTimer &rhs) const;
 
-	bool operator<( const RageTimer &rhs ) const;
+	bool operator<(const RageTimer &rhs) const;
 
 	/* "float" is bad for a "time since start" RageTimer.  If the game is running for
 	 * several days, we'll lose a lot of resolution.  I don't want to use double
@@ -45,8 +69,8 @@ public:
 	unsigned m_secs, m_us;
 
 private:
-	static RageTimer Sum( const RageTimer &lhs, float tm );
-	static float Difference( const RageTimer &lhs, const RageTimer &rhs );
+	static RageTimer Sum(const RageTimer &lhs, float tm);
+	static float Difference(const RageTimer &lhs, const RageTimer &rhs);
 };
 
 extern const RageTimer RageZeroTimer;

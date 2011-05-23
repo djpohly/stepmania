@@ -7,24 +7,24 @@
 #include "Song.h"
 
 
-int TrailUtil::GetNumSongs( const Trail *pTrail )
+int TrailUtil::GetNumSongs(const Trail *pTrail)
 {
 	return pTrail->m_vEntries.size();
 }
 
-float TrailUtil::GetTotalSeconds( const Trail *pTrail )
+float TrailUtil::GetTotalSeconds(const Trail *pTrail)
 {
 	float fSecs = 0;
-	FOREACH_CONST( TrailEntry, pTrail->m_vEntries, e )
-		fSecs += e->pSong->m_fMusicLengthSeconds;
+	FOREACH_CONST(TrailEntry, pTrail->m_vEntries, e)
+	fSecs += e->pSong->m_fMusicLengthSeconds;
 	return fSecs;
 }
 
 ///////////////////////////////////////////////////////////////////////
 
-void TrailID::FromTrail( const Trail *p )
+void TrailID::FromTrail(const Trail *p)
 {
-	if( p == NULL )
+	if (p == NULL)
 	{
 		st = StepsType_Invalid;
 		cd = Difficulty_Invalid;
@@ -37,52 +37,56 @@ void TrailID::FromTrail( const Trail *p )
 	m_Cache.Unset();
 }
 
-Trail *TrailID::ToTrail( const Course *p, bool bAllowNull ) const
+Trail *TrailID::ToTrail(const Course *p, bool bAllowNull) const
 {
-	ASSERT( p );
+	ASSERT(p);
 
 	Trail *pRet = NULL;
-	if( !m_Cache.Get(&pRet) )
+	if (!m_Cache.Get(&pRet))
 	{
-		if( st != StepsType_Invalid && cd != Difficulty_Invalid )
-			pRet = p->GetTrail( st, cd );
-		m_Cache.Set( pRet );
+		if (st != StepsType_Invalid && cd != Difficulty_Invalid)
+		{
+			pRet = p->GetTrail(st, cd);
+		}
+		m_Cache.Set(pRet);
 	}
 
-	if( !bAllowNull && pRet == NULL )
-		RageException::Throw( "%i, %i, \"%s\"", st, cd, p->GetDisplayFullTitle().c_str() );	
+	if (!bAllowNull && pRet == NULL)
+	{
+		RageException::Throw("%i, %i, \"%s\"", st, cd, p->GetDisplayFullTitle().c_str());
+	}
 
 	return pRet;
 }
 
 XNode* TrailID::CreateNode() const
 {
-	XNode* pNode = new XNode( "Trail" );
+	XNode* pNode = new XNode("Trail");
 
-	pNode->AppendAttr( "StepsType", GAMEMAN->GetStepsTypeInfo(st).szName );
-	pNode->AppendAttr( "CourseDifficulty", DifficultyToString(cd) );
+	pNode->AppendAttr("StepsType", GAMEMAN->GetStepsTypeInfo(st).szName);
+	pNode->AppendAttr("CourseDifficulty", DifficultyToString(cd));
 
 	return pNode;
 }
 
-void TrailID::LoadFromNode( const XNode* pNode ) 
+void TrailID::LoadFromNode(const XNode* pNode)
 {
-	ASSERT( pNode->GetName() == "Trail" );
+	ASSERT(pNode->GetName() == "Trail");
 
 	RString sTemp;
 
-	pNode->GetAttrValue( "StepsType", sTemp );
-	st = GAMEMAN->StringToStepsType( sTemp );
+	pNode->GetAttrValue("StepsType", sTemp);
+	st = GAMEMAN->StringToStepsType(sTemp);
 
-	pNode->GetAttrValue( "CourseDifficulty", sTemp );
-	cd = StringToDifficulty( sTemp );
+	pNode->GetAttrValue("CourseDifficulty", sTemp);
+	cd = StringToDifficulty(sTemp);
 	m_Cache.Unset();
 }
 
 RString TrailID::ToString() const
 {
 	RString s = GAMEMAN->GetStepsTypeInfo(st).szName;
-	s += " " + DifficultyToString( cd );
+	s += " " + DifficultyToString(cd);
 	return s;
 }
 
@@ -91,7 +95,7 @@ bool TrailID::IsValid() const
 	return st != StepsType_Invalid && cd != Difficulty_Invalid;
 }
 
-bool TrailID::operator<( const TrailID &rhs ) const
+bool TrailID::operator<(const TrailID &rhs) const
 {
 #define COMP(a) if(a<rhs.a) return true; if(a>rhs.a) return false;
 	COMP(st);
@@ -106,35 +110,35 @@ bool TrailID::operator<( const TrailID &rhs ) const
 
 namespace
 {
-	int GetNumSongs( lua_State *L )
+	int GetNumSongs(lua_State *L)
 	{
-		Trail *pTrail = Luna<Trail>::check( L, 1, true );
-		int iNum = TrailUtil::GetNumSongs( pTrail );
-		LuaHelpers::Push( L, iNum );
+		Trail *pTrail = Luna<Trail>::check(L, 1, true);
+		int iNum = TrailUtil::GetNumSongs(pTrail);
+		LuaHelpers::Push(L, iNum);
 		return 1;
 	}
-	int GetTotalSeconds( lua_State *L )
+	int GetTotalSeconds(lua_State *L)
 	{
-		Trail *pTrail = Luna<Trail>::check( L, 1, true );
-		float fSecs = TrailUtil::GetTotalSeconds( pTrail );
-		LuaHelpers::Push( L, fSecs );
+		Trail *pTrail = Luna<Trail>::check(L, 1, true);
+		float fSecs = TrailUtil::GetTotalSeconds(pTrail);
+		LuaHelpers::Push(L, fSecs);
 		return 1;
 	}
 
 	const luaL_Reg TrailUtilTable[] =
 	{
-		LIST_METHOD( GetNumSongs ),
-		LIST_METHOD( GetTotalSeconds ),
+		LIST_METHOD(GetNumSongs),
+		LIST_METHOD(GetTotalSeconds),
 		{ NULL, NULL }
 	};
 }
 
-LUA_REGISTER_NAMESPACE( TrailUtil )
+LUA_REGISTER_NAMESPACE(TrailUtil)
 
 /*
  * (c) 2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -144,7 +148,7 @@ LUA_REGISTER_NAMESPACE( TrailUtil )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

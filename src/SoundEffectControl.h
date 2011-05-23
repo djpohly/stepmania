@@ -11,15 +11,18 @@ class SoundEffectControl
 {
 public:
 	SoundEffectControl();
-	void Load( const RString &sType, PlayerState *pPlayerState, const NoteData *pNoteData );
+	void Load(const RString &sType, PlayerState *pPlayerState, const NoteData *pNoteData);
 
-	void SetSoundReader( RageSoundReader *pPlayer );
-	void ReleaseSound() { SetSoundReader(NULL); }
+	void SetSoundReader(RageSoundReader *pPlayer);
+	void ReleaseSound()
+	{
+		SetSoundReader(NULL);
+	}
 
-	void Update( float fDeltaTime );
+	void Update(float fDeltaTime);
 
 private:
-	void HoldsBeingHeld( int iRow, int &iHoldsHeld, int &iHoldsLetGo ) const;
+	void HoldsBeingHeld(int iRow, int &iHoldsHeld, int &iHoldsLetGo) const;
 
 	ThemeMetric<RString>	SOUND_PROPERTY;
 	ThemeMetric<bool>	LOCK_TO_HOLD;
@@ -45,7 +48,7 @@ private:
  * @author Glenn Maynard (c) 2006-2007
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -55,7 +58,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

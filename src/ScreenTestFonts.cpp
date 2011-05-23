@@ -18,20 +18,22 @@ static const float LineHeight = 50;
 
 static RString g_sCustomText;
 
-static void ChangeText( const RString &sText )
+static void ChangeText(const RString &sText)
 {
 	g_sCustomText = sText;
 }
 
-AutoScreenMessage( SM_ChangeText );
+AutoScreenMessage(SM_ChangeText);
 
-void ScreenTestFonts::HandleScreenMessage( const ScreenMessage SM )
+void ScreenTestFonts::HandleScreenMessage(const ScreenMessage SM)
 {
-	if( SM == ScreenMessage(SM_ChangeText) )
-		SetText( g_sCustomText );
+	if (SM == ScreenMessage(SM_ChangeText))
+	{
+		SetText(g_sCustomText);
+	}
 }
 
-REGISTER_SCREEN_CLASS( ScreenTestFonts );
+REGISTER_SCREEN_CLASS(ScreenTestFonts);
 
 void ScreenTestFonts::Init()
 {
@@ -39,42 +41,42 @@ void ScreenTestFonts::Init()
 
 	Hline.SetXY(SCREEN_CENTER_X, SCREEN_CENTER_Y);
 	Hline.SetZoomX(LineWidth);
-	Hline.SetDiffuse( RageColor(1, 1, 1, 1) );
+	Hline.SetDiffuse(RageColor(1, 1, 1, 1));
 	this->AddChild(&Hline);
 
 	Vline.SetXY(SCREEN_CENTER_X, SCREEN_CENTER_Y);
 	Vline.SetZoomY(LineHeight);
-	Vline.SetDiffuse( RageColor(0, 1, 0, .8f) );
+	Vline.SetDiffuse(RageColor(0, 1, 0, .8f));
 	this->AddChild(&Vline);
-	
-	font.SetXY( SCREEN_CENTER_X, SCREEN_CENTER_Y+100 );
-	font.LoadFromFont( THEME->GetPathF("Common", "normal") );
+
+	font.SetXY(SCREEN_CENTER_X, SCREEN_CENTER_Y + 100);
+	font.LoadFromFont(THEME->GetPathF("Common", "normal"));
 	font.SetZoom(.5);
 	this->AddChild(&font);
 
-	txt.SetName( "Text" );
-	SetFont( THEME->GetPathF("", FONT(1)) );
-	LOAD_ALL_COMMANDS_AND_SET_XY_AND_ON_COMMAND( txt );
-	SetText( "Foo" );
+	txt.SetName("Text");
+	SetFont(THEME->GetPathF("", FONT(1)));
+	LOAD_ALL_COMMANDS_AND_SET_XY_AND_ON_COMMAND(txt);
+	SetText("Foo");
 }
 
-void ScreenTestFonts::SetText( RString sText )
+void ScreenTestFonts::SetText(RString sText)
 {
-	txt.SetShadowLength( 0 );
-	txt.SetText( "" ); /* force it */
-	txt.SetText( sText );
+	txt.SetShadowLength(0);
+	txt.SetText("");   /* force it */
+	txt.SetText(sText);
 	m_sCurText = sText;
 }
 
-void ScreenTestFonts::SetFont( RString sFont )
+void ScreenTestFonts::SetFont(RString sFont)
 {
 	m_sFont = sFont;
 
-	txt.LoadFromFont( m_sFont );
-	font.SetText( m_sFont );
+	txt.LoadFromFont(m_sFont);
+	font.SetText(m_sFont);
 	/* The font changed, so we need to reset the text or it'll be
 	 * misaligned. */
-	SetText( m_sCurText );
+	SetText(m_sCurText);
 }
 
 void ScreenTestFonts::DrawPrimitives()
@@ -86,51 +88,93 @@ void ScreenTestFonts::DrawPrimitives()
 }
 
 
-void ScreenTestFonts::Input( const InputEventPlus &input )
+void ScreenTestFonts::Input(const InputEventPlus &input)
 {
-	if( input.type != IET_FIRST_PRESS )
-		return;
-	switch( input.DeviceI.button )
+	if (input.type != IET_FIRST_PRESS)
 	{
-	case '[': txt.SetVertAlign( align_bottom ); break;
-	case '\\': txt.SetVertAlign( align_middle ); break;
-	case ']': txt.SetVertAlign( align_top ); break;
+		return;
+	}
+	switch (input.DeviceI.button)
+	{
+		case '[':
+			txt.SetVertAlign(align_bottom);
+			break;
+		case '\\':
+			txt.SetVertAlign(align_middle);
+			break;
+		case ']':
+			txt.SetVertAlign(align_top);
+			break;
 
-	case ',': txt.SetHorizAlign( align_left ); break;
-	case '.': txt.SetHorizAlign( align_center ); break;
-	case '/': txt.SetHorizAlign( align_right ); break;
+		case ',':
+			txt.SetHorizAlign(align_left);
+			break;
+		case '.':
+			txt.SetHorizAlign(align_center);
+			break;
+		case '/':
+			txt.SetHorizAlign(align_right);
+			break;
 
-	case '`': if( m_sCurText != g_sCustomText )
-				  SetText( g_sCustomText );
-			  else
-				  ScreenTextEntry::TextEntry( SM_ChangeText, "Edit text.", g_sCustomText, 100, NULL, ChangeText, NULL);
-			  break;
-	case '1': SetText( TEXT(1) ); break;
-	case '2': SetText( TEXT(2) ); break;
-	case '3': SetText( TEXT(3) ); break;
-	case '4': SetText( TEXT(4) ); break;
-	case '5': SetText( TEXT(5) ); break;
+		case '`':
+			if (m_sCurText != g_sCustomText)
+			{
+				SetText(g_sCustomText);
+			}
+			else
+			{
+				ScreenTextEntry::TextEntry(SM_ChangeText, "Edit text.", g_sCustomText, 100, NULL, ChangeText, NULL);
+			}
+			break;
+		case '1':
+			SetText(TEXT(1));
+			break;
+		case '2':
+			SetText(TEXT(2));
+			break;
+		case '3':
+			SetText(TEXT(3));
+			break;
+		case '4':
+			SetText(TEXT(4));
+			break;
+		case '5':
+			SetText(TEXT(5));
+			break;
 
-	case 'q': SetFont( THEME->GetPathF("", FONT(1)) ); break;
-	case 'w': SetFont( THEME->GetPathF("", FONT(2)) ); break;
-	case 'e': SetFont( THEME->GetPathF("", FONT(3)) ); break;
-	case 'r': SetFont( THEME->GetPathF("", FONT(4)) ); break;
-	case 't': SetFont( THEME->GetPathF("", FONT(5)) ); break;
+		case 'q':
+			SetFont(THEME->GetPathF("", FONT(1)));
+			break;
+		case 'w':
+			SetFont(THEME->GetPathF("", FONT(2)));
+			break;
+		case 'e':
+			SetFont(THEME->GetPathF("", FONT(3)));
+			break;
+		case 'r':
+			SetFont(THEME->GetPathF("", FONT(4)));
+			break;
+		case 't':
+			SetFont(THEME->GetPathF("", FONT(5)));
+			break;
 
-	case 'a': SetFont( THEME->GetPathF("", FONT(1)) ); break;
+		case 'a':
+			SetFont(THEME->GetPathF("", FONT(1)));
+			break;
 
-	case 'z': FONT->ReloadFonts();
-			  TEXTUREMAN->ReloadAll();
-			  SetText( m_sCurText );
-			  SetFont( m_sFont );
-			  break;
+		case 'z':
+			FONT->ReloadFonts();
+			TEXTUREMAN->ReloadAll();
+			SetText(m_sCurText);
+			SetFont(m_sFont);
+			break;
 	}
 }
 
 /*
  * (c) 2003-2005 Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -140,7 +184,7 @@ void ScreenTestFonts::Input( const InputEventPlus &input )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

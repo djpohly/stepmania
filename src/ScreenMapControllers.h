@@ -16,17 +16,17 @@ public:
 	virtual void Init();
 	virtual void BeginScreen();
 
-	virtual void Update( float fDeltaTime );
-	virtual void Input( const InputEventPlus &input );
+	virtual void Update(float fDeltaTime);
+	virtual void Input(const InputEventPlus &input);
 
 private:
-	virtual void HandleMessage( const Message &msg );
+	virtual void HandleMessage(const Message &msg);
 
 	Actor *GetActorWithFocus();
 	void BeforeChangeFocus();
 	void AfterChangeFocus();
 	void Refresh();
-	
+
 	int m_iCurController;
 	int m_iCurButton;
 	int m_iCurSlot;
@@ -49,7 +49,7 @@ private:
 
 	AutoActor m_sprExit;
 
-	ActorFrame	m_Line[NUM_GameButton+2]; // label, normal lines, exit
+	ActorFrame	m_Line[NUM_GameButton + 2]; // label, normal lines, exit
 	ActorScroller m_LineScroller;
 
 	RageSound m_soundChange;
@@ -61,7 +61,7 @@ private:
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -71,7 +71,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

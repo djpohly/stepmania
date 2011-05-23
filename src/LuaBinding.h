@@ -11,25 +11,28 @@ class LuaBinding
 public:
 	LuaBinding();
 	virtual ~LuaBinding();
-	void Register( lua_State *L );
-	
-	static void RegisterTypes( lua_State *L );
+	void Register(lua_State *L);
 
-	bool IsDerivedClass() const { return GetClassName() != GetBaseClassName(); }
+	static void RegisterTypes(lua_State *L);
+
+	bool IsDerivedClass() const
+	{
+		return GetClassName() != GetBaseClassName();
+	}
 	virtual const RString &GetClassName() const = 0;
 	virtual const RString &GetBaseClassName() const = 0;
 
-	static void ApplyDerivedType( Lua *L, const RString &sClassname, void *pSelf );
-	static bool CheckLuaObjectType( lua_State *L, int narg, const char *szType );
+	static void ApplyDerivedType(Lua *L, const RString &sClassname, void *pSelf);
+	static bool CheckLuaObjectType(lua_State *L, int narg, const char *szType);
 
 protected:
-	virtual void Register( Lua *L, int iMethods, int iMetatable ) = 0;
+	virtual void Register(Lua *L, int iMethods, int iMetatable) = 0;
 
-	static void CreateMethodsTable( lua_State *L, const RString &szName );
-	static void *GetPointerFromStack( Lua *L, const RString &sType, int iArg );
+	static void CreateMethodsTable(lua_State *L, const RString &szName);
+	static void *GetPointerFromStack(Lua *L, const RString &sType, int iArg);
 
-	static bool Equal( lua_State *L );
-	static int PushEqual( lua_State *L );
+	static bool Equal(lua_State *L);
+	static int PushEqual(lua_State *L);
 };
 
 /** @brief Allow the binding of Lua to various classes. */
@@ -42,56 +45,66 @@ protected:
 
 	struct RegType
 	{
-		const char *szName; 
+		const char *szName;
 		binding_t *mfunc;
 	};
 
-	void Register( Lua *L, int iMethods, int iMetatable )
+	void Register(Lua *L, int iMethods, int iMetatable)
 	{
-		lua_pushcfunction( L, tostring_T );
-		lua_setfield( L, iMetatable, "__tostring" );
+		lua_pushcfunction(L, tostring_T);
+		lua_setfield(L, iMetatable, "__tostring");
 
 		// fill method table with methods from class T
-		for( unsigned i=0; i < m_aMethods.size(); i++ )
+		for (unsigned i = 0; i < m_aMethods.size(); i++)
 		{
 			const RegType *l = &m_aMethods[i];
-			lua_pushlightuserdata( L, (void*) l->mfunc );
-			lua_pushcclosure( L, thunk, 1 );
-			lua_setfield( L, iMethods, l->szName );
+			lua_pushlightuserdata(L, (void*) l->mfunc);
+			lua_pushcclosure(L, thunk, 1);
+			lua_setfield(L, iMethods, l->szName);
 		}
 	}
 
 public:
-	virtual const RString &GetClassName() const { return m_sClassName; }
-	virtual const RString &GetBaseClassName() const { return m_sBaseClassName; }
+	virtual const RString &GetClassName() const
+	{
+		return m_sClassName;
+	}
+	virtual const RString &GetBaseClassName() const
+	{
+		return m_sBaseClassName;
+	}
 	static RString m_sClassName;
 	static RString m_sBaseClassName;
 
 	// Get userdata from the Lua stack and return a pointer to T object.
-	static T *check( lua_State *L, int narg, bool bIsSelf = false )
+	static T *check(lua_State *L, int narg, bool bIsSelf = false)
 	{
-		if( !LuaBinding::CheckLuaObjectType(L, narg, m_sClassName) )
+		if (!LuaBinding::CheckLuaObjectType(L, narg, m_sClassName))
 		{
-			if( bIsSelf )
-				luaL_typerror( L, narg, m_sClassName );
+			if (bIsSelf)
+			{
+				luaL_typerror(L, narg, m_sClassName);
+			}
 			else
-				LuaHelpers::TypeError( L, narg, m_sClassName );
+			{
+				LuaHelpers::TypeError(L, narg, m_sClassName);
+			}
 		}
 
-		return get( L, narg );
+		return get(L, narg);
 	}
-	
-	static T *get( lua_State *L, int narg )
+
+	static T *get(lua_State *L, int narg)
 	{
-		return (T *) GetPointerFromStack( L, m_sClassName, narg );
+		return (T *) GetPointerFromStack(L, m_sClassName, narg);
 	}
-	
+
 	/* Push a table or userdata for the given object.  This is called on the
-	 * base class, so we pick up the instance of the base class, if any. */ 
-	static void PushObject( Lua *L, const RString &sDerivedClassName, T* p );
+	 * base class, so we pick up the instance of the base class, if any. */
+	static void PushObject(Lua *L, const RString &sDerivedClassName, T* p);
 
 protected:
-	void AddMethod( const char *szName, int (*pFunc)(T *p, lua_State *L) )
+	void AddMethod(const char *szName, int (*pFunc)(T *p, lua_State *L))
 	{
 		RegType r = { szName, pFunc };
 		m_aMethods.push_back(r);
@@ -99,24 +112,24 @@ protected:
 
 private:
 	// member function dispatcher
-	static int thunk( Lua *L )
+	static int thunk(Lua *L)
 	{
 		// stack has userdata, followed by method args
-		T *obj = check( L, 1, true );  // get self
+		T *obj = check(L, 1, true);    // get self
 		lua_remove(L, 1);  // remove self so member function args start at index 1
 		// get member function from upvalue
-		binding_t *pFunc = (binding_t *) lua_touserdata( L, lua_upvalueindex(1) );
-		return pFunc( obj, L );  // call member function
+		binding_t *pFunc = (binding_t *) lua_touserdata(L, lua_upvalueindex(1));
+		return pFunc(obj, L);    // call member function
 	}
 
 	vector<RegType> m_aMethods;
 
-	static int tostring_T( lua_State *L )
+	static int tostring_T(lua_State *L)
 	{
 		char buff[32];
-		const void *pData = check( L, 1 );
-		snprintf( buff, sizeof(buff), "%p", pData );
-		lua_pushfstring( L, "%s (%s)", m_sClassName.c_str(), buff );
+		const void *pData = check(L, 1);
+		snprintf(buff, sizeof(buff), "%p", pData);
+		lua_pushfstring(L, "%s (%s)", m_sClassName.c_str(), buff);
 		return 1;
 	}
 };
@@ -130,9 +143,9 @@ class LuaClass: public LuaTable
 {
 public:
 	LuaClass() { }
-	LuaClass( const LuaClass &cpy );
+	LuaClass(const LuaClass &cpy);
 	virtual ~LuaClass();
-	LuaClass &operator=( const LuaClass &cpy );
+	LuaClass &operator=(const LuaClass &cpy);
 };
 
 /* Only a base class has to indicate that it's instanced (has a per-object
@@ -175,7 +188,7 @@ public:
 /*
  * (c) 2001-2005 Peter Shook, Chris Danford, Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -185,7 +198,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

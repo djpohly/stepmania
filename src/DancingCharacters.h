@@ -31,11 +31,11 @@ public:
 	virtual ~DancingCharacters();
 
 	void LoadNextSong();
- 
-	virtual void Update( float fDelta );
+
+	virtual void Update(float fDelta);
 	virtual void DrawPrimitives();
 	bool	m_bDrawDangerLight;
-	void Change2DAnimState( PlayerNumber pn, int iState );
+	void Change2DAnimState(PlayerNumber pn, int iState);
 protected:
 
 	Model	*m_pCharacter[NUM_PLAYERS];
@@ -51,7 +51,7 @@ protected:
 	float	m_fThisCameraEndBeat;
 
 	bool m_bHas2DElements[NUM_PLAYERS];
-	
+
 	AutoActor m_bgIdle[NUM_PLAYERS];
 	AutoActor m_bgMiss[NUM_PLAYERS];
 	AutoActor m_bgGood[NUM_PLAYERS];
@@ -72,7 +72,7 @@ protected:
  * @author Chris Danford (c) 2003-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -82,7 +82,7 @@ protected:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

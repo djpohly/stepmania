@@ -35,33 +35,36 @@ struct Attack
 	Attack(): level(ATTACK_LEVEL_1), fStartSecond(-1),
 		fSecsRemaining(0), sModifiers(RString()),
 		bOn(false), bGlobal(false), bShowInAttackList(true)
-		{} // MakeBlank() is effectively called here.
+	{} // MakeBlank() is effectively called here.
 	Attack(
-		AttackLevel	level_,
-		float fStartSecond_,
-		float fSecsRemaining_,
-		RString sModifiers_,
-		bool bOn_,
-		bool bGlobal_,
-		bool bShowInAttackList_ = true ):
+	        AttackLevel	level_,
+	        float fStartSecond_,
+	        float fSecsRemaining_,
+	        RString sModifiers_,
+	        bool bOn_,
+	        bool bGlobal_,
+	        bool bShowInAttackList_ = true):
 		level(level_), fStartSecond(fStartSecond_),
 		fSecsRemaining(fSecsRemaining_), sModifiers(sModifiers_),
-		bOn(bOn_), bGlobal(bGlobal_), 
+		bOn(bOn_), bGlobal(bGlobal_),
 		bShowInAttackList(bShowInAttackList_) {}
 
-	void GetAttackBeats( const Song *pSong, float &fStartBeat, float &fEndBeat ) const;
-	void GetRealtimeAttackBeats( const Song *pSong, const PlayerState* pPlayerState, float &fStartBeat, float &fEndBeat ) const;
+	void GetAttackBeats(const Song *pSong, float &fStartBeat, float &fEndBeat) const;
+	void GetRealtimeAttackBeats(const Song *pSong, const PlayerState* pPlayerState, float &fStartBeat, float &fEndBeat) const;
 	/**
 	 * @brief Determine if this attack has no modifiers, and is thus blank or empty.
 	 * @return true if it is blank/empty, or false otherwise. */
-	bool IsBlank() const { return sModifiers.empty(); }
+	bool IsBlank() const
+	{
+		return sModifiers.empty();
+	}
 	/**
 	 * @brief Determine if two Attacks are equal to each other.
 	 * @param rhs the other Attack in question.
 	 * @return true if the two Attacks are equal, or false otherwise. */
-	bool operator== ( const Attack &rhs ) const;
+	bool operator== (const Attack &rhs) const;
 	bool ContainsTransformOrTurn() const;
-	static Attack FromGlobalCourseModifier( const RString &sModifiers );
+	static Attack FromGlobalCourseModifier(const RString &sModifiers);
 	RString GetTextDescription() const;
 };
 
@@ -80,7 +83,7 @@ struct AttackArray : public vector<Attack>
  * @author Chris Danford (c) 2003-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -90,7 +93,7 @@ struct AttackArray : public vector<Attack>
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

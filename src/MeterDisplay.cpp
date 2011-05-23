@@ -15,73 +15,77 @@ MeterDisplay::MeterDisplay()
 {
 }
 
-void MeterDisplay::Load( RString sStreamPath, float fStreamWidth, RString sTipPath )
+void MeterDisplay::Load(RString sStreamPath, float fStreamWidth, RString sTipPath)
 {
-	m_sprStream.Load( sStreamPath );
-	this->AddChild( m_sprStream );
+	m_sprStream.Load(sStreamPath);
+	this->AddChild(m_sprStream);
 
-	m_sprTip.Load( sTipPath );
-	this->AddChild( m_sprTip );
+	m_sprTip.Load(sTipPath);
+	this->AddChild(m_sprTip);
 
-	SetStreamWidth( fStreamWidth );
-	SetPercent( 0.5f );
+	SetStreamWidth(fStreamWidth);
+	SetPercent(0.5f);
 }
 
-void MeterDisplay::LoadFromNode( const XNode* pNode )
+void MeterDisplay::LoadFromNode(const XNode* pNode)
 {
-	LOG->Trace( "MeterDisplay::LoadFromNode(%s)", ActorUtil::GetWhere(pNode).c_str() );
+	LOG->Trace("MeterDisplay::LoadFromNode(%s)", ActorUtil::GetWhere(pNode).c_str());
 
-	const XNode *pStream = pNode->GetChild( "Stream" );
-	if( pStream == NULL )
-		RageException::Throw( "%s: MeterDisplay: missing the \"Stream\" attribute", ActorUtil::GetWhere(pNode).c_str() );
-	m_sprStream.LoadActorFromNode( pStream, this );
-	this->AddChild( m_sprStream );
-
-	const XNode* pChild = pNode->GetChild( "Tip" );
-	if( pChild != NULL )
+	const XNode *pStream = pNode->GetChild("Stream");
+	if (pStream == NULL)
 	{
-		m_sprTip.LoadActorFromNode( pChild, this );
-		this->AddChild( m_sprTip );
+		RageException::Throw("%s: MeterDisplay: missing the \"Stream\" attribute", ActorUtil::GetWhere(pNode).c_str());
+	}
+	m_sprStream.LoadActorFromNode(pStream, this);
+	this->AddChild(m_sprStream);
+
+	const XNode* pChild = pNode->GetChild("Tip");
+	if (pChild != NULL)
+	{
+		m_sprTip.LoadActorFromNode(pChild, this);
+		this->AddChild(m_sprTip);
 	}
 
 	float fStreamWidth = 0;
-	pNode->GetAttrValue( "StreamWidth", fStreamWidth );
-	SetStreamWidth( fStreamWidth );
+	pNode->GetAttrValue("StreamWidth", fStreamWidth);
+	SetStreamWidth(fStreamWidth);
 
-	SetPercent( 0.5f );
+	SetPercent(0.5f);
 
-	ActorFrame::LoadFromNode( pNode );
+	ActorFrame::LoadFromNode(pNode);
 }
 
-void MeterDisplay::SetPercent( float fPercent )
+void MeterDisplay::SetPercent(float fPercent)
 {
-	ASSERT( fPercent >= 0 && fPercent <= 1 );
+	ASSERT(fPercent >= 0 && fPercent <= 1);
 
-	m_sprStream->SetCropRight( 1-fPercent );
+	m_sprStream->SetCropRight(1 - fPercent);
 
-	if( m_sprTip.IsLoaded() )
-		m_sprTip->SetX( SCALE(fPercent, 0.f, 1.f, -m_fStreamWidth/2, m_fStreamWidth/2) );
+	if (m_sprTip.IsLoaded())
+	{
+		m_sprTip->SetX(SCALE(fPercent, 0.f, 1.f, -m_fStreamWidth / 2, m_fStreamWidth / 2));
+	}
 }
 
-void MeterDisplay::SetStreamWidth( float fStreamWidth )
+void MeterDisplay::SetStreamWidth(float fStreamWidth)
 {
 	m_fStreamWidth = fStreamWidth;
-	m_sprStream->SetZoomX( m_fStreamWidth / m_sprStream->GetUnzoomedWidth() );
+	m_sprStream->SetZoomX(m_fStreamWidth / m_sprStream->GetUnzoomedWidth());
 }
 
-void SongMeterDisplay::Update( float fDeltaTime )
+void SongMeterDisplay::Update(float fDeltaTime)
 {
-	if( GAMESTATE->m_pCurSong )
+	if (GAMESTATE->m_pCurSong)
 	{
-		float fSongStartSeconds = GAMESTATE->m_pCurSong->m_SongTiming.GetElapsedTimeFromBeat( GAMESTATE->m_pCurSong->m_fFirstBeat );
-		float fSongEndSeconds = GAMESTATE->m_pCurSong->m_SongTiming.GetElapsedTimeFromBeat( GAMESTATE->m_pCurSong->m_fLastBeat );
-		float fPercentPositionSong = SCALE( GAMESTATE->m_Position.m_fMusicSeconds, fSongStartSeconds, fSongEndSeconds, 0.0f, 1.0f );
-		CLAMP( fPercentPositionSong, 0, 1 );
+		float fSongStartSeconds = GAMESTATE->m_pCurSong->m_SongTiming.GetElapsedTimeFromBeat(GAMESTATE->m_pCurSong->m_fFirstBeat);
+		float fSongEndSeconds = GAMESTATE->m_pCurSong->m_SongTiming.GetElapsedTimeFromBeat(GAMESTATE->m_pCurSong->m_fLastBeat);
+		float fPercentPositionSong = SCALE(GAMESTATE->m_Position.m_fMusicSeconds, fSongStartSeconds, fSongEndSeconds, 0.0f, 1.0f);
+		CLAMP(fPercentPositionSong, 0, 1);
 
-		SetPercent( fPercentPositionSong );
+		SetPercent(fPercentPositionSong);
 	}
 
-	MeterDisplay::Update( fDeltaTime );
+	MeterDisplay::Update(fDeltaTime);
 }
 
 // lua start
@@ -90,21 +94,25 @@ void SongMeterDisplay::Update( float fDeltaTime )
 class LunaMeterDisplay: public Luna<MeterDisplay>
 {
 public:
-	static int SetStreamWidth( T* p, lua_State *L )		{ p->SetStreamWidth(FArg(1)); return 0; }
+	static int SetStreamWidth(T* p, lua_State *L)
+	{
+		p->SetStreamWidth(FArg(1));
+		return 0;
+	}
 
 	LunaMeterDisplay()
 	{
-		ADD_METHOD( SetStreamWidth );
+		ADD_METHOD(SetStreamWidth);
 	}
 };
 
-LUA_REGISTER_DERIVED_CLASS( MeterDisplay, ActorFrame )
+LUA_REGISTER_DERIVED_CLASS(MeterDisplay, ActorFrame)
 // lua end
 
 /*
  * (c) 2003-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -114,7 +122,7 @@ LUA_REGISTER_DERIVED_CLASS( MeterDisplay, ActorFrame )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

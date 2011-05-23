@@ -13,11 +13,11 @@
 class ColorBitmapText : public BitmapText
 {
 public:
-	void SetText( const RString &sText, const RString &sAlternateText = "", int iWrapWidthPixels = -1 );
+	void SetText(const RString &sText, const RString &sAlternateText = "", int iWrapWidthPixels = -1);
 	void DrawPrimitives();
-	void SetMaxLines( int iLines, bool bCutBottom = true );	//if bCutBottom = false then, it will crop the top
-	void SimpleAddLine( const RString &sAddition, int iWidthPixels );
-	void SetMaxLines( int iNumLines, int iDirection );
+	void SetMaxLines(int iLines, bool bCutBottom = true);	//if bCutBottom = false then, it will crop the top
+	void SimpleAddLine(const RString &sAddition, int iWidthPixels);
+	void SetMaxLines(int iNumLines, int iDirection);
 protected:
 	struct ColorChange
 	{
@@ -33,8 +33,8 @@ class ScreenNetSelectBase : public ScreenWithMenuElements
 public:
 	virtual void Init();
 
-	void Input( const InputEventPlus &input );
-	virtual void HandleScreenMessage( const ScreenMessage SM );
+	void Input(const InputEventPlus &input);
+	virtual void HandleScreenMessage(const ScreenMessage SM);
 	virtual void TweenOffScreen();
 
 	void UpdateUsers();
@@ -58,7 +58,7 @@ private:
  * All rights reserved.
  *
  *     based off of ScreenEz2SelectMusic by "Frieza"
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -68,7 +68,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

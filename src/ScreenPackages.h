@@ -16,16 +16,16 @@ class ScreenPackages : public ScreenWithMenuElements
 public:
 	virtual void Init();
 
-	virtual void HandleScreenMessage( const ScreenMessage SM );
+	virtual void HandleScreenMessage(const ScreenMessage SM);
 
-	virtual void MenuStart( const InputEventPlus &input );
-	virtual void MenuUp( const InputEventPlus &input );
-	virtual void MenuDown( const InputEventPlus &input );
-	virtual void MenuLeft( const InputEventPlus &input );
-	virtual void MenuRight( const InputEventPlus &input );
-	virtual void MenuBack( const InputEventPlus &input );
+	virtual void MenuStart(const InputEventPlus &input);
+	virtual void MenuUp(const InputEventPlus &input);
+	virtual void MenuDown(const InputEventPlus &input);
+	virtual void MenuLeft(const InputEventPlus &input);
+	virtual void MenuRight(const InputEventPlus &input);
+	virtual void MenuBack(const InputEventPlus &input);
 
-	virtual void TweenOffScreen( );
+	virtual void TweenOffScreen();
 	virtual void Update(float f);
 
 protected:
@@ -42,7 +42,7 @@ private:
 
 	void HTMLParse();
 
-	RString StripOutContainers( const RString & In );	//Strip off "'s and ''s
+	RString StripOutContainers(const RString & In);	//Strip off "'s and ''s
 
 	AutoActor	m_sprExistingBG;
 	AutoActor	m_sprWebBG;
@@ -65,12 +65,12 @@ private:
 	int m_bCanDL;
 
 	// HTTP portion
-	void CancelDownload( );
-	void EnterURL( const RString & sURL );
-	void HTTPUpdate( );
+	void CancelDownload();
+	void EnterURL(const RString & sURL);
+	void HTTPUpdate();
 
 	//True if proper string, false if improper
-	bool ParseHTTPAddress( const RString & URL, RString & Proto, RString & Server, int & Port, RString & Addy );
+	bool ParseHTTPAddress(const RString & URL, RString & Proto, RString & Server, int & Port, RString & Addy);
 
 	Sprite	m_sprDL;
 	Sprite	m_sprDLBG;
@@ -105,11 +105,11 @@ private:
 
 #endif
 
-#endif 
+#endif
 /*
  * (c) 2004 Charles Lohr
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -119,7 +119,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

@@ -20,42 +20,57 @@ class MusicWheel : public WheelBase
 
 public:
 	virtual ~MusicWheel();
-	virtual void Load( RString sType );
+	virtual void Load(RString sType);
 	void BeginScreen();
 
-	bool ChangeSort( SortOrder new_so );	// return true if change successful
+	bool ChangeSort(SortOrder new_so);	// return true if change successful
 	bool NextSort();						// return true if change successful
 	void StartRoulette();
 	void StartRandom();
 	bool IsRouletting() const;
 
 	virtual bool Select();				// return true if this selection ends the screen
-	WheelItemDataType	GetSelectedType()	{ return GetCurWheelItemData(m_iSelection)->m_Type; }
+	WheelItemDataType	GetSelectedType()
+	{
+		return GetCurWheelItemData(m_iSelection)->m_Type;
+	}
 	Song			*GetSelectedSong();
-	Course			*GetSelectedCourse()	{ return GetCurWheelItemData(m_iSelection)->m_pCourse; }
-	RString			GetSelectedSection()	{ return GetCurWheelItemData(m_iSelection)->m_sText; }
+	Course			*GetSelectedCourse()
+	{
+		return GetCurWheelItemData(m_iSelection)->m_pCourse;
+	}
+	RString			GetSelectedSection()
+	{
+		return GetCurWheelItemData(m_iSelection)->m_sText;
+	}
 
 	Song *GetPreferredSelectionForRandomOrPortal();
 
-	bool SelectSong( const Song *p );
-	bool SelectSection( const RString & SectionName );
-	void SetOpenSection( RString group );
-	SortOrder GetSortOrder() const { return m_SortOrder; }
-	virtual void ChangeMusic( int dist ); /* +1 or -1 */ //CHECK THIS
+	bool SelectSong(const Song *p);
+	bool SelectSection(const RString & SectionName);
+	void SetOpenSection(RString group);
+	SortOrder GetSortOrder() const
+	{
+		return m_SortOrder;
+	}
+	virtual void ChangeMusic(int dist); /* +1 or -1 */   //CHECK THIS
 	void FinishChangingSorts();
 	void PlayerJoined();
 	// sm-ssc additions
 	RString JumpToNextGroup();
 	RString JumpToPrevGroup();
-	const MusicWheelItemData *GetCurWheelItemData( int i ) { return (const MusicWheelItemData *) m_CurWheelItemData[i]; }
+	const MusicWheelItemData *GetCurWheelItemData(int i)
+	{
+		return (const MusicWheelItemData *) m_CurWheelItemData[i];
+	}
 
 protected:
 	MusicWheelItem *MakeItem();
 
-	void GetSongList( vector<Song*> &arraySongs, SortOrder so );
-	void BuildWheelItemDatas( vector<MusicWheelItemData *> &arrayWheelItems, SortOrder so );
+	void GetSongList(vector<Song*> &arraySongs, SortOrder so);
+	void BuildWheelItemDatas(vector<MusicWheelItemData *> &arrayWheelItems, SortOrder so);
 	bool SelectSongOrCourse();
-	bool SelectCourse( const Course *p );
+	bool SelectCourse(const Course *p);
 	bool SelectModeMenuItem();
 	//bool SelectCustomItem();
 
@@ -103,7 +118,7 @@ protected:
 /*
  * (c) 2001-2004 Chris Danford, Chris Gomez, Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -113,7 +128,7 @@ protected:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

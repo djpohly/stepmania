@@ -9,7 +9,8 @@
 #include "Steps.h"
 #include "Trail.h"
 
-static const char *DifficultyNames[] = {
+static const char *DifficultyNames[] =
+{
 	"Beginner",
 	"Easy",
 	"Medium",
@@ -17,39 +18,41 @@ static const char *DifficultyNames[] = {
 	"Challenge",
 	"Edit",
 };
-XToString( Difficulty );
-StringToX( Difficulty );
-LuaXType( Difficulty );
+XToString(Difficulty);
+StringToX(Difficulty);
+LuaXType(Difficulty);
 
-const RString &CourseDifficultyToLocalizedString( CourseDifficulty x )
+const RString &CourseDifficultyToLocalizedString(CourseDifficulty x)
 {
 	static auto_ptr<LocalizedString> g_CourseDifficultyName[NUM_Difficulty];
-	if( g_CourseDifficultyName[0].get() == NULL )
+	if (g_CourseDifficultyName[0].get() == NULL)
 	{
-		FOREACH_ENUM( Difficulty,i)
+		FOREACH_ENUM(Difficulty, i)
 		{
-			auto_ptr<LocalizedString> ap( new LocalizedString("CourseDifficulty", DifficultyToString(i)) );
+			auto_ptr<LocalizedString> ap(new LocalizedString("CourseDifficulty", DifficultyToString(i)));
 			g_CourseDifficultyName[i] = ap;
 		}
 	}
 	return g_CourseDifficultyName[x]->GetValue();
 }
 
-LuaFunction( CourseDifficultyToLocalizedString, CourseDifficultyToLocalizedString(Enum::Check<Difficulty>(L, 1)) );
+LuaFunction(CourseDifficultyToLocalizedString, CourseDifficultyToLocalizedString(Enum::Check<Difficulty>(L, 1)));
 
-CourseDifficulty GetNextShownCourseDifficulty( CourseDifficulty cd )
+CourseDifficulty GetNextShownCourseDifficulty(CourseDifficulty cd)
 {
-	for( CourseDifficulty d=(CourseDifficulty)(cd+1); d<NUM_Difficulty; enum_add(d, 1) )
+	for (CourseDifficulty d = (CourseDifficulty)(cd + 1); d < NUM_Difficulty; enum_add(d, 1))
 	{
-		if( GAMESTATE->IsCourseDifficultyShown(d) )
+		if (GAMESTATE->IsCourseDifficultyShown(d))
+		{
 			return d;
+		}
 	}
 	return Difficulty_Invalid;
 }
 
-static ThemeMetric<RString> NAMES("CustomDifficulty","Names");
+static ThemeMetric<RString> NAMES("CustomDifficulty", "Names");
 
-RString GetCustomDifficulty( StepsType st, Difficulty dc, CourseType ct )
+RString GetCustomDifficulty(StepsType st, Difficulty dc, CourseType ct)
 {
 	/* XXX GAMEMAN->GetStepsTypeInfo( StepsType_Invalid ) will crash. I'm not
 	 * sure what the correct behavior in this case should be. Should we still
@@ -57,90 +60,94 @@ RString GetCustomDifficulty( StepsType st, Difficulty dc, CourseType ct )
 	 * Couple, Routine, or Edit? - Steve */
 	// CustomDifficulty for Edit defeats the purpose of the edit's name.
 	// I don't know the other two. -aj
-	if( st == StepsType_Invalid )
+	if (st == StepsType_Invalid)
 	{
 		/* This is not totally necessary since DifficultyToString() will
 		 * return "", but the comment there says that the caller should
 		 * really be checking for invalid values. */
-		if( dc == Difficulty_Invalid )
+		if (dc == Difficulty_Invalid)
+		{
 			return RString();
-		return DifficultyToString( dc );
+		}
+		return DifficultyToString(dc);
 	}
 
-	const StepsTypeInfo &sti = GAMEMAN->GetStepsTypeInfo( st );
+	const StepsTypeInfo &sti = GAMEMAN->GetStepsTypeInfo(st);
 
-	switch( sti.m_StepsTypeCategory )
+	switch (sti.m_StepsTypeCategory)
 	{
-	DEFAULT_FAIL(sti.m_StepsTypeCategory);
-	case StepsTypeCategory_Single:
-	case StepsTypeCategory_Double:
-		if( dc == Difficulty_Edit )
-		{
-			return "Edit";
-		}
-		else
-		{
-			// OPTIMIZATION OPPORTUNITY: cache these metrics and cache the splitting
-			vector<RString> vsNames;
-			split( NAMES, ",", vsNames );
-			FOREACH( RString, vsNames, sName )
+			DEFAULT_FAIL(sti.m_StepsTypeCategory);
+		case StepsTypeCategory_Single:
+		case StepsTypeCategory_Double:
+			if (dc == Difficulty_Edit)
 			{
-				ThemeMetric<StepsType> STEPS_TYPE("CustomDifficulty",(*sName)+"StepsType");
-				if( STEPS_TYPE == StepsType_Invalid  ||  st == STEPS_TYPE )	// match
+				return "Edit";
+			}
+			else
+			{
+				// OPTIMIZATION OPPORTUNITY: cache these metrics and cache the splitting
+				vector<RString> vsNames;
+				split(NAMES, ",", vsNames);
+				FOREACH(RString, vsNames, sName)
 				{
-					ThemeMetric<Difficulty> DIFFICULTY("CustomDifficulty",(*sName)+"Difficulty");
-					if( DIFFICULTY == Difficulty_Invalid  ||  dc == DIFFICULTY )	// match
+					ThemeMetric<StepsType> STEPS_TYPE("CustomDifficulty", (*sName) + "StepsType");
+					if (STEPS_TYPE == StepsType_Invalid  ||  st == STEPS_TYPE)	// match
 					{
-						ThemeMetric<CourseType> COURSE_TYPE("CustomDifficulty",(*sName)+"CourseType");
-						if( COURSE_TYPE == CourseType_Invalid  ||  ct == COURSE_TYPE )	// match
+						ThemeMetric<Difficulty> DIFFICULTY("CustomDifficulty", (*sName) + "Difficulty");
+						if (DIFFICULTY == Difficulty_Invalid  ||  dc == DIFFICULTY)	// match
 						{
-							ThemeMetric<RString> STRING("CustomDifficulty",(*sName)+"String");
-							return STRING.GetValue();
+							ThemeMetric<CourseType> COURSE_TYPE("CustomDifficulty", (*sName) + "CourseType");
+							if (COURSE_TYPE == CourseType_Invalid  ||  ct == COURSE_TYPE)	// match
+							{
+								ThemeMetric<RString> STRING("CustomDifficulty", (*sName) + "String");
+								return STRING.GetValue();
+							}
 						}
 					}
 				}
+				// no matching CustomDifficulty, so use a regular difficulty name
+				if (dc == Difficulty_Invalid)
+				{
+					return RString();
+				}
+				return DifficultyToString(dc);
 			}
-			// no matching CustomDifficulty, so use a regular difficulty name
-			if( dc == Difficulty_Invalid )
-				return RString();
-			return DifficultyToString( dc );
-		}
-	case StepsTypeCategory_Couple:
-		return "Couple";
-	case StepsTypeCategory_Routine:
-		return "Routine";
+		case StepsTypeCategory_Couple:
+			return "Couple";
+		case StepsTypeCategory_Routine:
+			return "Routine";
 	}
 }
 
-LuaFunction( GetCustomDifficulty, GetCustomDifficulty(Enum::Check<StepsType>(L,1), Enum::Check<Difficulty>(L, 2), Enum::Check<CourseType>(L, 3, true)) );
+LuaFunction(GetCustomDifficulty, GetCustomDifficulty(Enum::Check<StepsType>(L, 1), Enum::Check<Difficulty>(L, 2), Enum::Check<CourseType>(L, 3, true)));
 
-RString CustomDifficultyToLocalizedString( const RString &sCustomDifficulty )
+RString CustomDifficultyToLocalizedString(const RString &sCustomDifficulty)
 {
-	return THEME->GetString( "CustomDifficulty", sCustomDifficulty );
+	return THEME->GetString("CustomDifficulty", sCustomDifficulty);
 }
 
-LuaFunction( CustomDifficultyToLocalizedString, CustomDifficultyToLocalizedString(SArg(1)) );
+LuaFunction(CustomDifficultyToLocalizedString, CustomDifficultyToLocalizedString(SArg(1)));
 
 
-RString StepsToCustomDifficulty( const Steps *pSteps )
+RString StepsToCustomDifficulty(const Steps *pSteps)
 {
-	return GetCustomDifficulty( pSteps->m_StepsType, pSteps->GetDifficulty(), CourseType_Invalid );
+	return GetCustomDifficulty(pSteps->m_StepsType, pSteps->GetDifficulty(), CourseType_Invalid);
 }
 
-RString TrailToCustomDifficulty( const Trail *pTrail )
+RString TrailToCustomDifficulty(const Trail *pTrail)
 {
-	return GetCustomDifficulty( pTrail->m_StepsType, pTrail->m_CourseDifficulty, pTrail->m_CourseType );
+	return GetCustomDifficulty(pTrail->m_StepsType, pTrail->m_CourseDifficulty, pTrail->m_CourseType);
 }
 
 #include "LuaBinding.h"
 
-LuaFunction( StepsToCustomDifficulty, StepsToCustomDifficulty(Luna<Steps>::check(L, 1)) );
-LuaFunction( TrailToCustomDifficulty, TrailToCustomDifficulty(Luna<Trail>::check(L, 1)) );
+LuaFunction(StepsToCustomDifficulty, StepsToCustomDifficulty(Luna<Steps>::check(L, 1)));
+LuaFunction(TrailToCustomDifficulty, TrailToCustomDifficulty(Luna<Trail>::check(L, 1)));
 
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -150,7 +157,7 @@ LuaFunction( TrailToCustomDifficulty, TrailToCustomDifficulty(Luna<Trail>::check
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

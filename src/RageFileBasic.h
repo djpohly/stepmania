@@ -18,22 +18,22 @@ public:
 	/* Seek to the given absolute offset.  Return to the position actually
 	 * seeked to; if the position given was beyond the end of the file, the
 	 * return value will be the size of the file. */
-	virtual int Seek( int iOffset ) = 0;
-	virtual int Seek( int offset, int whence ) = 0;
+	virtual int Seek(int iOffset) = 0;
+	virtual int Seek(int offset, int whence) = 0;
 	virtual int Tell() const = 0;
 
 	/* Read at most iSize bytes into pBuf.  Return the number of bytes read,
 	 * 0 on end of stream, or -1 on error.  Note that reading less than iSize
 	 * does not necessarily mean that the end of the stream has been reached;
 	 * keep reading until 0 is returned. */
-	virtual int Read( void *pBuffer, size_t iBytes ) = 0;
-	virtual int Read( RString &buffer, int bytes = -1 ) = 0;
-	virtual int Read( void *buffer, size_t bytes, int nmemb ) = 0;
+	virtual int Read(void *pBuffer, size_t iBytes) = 0;
+	virtual int Read(RString &buffer, int bytes = -1) = 0;
+	virtual int Read(void *buffer, size_t bytes, int nmemb) = 0;
 
 	/* Write iSize bytes of data from pBuf.  Return 0 on success, -1 on error. */
-	virtual int Write( const void *pBuffer, size_t iBytes ) = 0;
-	virtual int Write( const RString &sString ) = 0;
-	virtual int Write( const void *buffer, size_t bytes, int nmemb ) = 0;
+	virtual int Write(const void *pBuffer, size_t iBytes) = 0;
+	virtual int Write(const RString &sString) = 0;
+	virtual int Write(const void *buffer, size_t bytes, int nmemb) = 0;
 
 	/* Due to buffering, writing may not happen by the end of a Write() call, so not
 	 * all errors may be returned by it.  Data will be flushed when the stream (or its
@@ -42,15 +42,18 @@ public:
 	virtual int Flush() = 0;
 
 	/* This returns a descriptive path for the file, or "". */
-	virtual RString GetDisplayPath() const { return RString(); }
+	virtual RString GetDisplayPath() const
+	{
+		return RString();
+	}
 
 	virtual RageFileBasic *Copy() const = 0;
 
-	virtual int GetLine( RString &out ) = 0;
-	virtual int PutLine( const RString &str ) = 0;
+	virtual int GetLine(RString &out) = 0;
+	virtual int PutLine(const RString &str) = 0;
 
-	virtual void EnableCRC32( bool on=true ) = 0;
-	virtual bool GetCRC32( uint32_t *iRet ) = 0;
+	virtual void EnableCRC32(bool on = true) = 0;
+	virtual bool GetCRC32(uint32_t *iRet) = 0;
 
 	virtual int GetFileSize() const = 0;
 
@@ -64,49 +67,82 @@ class RageFileObj: public RageFileBasic
 {
 public:
 	RageFileObj();
-	RageFileObj( const RageFileObj &cpy );
+	RageFileObj(const RageFileObj &cpy);
 	virtual ~RageFileObj();
 
-	virtual RString GetError() const { return m_sError; }
-	virtual void ClearError() { SetError(""); }
-	
-	bool AtEOF() const { return m_bEOF; }
+	virtual RString GetError() const
+	{
+		return m_sError;
+	}
+	virtual void ClearError()
+	{
+		SetError("");
+	}
 
-	int Seek( int iOffset );
-	int Seek( int offset, int whence );
-	int Tell() const { return m_iFilePos; }
+	bool AtEOF() const
+	{
+		return m_bEOF;
+	}
 
-	int Read( void *pBuffer, size_t iBytes );
-	int Read( RString &buffer, int bytes = -1 );
-	int Read( void *buffer, size_t bytes, int nmemb );
+	int Seek(int iOffset);
+	int Seek(int offset, int whence);
+	int Tell() const
+	{
+		return m_iFilePos;
+	}
 
-	int Write( const void *pBuffer, size_t iBytes );
-	int Write( const RString &sString ) { return Write( sString.data(), sString.size() ); }
-	int Write( const void *buffer, size_t bytes, int nmemb );
+	int Read(void *pBuffer, size_t iBytes);
+	int Read(RString &buffer, int bytes = -1);
+	int Read(void *buffer, size_t bytes, int nmemb);
+
+	int Write(const void *pBuffer, size_t iBytes);
+	int Write(const RString &sString)
+	{
+		return Write(sString.data(), sString.size());
+	}
+	int Write(const void *buffer, size_t bytes, int nmemb);
 
 	int Flush();
 
-	int GetLine( RString &out );
-	int PutLine( const RString &str );
+	int GetLine(RString &out);
+	int PutLine(const RString &str);
 
-	void EnableCRC32( bool on=true );
-	bool GetCRC32( uint32_t *iRet );
+	void EnableCRC32(bool on = true);
+	bool GetCRC32(uint32_t *iRet);
 
 	virtual int GetFileSize() const = 0;
-	virtual int GetFD() { return -1; }
-	virtual RString GetDisplayPath() const { return RString(); }
-	virtual RageFileBasic *Copy() const { FAIL_M( "Copying unimplemented" ); }
+	virtual int GetFD()
+	{
+		return -1;
+	}
+	virtual RString GetDisplayPath() const
+	{
+		return RString();
+	}
+	virtual RageFileBasic *Copy() const
+	{
+		FAIL_M("Copying unimplemented");
+	}
 
 protected:
-	virtual int SeekInternal( int iOffset ) { FAIL_M( "Seeking unimplemented" ); }
-	virtual int ReadInternal( void *pBuffer, size_t iBytes ) = 0;
-	virtual int WriteInternal( const void *pBuffer, size_t iBytes ) = 0;
-	virtual int FlushInternal() { return 0; }
+	virtual int SeekInternal(int iOffset)
+	{
+		FAIL_M("Seeking unimplemented");
+	}
+	virtual int ReadInternal(void *pBuffer, size_t iBytes) = 0;
+	virtual int WriteInternal(const void *pBuffer, size_t iBytes) = 0;
+	virtual int FlushInternal()
+	{
+		return 0;
+	}
 
 	void EnableReadBuffering();
-	void EnableWriteBuffering( int iBytes=1024*64 );
+	void EnableWriteBuffering(int iBytes = 1024 * 64);
 
-	void SetError( const RString &sError ) { m_sError = sError; }
+	void SetError(const RString &sError)
+	{
+		m_sError = sError;
+	}
 	RString m_sError;
 
 private:
@@ -152,7 +188,7 @@ private:
 	 * file, and no seeking is performed. */
 	bool m_bCRC32Enabled;
 	uint32_t m_iCRC32;
-	
+
 	// Swallow up warnings. If they must be used, define them.
 	RageFileObj& operator=(const RageFileObj& rhs);
 };

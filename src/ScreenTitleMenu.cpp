@@ -17,7 +17,7 @@
 
 #define COIN_MODE_CHANGE_SCREEN		THEME->GetMetric (m_sName,"CoinModeChangeScreen")
 
-REGISTER_SCREEN_CLASS( ScreenTitleMenu );
+REGISTER_SCREEN_CLASS(ScreenTitleMenu);
 ScreenTitleMenu::ScreenTitleMenu()
 {
 	/* XXX We really need two common calls:
@@ -29,64 +29,69 @@ ScreenTitleMenu::ScreenTitleMenu()
 	 */
 	GAMESTATE->Reset();
 
-	this->SubscribeToMessage( GamePreferences::m_CoinMode.GetName()+"Changed" );
+	this->SubscribeToMessage(GamePreferences::m_CoinMode.GetName() + "Changed");
 }
 
 void ScreenTitleMenu::Init()
 {
 	ScreenSelectMaster::Init();
 
-	SOUND->PlayOnceFromAnnouncer( "title menu game name" );
+	SOUND->PlayOnceFromAnnouncer("title menu game name");
 }
 
-static LocalizedString THEME_		("ScreenTitleMenu","Theme");
-static LocalizedString ANNOUNCER_	("ScreenTitleMenu","Announcer");
-void ScreenTitleMenu::Input( const InputEventPlus &input )
+static LocalizedString THEME_("ScreenTitleMenu", "Theme");
+static LocalizedString ANNOUNCER_("ScreenTitleMenu", "Announcer");
+void ScreenTitleMenu::Input(const InputEventPlus &input)
 {
-	LOG->Trace( "ScreenTitleMenu::Input( %d-%d )", input.DeviceI.device, input.DeviceI.button );	// debugging gameport joystick problem
+	LOG->Trace("ScreenTitleMenu::Input( %d-%d )", input.DeviceI.device, input.DeviceI.button);	// debugging gameport joystick problem
 
-	if( m_In.IsTransitioning() || m_Cancel.IsTransitioning() ) /* not m_Out */
+	if (m_In.IsTransitioning() || m_Cancel.IsTransitioning())  /* not m_Out */
+	{
 		return;
+	}
 
-	if( input.type == IET_FIRST_PRESS )
+	if (input.type == IET_FIRST_PRESS)
 	{
 		// detect codes
-		if( CodeDetector::EnteredCode(input.GameI.controller,CODE_NEXT_THEME) ||
-			CodeDetector::EnteredCode(input.GameI.controller,CODE_NEXT_THEME2) )
+		if (CodeDetector::EnteredCode(input.GameI.controller, CODE_NEXT_THEME) ||
+		                CodeDetector::EnteredCode(input.GameI.controller, CODE_NEXT_THEME2))
 		{
-			GameLoop::ChangeTheme( THEME->GetNextSelectableTheme(), m_sName );
+			GameLoop::ChangeTheme(THEME->GetNextSelectableTheme(), m_sName);
 		}
-		if( CodeDetector::EnteredCode(input.GameI.controller,CODE_NEXT_ANNOUNCER) ||
-			CodeDetector::EnteredCode(input.GameI.controller,CODE_NEXT_ANNOUNCER2) )
+		if (CodeDetector::EnteredCode(input.GameI.controller, CODE_NEXT_ANNOUNCER) ||
+		                CodeDetector::EnteredCode(input.GameI.controller, CODE_NEXT_ANNOUNCER2))
 		{
 			ANNOUNCER->NextAnnouncer();
 			RString sName = ANNOUNCER->GetCurAnnouncerName();
-			if( sName=="" ) sName = "(none)";
-			SCREENMAN->SystemMessage( ANNOUNCER_.GetValue()+": "+sName );
-			SCREENMAN->SetNewScreen( m_sName );
+			if (sName == "")
+			{
+				sName = "(none)";
+			}
+			SCREENMAN->SystemMessage(ANNOUNCER_.GetValue() + ": " + sName);
+			SCREENMAN->SetNewScreen(m_sName);
 		}
 	}
 
-	ScreenSelectMaster::Input( input );
+	ScreenSelectMaster::Input(input);
 }
 
-void ScreenTitleMenu::HandleMessage( const Message &msg )
+void ScreenTitleMenu::HandleMessage(const Message &msg)
 {
-	if( msg == GamePreferences::m_CoinMode.GetName()+"Changed" )
+	if (msg == GamePreferences::m_CoinMode.GetName() + "Changed")
 	{
 		/* If the CoinMode was changed, we need to reload this screen
 		 * so that the right m_aGameCommands will show */
-		SCREENMAN->SetNewScreen( COIN_MODE_CHANGE_SCREEN );
+		SCREENMAN->SetNewScreen(COIN_MODE_CHANGE_SCREEN);
 	}
 
-	ScreenSelectMaster::HandleMessage( msg );
+	ScreenSelectMaster::HandleMessage(msg);
 }
 
 
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -96,7 +101,7 @@ void ScreenTitleMenu::HandleMessage( const Message &msg )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

@@ -5,7 +5,7 @@
 
 #include "ScreenWithMenuElements.h"
 
-AutoScreenMessage( SM_GoToStartScreen );
+AutoScreenMessage(SM_GoToStartScreen);
 
 class ScreenAttract : public ScreenWithMenuElements
 {
@@ -13,18 +13,21 @@ public:
 	virtual void Init();
 	virtual void BeginScreen();
 
-	static void AttractInput( const InputEventPlus &input, ScreenWithMenuElements *pScreen );
-	static void GoToStartScreen( RString sScreenName );
-	static void SetAttractVolume( bool bInAttract );
+	static void AttractInput(const InputEventPlus &input, ScreenWithMenuElements *pScreen);
+	static void GoToStartScreen(RString sScreenName);
+	static void SetAttractVolume(bool bInAttract);
 
-	virtual void Input( const InputEventPlus &input );
-	virtual void HandleScreenMessage( const ScreenMessage SM );
-	virtual void Cancel( ScreenMessage smSendWhenDone );
+	virtual void Input(const InputEventPlus &input);
+	virtual void HandleScreenMessage(const ScreenMessage SM);
+	virtual void Cancel(ScreenMessage smSendWhenDone);
 
-	virtual ScreenType GetScreenType() const { return attract; }
+	virtual ScreenType GetScreenType() const
+	{
+		return attract;
+	}
 
 	// Lua
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 protected:
 	virtual void StartPlayingMusic();
@@ -37,7 +40,7 @@ protected:
 /*
  * (c) 2003-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -47,7 +50,7 @@ protected:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

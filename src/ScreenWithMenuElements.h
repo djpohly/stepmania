@@ -17,10 +17,10 @@ public:
 	virtual void BeginScreen();
 	virtual ~ScreenWithMenuElements();
 
-	virtual void HandleScreenMessage( const ScreenMessage SM );
-	void Update( float fDeltaTime );
-	void StartTransitioningScreen( ScreenMessage smSendWhenDone );
-	virtual void Cancel( ScreenMessage smSendWhenDone );
+	virtual void HandleScreenMessage(const ScreenMessage SM);
+	void Update(float fDeltaTime);
+	void StartTransitioningScreen(ScreenMessage smSendWhenDone);
+	virtual void Cancel(ScreenMessage smSendWhenDone);
 	bool IsTransitioning();
 
 	void StopTimer();
@@ -31,11 +31,11 @@ public:
 	virtual void TweenOffScreen();
 
 	// Lua
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 protected:
 	virtual void StartPlayingMusic();
-	void SetHelpText( RString s );
+	void SetHelpText(RString s);
 
 	AutoActor			m_sprUnderlay;
 	MemoryCardDisplay	*m_MemoryCardDisplay[NUM_PLAYERS];
@@ -61,11 +61,11 @@ private:
 class ScreenWithMenuElementsSimple: public ScreenWithMenuElements
 {
 public:
-	void MenuStart( const InputEventPlus &input );
-	void MenuBack( const InputEventPlus &input );
+	void MenuStart(const InputEventPlus &input);
+	void MenuBack(const InputEventPlus &input);
 
 	// Lua
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 protected:
 };
@@ -75,7 +75,7 @@ protected:
 /*
  * (c) 2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -85,7 +85,7 @@ protected:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

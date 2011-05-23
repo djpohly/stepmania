@@ -16,60 +16,60 @@ static bool IsGameplay()
 	return SCREENMAN && SCREENMAN->GetTopScreen() && SCREENMAN->GetTopScreen()->GetScreenType() == gameplay;
 }
 
-REGISTER_SCREEN_CLASS( ScreenSyncOverlay );
+REGISTER_SCREEN_CLASS(ScreenSyncOverlay);
 
-static LocalizedString REVERT_SYNC_CHANGES	( "ScreenSyncOverlay", "Revert sync changes" );
-static LocalizedString CURRENT_BPM		( "ScreenSyncOverlay", "Current BPM - smaller/larger" );
-static LocalizedString SONG_OFFSET		( "ScreenSyncOverlay", "Song offset - notes earlier/later" );
-static LocalizedString MACHINE_OFFSET		( "ScreenSyncOverlay", "Machine offset - notes earlier/later" );
-static LocalizedString HOLD_ALT			( "ScreenSyncOverlay", "(hold Alt for smaller increment)" );
+static LocalizedString REVERT_SYNC_CHANGES("ScreenSyncOverlay", "Revert sync changes");
+static LocalizedString CURRENT_BPM("ScreenSyncOverlay", "Current BPM - smaller/larger");
+static LocalizedString SONG_OFFSET("ScreenSyncOverlay", "Song offset - notes earlier/later");
+static LocalizedString MACHINE_OFFSET("ScreenSyncOverlay", "Machine offset - notes earlier/later");
+static LocalizedString HOLD_ALT("ScreenSyncOverlay", "(hold Alt for smaller increment)");
 
 void ScreenSyncOverlay::Init()
 {
 	Screen::Init();
-	
-	m_quad.SetDiffuse( RageColor(0,0,0,0) );
-	m_quad.SetHorizAlign( align_left );
-	m_quad.SetXY( SCREEN_CENTER_X+10, SCREEN_TOP+100 );
-	this->AddChild( &m_quad );
 
-	m_textHelp.LoadFromFont( THEME->GetPathF("Common", "normal") );
-	m_textHelp.SetHorizAlign( align_left );
-	m_textHelp.SetXY( SCREEN_CENTER_X+20, SCREEN_TOP+100 );
-	m_textHelp.SetDiffuseAlpha( 0 );
-	m_textHelp.SetShadowLength( 2 );
-	m_textHelp.SetText( 
-		REVERT_SYNC_CHANGES.GetValue()+":\n"
-		"    F4\n" +
-		CURRENT_BPM.GetValue()+":\n"
-		"    F9/F10\n" +
-		CURRENT_BPM.GetValue()+":\n"
-		"    F11/F12\n" +
-		MACHINE_OFFSET.GetValue()+":\n"
-		"    Shift + F11/F12\n" +
-		HOLD_ALT.GetValue() );
-	this->AddChild( &m_textHelp );
-	
-	m_quad.ZoomToWidth( m_textHelp.GetZoomedWidth()+20 ); 
-	m_quad.ZoomToHeight( m_textHelp.GetZoomedHeight()+20 ); 
+	m_quad.SetDiffuse(RageColor(0, 0, 0, 0));
+	m_quad.SetHorizAlign(align_left);
+	m_quad.SetXY(SCREEN_CENTER_X + 10, SCREEN_TOP + 100);
+	this->AddChild(&m_quad);
 
-	m_textStatus.SetName( "Status" );
-	m_textStatus.LoadFromFont( THEME->GetPathF(m_sName, "status") );
-	ActorUtil::LoadAllCommandsAndOnCommand( m_textStatus, m_sName );
-	this->AddChild( &m_textStatus );
+	m_textHelp.LoadFromFont(THEME->GetPathF("Common", "normal"));
+	m_textHelp.SetHorizAlign(align_left);
+	m_textHelp.SetXY(SCREEN_CENTER_X + 20, SCREEN_TOP + 100);
+	m_textHelp.SetDiffuseAlpha(0);
+	m_textHelp.SetShadowLength(2);
+	m_textHelp.SetText(
+	        REVERT_SYNC_CHANGES.GetValue() + ":\n"
+	        "    F4\n" +
+	        CURRENT_BPM.GetValue() + ":\n"
+	        "    F9/F10\n" +
+	        CURRENT_BPM.GetValue() + ":\n"
+	        "    F11/F12\n" +
+	        MACHINE_OFFSET.GetValue() + ":\n"
+	        "    Shift + F11/F12\n" +
+	        HOLD_ALT.GetValue());
+	this->AddChild(&m_textHelp);
 
-	m_textAdjustments.SetName( "Adjustments" );
-	m_textAdjustments.LoadFromFont( THEME->GetPathF(m_sName,"Adjustments") );
-	ActorUtil::LoadAllCommandsAndOnCommand( m_textAdjustments, m_sName );
-	this->AddChild( &m_textAdjustments );
-	
-	Update( 0 );
+	m_quad.ZoomToWidth(m_textHelp.GetZoomedWidth() + 20);
+	m_quad.ZoomToHeight(m_textHelp.GetZoomedHeight() + 20);
+
+	m_textStatus.SetName("Status");
+	m_textStatus.LoadFromFont(THEME->GetPathF(m_sName, "status"));
+	ActorUtil::LoadAllCommandsAndOnCommand(m_textStatus, m_sName);
+	this->AddChild(&m_textStatus);
+
+	m_textAdjustments.SetName("Adjustments");
+	m_textAdjustments.LoadFromFont(THEME->GetPathF(m_sName, "Adjustments"));
+	ActorUtil::LoadAllCommandsAndOnCommand(m_textAdjustments, m_sName);
+	this->AddChild(&m_textAdjustments);
+
+	Update(0);
 }
 
-void ScreenSyncOverlay::Update( float fDeltaTime )
+void ScreenSyncOverlay::Update(float fDeltaTime)
 {
-	this->SetVisible( IsGameplay() );
-	if( !IsGameplay() )
+	this->SetVisible(IsGameplay());
+	if (!IsGameplay())
 	{
 		HideHelp();
 		return;
@@ -81,80 +81,98 @@ void ScreenSyncOverlay::Update( float fDeltaTime )
 }
 
 bool g_bShowAutoplay = true;
-void ScreenSyncOverlay::SetShowAutoplay( bool b )
+void ScreenSyncOverlay::SetShowAutoplay(bool b)
 {
 	g_bShowAutoplay = b;
 }
 
-static LocalizedString AUTO_PLAY		( "ScreenSyncOverlay", "AutoPlay" );
-static LocalizedString AUTO_PLAY_CPU		( "ScreenSyncOverlay", "AutoPlayCPU" );
-static LocalizedString AUTO_SYNC_SONG		( "ScreenSyncOverlay", "AutoSync Song" );
-static LocalizedString AUTO_SYNC_MACHINE	( "ScreenSyncOverlay", "AutoSync Machine" );
-static LocalizedString AUTO_SYNC_TEMPO		( "ScreenSyncOverlay", "AutoSync Tempo" );
-static LocalizedString OLD_OFFSET	( "ScreenSyncOverlay", "Old offset" );
-static LocalizedString NEW_OFFSET	( "ScreenSyncOverlay", "New offset" );
-static LocalizedString COLLECTING_SAMPLE( "ScreenSyncOverlay", "Collecting sample" );
-static LocalizedString STANDARD_DEVIATION( "ScreenSyncOverlay", "Standard deviation" );
+static LocalizedString AUTO_PLAY("ScreenSyncOverlay", "AutoPlay");
+static LocalizedString AUTO_PLAY_CPU("ScreenSyncOverlay", "AutoPlayCPU");
+static LocalizedString AUTO_SYNC_SONG("ScreenSyncOverlay", "AutoSync Song");
+static LocalizedString AUTO_SYNC_MACHINE("ScreenSyncOverlay", "AutoSync Machine");
+static LocalizedString AUTO_SYNC_TEMPO("ScreenSyncOverlay", "AutoSync Tempo");
+static LocalizedString OLD_OFFSET("ScreenSyncOverlay", "Old offset");
+static LocalizedString NEW_OFFSET("ScreenSyncOverlay", "New offset");
+static LocalizedString COLLECTING_SAMPLE("ScreenSyncOverlay", "Collecting sample");
+static LocalizedString STANDARD_DEVIATION("ScreenSyncOverlay", "Standard deviation");
 void ScreenSyncOverlay::UpdateText()
 {
 	// Update Status
 	vector<RString> vs;
 
-	if( g_bShowAutoplay )
+	if (g_bShowAutoplay)
 	{
-		switch( GamePreferences::m_AutoPlay.Get() )
+		switch (GamePreferences::m_AutoPlay.Get())
 		{
-		case PC_HUMAN:						break;
-		case PC_AUTOPLAY:	vs.push_back(AUTO_PLAY);	break;
-		case PC_CPU:		vs.push_back(AUTO_PLAY_CPU);	break;
-		default:	ASSERT(0);
+			case PC_HUMAN:
+				break;
+			case PC_AUTOPLAY:
+				vs.push_back(AUTO_PLAY);
+				break;
+			case PC_CPU:
+				vs.push_back(AUTO_PLAY_CPU);
+				break;
+			default:
+				ASSERT(0);
 		}
 	}
 
-	switch( GAMESTATE->m_SongOptions.GetCurrent().m_AutosyncType )
+	switch (GAMESTATE->m_SongOptions.GetCurrent().m_AutosyncType)
 	{
-	case SongOptions::AUTOSYNC_OFF:							break;
-	case SongOptions::AUTOSYNC_SONG:	vs.push_back(AUTO_SYNC_SONG);		break;
-	case SongOptions::AUTOSYNC_MACHINE:	vs.push_back(AUTO_SYNC_MACHINE);	break;
-	case SongOptions::AUTOSYNC_TEMPO:	vs.push_back(AUTO_SYNC_TEMPO);		break;
-	default:	ASSERT(0);
+		case SongOptions::AUTOSYNC_OFF:
+			break;
+		case SongOptions::AUTOSYNC_SONG:
+			vs.push_back(AUTO_SYNC_SONG);
+			break;
+		case SongOptions::AUTOSYNC_MACHINE:
+			vs.push_back(AUTO_SYNC_MACHINE);
+			break;
+		case SongOptions::AUTOSYNC_TEMPO:
+			vs.push_back(AUTO_SYNC_TEMPO);
+			break;
+		default:
+			ASSERT(0);
 	}
 
-	if( GAMESTATE->m_pCurSong != NULL  &&  !GAMESTATE->IsCourseMode() )	// sync controls available
+	if (GAMESTATE->m_pCurSong != NULL  &&  !GAMESTATE->IsCourseMode())	// sync controls available
 	{
-		AdjustSync::GetSyncChangeTextGlobal( vs );
-		AdjustSync::GetSyncChangeTextSong( vs );
+		AdjustSync::GetSyncChangeTextGlobal(vs);
+		AdjustSync::GetSyncChangeTextSong(vs);
 	}
 
-	m_textStatus.SetText( join("\n",vs) );
+	m_textStatus.SetText(join("\n", vs));
 
 
 	// Update SyncInfo
 	bool bVisible = GAMESTATE->m_SongOptions.GetCurrent().m_AutosyncType != SongOptions::AUTOSYNC_OFF;
-	m_textAdjustments.SetVisible( bVisible );
-	if( bVisible )
+	m_textAdjustments.SetVisible(bVisible);
+	if (bVisible)
 	{
 		float fNew = PREFSMAN->m_fGlobalOffsetSeconds;
 		float fOld = AdjustSync::s_fGlobalOffsetSecondsOriginal;
 		float fStdDev = AdjustSync::s_fStandardDeviation;
 		RString s;
-		s += OLD_OFFSET.GetValue() + ssprintf( ": %0.3f\n", fOld );
-		s += NEW_OFFSET.GetValue() + ssprintf( ": %0.3f\n", fNew );
-		s += STANDARD_DEVIATION.GetValue() + ssprintf( ": %0.3f\n", fStdDev );
-		s += COLLECTING_SAMPLE.GetValue() + ssprintf( ": %d / %d", AdjustSync::s_iAutosyncOffsetSample+1, AdjustSync::OFFSET_SAMPLE_COUNT );
-		m_textAdjustments.SetText( s );
+		s += OLD_OFFSET.GetValue() + ssprintf(": %0.3f\n", fOld);
+		s += NEW_OFFSET.GetValue() + ssprintf(": %0.3f\n", fNew);
+		s += STANDARD_DEVIATION.GetValue() + ssprintf(": %0.3f\n", fStdDev);
+		s += COLLECTING_SAMPLE.GetValue() + ssprintf(": %d / %d", AdjustSync::s_iAutosyncOffsetSample + 1, AdjustSync::OFFSET_SAMPLE_COUNT);
+		m_textAdjustments.SetText(s);
 	}
 }
 
-static LocalizedString CANT_SYNC_WHILE_PLAYING_A_COURSE	("ScreenSyncOverlay","Can't sync while playing a course.");
-static LocalizedString SYNC_CHANGES_REVERTED		("ScreenSyncOverlay","Sync changes reverted.");
-bool ScreenSyncOverlay::OverlayInput( const InputEventPlus &input )
+static LocalizedString CANT_SYNC_WHILE_PLAYING_A_COURSE("ScreenSyncOverlay", "Can't sync while playing a course.");
+static LocalizedString SYNC_CHANGES_REVERTED("ScreenSyncOverlay", "Sync changes reverted.");
+bool ScreenSyncOverlay::OverlayInput(const InputEventPlus &input)
 {
-	if( !IsGameplay() )
+	if (!IsGameplay())
+	{
 		return false;
+	}
 
-	if( input.DeviceI.device != DEVICE_KEYBOARD )
+	if (input.DeviceI.device != DEVICE_KEYBOARD)
+	{
 		return false;
+	}
 
 	enum Action
 	{
@@ -167,99 +185,125 @@ bool ScreenSyncOverlay::OverlayInput( const InputEventPlus &input )
 	Action a = Action_Invalid;
 
 	bool bIncrease = true;
-	switch( input.DeviceI.button )
+	switch (input.DeviceI.button)
 	{
-	case KEY_F4:	a = RevertSyncChanges; break;
-	case KEY_F9:	bIncrease = false; /* fall through */
-	case KEY_F10:	a = ChangeSongBPM; break;
-	case KEY_F11:	bIncrease = false; /* fall through */
-	case KEY_F12:
-		if( INPUTFILTER->IsBeingPressed( DeviceInput(DEVICE_KEYBOARD, KEY_RSHIFT)) ||
-		    INPUTFILTER->IsBeingPressed( DeviceInput(DEVICE_KEYBOARD, KEY_LSHIFT)) )
-			a = ChangeGlobalOffset;
-		else
-			a = ChangeSongOffset;
-		break;
+		case KEY_F4:
+			a = RevertSyncChanges;
+			break;
+		case KEY_F9:
+			bIncrease = false; /* fall through */
+		case KEY_F10:
+			a = ChangeSongBPM;
+			break;
+		case KEY_F11:
+			bIncrease = false; /* fall through */
+		case KEY_F12:
+			if (INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RSHIFT)) ||
+			                INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LSHIFT)))
+			{
+				a = ChangeGlobalOffset;
+			}
+			else
+			{
+				a = ChangeSongOffset;
+			}
+			break;
 
-	default:
-		return false;
+		default:
+			return false;
 	}
 
-	if( GAMESTATE->IsCourseMode() && a != ChangeGlobalOffset )
+	if (GAMESTATE->IsCourseMode() && a != ChangeGlobalOffset)
 	{
-		SCREENMAN->SystemMessage( CANT_SYNC_WHILE_PLAYING_A_COURSE );
+		SCREENMAN->SystemMessage(CANT_SYNC_WHILE_PLAYING_A_COURSE);
 		return true;
 	}
 
-	switch( a )
+	switch (a)
 	{
-	case RevertSyncChanges:
-		switch( input.type )
+		case RevertSyncChanges:
+			switch (input.type)
+			{
+				case IET_FIRST_PRESS:
+					break;
+				default:
+					return false;
+			}
+			SCREENMAN->SystemMessage(SYNC_CHANGES_REVERTED);
+			AdjustSync::RevertSyncChanges();
+			break;
+		case ChangeSongBPM:
 		{
-		case IET_FIRST_PRESS:	break;
-		default:	return false;
-		}
-		SCREENMAN->SystemMessage( SYNC_CHANGES_REVERTED );
-		AdjustSync::RevertSyncChanges();
-		break;
-	case ChangeSongBPM:
-		{
-			float fDelta = bIncrease? +0.02f:-0.02f;
-			if( INPUTFILTER->IsBeingPressed( DeviceInput(DEVICE_KEYBOARD, KEY_RALT)) ||
-				INPUTFILTER->IsBeingPressed( DeviceInput(DEVICE_KEYBOARD, KEY_LALT)) )
+			float fDelta = bIncrease ? +0.02f : -0.02f;
+			if (INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RALT)) ||
+			                INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LALT)))
 			{
 				fDelta /= 20;
 			}
-			switch( input.type )
+			switch (input.type)
 			{
-			case IET_RELEASE:	fDelta *= 0;	break;
-			case IET_REPEAT:
-				if( INPUTFILTER->GetSecsHeld(input.DeviceI) < 1.0f )
+				case IET_RELEASE:
 					fDelta *= 0;
-				else
-					fDelta *= 10;
+					break;
+				case IET_REPEAT:
+					if (INPUTFILTER->GetSecsHeld(input.DeviceI) < 1.0f)
+					{
+						fDelta *= 0;
+					}
+					else
+					{
+						fDelta *= 10;
+					}
 			}
-			if( GAMESTATE->m_pCurSong != NULL )
+			if (GAMESTATE->m_pCurSong != NULL)
 			{
-				BPMSegment& seg = GAMESTATE->m_pCurSong->m_SongTiming.GetBPMSegmentAtBeat( GAMESTATE->m_Position.m_fSongBeat );
+				BPMSegment& seg = GAMESTATE->m_pCurSong->m_SongTiming.GetBPMSegmentAtBeat(GAMESTATE->m_Position.m_fSongBeat);
 				seg.m_fBPS += fDelta;
 			}
 		}
 		break;
-	case ChangeGlobalOffset:
-	case ChangeSongOffset:
+		case ChangeGlobalOffset:
+		case ChangeSongOffset:
 		{
-			float fDelta = bIncrease? +0.02f:-0.02f;
-			if( INPUTFILTER->IsBeingPressed( DeviceInput(DEVICE_KEYBOARD, KEY_RALT)) ||
-				INPUTFILTER->IsBeingPressed( DeviceInput(DEVICE_KEYBOARD, KEY_LALT)) )
+			float fDelta = bIncrease ? +0.02f : -0.02f;
+			if (INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_RALT)) ||
+			                INPUTFILTER->IsBeingPressed(DeviceInput(DEVICE_KEYBOARD, KEY_LALT)))
 			{
 				fDelta /= 20; /* 1ms */
 			}
-			switch( input.type )
+			switch (input.type)
 			{
-			case IET_RELEASE:	fDelta *= 0;	break;
-			case IET_REPEAT:
-				if( INPUTFILTER->GetSecsHeld(input.DeviceI) < 1.0f )
+				case IET_RELEASE:
 					fDelta *= 0;
-				else
-					fDelta *= 10;
+					break;
+				case IET_REPEAT:
+					if (INPUTFILTER->GetSecsHeld(input.DeviceI) < 1.0f)
+					{
+						fDelta *= 0;
+					}
+					else
+					{
+						fDelta *= 10;
+					}
 			}
 
-			switch( a )
+			switch (a)
 			{
-			case ChangeGlobalOffset:
-				PREFSMAN->m_fGlobalOffsetSeconds.Set( PREFSMAN->m_fGlobalOffsetSeconds + fDelta );
-				break;
+				case ChangeGlobalOffset:
+					PREFSMAN->m_fGlobalOffsetSeconds.Set(PREFSMAN->m_fGlobalOffsetSeconds + fDelta);
+					break;
 
-			case ChangeSongOffset:
-				if( GAMESTATE->m_pCurSong != NULL )
-					GAMESTATE->m_pCurSong->m_SongTiming.m_fBeat0OffsetInSeconds += fDelta;
-				break;
+				case ChangeSongOffset:
+					if (GAMESTATE->m_pCurSong != NULL)
+					{
+						GAMESTATE->m_pCurSong->m_SongTiming.m_fBeat0OffsetInSeconds += fDelta;
+					}
+					break;
 			}
 		}
 		break;
-	default:
-		ASSERT(0);
+		default:
+			ASSERT(0);
 	}
 
 	ShowHelp();
@@ -270,20 +314,20 @@ bool ScreenSyncOverlay::OverlayInput( const InputEventPlus &input )
 void ScreenSyncOverlay::ShowHelp()
 {
 	m_quad.StopTweening();
-	m_quad.BeginTweening( 0.3f, TWEEN_LINEAR );
-	m_quad.SetDiffuseAlpha( 0.5f );
+	m_quad.BeginTweening(0.3f, TWEEN_LINEAR);
+	m_quad.SetDiffuseAlpha(0.5f);
 
 	m_textHelp.StopTweening();
-	m_textHelp.BeginTweening( 0.3f, TWEEN_LINEAR );
-	m_textHelp.SetDiffuseAlpha( 1 );
+	m_textHelp.BeginTweening(0.3f, TWEEN_LINEAR);
+	m_textHelp.SetDiffuseAlpha(1);
 
-	m_quad.Sleep( 4 );
-	m_quad.BeginTweening( 0.3f, TWEEN_LINEAR );
-	m_quad.SetDiffuseAlpha( 0 );
+	m_quad.Sleep(4);
+	m_quad.BeginTweening(0.3f, TWEEN_LINEAR);
+	m_quad.SetDiffuseAlpha(0);
 
-	m_textHelp.Sleep( 4 );
-	m_textHelp.BeginTweening( 0.3f, TWEEN_LINEAR );
-	m_textHelp.SetDiffuseAlpha( 0 );
+	m_textHelp.Sleep(4);
+	m_textHelp.BeginTweening(0.3f, TWEEN_LINEAR);
+	m_textHelp.SetDiffuseAlpha(0);
 }
 
 void ScreenSyncOverlay::HideHelp()
@@ -296,7 +340,7 @@ void ScreenSyncOverlay::HideHelp()
 /*
  * (c) 2001-2005 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -306,7 +350,7 @@ void ScreenSyncOverlay::HideHelp()
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

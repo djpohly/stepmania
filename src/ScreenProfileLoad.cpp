@@ -4,11 +4,11 @@
 #include "MemoryCardManager.h"
 #include "ScreenManager.h"
 
-REGISTER_SCREEN_CLASS( ScreenProfileLoad );
+REGISTER_SCREEN_CLASS(ScreenProfileLoad);
 
 void ScreenProfileLoad::Init()
 {
-	LOAD_EDITS.Load( m_sName, "LoadEdits" );
+	LOAD_EDITS.Load(m_sName, "LoadEdits");
 
 	ScreenWithMenuElements::Init();
 }
@@ -19,55 +19,55 @@ void ScreenProfileLoad::BeginScreen()
 	ScreenWithMenuElements::BeginScreen();
 }
 
-void ScreenProfileLoad::Input( const InputEventPlus &input )
+void ScreenProfileLoad::Input(const InputEventPlus &input)
 {
 }
 
 void ScreenProfileLoad::Continue()
 {
-	if( m_bHaveProfileToLoad )
+	if (m_bHaveProfileToLoad)
 	{
-		GAMESTATE->LoadProfiles( LOAD_EDITS );
+		GAMESTATE->LoadProfiles(LOAD_EDITS);
 		SCREENMAN->ZeroNextUpdate();
 	}
 
-	StartTransitioningScreen( SM_GoToNextScreen );
+	StartTransitioningScreen(SM_GoToNextScreen);
 }
 
 // lua start
 #include "LuaBinding.h"
 
-/** @brief Allow Lua to have access to the ScreenProfileLoad. */ 
+/** @brief Allow Lua to have access to the ScreenProfileLoad. */
 class LunaScreenProfileLoad: public Luna<ScreenProfileLoad>
 {
 public:
-	static int Continue( T* p, lua_State *L )
+	static int Continue(T* p, lua_State *L)
 	{
 		LUA->YieldLua();
 		p->Continue();
 		LUA->UnyieldLua();
 		return 0;
 	}
-	static int HaveProfileToLoad( T* p, lua_State *L )
+	static int HaveProfileToLoad(T* p, lua_State *L)
 	{
-		LuaHelpers::Push( L, p->m_bHaveProfileToLoad );
+		LuaHelpers::Push(L, p->m_bHaveProfileToLoad);
 		return 1;
 	}
-	
+
 	LunaScreenProfileLoad()
 	{
-  		ADD_METHOD( Continue );
-  		ADD_METHOD( HaveProfileToLoad );
+		ADD_METHOD(Continue);
+		ADD_METHOD(HaveProfileToLoad);
 	}
 };
 
-LUA_REGISTER_DERIVED_CLASS( ScreenProfileLoad, ScreenWithMenuElements )
+LUA_REGISTER_DERIVED_CLASS(ScreenProfileLoad, ScreenWithMenuElements)
 // lua end
 
 /*
  * (c) 2007 Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -77,7 +77,7 @@ LUA_REGISTER_DERIVED_CLASS( ScreenProfileLoad, ScreenWithMenuElements )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

@@ -37,7 +37,7 @@ namespace SSCLoader
 	 * @param out a reference to the Song that will retrieve the song information.
 	 * @return its success or failure.
 	 */
-	bool LoadFromDir( const RString &sPath, Song &out );
+	bool LoadFromDir(const RString &sPath, Song &out);
 	/**
 	 * @brief Attempt to load the specified ssc file.
 	 * @param sPath a const reference to the path on the hard drive to check.
@@ -45,13 +45,13 @@ namespace SSCLoader
 	 * @param bFromCache a check to see if we are getting certain information from the cache file.
 	 * @return its success or failure.
 	 */
-	bool LoadFromSSCFile( const RString &sPath, Song &out, bool bFromCache = false );
+	bool LoadFromSSCFile(const RString &sPath, Song &out, bool bFromCache = false);
 	/**
 	 * @brief Retrieve the list of .ssc files.
 	 * @param sPath a const reference to the path on the hard drive to check.
 	 * @param out a vector of files found in the path.
 	 */
-	void GetApplicableFiles( const RString &sPath, vector<RString> &out );
+	void GetApplicableFiles(const RString &sPath, vector<RString> &out);
 	/**
 	 * @brief Attempt to load an edit from the hard drive.
 	 * @param sEditFilePath a path on the hard drive to check.
@@ -59,7 +59,7 @@ namespace SSCLoader
 	 * @param bAddStepsToSong a flag to determine if we add the edit steps to the song file.
 	 * @return its success or failure.
 	 */
-	bool LoadEditFromFile( RString sEditFilePath, ProfileSlot slot, bool bAddStepsToSong );
+	bool LoadEditFromFile(RString sEditFilePath, ProfileSlot slot, bool bAddStepsToSong);
 	/**
 	 * @brief Attempt to parse the edit file in question.
 	 * @param msd the edit file itself.
@@ -68,20 +68,20 @@ namespace SSCLoader
 	 * @param bAddStepsToSong a flag to determine if we add the edit steps to the song file.
 	 * @return its success or failure.
 	 */
-	bool LoadEditFromMsd( const MsdFile &msd, const RString &sEditFilePath, ProfileSlot slot, bool bAddStepsToSong );
+	bool LoadEditFromMsd(const MsdFile &msd, const RString &sEditFilePath, ProfileSlot slot, bool bAddStepsToSong);
 	/**
 	 * @brief Perform some cleanup on the loaded song.
 	 * @param song a reference to the song that may need cleaning up.
 	 * @param bFromCache a flag to determine if this song is loaded from a cache file.
 	 */
-	void TidyUpData( Song &song, bool bFromCache );
-	
-	
-	void ProcessWarps( TimingData &, const RString, const float );
-	void ProcessLabels( TimingData &, const RString );
-	void ProcessCombos( TimingData &, const RString );
-	void ProcessSpeeds( TimingData &, const RString );
-	void ProcessFakes( TimingData &, const RString );
+	void TidyUpData(Song &song, bool bFromCache);
+
+
+	void ProcessWarps(TimingData &, const RString, const float);
+	void ProcessLabels(TimingData &, const RString);
+	void ProcessCombos(TimingData &, const RString);
+	void ProcessSpeeds(TimingData &, const RString);
+	void ProcessFakes(TimingData &, const RString);
 }
 #endif
 /**
@@ -90,7 +90,7 @@ namespace SSCLoader
  *
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -100,7 +100,7 @@ namespace SSCLoader
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

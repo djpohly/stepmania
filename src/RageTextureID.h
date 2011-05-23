@@ -38,7 +38,7 @@ struct RageTextureID
 	// If true and color precision is being lost, dither. (slow)
 	bool bDither;
 
-	// If true, resize the image to fill the internal texture. (slow) 
+	// If true, resize the image to fill the internal texture. (slow)
 	bool bStretch;
 
 	/* If true, enable HOT PINK color keying. (deprecated but needed for
@@ -62,13 +62,20 @@ struct RageTextureID
 	RageTextureID(): filename(RString()), iMaxSize(0), bMipMaps(false),
 		iAlphaBits(0), iGrayscaleBits(0), iColorDepth(0),
 		bDither(false), bStretch(false), bHotPinkColorKey(false),
-		AdditionalTextureHints(RString()), Policy(TEX_DEFAULT)  { Init(); }
-	RageTextureID( const RString &fn ): filename(RString()), iMaxSize(0),
+		AdditionalTextureHints(RString()), Policy(TEX_DEFAULT)
+	{
+		Init();
+	}
+	RageTextureID(const RString &fn): filename(RString()), iMaxSize(0),
 		bMipMaps(false), iAlphaBits(0), iGrayscaleBits(0),
 		iColorDepth(0), bDither(false), bStretch(false),
 		bHotPinkColorKey(false), AdditionalTextureHints(RString()),
-		Policy(TEX_DEFAULT) { Init(); SetFilename(fn); }
-	void SetFilename( const RString &fn );
+		Policy(TEX_DEFAULT)
+	{
+		Init();
+		SetFilename(fn);
+	}
+	void SetFilename(const RString &fn);
 };
 
 #endif

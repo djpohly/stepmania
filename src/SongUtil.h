@@ -39,7 +39,7 @@ public:
 		Tutorial_DontCare /**< This song can or cannot be used for tutorial purposes. */
 	} m_Tutorial;
 	/** @brief Is this song used for locking/unlocking purposes? */
-	enum Locked 
+	enum Locked
 	{
 		Locked_Locked, /**< This song is a locked song. */
 		Locked_Unlocked, /**< This song is an unlocked song. */
@@ -62,28 +62,28 @@ public:
 	 * @param p the song to compare against the criteria.
 	 * @return true of the song matches the criteria, false otherwise.
 	 */
-	bool Matches( const Song *p ) const;
+	bool Matches(const Song *p) const;
 	/**
 	 * @brief Determine if two sets of criteria are equivalent.
 	 * @param other the other criteria.
 	 * @return true if the two sets of criteria are equal, false otherwise.
 	 */
-	bool operator==( const SongCriteria &other ) const
+	bool operator==(const SongCriteria &other) const
 	{
-/** @brief A quick way to match every part of the song criterium. */
+		/** @brief A quick way to match every part of the song criterium. */
 #define X(x) (x == other.x)
-		return 
-			X(m_sGroupName) && 
-			X(m_bUseSongGenreAllowedList) && 
-			X(m_vsSongGenreAllowedList) &&
-			X(m_Selectable) && 
-			X(m_bUseSongAllowedList) && 
-			X(m_vpSongAllowedList) &&
-			X(m_iMaxStagesForSong) && 
-			//X(m_fMinBPM) && 
-			//X(m_fMaxBPM) && 
-			X(m_Tutorial) && 
-			X(m_Locked);
+		return
+		        X(m_sGroupName) &&
+		        X(m_bUseSongGenreAllowedList) &&
+		        X(m_vsSongGenreAllowedList) &&
+		        X(m_Selectable) &&
+		        X(m_bUseSongAllowedList) &&
+		        X(m_vpSongAllowedList) &&
+		        X(m_iMaxStagesForSong) &&
+		        //X(m_fMinBPM) &&
+		        //X(m_fMaxBPM) &&
+		        X(m_Tutorial) &&
+		        X(m_Locked);
 #undef X
 	}
 	/**
@@ -91,60 +91,63 @@ public:
 	 * @param other the other criteria.
 	 * @return true if the two sets of criteria are not equal, false otherwise.
 	 */
-	bool operator!=( const SongCriteria &other ) const { return !operator==( other ); }
+	bool operator!=(const SongCriteria &other) const
+	{
+		return !operator==(other);
+	}
 };
 
 /** @brief A set of song utilities to make working with songs easier. */
 namespace SongUtil
 {
-	void GetSteps( 
-		const Song *pSong,
-		vector<Steps*>& arrayAddTo, 
-		StepsType st = StepsType_Invalid, 
-		Difficulty dc = Difficulty_Invalid, 
-		int iMeterLow = -1, 
-		int iMeterHigh = -1, 
-		const RString &sDescription = "",
-		const RString &sCredit = "",
-		bool bIncludeAutoGen = true, 
-		unsigned uHash = 0,
-		int iMaxToGet = -1 
-		);
-	Steps* GetOneSteps( 
-		const Song *pSong,
-		StepsType st = StepsType_Invalid, 
-		Difficulty dc = Difficulty_Invalid, 
-		int iMeterLow = -1, 
-		int iMeterHigh = -1, 
-		const RString &sDescription = "",
-		const RString &sCredit = "",
-		unsigned uHash = 0,
-		bool bIncludeAutoGen = true
-		);
-	Steps* GetStepsByDifficulty(	const Song *pSong, StepsType st, Difficulty dc, bool bIncludeAutoGen = true );
-	Steps* GetStepsByMeter(		const Song *pSong, StepsType st, int iMeterLow, int iMeterHigh );
-	Steps* GetStepsByDescription(	const Song *pSong, StepsType st, RString sDescription );
-	Steps* GetStepsByCredit(	const Song *pSong, StepsType st, RString sCredit );
-	Steps* GetClosestNotes(		const Song *pSong, StepsType st, Difficulty dc, bool bIgnoreLocked=false );
-	
-	void AdjustDuplicateSteps( Song *pSong ); // part of TidyUpData
-	void DeleteDuplicateSteps( Song *pSong, vector<Steps*> &vSteps );
+	void GetSteps(
+	        const Song *pSong,
+	        vector<Steps*>& arrayAddTo,
+	        StepsType st = StepsType_Invalid,
+	        Difficulty dc = Difficulty_Invalid,
+	        int iMeterLow = -1,
+	        int iMeterHigh = -1,
+	        const RString &sDescription = "",
+	        const RString &sCredit = "",
+	        bool bIncludeAutoGen = true,
+	        unsigned uHash = 0,
+	        int iMaxToGet = -1
+	);
+	Steps* GetOneSteps(
+	        const Song *pSong,
+	        StepsType st = StepsType_Invalid,
+	        Difficulty dc = Difficulty_Invalid,
+	        int iMeterLow = -1,
+	        int iMeterHigh = -1,
+	        const RString &sDescription = "",
+	        const RString &sCredit = "",
+	        unsigned uHash = 0,
+	        bool bIncludeAutoGen = true
+	);
+	Steps* GetStepsByDifficulty(const Song *pSong, StepsType st, Difficulty dc, bool bIncludeAutoGen = true);
+	Steps* GetStepsByMeter(const Song *pSong, StepsType st, int iMeterLow, int iMeterHigh);
+	Steps* GetStepsByDescription(const Song *pSong, StepsType st, RString sDescription);
+	Steps* GetStepsByCredit(const Song *pSong, StepsType st, RString sCredit);
+	Steps* GetClosestNotes(const Song *pSong, StepsType st, Difficulty dc, bool bIgnoreLocked = false);
 
-	RString MakeSortString( RString s );
-	void SortSongPointerArrayByTitle( vector<Song*> &vpSongsInOut );
-	void SortSongPointerArrayByBPM( vector<Song*> &vpSongsInOut );
-	void SortSongPointerArrayByGrades( vector<Song*> &vpSongsInOut, bool bDescending );
-	void SortSongPointerArrayByArtist( vector<Song*> &vpSongsInOut );
-	void SortSongPointerArrayByDisplayArtist( vector<Song*> &vpSongsInOut );
-	void SortSongPointerArrayByGenre( vector<Song*> &vpSongsInOut );
-	void SortSongPointerArrayByGroupAndTitle( vector<Song*> &vpSongsInOut );
-	void SortSongPointerArrayByNumPlays( vector<Song*> &vpSongsInOut, ProfileSlot slot, bool bDescending );
-	void SortSongPointerArrayByNumPlays( vector<Song*> &vpSongsInOut, const Profile* pProfile, bool bDescending );
-	void SortSongPointerArrayByStepsTypeAndMeter( vector<Song*> &vpSongsInOut, StepsType st, Difficulty dc );
-	RString GetSectionNameFromSongAndSort( const Song *pSong, SortOrder so );
-	void SortSongPointerArrayBySectionName( vector<Song*> &vpSongsInOut, SortOrder so );
-	void SortByMostRecentlyPlayedForMachine( vector<Song*> &vpSongsInOut );
-	void SortSongPointerArrayByLength( vector<Song*> &vpSongsInOut );
+	void AdjustDuplicateSteps(Song *pSong);   // part of TidyUpData
+	void DeleteDuplicateSteps(Song *pSong, vector<Steps*> &vSteps);
+
+	RString MakeSortString(RString s);
+	void SortSongPointerArrayByTitle(vector<Song*> &vpSongsInOut);
+	void SortSongPointerArrayByBPM(vector<Song*> &vpSongsInOut);
+	void SortSongPointerArrayByGrades(vector<Song*> &vpSongsInOut, bool bDescending);
+	void SortSongPointerArrayByArtist(vector<Song*> &vpSongsInOut);
+	void SortSongPointerArrayByDisplayArtist(vector<Song*> &vpSongsInOut);
+	void SortSongPointerArrayByGenre(vector<Song*> &vpSongsInOut);
+	void SortSongPointerArrayByGroupAndTitle(vector<Song*> &vpSongsInOut);
+	void SortSongPointerArrayByNumPlays(vector<Song*> &vpSongsInOut, ProfileSlot slot, bool bDescending);
+	void SortSongPointerArrayByNumPlays(vector<Song*> &vpSongsInOut, const Profile* pProfile, bool bDescending);
+	void SortSongPointerArrayByStepsTypeAndMeter(vector<Song*> &vpSongsInOut, StepsType st, Difficulty dc);
+	RString GetSectionNameFromSongAndSort(const Song *pSong, SortOrder so);
+	void SortSongPointerArrayBySectionName(vector<Song*> &vpSongsInOut, SortOrder so);
+	void SortByMostRecentlyPlayedForMachine(vector<Song*> &vpSongsInOut);
+	void SortSongPointerArrayByLength(vector<Song*> &vpSongsInOut);
 
 	int CompareSongPointersByGroup(const Song *pSong1, const Song *pSong2);
 
@@ -156,21 +159,21 @@ namespace SongUtil
 	 * @param pExclude the steps that want the description.
 	 * @return true if it is unique, false otherwise.
 	 */
-	bool IsEditDescriptionUnique( const Song* pSong, StepsType st, const RString &sPreferredDescription, const Steps *pExclude );
-	RString MakeUniqueEditDescription( const Song* pSong, StepsType st, const RString &sPreferredDescription );
-	bool ValidateCurrentEditStepsDescription( const RString &sAnswer, RString &sErrorOut );
-	bool ValidateCurrentStepsDescription( const RString &sAnswer, RString &sErrorOut );
-	bool ValidateCurrentStepsCredit( const RString &sAnswer, RString &sErrorOut );
+	bool IsEditDescriptionUnique(const Song* pSong, StepsType st, const RString &sPreferredDescription, const Steps *pExclude);
+	RString MakeUniqueEditDescription(const Song* pSong, StepsType st, const RString &sPreferredDescription);
+	bool ValidateCurrentEditStepsDescription(const RString &sAnswer, RString &sErrorOut);
+	bool ValidateCurrentStepsDescription(const RString &sAnswer, RString &sErrorOut);
+	bool ValidateCurrentStepsCredit(const RString &sAnswer, RString &sErrorOut);
 
-	void GetAllSongGenres( vector<RString> &vsOut );
-	void FilterSongs( const SongCriteria &sc, const vector<Song*> &in, vector<Song*> &out );
+	void GetAllSongGenres(vector<RString> &vsOut);
+	void FilterSongs(const SongCriteria &sc, const vector<Song*> &in, vector<Song*> &out);
 
-	void GetPlayableStepsTypes( const Song *pSong, set<StepsType> &vOut );
-	void GetPlayableSteps( const Song *pSong, vector<Steps*> &vOut );
-	bool IsStepsTypePlayable( Song *pSong, StepsType st );
-	bool IsStepsPlayable( Song *pSong, Steps *pSteps );
+	void GetPlayableStepsTypes(const Song *pSong, set<StepsType> &vOut);
+	void GetPlayableSteps(const Song *pSong, vector<Steps*> &vOut);
+	bool IsStepsTypePlayable(Song *pSong, StepsType st);
+	bool IsStepsPlayable(Song *pSong, Steps *pSteps);
 
-	bool GetStepsTypeAndDifficultyFromSortOrder( SortOrder so, StepsType &st, Difficulty &dc );
+	bool GetStepsTypeAndDifficultyFromSortOrder(SortOrder so, StepsType &st, Difficulty &dc);
 }
 
 class SongID
@@ -183,22 +186,31 @@ public:
 	 * @brief Set up the SongID with default values.
 	 *
 	 * This used to call Unset() to do the same thing. */
-	SongID(): sDir(""), m_Cache() { m_Cache.Unset(); }
-	void Unset() { FromSong(NULL); }
-	void FromSong( const Song *p );
+	SongID(): sDir(""), m_Cache()
+	{
+		m_Cache.Unset();
+	}
+	void Unset()
+	{
+		FromSong(NULL);
+	}
+	void FromSong(const Song *p);
 	Song *ToSong() const;
-	bool operator<( const SongID &other ) const
+	bool operator<(const SongID &other) const
 	{
 		return sDir < other.sDir;
 	}
-	bool operator==( const SongID &other ) const
+	bool operator==(const SongID &other) const
 	{
 		return sDir == other.sDir;
 	}
 
 	XNode* CreateNode() const;
-	void LoadFromNode( const XNode* pNode );
-	void FromString( RString _sDir ) { sDir = _sDir; }
+	void LoadFromNode(const XNode* pNode);
+	void FromString(RString _sDir)
+	{
+		sDir = _sDir;
+	}
 	RString ToString() const;
 	bool IsValid() const;
 };
@@ -211,7 +223,7 @@ public:
  * @author Chris Danford, Glenn Maynard (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -221,7 +233,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

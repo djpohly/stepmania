@@ -13,17 +13,20 @@ class PlayerStageStats
 {
 public:
 	/** @brief Set up the PlayerStageStats with default values. */
-	PlayerStageStats() { Init(); }
+	PlayerStageStats()
+	{
+		Init();
+	}
 	void Init();
 
 	/**
 	 * @brief Add stats from one PlayerStageStats to another.
 	 * @param other the other stats to add to this one. */
-	void AddStats( const PlayerStageStats& other );		// accumulate
+	void AddStats(const PlayerStageStats& other);		// accumulate
 
 	Grade GetGrade() const;
-	static float MakePercentScore( int iActual, int iPossible );
-	static RString FormatPercentScore( float fPercentScore );
+	static float MakePercentScore(int iActual, int iPossible);
+	static RString FormatPercentScore(float fPercentScore);
 	float GetPercentDancePoints() const;
 	float GetCurMaxPercentDancePoints() const;
 
@@ -44,7 +47,7 @@ public:
 	 * @brief Have the Players failed at any point during the song?
 	 *
 	 * If FAIL_OFF is in use, this is always false.
-	 * 
+	 *
 	 * If health recovery is possible after failing (requires two players),
 	 * this is only set if both players were failing at the same time. */
 	bool		m_bFailed;
@@ -68,7 +71,7 @@ public:
 	int		m_iCurMaxScore;
 	/** @brief The maximum score the Player can get this goaround. */
 	int		m_iMaxScore;
-	
+
 	/**
 	 * @brief The possible RadarValues for a song.
 	 *
@@ -89,16 +92,16 @@ public:
 	float		m_iNumControllerSteps;
 	float		m_fCaloriesBurned;
 
-	map<float,float> m_fLifeRecord;
-	void	SetLifeRecordAt( float fLife, float fStepsSecond );
-	void	GetLifeRecord( float *fLifeOut, int iNumSamples, float fStepsEndSecond ) const;
-	float	GetLifeRecordAt( float fStepsSecond ) const;
-	float	GetLifeRecordLerpAt( float fStepsSecond ) const;
+	map<float, float> m_fLifeRecord;
+	void	SetLifeRecordAt(float fLife, float fStepsSecond);
+	void	GetLifeRecord(float *fLifeOut, int iNumSamples, float fStepsEndSecond) const;
+	float	GetLifeRecordAt(float fStepsSecond) const;
+	float	GetLifeRecordLerpAt(float fStepsSecond) const;
 	float	GetCurrentLife() const;
 
 	struct Combo_t
 	{
-		/** 
+		/**
 		 * @brief The start time of the combo.
 		 *
 		 * This uses the same scale as the combo list mapping. */
@@ -122,30 +125,42 @@ public:
 		/**
 		 * @brief Retrieve the size of the combo that came from this song.
 		 * @return this song's combo size. */
-		int GetStageCnt() const { return m_cnt - m_rollover; }
+		int GetStageCnt() const
+		{
+			return m_cnt - m_rollover;
+		}
 
 		Combo_t(): m_fStartSecond(0), m_fSizeSeconds(0), m_cnt(0), m_rollover(0) { }
-		bool IsZero() const { return m_fStartSecond < 0; }
+		bool IsZero() const
+		{
+			return m_fStartSecond < 0;
+		}
 	};
 	vector<Combo_t> m_ComboList;
 	float	m_fFirstSecond;
 	float	m_fLastSecond;
 
 	int	GetComboAtStartOfStage() const;
-	bool	FullComboOfScore( TapNoteScore tnsAllGreaterOrEqual ) const;
-	bool	FullCombo() const { return FullComboOfScore(TNS_W3); }
+	bool	FullComboOfScore(TapNoteScore tnsAllGreaterOrEqual) const;
+	bool	FullCombo() const
+	{
+		return FullComboOfScore(TNS_W3);
+	}
 	TapNoteScore GetBestFullComboTapNoteScore() const;
-	bool	SingleDigitsOfScore( TapNoteScore tnsAllGreaterOrEqual ) const;
-	bool	OneOfScore( TapNoteScore tnsAllGreaterOrEqual ) const;
+	bool	SingleDigitsOfScore(TapNoteScore tnsAllGreaterOrEqual) const;
+	bool	OneOfScore(TapNoteScore tnsAllGreaterOrEqual) const;
 	int		GetTotalTaps() const;
-	float	GetPercentageOfTaps( TapNoteScore tns ) const;
-	void	UpdateComboList( float fSecond, bool rollover );
+	float	GetPercentageOfTaps(TapNoteScore tns) const;
+	void	UpdateComboList(float fSecond, bool rollover);
 	Combo_t GetMaxCombo() const;
 
-	float GetSurvivalSeconds() const { return m_fAliveSeconds + m_fLifeRemainingSeconds; }
+	float GetSurvivalSeconds() const
+	{
+		return m_fAliveSeconds + m_fLifeRemainingSeconds;
+	}
 
 	// Final results:
-	void CalcAwards( PlayerNumber p, bool bGaveUp, bool bUsedAutoplay );
+	void CalcAwards(PlayerNumber p, bool bGaveUp, bool bUsedAutoplay);
 	StageAward m_StageAward;
 	PeakComboAward m_PeakComboAward;
 
@@ -158,7 +173,7 @@ public:
 	HighScore	m_HighScore;
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 };
 
 #endif
@@ -168,7 +183,7 @@ public:
  * @author Chris Danford, Glenn Maynard (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -178,7 +193,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

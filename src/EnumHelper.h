@@ -15,7 +15,7 @@ extern "C"
 /** @brief A general foreach loop for enumerators. */
 #define FOREACH_ENUM( e, var )	for( e var=(e)0; var<NUM_##e; enum_add<e>( var, +1 ) )
 
-int CheckEnum( lua_State *L, LuaReference &table, int iPos, int iInvalid, const char *szType, bool bAllowInvalid );
+int CheckEnum(lua_State *L, LuaReference &table, int iPos, int iInvalid, const char *szType, bool bAllowInvalid);
 
 template<typename T>
 struct EnumTraits
@@ -31,30 +31,30 @@ template<typename T> LuaReference EnumTraits<T>::EnumToString;
 namespace Enum
 {
 	template<typename T>
-	static T Check( lua_State *L, int iPos, bool bAllowInvalid = false )
+	static T Check(lua_State *L, int iPos, bool bAllowInvalid = false)
 	{
-		return (T) CheckEnum( L, EnumTraits<T>::StringToEnum, iPos, EnumTraits<T>::Invalid, EnumTraits<T>::szName, bAllowInvalid );
+		return (T) CheckEnum(L, EnumTraits<T>::StringToEnum, iPos, EnumTraits<T>::Invalid, EnumTraits<T>::szName, bAllowInvalid);
 	}
 	template<typename T>
-	static void Push( lua_State *L, T iVal )
+	static void Push(lua_State *L, T iVal)
 	{
 		/* Enum_Invalid values are nil in Lua. */
-		if( iVal == EnumTraits<T>::Invalid )
+		if (iVal == EnumTraits<T>::Invalid)
 		{
-			lua_pushnil( L );
+			lua_pushnil(L);
 			return;
 		}
 
 		/* Look up the string value. */
-		EnumTraits<T>::EnumToString.PushSelf( L );
-		lua_rawgeti( L, -1, iVal + 1 );
-		lua_remove( L, -2 );
+		EnumTraits<T>::EnumToString.PushSelf(L);
+		lua_rawgeti(L, -1, iVal + 1);
+		lua_remove(L, -2);
 	}
 
-	void SetMetatable( lua_State *L, LuaReference &EnumTable, LuaReference &EnumIndexTable, const char *szName );
+	void SetMetatable(lua_State *L, LuaReference &EnumTable, LuaReference &EnumIndexTable, const char *szName);
 };
 
-const RString &EnumToString( int iVal, int iMax, const char **szNameArray, auto_ptr<RString> *pNameCache ); // XToString helper
+const RString &EnumToString(int iVal, int iMax, const char **szNameArray, auto_ptr<RString> *pNameCache);   // XToString helper
 
 #define XToString(X) \
 	COMPILE_ASSERT( NUM_##X == ARRAYLEN(X##Names) ); \
@@ -133,7 +133,7 @@ namespace LuaHelpers { template<> void Push<X>( lua_State *L, const X &Object ) 
  * @author Chris Danford, Glenn Maynard (c) 2004-2006
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -143,7 +143,7 @@ namespace LuaHelpers { template<> void Push<X>( lua_State *L, const X &Object ) 
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

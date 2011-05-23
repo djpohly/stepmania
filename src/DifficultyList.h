@@ -16,9 +16,9 @@ public:
 	StepsDisplayList();
 	virtual ~StepsDisplayList();
 	virtual StepsDisplayList *Copy() const;
-	virtual void LoadFromNode( const XNode* pNode );
+	virtual void LoadFromNode(const XNode* pNode);
 
-	void HandleMessage( const Message &msg );
+	void HandleMessage(const Message &msg);
 
 	void SetFromGameState();
 	void TweenOnScreen();
@@ -27,12 +27,12 @@ public:
 	void Show();
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
 private:
 	void UpdatePositions();
 	void PositionItems();
-	int GetCurrentRowIndex( PlayerNumber pn ) const;
+	int GetCurrentRowIndex(PlayerNumber pn) const;
 	void HideRows();
 
 	ThemeMetric<float> ITEMS_SPACING_Y;
@@ -77,7 +77,7 @@ private:
 /*
  * (c) 2003-2004 Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -87,7 +87,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

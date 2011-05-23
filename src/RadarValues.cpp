@@ -5,8 +5,8 @@
 #include "XmlFile.h"
 #include "ThemeManager.h"
 
-ThemeMetric<bool> RadarValues::WRITE_SIMPLE_VALIES( "RadarValues", "WriteSimpleValues" );
-ThemeMetric<bool> RadarValues::WRITE_COMPLEX_VALIES( "RadarValues", "WriteComplexValues" );
+ThemeMetric<bool> RadarValues::WRITE_SIMPLE_VALIES("RadarValues", "WriteSimpleValues");
+ThemeMetric<bool> RadarValues::WRITE_COMPLEX_VALIES("RadarValues", "WriteComplexValues");
 
 RadarValues::RadarValues()
 {
@@ -15,101 +15,113 @@ RadarValues::RadarValues()
 
 void RadarValues::MakeUnknown()
 {
-	FOREACH_ENUM( RadarCategory, rc )
-		m_Values.f[rc] = RADAR_VAL_UNKNOWN;
+	FOREACH_ENUM(RadarCategory, rc)
+	m_Values.f[rc] = RADAR_VAL_UNKNOWN;
 }
 
 void RadarValues::Zero()
 {
-	FOREACH_ENUM( RadarCategory, rc )
-		m_Values.f[rc] = 0;
+	FOREACH_ENUM(RadarCategory, rc)
+	m_Values.f[rc] = 0;
 }
 
-XNode* RadarValues::CreateNode( bool bIncludeSimpleValues, bool bIncludeComplexValues ) const
+XNode* RadarValues::CreateNode(bool bIncludeSimpleValues, bool bIncludeComplexValues) const
 {
-	XNode* pNode = new XNode( "RadarValues" );
+	XNode* pNode = new XNode("RadarValues");
 
 	// TRICKY: Don't print a remainder for the integer values.
-	FOREACH_ENUM( RadarCategory, rc )
+	FOREACH_ENUM(RadarCategory, rc)
 	{
-		if( rc >= RadarCategory_TapsAndHolds )
+		if (rc >= RadarCategory_TapsAndHolds)
 		{
-			if( bIncludeSimpleValues )
-				pNode->AppendChild( RadarCategoryToString(rc),	(int)m_Values.f[rc] );
+			if (bIncludeSimpleValues)
+			{
+				pNode->AppendChild(RadarCategoryToString(rc),	(int)m_Values.f[rc]);
+			}
 		}
 		else
 		{
-			if( bIncludeComplexValues )
-				pNode->AppendChild( RadarCategoryToString(rc),	m_Values.f[rc] );
+			if (bIncludeComplexValues)
+			{
+				pNode->AppendChild(RadarCategoryToString(rc),	m_Values.f[rc]);
+			}
 		}
 	}
 
 	return pNode;
 }
 
-void RadarValues::LoadFromNode( const XNode* pNode ) 
+void RadarValues::LoadFromNode(const XNode* pNode)
 {
-	ASSERT( pNode->GetName() == "RadarValues" );
+	ASSERT(pNode->GetName() == "RadarValues");
 
 	Zero();
 
-	FOREACH_ENUM( RadarCategory, rc )
-		pNode->GetChildValue( RadarCategoryToString(rc),	m_Values.f[rc] );
+	FOREACH_ENUM(RadarCategory, rc)
+	pNode->GetChildValue(RadarCategoryToString(rc),	m_Values.f[rc]);
 }
 
 /* iMaxValues is only used for writing compatibility fields in non-cache
  * SM files; they're never actually read. */
-RString RadarValues::ToString( int iMaxValues ) const
+RString RadarValues::ToString(int iMaxValues) const
 {
-	if( iMaxValues == -1 )
+	if (iMaxValues == -1)
+	{
 		iMaxValues = NUM_RadarCategory;
-	iMaxValues = min( iMaxValues, (int)NUM_RadarCategory );
+	}
+	iMaxValues = min(iMaxValues, (int)NUM_RadarCategory);
 
 	vector<RString> asRadarValues;
-	for( int r=0; r < iMaxValues; r++ )
-		asRadarValues.push_back( ssprintf("%.3f", m_Values.f[r]) );
+	for (int r = 0; r < iMaxValues; r++)
+	{
+		asRadarValues.push_back(ssprintf("%.3f", m_Values.f[r]));
+	}
 
-	return join( ",",asRadarValues );
+	return join(",", asRadarValues);
 }
 
-void RadarValues::FromString( RString sRadarValues )
+void RadarValues::FromString(RString sRadarValues)
 {
 	vector<RString> saValues;
-	split( sRadarValues, ",", saValues, true );
+	split(sRadarValues, ",", saValues, true);
 
-	if( saValues.size() != NUM_RadarCategory )
+	if (saValues.size() != NUM_RadarCategory)
 	{
 		MakeUnknown();
 		return;
 	}
 
-	FOREACH_ENUM( RadarCategory, rc )
-		m_Values.f[rc] = StringToFloat( saValues[rc] );
-    
+	FOREACH_ENUM(RadarCategory, rc)
+	m_Values.f[rc] = StringToFloat(saValues[rc]);
+
 }
 
 // lua start
 #include "LuaBinding.h"
 
-/** @brief Allow Lua to have access to the RadarValues. */ 
+/** @brief Allow Lua to have access to the RadarValues. */
 class LunaRadarValues: public Luna<RadarValues>
 {
 public:
-	static int GetValue( T* p, lua_State *L ) { lua_pushnumber( L, (*p)[Enum::Check<RadarCategory>(L, 1)] ); return 1; }
+	static int GetValue(T* p, lua_State *L)
+	{
+		lua_pushnumber(L, (*p)[Enum::Check<RadarCategory>(L, 1)]);
+		return 1;
+	}
 
 	LunaRadarValues()
 	{
-		ADD_METHOD( GetValue );
+		ADD_METHOD(GetValue);
 	}
 };
 
-LUA_REGISTER_CLASS( RadarValues )
+LUA_REGISTER_CLASS(RadarValues)
 // lua end
 
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -119,7 +131,7 @@ LUA_REGISTER_CLASS( RadarValues )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

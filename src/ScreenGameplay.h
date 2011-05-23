@@ -31,9 +31,9 @@ class ScoreKeeper;
 class Background;
 class Foreground;
 
-AutoScreenMessage( SM_NotesEnded );
-AutoScreenMessage( SM_BeginFailed );
-AutoScreenMessage( SM_LeaveGameplay );
+AutoScreenMessage(SM_NotesEnded);
+AutoScreenMessage(SM_BeginFailed);
+AutoScreenMessage(SM_LeaveGameplay);
 
 class PlayerInfo
 {
@@ -41,8 +41,8 @@ public:
 	PlayerInfo();
 	~PlayerInfo();
 
-	void Load( PlayerNumber pn, MultiPlayer mp, bool bShowNoteField, int iAddToDifficulty );
-	void LoadDummyP1( int iDummyIndex, int iAddToDifficulty );
+	void Load(PlayerNumber pn, MultiPlayer mp, bool bShowNoteField, int iAddToDifficulty);
+	void LoadDummyP1(int iDummyIndex, int iAddToDifficulty);
 
 	/** @brief The player has lost all of their lives: show the special game over. */
 	void ShowOniGameOver();
@@ -50,10 +50,16 @@ public:
 	 * @brief Retrieve the player's state and stage stats index.
 	 * @return the player's state and stage stats index.
 	 */
-	MultiPlayer GetPlayerStateAndStageStatsIndex()	{ return m_pn == PLAYER_INVALID ? m_mp : (MultiPlayer)m_pn; }
+	MultiPlayer GetPlayerStateAndStageStatsIndex()
+	{
+		return m_pn == PLAYER_INVALID ? m_mp : (MultiPlayer)m_pn;
+	}
 	PlayerState *GetPlayerState();
 	PlayerStageStats *GetPlayerStageStats();
-	PlayerNumber GetStepsAndTrailIndex()		{ return m_pn == PLAYER_INVALID ? PLAYER_1 : m_pn; }
+	PlayerNumber GetStepsAndTrailIndex()
+	{
+		return m_pn == PLAYER_INVALID ? PLAYER_1 : m_pn;
+	}
 	/**
 	 * @brief Determine if the player information is enabled.
 	 * @return its success or failure. */
@@ -61,22 +67,31 @@ public:
 	/**
 	 * @brief Determine if we're in MultiPlayer.
 	 * @return true if it is MultiPlayer, false otherwise. */
-	bool IsMultiPlayer() const { return m_mp != MultiPlayer_Invalid; }
+	bool IsMultiPlayer() const
+	{
+		return m_mp != MultiPlayer_Invalid;
+	}
 	/**
 	 * @brief Retrieve the name of the Player based on the mode.
 	 * @return the name of the Player. */
 	RString GetName() const
 	{
-		if( m_bIsDummy )
-			return ssprintf("Dummy%d",m_iDummyIndex);
-		if( IsMultiPlayer() ) 
-			return MultiPlayerToString( m_mp );
+		if (m_bIsDummy)
+		{
+			return ssprintf("Dummy%d", m_iDummyIndex);
+		}
+		if (IsMultiPlayer())
+		{
+			return MultiPlayerToString(m_mp);
+		}
 		else
-			return PlayerNumberToString( m_pn );
+		{
+			return PlayerNumberToString(m_pn);
+		}
 	}
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
 	/** @brief The present Player's number. */
 	PlayerNumber		m_pn;
@@ -146,16 +161,19 @@ public:
 	virtual ~ScreenGameplay();
 	virtual void BeginScreen();
 
-	virtual void Update( float fDeltaTime );
-	virtual void Input( const InputEventPlus &input );
-	virtual void HandleScreenMessage( const ScreenMessage SM );
-	virtual void HandleMessage( const Message &msg );
-	virtual void Cancel( ScreenMessage smSendWhenDone );
+	virtual void Update(float fDeltaTime);
+	virtual void Input(const InputEventPlus &input);
+	virtual void HandleScreenMessage(const ScreenMessage SM);
+	virtual void HandleMessage(const Message &msg);
+	virtual void Cancel(ScreenMessage smSendWhenDone);
 
 	/**
 	 * @brief Retrieve the current ScreenType.
 	 * @return the gameplay ScreenType. */
-	virtual ScreenType GetScreenType() const { return gameplay; }
+	virtual ScreenType GetScreenType() const
+	{
+		return gameplay;
+	}
 
 	/**
 	 * @brief Determine if we are to center the columns for just one player.
@@ -163,18 +181,27 @@ public:
 	bool Center1Player() const;
 
 	// Lua
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 	Song *GetNextCourseSong() const;
-	LifeMeter *GetLifeMeter( PlayerNumber pn );
-	PlayerInfo *GetPlayerInfo( PlayerNumber pn );
-	PlayerInfo *GetDummyPlayerInfo( int iDummyIndex );
-	void Pause(bool bPause) { PauseGame(bPause); }
-	bool IsPaused() const { return m_bPaused; }
+	LifeMeter *GetLifeMeter(PlayerNumber pn);
+	PlayerInfo *GetPlayerInfo(PlayerNumber pn);
+	PlayerInfo *GetDummyPlayerInfo(int iDummyIndex);
+	void Pause(bool bPause)
+	{
+		PauseGame(bPause);
+	}
+	bool IsPaused() const
+	{
+		return m_bPaused;
+	}
 
 protected:
-	virtual void UpdateStageStats( MultiPlayer mp ) {};	// overridden for multiplayer
+	virtual void UpdateStageStats(MultiPlayer mp) {};	// overridden for multiplayer
 
-	virtual bool UseSongBackgroundAndForeground() const { return true; }
+	virtual bool UseSongBackgroundAndForeground() const
+	{
+		return true;
+	}
 
 	ThemeMetric<RString> PLAYER_TYPE;
 	ThemeMetric<RString> SCORE_DISPLAY_TYPE;
@@ -199,25 +226,25 @@ protected:
 	ThemeMetric<RString> SONG_NUMBER_FORMAT;
 
 	bool IsLastSong();
-	void SetupSong( int iSongIndex );
+	void SetupSong(int iSongIndex);
 	void ReloadCurrentSong();
 	virtual void LoadNextSong();
-	void StartPlayingSong( float fMinTimeToNotes, float fMinTimeToMusic );
-	void GetMusicEndTiming( float &fSecondsToStartFadingOutMusic, float &fSecondsToStartTransitioningOut );
+	void StartPlayingSong(float fMinTimeToNotes, float fMinTimeToMusic);
+	void GetMusicEndTiming(float &fSecondsToStartFadingOutMusic, float &fSecondsToStartTransitioningOut);
 	void LoadLights();
-	void PauseGame( bool bPause, GameController gc = GameController_Invalid );
-	void PlayAnnouncer( RString type, float fSeconds );
+	void PauseGame(bool bPause, GameController gc = GameController_Invalid);
+	void PlayAnnouncer(RString type, float fSeconds);
 	void UpdateLights();
 	void SendCrossedMessages();
 	void BeginBackingOutFromGameplay();
 	float GetHasteRate();
 
 	void PlayTicks();
-	void UpdateSongPosition( float fDeltaTime );
-	void UpdateLyrics( float fDeltaTime );
+	void UpdateSongPosition(float fDeltaTime);
+	void UpdateLyrics(float fDeltaTime);
 	void SongFinished();
 	virtual void SaveStats();
-	virtual void StageFinished( bool bBackedOut );
+	virtual void StageFinished(bool bBackedOut);
 	void SaveReplay();
 	//bool LoadReplay();
 	bool AllAreFailing();
@@ -225,12 +252,13 @@ protected:
 	virtual void InitSongQueues();
 
 	/** @brief The different game states of ScreenGameplay. */
-	enum DancingState { 
+	enum DancingState
+	{
 		STATE_INTRO = 0, /**< The starting state, pressing Back isn't allowed here. */
 		STATE_DANCING,	 /**< The main state where notes have to be pressed. */
 		STATE_OUTRO,	 /**< The ending state, pressing Back isn't allowed here. */
 		NUM_DANCING_STATES
-	} 
+	}
 	/** @brief The specific point within ScreenGameplay. */ m_DancingState;
 	bool			m_bPaused;
 
@@ -261,7 +289,7 @@ protected:
 	BitmapText		m_textDebug;
 
 	RageTimer		m_GiveUpTimer;
-	void AbortGiveUp( bool bShowText );
+	void AbortGiveUp(bool bShowText);
 
 	Transition		m_Ready;
 	Transition		m_Go;
@@ -294,17 +322,20 @@ protected:
 	NoteData		m_CabinetLightsNoteData;
 
 	vector<PlayerInfo>	m_vPlayerInfo;	// filled by SGameplay derivatives in FillPlayerInfo
-	virtual void FillPlayerInfo( vector<PlayerInfo> &vPlayerInfoOut ) = 0;
-	virtual PlayerInfo &GetPlayerInfoForInput( const InputEventPlus& iep )  { return m_vPlayerInfo[iep.pn]; }
+	virtual void FillPlayerInfo(vector<PlayerInfo> &vPlayerInfoOut) = 0;
+	virtual PlayerInfo &GetPlayerInfoForInput(const InputEventPlus& iep)
+	{
+		return m_vPlayerInfo[iep.pn];
+	}
 
 	RageTimer		m_timerGameplaySeconds;
 };
 
-vector<PlayerInfo>::iterator GetNextEnabledPlayerInfo		( vector<PlayerInfo>::iterator iter, vector<PlayerInfo> &v );
-vector<PlayerInfo>::iterator GetNextEnabledPlayerInfoNotDummy	( vector<PlayerInfo>::iterator iter, vector<PlayerInfo> &v );
-vector<PlayerInfo>::iterator GetNextEnabledPlayerNumberInfo	( vector<PlayerInfo>::iterator iter, vector<PlayerInfo> &v );
-vector<PlayerInfo>::iterator GetNextPlayerNumberInfo		( vector<PlayerInfo>::iterator iter, vector<PlayerInfo> &v );
-vector<PlayerInfo>::iterator GetNextVisiblePlayerInfo		( vector<PlayerInfo>::iterator iter, vector<PlayerInfo> &v );
+vector<PlayerInfo>::iterator GetNextEnabledPlayerInfo(vector<PlayerInfo>::iterator iter, vector<PlayerInfo> &v);
+vector<PlayerInfo>::iterator GetNextEnabledPlayerInfoNotDummy(vector<PlayerInfo>::iterator iter, vector<PlayerInfo> &v);
+vector<PlayerInfo>::iterator GetNextEnabledPlayerNumberInfo(vector<PlayerInfo>::iterator iter, vector<PlayerInfo> &v);
+vector<PlayerInfo>::iterator GetNextPlayerNumberInfo(vector<PlayerInfo>::iterator iter, vector<PlayerInfo> &v);
+vector<PlayerInfo>::iterator GetNextVisiblePlayerInfo(vector<PlayerInfo>::iterator iter, vector<PlayerInfo> &v);
 
 /** @brief Get each enabled Player's info. */
 #define FOREACH_EnabledPlayerInfo( v, pi )		for( vector<PlayerInfo>::iterator pi = GetNextEnabledPlayerInfo		(v.begin(),v);	pi != v.end(); pi = GetNextEnabledPlayerInfo(++pi,v) )
@@ -325,7 +356,7 @@ vector<PlayerInfo>::iterator GetNextVisiblePlayerInfo		( vector<PlayerInfo>::ite
  * @author Chris Danford, Glenn Maynard (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -335,7 +366,7 @@ vector<PlayerInfo>::iterator GetNextVisiblePlayerInfo		( vector<PlayerInfo>::ite
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

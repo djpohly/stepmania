@@ -6,7 +6,7 @@
 #include "PrefsManager.h"
 #include "PlayerState.h"
 
-REGISTER_SCREEN_CLASS( ScreenSongOptions );
+REGISTER_SCREEN_CLASS(ScreenSongOptions);
 
 void ScreenSongOptions::Init()
 {
@@ -14,29 +14,31 @@ void ScreenSongOptions::Init()
 
 	/* Hack: If we're coming in from "press start for more options", we need a different
 	 * fade in. */
-	if( PREFSMAN->m_ShowSongOptions == Maybe_ASK )
+	if (PREFSMAN->m_ShowSongOptions == Maybe_ASK)
 	{
-		m_In.Load( THEME->GetPathB("ScreenSongOptions","option in") );
+		m_In.Load(THEME->GetPathB("ScreenSongOptions", "option in"));
 		m_In.StartTransitioning();
 	}
 }
 
-void ScreenSongOptions::ExportOptions( int iRow, const vector<PlayerNumber> &vpns )
+void ScreenSongOptions::ExportOptions(int iRow, const vector<PlayerNumber> &vpns)
 {
 	PlayerNumber pn = GAMESTATE->m_MasterPlayerNumber;
 	PlayerState *pPS = GAMESTATE->m_pPlayerState[pn];
 	const PlayerOptions::FailType ft = pPS->m_PlayerOptions.GetPreferred().m_FailType;
 
-	ScreenOptionsMaster::ExportOptions( iRow, vpns );
+	ScreenOptionsMaster::ExportOptions(iRow, vpns);
 
-	if( ft != pPS->m_PlayerOptions.GetPreferred().m_FailType )
+	if (ft != pPS->m_PlayerOptions.GetPreferred().m_FailType)
+	{
 		GAMESTATE->m_bChangedFailTypeOnScreenSongOptions = true;
+	}
 }
 
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -46,7 +48,7 @@ void ScreenSongOptions::ExportOptions( int iRow, const vector<PlayerNumber> &vpn
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

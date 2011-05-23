@@ -14,14 +14,14 @@ struct AttackArray;
 
 /**
  * @brief Abstract class to handle scorekeeping, stat-taking, etc.
- * 
+ *
  * Stat handling is in here because that can differ between games, too; for
  * example, some games count double taps as a single note in scoring and some
  * count per-tap. Results are injected directly into the PlayerStageStats. */
 class ScoreKeeper
 {
 public:
-	static ScoreKeeper* MakeScoreKeeper( RString sClassName, PlayerState *pPlayerState, PlayerStageStats *pPlayerStageStats );
+	static ScoreKeeper* MakeScoreKeeper(RString sClassName, PlayerState *pPlayerState, PlayerStageStats *pPlayerStageStats);
 
 protected:
 	PlayerState		*m_pPlayerState;
@@ -31,32 +31,32 @@ protected:
 
 	/* If true, doubles count as 2+ in stat counts; if false, doubles count as
 	 * only one. */ /* (not yet) */
-//	bool Stats_DoublesCount;
+	//	bool Stats_DoublesCount;
 
 public:
-	ScoreKeeper( PlayerState *pPlayerState, PlayerStageStats *pPlayerStageStats );
+	ScoreKeeper(PlayerState *pPlayerState, PlayerStageStats *pPlayerStageStats);
 	virtual ~ScoreKeeper() { }
 	virtual void Load(
-		const vector<Song*> &apSongs,
-		const vector<Steps*> &apSteps,
-		const vector<AttackArray> &asModifiers ) { }
+	        const vector<Song*> &apSongs,
+	        const vector<Steps*> &apSteps,
+	        const vector<AttackArray> &asModifiers) { }
 
 	virtual void DrawPrimitives() { }
-	virtual void Update( float fDelta ) { }
+	virtual void Update(float fDelta) { }
 
 	// Note that pNoteData will include any transformations due to modifiers.
-	virtual void OnNextSong( int iSongInCourseIndex, const Steps* pSteps, const NoteData* pNoteData ) { };	// before a song plays (called multiple times if course)
+	virtual void OnNextSong(int iSongInCourseIndex, const Steps* pSteps, const NoteData* pNoteData) { };	// before a song plays (called multiple times if course)
 
 	// HandleTap* is called before HandleTapRow*
-	virtual void HandleTapScore( const TapNote &tn ) { }
-	virtual void HandleTapRowScore( const NoteData &nd, int iRow ) { }
-	virtual void HandleHoldScore( const TapNote &tn ) { }
-	virtual void HandleHoldActiveSeconds( float fMusicSecondsHeld ) { }
-	virtual void HandleHoldCheckpointScore( const NoteData &nd, int iRow, int iNumHoldsHeldThisRow, int iNumHoldsMissedThisRow ) { }
+	virtual void HandleTapScore(const TapNote &tn) { }
+	virtual void HandleTapRowScore(const NoteData &nd, int iRow) { }
+	virtual void HandleHoldScore(const TapNote &tn) { }
+	virtual void HandleHoldActiveSeconds(float fMusicSecondsHeld) { }
+	virtual void HandleHoldCheckpointScore(const NoteData &nd, int iRow, int iNumHoldsHeldThisRow, int iNumHoldsMissedThisRow) { }
 	virtual void HandleTapScoreNone() { }
 
 protected:
-	void GetScoreOfLastTapInRow( const NoteData &nd, int iRow, TapNoteScore &tnsOut, int &iNumTapsInRowOut );
+	void GetScoreOfLastTapInRow(const NoteData &nd, int iRow, TapNoteScore &tnsOut, int &iNumTapsInRowOut);
 };
 
 #endif
@@ -66,7 +66,7 @@ protected:
  * @author Chris Danford, Glenn Maynard, Steve Checkoway (c) 2001-2006
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -76,7 +76,7 @@ protected:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

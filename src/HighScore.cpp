@@ -8,7 +8,7 @@
 #include "Foreach.h"
 #include "RadarValues.h"
 
-ThemeMetric<RString> EMPTY_NAME("HighScore","EmptyName");
+ThemeMetric<RString> EMPTY_NAME("HighScore", "EmptyName");
 
 
 struct HighScoreImpl
@@ -31,32 +31,35 @@ struct HighScoreImpl
 
 	HighScoreImpl();
 	XNode *CreateNode() const;
-	void LoadFromNode( const XNode *pNode );
+	void LoadFromNode(const XNode *pNode);
 
-	bool operator==( const HighScoreImpl& other ) const;
-	bool operator!=( const HighScoreImpl& other ) const { return !(*this == other); }
+	bool operator==(const HighScoreImpl& other) const;
+	bool operator!=(const HighScoreImpl& other) const
+	{
+		return !(*this == other);
+	}
 };
 
-bool HighScoreImpl::operator==( const HighScoreImpl& other ) const 
+bool HighScoreImpl::operator==(const HighScoreImpl& other) const
 {
 #define COMPARE(x)	if( x!=other.x )	return false;
-	COMPARE( sName );
-	COMPARE( grade );
-	COMPARE( iScore );
-	COMPARE( fPercentDP );
-	COMPARE( fSurviveSeconds );
-	COMPARE( sModifiers );
-	COMPARE( dateTime );
-	COMPARE( sPlayerGuid );
-	COMPARE( sMachineGuid );
-	COMPARE( iProductID );
-	FOREACH_ENUM( TapNoteScore, tns )
-		COMPARE( iTapNoteScores[tns] );
-	FOREACH_ENUM( HoldNoteScore, hns )
-		COMPARE( iHoldNoteScores[hns] );
-	COMPARE( radarValues );
-	COMPARE( fLifeRemainingSeconds );
-	COMPARE( bDisqualified );
+	COMPARE(sName);
+	COMPARE(grade);
+	COMPARE(iScore);
+	COMPARE(fPercentDP);
+	COMPARE(fSurviveSeconds);
+	COMPARE(sModifiers);
+	COMPARE(dateTime);
+	COMPARE(sPlayerGuid);
+	COMPARE(sMachineGuid);
+	COMPARE(iProductID);
+	FOREACH_ENUM(TapNoteScore, tns)
+	COMPARE(iTapNoteScores[tns]);
+	FOREACH_ENUM(HoldNoteScore, hns)
+	COMPARE(iHoldNoteScores[hns]);
+	COMPARE(radarValues);
+	COMPARE(fLifeRemainingSeconds);
+	COMPARE(bDisqualified);
 #undef COMPARE
 
 	return true;
@@ -74,80 +77,87 @@ HighScoreImpl::HighScoreImpl()
 	sPlayerGuid = "";
 	sMachineGuid = "";
 	iProductID = 0;
-	ZERO( iTapNoteScores );
-	ZERO( iHoldNoteScores );
+	ZERO(iTapNoteScores);
+	ZERO(iHoldNoteScores);
 	radarValues.MakeUnknown();
 	fLifeRemainingSeconds = 0;
 }
 
 XNode *HighScoreImpl::CreateNode() const
 {
-	XNode *pNode = new XNode( "HighScore" );
+	XNode *pNode = new XNode("HighScore");
 	const bool bWriteSimpleValues = RadarValues::WRITE_SIMPLE_VALIES;
 	const bool bWriteComplexValues = RadarValues::WRITE_COMPLEX_VALIES;
 
 	// TRICKY:  Don't write "name to fill in" markers.
-	pNode->AppendChild( "Name",			IsRankingToFillIn(sName) ? RString("") : sName );
-	pNode->AppendChild( "Grade",			GradeToString(grade) );
-	pNode->AppendChild( "Score",			iScore );
-	pNode->AppendChild( "PercentDP",		fPercentDP );
-	pNode->AppendChild( "SurviveSeconds",	fSurviveSeconds );
-	pNode->AppendChild( "Modifiers",		sModifiers );
-	pNode->AppendChild( "DateTime",			dateTime.GetString() );
-	pNode->AppendChild( "PlayerGuid",		sPlayerGuid );
-	pNode->AppendChild( "MachineGuid",		sMachineGuid );
-	pNode->AppendChild( "ProductID",		iProductID );
-	XNode* pTapNoteScores = pNode->AppendChild( "TapNoteScores" );
-	FOREACH_ENUM( TapNoteScore, tns )
-		if( tns != TNS_None )	// HACK: don't save meaningless "none" count
-			pTapNoteScores->AppendChild( TapNoteScoreToString(tns), iTapNoteScores[tns] );
-	XNode* pHoldNoteScores = pNode->AppendChild( "HoldNoteScores" );
-	FOREACH_ENUM( HoldNoteScore, hns )
-		if( hns != HNS_None )	// HACK: don't save meaningless "none" count
-			pHoldNoteScores->AppendChild( HoldNoteScoreToString(hns), iHoldNoteScores[hns] );
-	pNode->AppendChild( radarValues.CreateNode(bWriteSimpleValues, bWriteComplexValues) );
-	pNode->AppendChild( "LifeRemainingSeconds",	fLifeRemainingSeconds );
-	pNode->AppendChild( "Disqualified",		bDisqualified);
+	pNode->AppendChild("Name",			IsRankingToFillIn(sName) ? RString("") : sName);
+	pNode->AppendChild("Grade",			GradeToString(grade));
+	pNode->AppendChild("Score",			iScore);
+	pNode->AppendChild("PercentDP",		fPercentDP);
+	pNode->AppendChild("SurviveSeconds",	fSurviveSeconds);
+	pNode->AppendChild("Modifiers",		sModifiers);
+	pNode->AppendChild("DateTime",			dateTime.GetString());
+	pNode->AppendChild("PlayerGuid",		sPlayerGuid);
+	pNode->AppendChild("MachineGuid",		sMachineGuid);
+	pNode->AppendChild("ProductID",		iProductID);
+	XNode* pTapNoteScores = pNode->AppendChild("TapNoteScores");
+	FOREACH_ENUM(TapNoteScore, tns)
+	if (tns != TNS_None)	// HACK: don't save meaningless "none" count
+	{
+		pTapNoteScores->AppendChild(TapNoteScoreToString(tns), iTapNoteScores[tns]);
+	}
+	XNode* pHoldNoteScores = pNode->AppendChild("HoldNoteScores");
+	FOREACH_ENUM(HoldNoteScore, hns)
+	if (hns != HNS_None)	// HACK: don't save meaningless "none" count
+	{
+		pHoldNoteScores->AppendChild(HoldNoteScoreToString(hns), iHoldNoteScores[hns]);
+	}
+	pNode->AppendChild(radarValues.CreateNode(bWriteSimpleValues, bWriteComplexValues));
+	pNode->AppendChild("LifeRemainingSeconds",	fLifeRemainingSeconds);
+	pNode->AppendChild("Disqualified",		bDisqualified);
 
 	return pNode;
 }
 
-void HighScoreImpl::LoadFromNode( const XNode *pNode )
+void HighScoreImpl::LoadFromNode(const XNode *pNode)
 {
-	ASSERT( pNode->GetName() == "HighScore" );
+	ASSERT(pNode->GetName() == "HighScore");
 
 	RString s;
 
-	pNode->GetChildValue( "Name", sName );
-	pNode->GetChildValue( "Grade", s );
-	grade = StringToGrade( s );
-	pNode->GetChildValue( "Score",			iScore );
-	pNode->GetChildValue( "PercentDP",		fPercentDP );
-	pNode->GetChildValue( "SurviveSeconds",		fSurviveSeconds );
-	pNode->GetChildValue( "Modifiers",		sModifiers );
-	pNode->GetChildValue( "DateTime",		s ); dateTime.FromString( s );
-	pNode->GetChildValue( "PlayerGuid",		sPlayerGuid );
-	pNode->GetChildValue( "MachineGuid",		sMachineGuid );
-	pNode->GetChildValue( "ProductID",		iProductID );
-	const XNode* pTapNoteScores = pNode->GetChild( "TapNoteScores" );
-	if( pTapNoteScores )
-		FOREACH_ENUM( TapNoteScore, tns )
-			pTapNoteScores->GetChildValue( TapNoteScoreToString(tns), iTapNoteScores[tns] );
-	const XNode* pHoldNoteScores = pNode->GetChild( "HoldNoteScores" );
-	if( pHoldNoteScores )
-		FOREACH_ENUM( HoldNoteScore, hns )
-			pHoldNoteScores->GetChildValue( HoldNoteScoreToString(hns), iHoldNoteScores[hns] );
-	const XNode* pRadarValues = pNode->GetChild( "RadarValues" );
-	if( pRadarValues )
-		radarValues.LoadFromNode( pRadarValues );
-	pNode->GetChildValue( "LifeRemainingSeconds",	fLifeRemainingSeconds );
-	pNode->GetChildValue( "Disqualified",		bDisqualified);
+	pNode->GetChildValue("Name", sName);
+	pNode->GetChildValue("Grade", s);
+	grade = StringToGrade(s);
+	pNode->GetChildValue("Score",			iScore);
+	pNode->GetChildValue("PercentDP",		fPercentDP);
+	pNode->GetChildValue("SurviveSeconds",		fSurviveSeconds);
+	pNode->GetChildValue("Modifiers",		sModifiers);
+	pNode->GetChildValue("DateTime",		s);
+	dateTime.FromString(s);
+	pNode->GetChildValue("PlayerGuid",		sPlayerGuid);
+	pNode->GetChildValue("MachineGuid",		sMachineGuid);
+	pNode->GetChildValue("ProductID",		iProductID);
+	const XNode* pTapNoteScores = pNode->GetChild("TapNoteScores");
+	if (pTapNoteScores)
+		FOREACH_ENUM(TapNoteScore, tns)
+		pTapNoteScores->GetChildValue(TapNoteScoreToString(tns), iTapNoteScores[tns]);
+	const XNode* pHoldNoteScores = pNode->GetChild("HoldNoteScores");
+	if (pHoldNoteScores)
+		FOREACH_ENUM(HoldNoteScore, hns)
+		pHoldNoteScores->GetChildValue(HoldNoteScoreToString(hns), iHoldNoteScores[hns]);
+	const XNode* pRadarValues = pNode->GetChild("RadarValues");
+	if (pRadarValues)
+	{
+		radarValues.LoadFromNode(pRadarValues);
+	}
+	pNode->GetChildValue("LifeRemainingSeconds",	fLifeRemainingSeconds);
+	pNode->GetChildValue("Disqualified",		bDisqualified);
 
 	// Validate input.
-	grade = clamp( grade, Grade_Tier01, Grade_Failed );
+	grade = clamp(grade, Grade_Tier01, Grade_Failed);
 }
 
-REGISTER_CLASS_TRAITS( HighScoreImpl, new HighScoreImpl(*pCopy) )
+REGISTER_CLASS_TRAITS(HighScoreImpl, new HighScoreImpl(*pCopy))
 
 HighScore::HighScore()
 {
@@ -161,74 +171,178 @@ void HighScore::Unset()
 
 bool HighScore::IsEmpty() const
 {
-	if(	m_Impl->iTapNoteScores[TNS_W1] ||
-		m_Impl->iTapNoteScores[TNS_W2] ||
-		m_Impl->iTapNoteScores[TNS_W3] ||
-		m_Impl->iTapNoteScores[TNS_W4] ||
-		m_Impl->iTapNoteScores[TNS_W5] )
+	if (m_Impl->iTapNoteScores[TNS_W1] ||
+	                m_Impl->iTapNoteScores[TNS_W2] ||
+	                m_Impl->iTapNoteScores[TNS_W3] ||
+	                m_Impl->iTapNoteScores[TNS_W4] ||
+	                m_Impl->iTapNoteScores[TNS_W5])
+	{
 		return false;
-	if( m_Impl->iHoldNoteScores[HNS_Held] > 0 )
+	}
+	if (m_Impl->iHoldNoteScores[HNS_Held] > 0)
+	{
 		return false;
+	}
 	return true;
 }
 
-RString	HighScore::GetName() const { return m_Impl->sName; }
-Grade HighScore::GetGrade() const { return m_Impl->grade; }
-int HighScore::GetScore() const { return m_Impl->iScore; }
-float HighScore::GetPercentDP() const { return m_Impl->fPercentDP; }
-float HighScore::GetSurviveSeconds() const { return m_Impl->fSurviveSeconds; }
-float HighScore::GetSurvivalSeconds() const { return GetSurviveSeconds() + GetLifeRemainingSeconds(); }
-RString HighScore::GetModifiers() const { return m_Impl->sModifiers; }
-DateTime HighScore::GetDateTime() const { return m_Impl->dateTime; }
-RString HighScore::GetPlayerGuid() const { return m_Impl->sPlayerGuid; }
-RString HighScore::GetMachineGuid() const { return m_Impl->sMachineGuid; }
-int HighScore::GetProductID() const { return m_Impl->iProductID; }
-int HighScore::GetTapNoteScore( TapNoteScore tns ) const { return m_Impl->iTapNoteScores[tns]; }
-int HighScore::GetHoldNoteScore( HoldNoteScore hns ) const { return m_Impl->iHoldNoteScores[hns]; }
-const RadarValues &HighScore::GetRadarValues() const { return m_Impl->radarValues; }
-float HighScore::GetLifeRemainingSeconds() const { return m_Impl->fLifeRemainingSeconds; }
-bool HighScore::GetDisqualified() const { return m_Impl->bDisqualified; }
+RString	HighScore::GetName() const
+{
+	return m_Impl->sName;
+}
+Grade HighScore::GetGrade() const
+{
+	return m_Impl->grade;
+}
+int HighScore::GetScore() const
+{
+	return m_Impl->iScore;
+}
+float HighScore::GetPercentDP() const
+{
+	return m_Impl->fPercentDP;
+}
+float HighScore::GetSurviveSeconds() const
+{
+	return m_Impl->fSurviveSeconds;
+}
+float HighScore::GetSurvivalSeconds() const
+{
+	return GetSurviveSeconds() + GetLifeRemainingSeconds();
+}
+RString HighScore::GetModifiers() const
+{
+	return m_Impl->sModifiers;
+}
+DateTime HighScore::GetDateTime() const
+{
+	return m_Impl->dateTime;
+}
+RString HighScore::GetPlayerGuid() const
+{
+	return m_Impl->sPlayerGuid;
+}
+RString HighScore::GetMachineGuid() const
+{
+	return m_Impl->sMachineGuid;
+}
+int HighScore::GetProductID() const
+{
+	return m_Impl->iProductID;
+}
+int HighScore::GetTapNoteScore(TapNoteScore tns) const
+{
+	return m_Impl->iTapNoteScores[tns];
+}
+int HighScore::GetHoldNoteScore(HoldNoteScore hns) const
+{
+	return m_Impl->iHoldNoteScores[hns];
+}
+const RadarValues &HighScore::GetRadarValues() const
+{
+	return m_Impl->radarValues;
+}
+float HighScore::GetLifeRemainingSeconds() const
+{
+	return m_Impl->fLifeRemainingSeconds;
+}
+bool HighScore::GetDisqualified() const
+{
+	return m_Impl->bDisqualified;
+}
 
-void HighScore::SetName( const RString &sName ) { m_Impl->sName = sName; }
-void HighScore::SetGrade( Grade g ) { m_Impl->grade = g; }
-void HighScore::SetScore( int iScore ) { m_Impl->iScore = iScore; }
-void HighScore::SetPercentDP( float f ) { m_Impl->fPercentDP = f; }
-void HighScore::SetAliveSeconds( float f ) { m_Impl->fSurviveSeconds = f; }
-void HighScore::SetModifiers( RString s ) { m_Impl->sModifiers = s; }
-void HighScore::SetDateTime( DateTime d ) { m_Impl->dateTime = d; }
-void HighScore::SetPlayerGuid( RString s ) { m_Impl->sPlayerGuid = s; }
-void HighScore::SetMachineGuid( RString s ) { m_Impl->sMachineGuid = s; }
-void HighScore::SetProductID( int i ) { m_Impl->iProductID = i; }
-void HighScore::SetTapNoteScore( TapNoteScore tns, int i ) { m_Impl->iTapNoteScores[tns] = i; }
-void HighScore::SetHoldNoteScore( HoldNoteScore hns, int i ) { m_Impl->iHoldNoteScores[hns] = i; }
-void HighScore::SetRadarValues( const RadarValues &rv ) { m_Impl->radarValues = rv; }
-void HighScore::SetLifeRemainingSeconds( float f ) { m_Impl->fLifeRemainingSeconds = f; }
-void HighScore::SetDisqualified( bool b ) { m_Impl->bDisqualified = b; }
+void HighScore::SetName(const RString &sName)
+{
+	m_Impl->sName = sName;
+}
+void HighScore::SetGrade(Grade g)
+{
+	m_Impl->grade = g;
+}
+void HighScore::SetScore(int iScore)
+{
+	m_Impl->iScore = iScore;
+}
+void HighScore::SetPercentDP(float f)
+{
+	m_Impl->fPercentDP = f;
+}
+void HighScore::SetAliveSeconds(float f)
+{
+	m_Impl->fSurviveSeconds = f;
+}
+void HighScore::SetModifiers(RString s)
+{
+	m_Impl->sModifiers = s;
+}
+void HighScore::SetDateTime(DateTime d)
+{
+	m_Impl->dateTime = d;
+}
+void HighScore::SetPlayerGuid(RString s)
+{
+	m_Impl->sPlayerGuid = s;
+}
+void HighScore::SetMachineGuid(RString s)
+{
+	m_Impl->sMachineGuid = s;
+}
+void HighScore::SetProductID(int i)
+{
+	m_Impl->iProductID = i;
+}
+void HighScore::SetTapNoteScore(TapNoteScore tns, int i)
+{
+	m_Impl->iTapNoteScores[tns] = i;
+}
+void HighScore::SetHoldNoteScore(HoldNoteScore hns, int i)
+{
+	m_Impl->iHoldNoteScores[hns] = i;
+}
+void HighScore::SetRadarValues(const RadarValues &rv)
+{
+	m_Impl->radarValues = rv;
+}
+void HighScore::SetLifeRemainingSeconds(float f)
+{
+	m_Impl->fLifeRemainingSeconds = f;
+}
+void HighScore::SetDisqualified(bool b)
+{
+	m_Impl->bDisqualified = b;
+}
 
 /* We normally don't give direct access to the members.  We need this one
  * for NameToFillIn; use a special accessor so it's easy to find where this
  * is used. */
-RString *HighScore::GetNameMutable() { return &m_Impl->sName; }
+RString *HighScore::GetNameMutable()
+{
+	return &m_Impl->sName;
+}
 
-bool HighScore::operator>=( const HighScore& other ) const
+bool HighScore::operator>=(const HighScore& other) const
 {
 	/* Make sure we treat AAAA as higher than AAA, even though the score
- 	 * is the same. */
-	if( PREFSMAN->m_bPercentageScoring )
+	 * is the same. */
+	if (PREFSMAN->m_bPercentageScoring)
 	{
-		if( GetPercentDP() != other.GetPercentDP() )
+		if (GetPercentDP() != other.GetPercentDP())
+		{
 			return GetPercentDP() >= other.GetPercentDP();
+		}
 	}
 	else
 	{
-		if( GetScore() != other.GetScore() )
+		if (GetScore() != other.GetScore())
+		{
 			return GetScore() >= other.GetScore();
+		}
 	}
 
 	return GetGrade() >= other.GetGrade();
 }
 
-bool HighScore::operator==( const HighScore& other ) const 
+bool HighScore::operator==(const HighScore& other) const
 {
 	return *m_Impl == *other.m_Impl;
 }
@@ -238,17 +352,21 @@ XNode* HighScore::CreateNode() const
 	return m_Impl->CreateNode();
 }
 
-void HighScore::LoadFromNode( const XNode* pNode ) 
+void HighScore::LoadFromNode(const XNode* pNode)
 {
-	m_Impl->LoadFromNode( pNode );
+	m_Impl->LoadFromNode(pNode);
 }
 
 RString HighScore::GetDisplayName() const
 {
-	if( GetName().empty() )
+	if (GetName().empty())
+	{
 		return EMPTY_NAME;
+	}
 	else
+	{
 		return GetName();
+	}
 }
 
 
@@ -259,33 +377,37 @@ void HighScoreList::Init()
 	HighGrade = Grade_NoData;
 }
 
-void HighScoreList::AddHighScore( HighScore hs, int &iIndexOut, bool bIsMachine )
+void HighScoreList::AddHighScore(HighScore hs, int &iIndexOut, bool bIsMachine)
 {
 	int i;
-	for( i=0; i<(int)vHighScores.size(); i++ )
+	for (i = 0; i < (int)vHighScores.size(); i++)
 	{
-		if( hs >= vHighScores[i] )
+		if (hs >= vHighScores[i])
+		{
 			break;
+		}
 	}
-	const int iMaxScores = bIsMachine ? 
-		PREFSMAN->m_iMaxHighScoresPerListForMachine : 
-		PREFSMAN->m_iMaxHighScoresPerListForPlayer;
-	if( i < iMaxScores )
+	const int iMaxScores = bIsMachine ?
+	                       PREFSMAN->m_iMaxHighScoresPerListForMachine :
+	                       PREFSMAN->m_iMaxHighScoresPerListForPlayer;
+	if (i < iMaxScores)
 	{
-		vHighScores.insert( vHighScores.begin()+i, hs );
+		vHighScores.insert(vHighScores.begin() + i, hs);
 		iIndexOut = i;
 
 		// Delete extra machine high scores in RemoveAllButOneOfEachNameAndClampSize
-		// and not here so that we don't end up with less than iMaxScores after 
+		// and not here so that we don't end up with less than iMaxScores after
 		// removing HighScores with duplicate names.
 		//
-		if( !bIsMachine )
-			ClampSize( bIsMachine );
+		if (!bIsMachine)
+		{
+			ClampSize(bIsMachine);
+		}
 	}
-	HighGrade = min( hs.GetGrade(), HighGrade );
+	HighGrade = min(hs.GetGrade(), HighGrade);
 }
 
-void HighScoreList::IncrementPlayCount( DateTime _dtLastPlayed )
+void HighScoreList::IncrementPlayCount(DateTime _dtLastPlayed)
 {
 	dtLastPlayed = _dtLastPlayed;
 	iNumTimesPlayed++;
@@ -293,7 +415,7 @@ void HighScoreList::IncrementPlayCount( DateTime _dtLastPlayed )
 
 const HighScore& HighScoreList::GetTopScore() const
 {
-	if( vHighScores.empty() )
+	if (vHighScores.empty())
 	{
 		static HighScore hs;
 		hs = HighScore();
@@ -307,105 +429,115 @@ const HighScore& HighScoreList::GetTopScore() const
 
 XNode* HighScoreList::CreateNode() const
 {
-	XNode* pNode = new XNode( "HighScoreList" );
+	XNode* pNode = new XNode("HighScoreList");
 
-	pNode->AppendChild( "NumTimesPlayed", iNumTimesPlayed );
-	pNode->AppendChild( "LastPlayed", dtLastPlayed.GetString() );
-	if( HighGrade != Grade_NoData )
-		pNode->AppendChild( "HighGrade", GradeToString(HighGrade) );
+	pNode->AppendChild("NumTimesPlayed", iNumTimesPlayed);
+	pNode->AppendChild("LastPlayed", dtLastPlayed.GetString());
+	if (HighGrade != Grade_NoData)
+	{
+		pNode->AppendChild("HighGrade", GradeToString(HighGrade));
+	}
 
-	for( unsigned i=0; i<vHighScores.size(); i++ )
+	for (unsigned i = 0; i < vHighScores.size(); i++)
 	{
 		const HighScore &hs = vHighScores[i];
-		pNode->AppendChild( hs.CreateNode() );
+		pNode->AppendChild(hs.CreateNode());
 	}
 
 	return pNode;
 }
 
-void HighScoreList::LoadFromNode( const XNode* pHighScoreList )
+void HighScoreList::LoadFromNode(const XNode* pHighScoreList)
 {
 	Init();
 
-	ASSERT( pHighScoreList->GetName() == "HighScoreList" );
-	FOREACH_CONST_Child( pHighScoreList, p )
+	ASSERT(pHighScoreList->GetName() == "HighScoreList");
+	FOREACH_CONST_Child(pHighScoreList, p)
 	{
 		const RString &name = p->GetName();
-		if( name == "NumTimesPlayed" )
+		if (name == "NumTimesPlayed")
 		{
-			p->GetTextValue( iNumTimesPlayed );
+			p->GetTextValue(iNumTimesPlayed);
 		}
-		else if( name == "LastPlayed" )
+		else if (name == "LastPlayed")
 		{
 			RString s;
-			p->GetTextValue( s );
-			dtLastPlayed.FromString( s );
+			p->GetTextValue(s);
+			dtLastPlayed.FromString(s);
 		}
-		else if( name == "HighGrade" )
+		else if (name == "HighGrade")
 		{
 			RString s;
-			p->GetTextValue( s );
-			HighGrade = StringToGrade( s );
+			p->GetTextValue(s);
+			HighGrade = StringToGrade(s);
 		}
-		else if( name == "HighScore" )
+		else if (name == "HighScore")
 		{
-			vHighScores.resize( vHighScores.size()+1 );
-			vHighScores.back().LoadFromNode( p );
+			vHighScores.resize(vHighScores.size() + 1);
+			vHighScores.back().LoadFromNode(p);
 
 			// ignore all high scores that are 0
-			if( vHighScores.back().GetScore() == 0 )
+			if (vHighScores.back().GetScore() == 0)
+			{
 				vHighScores.pop_back();
+			}
 			else
-				HighGrade = min( vHighScores.back().GetGrade(), HighGrade );
+			{
+				HighGrade = min(vHighScores.back().GetGrade(), HighGrade);
+			}
 		}
 	}
 }
 
 void HighScoreList::RemoveAllButOneOfEachName()
 {
-	FOREACH( HighScore, vHighScores, i )
+	FOREACH(HighScore, vHighScores, i)
 	{
-		for( vector<HighScore>::iterator j = i+1; j != vHighScores.end(); j++ )
+		for (vector<HighScore>::iterator j = i + 1; j != vHighScores.end(); j++)
 		{
-			if( i->GetName() == j->GetName() )
+			if (i->GetName() == j->GetName())
 			{
 				j--;
-				vHighScores.erase( j+1 );
+				vHighScores.erase(j + 1);
 			}
 		}
 	}
 }
 
-void HighScoreList::ClampSize( bool bIsMachine )
+void HighScoreList::ClampSize(bool bIsMachine)
 {
-	const int iMaxScores = bIsMachine ? 
-		PREFSMAN->m_iMaxHighScoresPerListForMachine : 
-		PREFSMAN->m_iMaxHighScoresPerListForPlayer;
-	if( vHighScores.size() > unsigned(iMaxScores) )
-		vHighScores.erase( vHighScores.begin()+iMaxScores, vHighScores.end() );
+	const int iMaxScores = bIsMachine ?
+	                       PREFSMAN->m_iMaxHighScoresPerListForMachine :
+	                       PREFSMAN->m_iMaxHighScoresPerListForPlayer;
+	if (vHighScores.size() > unsigned(iMaxScores))
+	{
+		vHighScores.erase(vHighScores.begin() + iMaxScores, vHighScores.end());
+	}
 }
 
 XNode* Screenshot::CreateNode() const
 {
-	XNode* pNode = new XNode( "Screenshot" );
+	XNode* pNode = new XNode("Screenshot");
 
 	// TRICKY:  Don't write "name to fill in" markers.
-	pNode->AppendChild( "FileName",	sFileName );
-	pNode->AppendChild( "MD5",	sMD5 );
-	pNode->AppendChild( highScore.CreateNode() );
+	pNode->AppendChild("FileName",	sFileName);
+	pNode->AppendChild("MD5",	sMD5);
+	pNode->AppendChild(highScore.CreateNode());
 
 	return pNode;
 }
 
-void Screenshot::LoadFromNode( const XNode* pNode ) 
+void Screenshot::LoadFromNode(const XNode* pNode)
 {
-	ASSERT( pNode->GetName() == "Screenshot" );
+	ASSERT(pNode->GetName() == "Screenshot");
 
-	pNode->GetChildValue( "FileName",	sFileName );
-	pNode->GetChildValue( "MD5",		sMD5 );
-	const XNode* pHighScore = pNode->GetChild( "HighScore" );
-	if( pHighScore )
-		highScore.LoadFromNode( pHighScore );
+	pNode->GetChildValue("FileName",	sFileName);
+	pNode->GetChildValue("MD5",		sMD5);
+	const XNode* pHighScore = pNode->GetChild("HighScore");
+	if (pHighScore)
+	{
+		highScore.LoadFromNode(pHighScore);
+	}
 }
 
 // lua start
@@ -415,60 +547,92 @@ void Screenshot::LoadFromNode( const XNode* pNode )
 class LunaHighScore: public Luna<HighScore>
 {
 public:
-	static int GetName( T* p, lua_State *L )			{ lua_pushstring(L, p->GetName() ); return 1; }
-	static int GetScore( T* p, lua_State *L )			{ lua_pushnumber(L, p->GetScore() ); return 1; }
-	static int GetPercentDP( T* p, lua_State *L )			{ lua_pushnumber(L, p->GetPercentDP() ); return 1; }
-	static int GetDate( T* p, lua_State *L )			{ lua_pushstring(L, p->GetDateTime().GetString() ); return 1; }
-	static int GetSurvivalSeconds( T* p, lua_State *L )			{ lua_pushnumber(L, p->GetSurvivalSeconds() ); return 1; }
-	static int IsFillInMarker( T* p, lua_State *L )
+	static int GetName(T* p, lua_State *L)
 	{
-		bool bIsFillInMarker = false;
-		FOREACH_PlayerNumber( pn )
-			bIsFillInMarker |= p->GetName() == RANKING_TO_FILL_IN_MARKER[pn];
-		lua_pushboolean( L, bIsFillInMarker );
+		lua_pushstring(L, p->GetName());
 		return 1;
 	}
-	static int GetModifiers( T* p, lua_State *L )			{ lua_pushstring(L, p->GetModifiers() ); return 1; }
-	static int GetTapNoteScore( T* p, lua_State *L )			{ lua_pushnumber(L, p->GetTapNoteScore( Enum::Check<TapNoteScore>(L, 1) ) ); return 1; }
-	static int GetHoldNoteScore( T* p, lua_State *L )			{ lua_pushnumber(L, p->GetHoldNoteScore( Enum::Check<HoldNoteScore>(L, 1) ) ); return 1; }
-	static int GetRadarValues( T* p, lua_State *L )
+	static int GetScore(T* p, lua_State *L)
+	{
+		lua_pushnumber(L, p->GetScore());
+		return 1;
+	}
+	static int GetPercentDP(T* p, lua_State *L)
+	{
+		lua_pushnumber(L, p->GetPercentDP());
+		return 1;
+	}
+	static int GetDate(T* p, lua_State *L)
+	{
+		lua_pushstring(L, p->GetDateTime().GetString());
+		return 1;
+	}
+	static int GetSurvivalSeconds(T* p, lua_State *L)
+	{
+		lua_pushnumber(L, p->GetSurvivalSeconds());
+		return 1;
+	}
+	static int IsFillInMarker(T* p, lua_State *L)
+	{
+		bool bIsFillInMarker = false;
+		FOREACH_PlayerNumber(pn)
+		bIsFillInMarker |= p->GetName() == RANKING_TO_FILL_IN_MARKER[pn];
+		lua_pushboolean(L, bIsFillInMarker);
+		return 1;
+	}
+	static int GetModifiers(T* p, lua_State *L)
+	{
+		lua_pushstring(L, p->GetModifiers());
+		return 1;
+	}
+	static int GetTapNoteScore(T* p, lua_State *L)
+	{
+		lua_pushnumber(L, p->GetTapNoteScore(Enum::Check<TapNoteScore>(L, 1)));
+		return 1;
+	}
+	static int GetHoldNoteScore(T* p, lua_State *L)
+	{
+		lua_pushnumber(L, p->GetHoldNoteScore(Enum::Check<HoldNoteScore>(L, 1)));
+		return 1;
+	}
+	static int GetRadarValues(T* p, lua_State *L)
 	{
 		RadarValues &rv = const_cast<RadarValues &>(p->GetRadarValues());
 		rv.PushSelf(L);
 		return 1;
 	}
-	DEFINE_METHOD( GetGrade, GetGrade() )
+	DEFINE_METHOD(GetGrade, GetGrade())
 
 	LunaHighScore()
 	{
-		ADD_METHOD( GetName );
-		ADD_METHOD( GetScore );
-		ADD_METHOD( GetPercentDP );
-		ADD_METHOD( GetDate );
-		ADD_METHOD( GetSurvivalSeconds );
-		ADD_METHOD( IsFillInMarker );
+		ADD_METHOD(GetName);
+		ADD_METHOD(GetScore);
+		ADD_METHOD(GetPercentDP);
+		ADD_METHOD(GetDate);
+		ADD_METHOD(GetSurvivalSeconds);
+		ADD_METHOD(IsFillInMarker);
 		// sm-ssc additions:
-		ADD_METHOD( GetModifiers );
-		ADD_METHOD( GetTapNoteScore );
-		ADD_METHOD( GetHoldNoteScore );
-		ADD_METHOD( GetRadarValues );
-		ADD_METHOD( GetGrade );
+		ADD_METHOD(GetModifiers);
+		ADD_METHOD(GetTapNoteScore);
+		ADD_METHOD(GetHoldNoteScore);
+		ADD_METHOD(GetRadarValues);
+		ADD_METHOD(GetGrade);
 	}
 };
 
-LUA_REGISTER_CLASS( HighScore )
+LUA_REGISTER_CLASS(HighScore)
 
 /** @brief Allow Lua to have access to the HighScoreList. */
 class LunaHighScoreList: public Luna<HighScoreList>
 {
 public:
-	static int GetHighScores( T* p, lua_State *L )
+	static int GetHighScores(T* p, lua_State *L)
 	{
 		lua_newtable(L);
-		for( int i = 0; i < (int) p->vHighScores.size(); ++i )
+		for (int i = 0; i < (int) p->vHighScores.size(); ++i)
 		{
 			p->vHighScores[i].PushSelf(L);
-			lua_rawseti( L, -2, i+1 );
+			lua_rawseti(L, -2, i + 1);
 		}
 
 		return 1;
@@ -476,17 +640,17 @@ public:
 
 	LunaHighScoreList()
 	{
-		ADD_METHOD( GetHighScores );
+		ADD_METHOD(GetHighScores);
 	}
 };
 
-LUA_REGISTER_CLASS( HighScoreList )
+LUA_REGISTER_CLASS(HighScoreList)
 // lua end
 
 /*
  * (c) 2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -496,7 +660,7 @@ LUA_REGISTER_CLASS( HighScoreList )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

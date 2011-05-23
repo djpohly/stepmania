@@ -19,57 +19,60 @@ class NoteField : public ActorFrame
 public:
 	NoteField();
 	~NoteField();
-	virtual void Update( float fDeltaTime );
+	virtual void Update(float fDeltaTime);
 	virtual void DrawPrimitives();
 
-	virtual void Init( const PlayerState* pPlayerState, float fYReverseOffsetPixels );
-	virtual void Load( 
-		const NoteData* pNoteData, 
-		int iDrawDistanceAfterTargetsPixels, 
-		int iDrawDistanceBeforeTargetsPixels );
+	virtual void Init(const PlayerState* pPlayerState, float fYReverseOffsetPixels);
+	virtual void Load(
+	        const NoteData* pNoteData,
+	        int iDrawDistanceAfterTargetsPixels,
+	        int iDrawDistanceBeforeTargetsPixels);
 	virtual void Unload();
 
-	virtual void HandleMessage( const Message &msg );
+	virtual void HandleMessage(const Message &msg);
 
 	// This is done automatically by Init(), but can be re-called explicitly if the
 	// note skin changes.
 	void CacheAllUsedNoteSkins();
 	void FadeToFail();
 
-	void Step( int iCol, TapNoteScore score );
-	void SetPressed( int iCol );
-	void DidTapNote( int iCol, TapNoteScore score, bool bBright );
-	void DidHoldNote( int iCol, HoldNoteScore score, bool bBright );
+	void Step(int iCol, TapNoteScore score);
+	void SetPressed(int iCol);
+	void DidTapNote(int iCol, TapNoteScore score, bool bBright);
+	void DidHoldNote(int iCol, HoldNoteScore score, bool bBright);
 
-	const PlayerState *GetPlayerState() const { return m_pPlayerState; }
+	const PlayerState *GetPlayerState() const
+	{
+		return m_pPlayerState;
+	}
 
 	int	m_iBeginMarker, m_iEndMarker;	// only used with MODE_EDIT
 
 protected:
-	void CacheNoteSkin( const RString &sNoteSkin );
-	void UncacheNoteSkin( const RString &sNoteSkin );
+	void CacheNoteSkin(const RString &sNoteSkin);
+	void UncacheNoteSkin(const RString &sNoteSkin);
 
-	bool IsOnScreen( float fBeat, int iCol, int iDrawDistanceAfterTargetsPixels, int iDrawDistanceBeforeTargetsPixels ) const;
+	bool IsOnScreen(float fBeat, int iCol, int iDrawDistanceAfterTargetsPixels, int iDrawDistanceBeforeTargetsPixels) const;
 
-	void DrawBoard( int iDrawDistanceAfterTargetsPixels, int iDrawDistanceBeforeTargetsPixels );
+	void DrawBoard(int iDrawDistanceAfterTargetsPixels, int iDrawDistanceBeforeTargetsPixels);
 
 	enum BeatBarType { measure, beat, half_beat, quarter_beat };
-	void DrawBeatBar( const float fBeat, BeatBarType type, int iMeasureIndex );
-	void DrawMarkerBar( int fBeat );
-	void DrawAreaHighlight( int iStartBeat, int iEndBeat );
-	void DrawBPMText( const float fBeat, const float fBPM );
-	void DrawFreezeText( const float fBeat, const float fLength, const float bDelay );
-	void DrawWarpText( const float fBeat, const float fNewBeat );
-	void DrawTimeSignatureText( const float fBeat, int iNumerator, int iDenominator );
-	void DrawTickcountText( const float fBeat, int iTicks );
-	void DrawComboText( const float fBeat, int iCombo );
-	void DrawLabelText( const float fBeat, RString sLabel );
-	void DrawSpeedText( const float fBeat, float fPercent, float fWait, unsigned short usMode );
-	void DrawFakeText( const float fBeat, const float fNewBeat );
-	void DrawAttackText( const float fBeat, const Attack &attack );
-	void DrawBGChangeText( const float fBeat, const RString sNewBGName );
+	void DrawBeatBar(const float fBeat, BeatBarType type, int iMeasureIndex);
+	void DrawMarkerBar(int fBeat);
+	void DrawAreaHighlight(int iStartBeat, int iEndBeat);
+	void DrawBPMText(const float fBeat, const float fBPM);
+	void DrawFreezeText(const float fBeat, const float fLength, const float bDelay);
+	void DrawWarpText(const float fBeat, const float fNewBeat);
+	void DrawTimeSignatureText(const float fBeat, int iNumerator, int iDenominator);
+	void DrawTickcountText(const float fBeat, int iTicks);
+	void DrawComboText(const float fBeat, int iCombo);
+	void DrawLabelText(const float fBeat, RString sLabel);
+	void DrawSpeedText(const float fBeat, float fPercent, float fWait, unsigned short usMode);
+	void DrawFakeText(const float fBeat, const float fNewBeat);
+	void DrawAttackText(const float fBeat, const Attack &attack);
+	void DrawBGChangeText(const float fBeat, const RString sNewBGName);
 	float GetWidth() const;
-	
+
 	const NoteData *m_pNoteData;
 
 	float			m_fPercentFadeToFail;	// -1 if not fading to fail
@@ -85,8 +88,14 @@ protected:
 		NoteDisplay		*display;
 		ReceptorArrowRow	m_ReceptorArrowRow;
 		GhostArrowRow		m_GhostArrowRow;
-		NoteDisplayCols( int iNumCols ) { display = new NoteDisplay[iNumCols]; }
-		~NoteDisplayCols() { delete [] display; }
+		NoteDisplayCols(int iNumCols)
+		{
+			display = new NoteDisplay[iNumCols];
+		}
+		~NoteDisplayCols()
+		{
+			delete [] display;
+		}
 	};
 
 	/* All loaded note displays, mapped by their name. */
@@ -113,7 +122,7 @@ protected:
  * @author Chris Danford (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -123,7 +132,7 @@ protected:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

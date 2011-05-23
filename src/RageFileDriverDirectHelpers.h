@@ -12,27 +12,27 @@
 #define DoRename rename
 #define DoRemove remove
 #define DoRmdir rmdir
-RString DoPathReplace( const RString &sPath );
+RString DoPathReplace(const RString &sPath);
 
 #if defined(WIN32)
-bool WinMoveFile( RString sOldPath, RString sNewPath );
+bool WinMoveFile(RString sOldPath, RString sNewPath);
 #endif
 
 #if !defined(O_BINARY)
 #define O_BINARY 0
 #endif
 
-bool CreateDirectories( RString sPath );
+bool CreateDirectories(RString sPath);
 
 #include "RageUtil_FileDB.h"
 class DirectFilenameDB: public FilenameDB
 {
 public:
-	DirectFilenameDB( RString root );
-	void SetRoot( RString root );
-	void CacheFile( const RString &sPath );
+	DirectFilenameDB(RString root);
+	void SetRoot(RString root);
+	void CacheFile(const RString &sPath);
 protected:
-	virtual void PopulateFileSet( FileSet &fs, const RString &sPath );
+	virtual void PopulateFileSet(FileSet &fs, const RString &sPath);
 	RString root;
 };
 

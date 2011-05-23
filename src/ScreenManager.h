@@ -17,36 +17,36 @@ public:
 	~ScreenManager();
 
 	// pass these messages along to the current state
-	void Update( float fDeltaTime );
+	void Update(float fDeltaTime);
 	void Draw();
-	void Input( const InputEventPlus &input );
+	void Input(const InputEventPlus &input);
 
 	// Main screen stack management
-	void SetNewScreen( const RString &sName );
-	void AddNewScreenToTop( const RString &sName, ScreenMessage SendOnPop=SM_None );
+	void SetNewScreen(const RString &sName);
+	void AddNewScreenToTop(const RString &sName, ScreenMessage SendOnPop = SM_None);
 	/**
 	 * @brief Create and cache the requested Screen.
 	 *
 	 * This is so that the next call to SetNewScreen for this Screen
 	 * will be very quick.
 	 * @param sScreenName the Screen to prepare. */
-	void PrepareScreen( const RString &sScreenName );
-	void GroupScreen( const RString &sScreenName );
-	void PersistantScreen( const RString &sScreenName );
-	void PopTopScreen( ScreenMessage SM );
+	void PrepareScreen(const RString &sScreenName);
+	void GroupScreen(const RString &sScreenName);
+	void PersistantScreen(const RString &sScreenName);
+	void PopTopScreen(ScreenMessage SM);
 	void PopAllScreens();
 	Screen *GetTopScreen();
-	Screen *GetScreen( int iPosition );
+	Screen *GetScreen(int iPosition);
 	bool AllowOperatorMenuButton() const;
 
 	// System messages
-	void SystemMessage( const RString &sMessage );
-	void SystemMessageNoAnimate( const RString &sMessage );
+	void SystemMessage(const RString &sMessage);
+	void SystemMessageNoAnimate(const RString &sMessage);
 	void HideSystemMessage();
 
 	// Screen messages
-	void PostMessageToTopScreen( ScreenMessage SM, float fDelay );
-	void SendMessageToTopScreen( ScreenMessage SM );
+	void PostMessageToTopScreen(ScreenMessage SM, float fDelay);
+	void SendMessageToTopScreen(ScreenMessage SM);
 
 	void RefreshCreditsMessages();
 	void ThemeChanged();
@@ -59,10 +59,10 @@ public:
 	 * itself, not by loading another Screen.
 	 * @param pScreen the Screen to check.
 	 * @return true if it's on the stack while not on the bottom, or false otherwise. */
-	bool IsStackedScreen( const Screen *pScreen ) const;
+	bool IsStackedScreen(const Screen *pScreen) const;
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
 	void	PlaySharedBackgroundOffCommand();
 	void    ZeroNextUpdate();
@@ -75,16 +75,16 @@ private:
 	ScreenMessage	m_OnDonePreparingScreen;
 	ScreenMessage	m_PopTopScreen;
 
-	// Set this to true anywhere we create of delete objects.  These 
+	// Set this to true anywhere we create of delete objects.  These
 	// operations take a long time, and will cause a skip on the next update.
 	bool		m_bZeroNextUpdate;
 
-	Screen *MakeNewScreen( const RString &sName );
+	Screen *MakeNewScreen(const RString &sName);
 	void LoadDelayedScreen();
-	bool ActivatePreparedScreenAndBackground( const RString &sScreenName );
-	ScreenMessage PopTopScreenInternal( bool bSendLoseFocus = true );
+	bool ActivatePreparedScreenAndBackground(const RString &sScreenName);
+	ScreenMessage PopTopScreenInternal(bool bSendLoseFocus = true);
 
-	// Keep these sounds always loaded, because they could be 
+	// Keep these sounds always loaded, because they could be
 	// played at any time.  We want to eliminate SOUND->PlayOnce
 public:
 	void PlayStartSound();
@@ -113,7 +113,7 @@ extern ScreenManager*	SCREENMAN;	// global and accessable from anywhere in our p
  * @author Chris Danford, Glenn Maynard (c) 2001-2003
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -123,7 +123,7 @@ extern ScreenManager*	SCREENMAN;	// global and accessable from anywhere in our p
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

@@ -8,26 +8,44 @@ class RageSoundReader_Merge: public RageSoundReader
 public:
 	RageSoundReader_Merge();
 	virtual ~RageSoundReader_Merge();
-	RageSoundReader_Merge( const RageSoundReader_Merge &cpy );
-	virtual RageSoundReader_Merge *Copy() const { return new RageSoundReader_Merge( *this ); }
+	RageSoundReader_Merge(const RageSoundReader_Merge &cpy);
+	virtual RageSoundReader_Merge *Copy() const
+	{
+		return new RageSoundReader_Merge(*this);
+	}
 
 	virtual int GetLength() const;
 	virtual int GetLength_Fast() const;
-	virtual int SetPosition( int iFrame );
-	virtual int Read( float *pBuf, int iFrames );
-	virtual int GetSampleRate() const { return m_iSampleRate; }
-	virtual unsigned GetNumChannels() const { return m_iChannels; }
-	virtual bool SetProperty( const RString &sProperty, float fValue );
-	virtual int GetNextSourceFrame() const { return m_iNextSourceFrame; }
-	virtual float GetStreamToSourceRatio() const { return m_fCurrentStreamToSourceRatio; }
-	virtual RString GetError() const { return ""; }
+	virtual int SetPosition(int iFrame);
+	virtual int Read(float *pBuf, int iFrames);
+	virtual int GetSampleRate() const
+	{
+		return m_iSampleRate;
+	}
+	virtual unsigned GetNumChannels() const
+	{
+		return m_iChannels;
+	}
+	virtual bool SetProperty(const RString &sProperty, float fValue);
+	virtual int GetNextSourceFrame() const
+	{
+		return m_iNextSourceFrame;
+	}
+	virtual float GetStreamToSourceRatio() const
+	{
+		return m_fCurrentStreamToSourceRatio;
+	}
+	virtual RString GetError() const
+	{
+		return "";
+	}
 
-	void AddSound( RageSoundReader *pSound );
+	void AddSound(RageSoundReader *pSound);
 
 	/**
-	 * @brief Finish adding sounds. 
+	 * @brief Finish adding sounds.
 	 * @param iPreferredSampleRate the sample rate for the sounds. */
-	void Finish( int iPreferredSampleRate );
+	void Finish(int iPreferredSampleRate);
 
 private:
 	int GetSampleRateInternal() const;

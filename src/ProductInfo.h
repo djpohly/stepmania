@@ -13,7 +13,7 @@
 /**
  * @brief A unique name for each application that you might want installed side-by-side with other applications.
  *
- * As an example, use "StepMania4" here, not "StepMania". 
+ * As an example, use "StepMania4" here, not "StepMania".
  * It would cause a conflict with older versions such as StepMania 3.X.
  */
 #define PRODUCT_ID_BARE sm-ssc
@@ -24,9 +24,9 @@
  * These are the 'official' version designations:
  * <ul>
  * <li>"experimental: pre-release versions.</li>
- * 
+ *
  * <li>"private beta v0.0": hmm, think about it for a second there.</li>
- * 
+ *
  * <li>==Public versions==
  *   - "v0.0 alpha #": Alpha versions (bug squashing, polishing until we reach beta)
  *   - "v0.0 beta #": Beta versions (bug squashing, _focus_ is on high priority bugs)

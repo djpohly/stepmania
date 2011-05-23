@@ -25,12 +25,12 @@ enum PromptAnswer
 class ScreenPrompt : public ScreenWithMenuElements
 {
 public:
-	static void SetPromptSettings( const RString &sText, PromptType type = PROMPT_OK, PromptAnswer defaultAnswer = ANSWER_NO, void(*OnYes)(void*) = NULL, void(*OnNo)(void*) = NULL, void* pCallbackData = NULL );
-	static void Prompt( ScreenMessage smSendOnPop, const RString &sText, PromptType type = PROMPT_OK, PromptAnswer defaultAnswer = ANSWER_NO, void(*OnYes)(void*) = NULL, void(*OnNo)(void*) = NULL, void* pCallbackData = NULL );
+	static void SetPromptSettings(const RString &sText, PromptType type = PROMPT_OK, PromptAnswer defaultAnswer = ANSWER_NO, void(*OnYes)(void*) = NULL, void(*OnNo)(void*) = NULL, void* pCallbackData = NULL);
+	static void Prompt(ScreenMessage smSendOnPop, const RString &sText, PromptType type = PROMPT_OK, PromptAnswer defaultAnswer = ANSWER_NO, void(*OnYes)(void*) = NULL, void(*OnNo)(void*) = NULL, void* pCallbackData = NULL);
 
 	virtual void Init();
 	virtual void BeginScreen();
-	virtual void Input( const InputEventPlus &input );
+	virtual void Input(const InputEventPlus &input);
 
 	static PromptAnswer s_LastAnswer;
 	static bool s_bCancelledLast;
@@ -39,15 +39,18 @@ public:
 	//virtual void PushSelf( lua_State *L );
 
 protected:
-	bool CanGoLeft() { return m_Answer > 0; }
+	bool CanGoLeft()
+	{
+		return m_Answer > 0;
+	}
 	bool CanGoRight();
-	void Change( int dir );
-	void MenuLeft( const InputEventPlus &input );
-	void MenuRight( const InputEventPlus &input );
-	void MenuBack( const InputEventPlus &input );
-	void MenuStart( const InputEventPlus &input );
+	void Change(int dir);
+	void MenuLeft(const InputEventPlus &input);
+	void MenuRight(const InputEventPlus &input);
+	void MenuBack(const InputEventPlus &input);
+	void MenuStart(const InputEventPlus &input);
 
-	virtual void End( bool bCancelled );
+	virtual void End(bool bCancelled);
 	void PositionCursor();
 
 	virtual void TweenOffScreen();
@@ -65,7 +68,7 @@ protected:
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -75,7 +78,7 @@ protected:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

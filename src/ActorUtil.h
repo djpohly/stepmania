@@ -9,7 +9,10 @@ class XNode;
 typedef Actor* (*CreateActorFn)();
 
 template<typename T>
-Actor *CreateActor() { return new T; }
+Actor *CreateActor()
+{
+	return new T;
+}
 
 /**
  * @brief Register the requested Actor with the specified external name.
@@ -25,101 +28,157 @@ Actor *CreateActor() { return new T; }
 /**
  * @brief Register the requested Actor so that it's more accessible.
  *
- * Each Actor class should have a REGISTER_ACTOR_CLASS in its CPP file. */ 
+ * Each Actor class should have a REGISTER_ACTOR_CLASS in its CPP file. */
 #define REGISTER_ACTOR_CLASS( className ) REGISTER_ACTOR_CLASS_WITH_NAME( className, className )
 
 enum FileType
 {
-	FT_Bitmap, 
-	FT_Sound, 
-	FT_Movie, 
-	FT_Directory, 
-	FT_Lua, 
-	FT_Model, 
-	NUM_FileType, 
+	FT_Bitmap,
+	FT_Sound,
+	FT_Movie,
+	FT_Directory,
+	FT_Lua,
+	FT_Model,
+	NUM_FileType,
 	FileType_Invalid
 };
-const RString& FileTypeToString( FileType ft );
+const RString& FileTypeToString(FileType ft);
 
 /** @brief Utility functions for creating and manipulating Actors. */
 namespace ActorUtil
 {
 	// Every screen should register its class at program initialization.
-	void Register( const RString& sClassName, CreateActorFn pfn );
+	void Register(const RString& sClassName, CreateActorFn pfn);
 
-	apActorCommands ParseActorCommands( const RString &sCommands, const RString &sName = "" );
-	void SetXY( Actor& actor, const RString &sMetricsGroup );
-	inline void PlayCommand( Actor& actor, const RString &sCommandName ) { actor.PlayCommand( sCommandName ); }
-	inline void OnCommand( Actor& actor )
+	apActorCommands ParseActorCommands(const RString &sCommands, const RString &sName = "");
+	void SetXY(Actor& actor, const RString &sMetricsGroup);
+	inline void PlayCommand(Actor& actor, const RString &sCommandName)
 	{
-		ASSERT_M( actor.HasCommand("On"), ssprintf("%s is missing an OnCommand.", actor.GetLineage().c_str()) );
+		actor.PlayCommand(sCommandName);
+	}
+	inline void OnCommand(Actor& actor)
+	{
+		ASSERT_M(actor.HasCommand("On"), ssprintf("%s is missing an OnCommand.", actor.GetLineage().c_str()));
 		actor.PlayCommand("On");
 	}
-	inline void OffCommand( Actor& actor )
+	inline void OffCommand(Actor& actor)
 	{
-		// HACK:  It's very often that we command things to TweenOffScreen 
+		// HACK:  It's very often that we command things to TweenOffScreen
 		// that we aren't drawing.  We know that an Actor is not being
 		// used if its name is blank.  So, do nothing on Actors with a blank name.
 		// (Do "playcommand" anyway; BGAs often have no name.)
-		if( actor.GetName().empty() )
+		if (actor.GetName().empty())
+		{
 			return;
-		ASSERT_M( actor.HasCommand("Off"), ssprintf("Actor %s is missing an OffCommand.", actor.GetLineage().c_str()) );
+		}
+		ASSERT_M(actor.HasCommand("Off"), ssprintf("Actor %s is missing an OffCommand.", actor.GetLineage().c_str()));
 		actor.PlayCommand("Off");
 	}
 
-	void LoadCommand( Actor& actor, const RString &sMetricsGroup, const RString &sCommandName );
-	void LoadCommandFromName( Actor& actor, const RString &sMetricsGroup, const RString &sCommandName, const RString &sName );
-	void LoadAllCommands( Actor& actor, const RString &sMetricsGroup );
-	void LoadAllCommandsFromName( Actor& actor, const RString &sMetricsGroup, const RString &sName );
+	void LoadCommand(Actor& actor, const RString &sMetricsGroup, const RString &sCommandName);
+	void LoadCommandFromName(Actor& actor, const RString &sMetricsGroup, const RString &sCommandName, const RString &sName);
+	void LoadAllCommands(Actor& actor, const RString &sMetricsGroup);
+	void LoadAllCommandsFromName(Actor& actor, const RString &sMetricsGroup, const RString &sName);
 
-	inline void LoadAllCommandsAndSetXY( Actor& actor, const RString &sMetricsGroup )
+	inline void LoadAllCommandsAndSetXY(Actor& actor, const RString &sMetricsGroup)
 	{
-		LoadAllCommands( actor, sMetricsGroup );
-		SetXY( actor, sMetricsGroup );
+		LoadAllCommands(actor, sMetricsGroup);
+		SetXY(actor, sMetricsGroup);
 	}
-	inline void LoadAllCommandsAndOnCommand( Actor& actor, const RString &sMetricsGroup )
+	inline void LoadAllCommandsAndOnCommand(Actor& actor, const RString &sMetricsGroup)
 	{
-		LoadAllCommands( actor, sMetricsGroup );
-		OnCommand( actor );
+		LoadAllCommands(actor, sMetricsGroup);
+		OnCommand(actor);
 	}
-	inline void SetXYAndOnCommand( Actor& actor, const RString &sMetricsGroup )
+	inline void SetXYAndOnCommand(Actor& actor, const RString &sMetricsGroup)
 	{
-		SetXY( actor, sMetricsGroup );
-		OnCommand( actor );
+		SetXY(actor, sMetricsGroup);
+		OnCommand(actor);
 	}
-	inline void LoadAllCommandsAndSetXYAndOnCommand( Actor& actor, const RString &sMetricsGroup )
+	inline void LoadAllCommandsAndSetXYAndOnCommand(Actor& actor, const RString &sMetricsGroup)
 	{
-		LoadAllCommands( actor, sMetricsGroup );
-		SetXY( actor, sMetricsGroup );
-		OnCommand( actor );
+		LoadAllCommands(actor, sMetricsGroup);
+		SetXY(actor, sMetricsGroup);
+		OnCommand(actor);
 	}
 
 	/* convenience */
-	inline void SetXY( Actor* pActor, const RString &sMetricsGroup ) { SetXY( *pActor, sMetricsGroup ); }
-	inline void PlayCommand( Actor* pActor, const RString &sCommandName ) { if(pActor) pActor->PlayCommand( sCommandName ); }
-	inline void OnCommand( Actor* pActor ) { if(pActor) ActorUtil::OnCommand( *pActor ); }
-	inline void OffCommand( Actor* pActor ) { if(pActor) ActorUtil::OffCommand( *pActor ); }
+	inline void SetXY(Actor* pActor, const RString &sMetricsGroup)
+	{
+		SetXY(*pActor, sMetricsGroup);
+	}
+	inline void PlayCommand(Actor* pActor, const RString &sCommandName)
+	{
+		if (pActor)
+		{
+			pActor->PlayCommand(sCommandName);
+		}
+	}
+	inline void OnCommand(Actor* pActor)
+	{
+		if (pActor)
+		{
+			ActorUtil::OnCommand(*pActor);
+		}
+	}
+	inline void OffCommand(Actor* pActor)
+	{
+		if (pActor)
+		{
+			ActorUtil::OffCommand(*pActor);
+		}
+	}
 
-	inline void LoadAllCommands( Actor* pActor, const RString &sMetricsGroup ) { if(pActor) LoadAllCommands( *pActor, sMetricsGroup ); }
+	inline void LoadAllCommands(Actor* pActor, const RString &sMetricsGroup)
+	{
+		if (pActor)
+		{
+			LoadAllCommands(*pActor, sMetricsGroup);
+		}
+	}
 
-	inline void LoadAllCommandsAndSetXY( Actor* pActor, const RString &sMetricsGroup ) { if(pActor) LoadAllCommandsAndSetXY( *pActor, sMetricsGroup ); }
-	inline void LoadAllCommandsAndOnCommand( Actor* pActor, const RString &sMetricsGroup ) { if(pActor) LoadAllCommandsAndOnCommand( *pActor, sMetricsGroup ); }
-	inline void SetXYAndOnCommand( Actor* pActor, const RString &sMetricsGroup ) { if(pActor) SetXYAndOnCommand( *pActor, sMetricsGroup ); }
-	inline void LoadAllCommandsAndSetXYAndOnCommand( Actor* pActor, const RString &sMetricsGroup ) { if(pActor) LoadAllCommandsAndSetXYAndOnCommand( *pActor, sMetricsGroup ); }
+	inline void LoadAllCommandsAndSetXY(Actor* pActor, const RString &sMetricsGroup)
+	{
+		if (pActor)
+		{
+			LoadAllCommandsAndSetXY(*pActor, sMetricsGroup);
+		}
+	}
+	inline void LoadAllCommandsAndOnCommand(Actor* pActor, const RString &sMetricsGroup)
+	{
+		if (pActor)
+		{
+			LoadAllCommandsAndOnCommand(*pActor, sMetricsGroup);
+		}
+	}
+	inline void SetXYAndOnCommand(Actor* pActor, const RString &sMetricsGroup)
+	{
+		if (pActor)
+		{
+			SetXYAndOnCommand(*pActor, sMetricsGroup);
+		}
+	}
+	inline void LoadAllCommandsAndSetXYAndOnCommand(Actor* pActor, const RString &sMetricsGroup)
+	{
+		if (pActor)
+		{
+			LoadAllCommandsAndSetXYAndOnCommand(*pActor, sMetricsGroup);
+		}
+	}
 
 	// Return a Sprite, BitmapText, or Model depending on the file type
-	Actor* LoadFromNode( const XNode* pNode, Actor *pParentActor = NULL );
-	Actor* MakeActor( const RString &sPath, Actor *pParentActor = NULL );
-	RString GetSourcePath( const XNode *pNode );
-	RString GetWhere( const XNode *pNode );
-	bool GetAttrPath( const XNode *pNode, const RString &sName, RString &sOut );
-	bool LoadTableFromStackShowErrors( Lua *L );
+	Actor* LoadFromNode(const XNode* pNode, Actor *pParentActor = NULL);
+	Actor* MakeActor(const RString &sPath, Actor *pParentActor = NULL);
+	RString GetSourcePath(const XNode *pNode);
+	RString GetWhere(const XNode *pNode);
+	bool GetAttrPath(const XNode *pNode, const RString &sName, RString &sOut);
+	bool LoadTableFromStackShowErrors(Lua *L);
 
-	bool ResolvePath( RString &sPath, const RString &sName );
+	bool ResolvePath(RString &sPath, const RString &sName);
 
-	void SortByZPosition( vector<Actor*> &vActors );
+	void SortByZPosition(vector<Actor*> &vActors);
 
-	FileType GetFileType( const RString &sPath );
+	FileType GetFileType(const RString &sPath);
 };
 
 #define SET_XY( actor )			ActorUtil::SetXY( actor, m_sName )
@@ -138,7 +197,7 @@ namespace ActorUtil
 /*
  * (c) 2003-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -148,7 +207,7 @@ namespace ActorUtil
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

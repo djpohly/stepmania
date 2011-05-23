@@ -24,7 +24,7 @@
 #define TIME_TO_DISPLAY			THEME->GetMetricF("ScreenUnlockStatus","TimeToDisplay")
 #define POINTS_ZOOM			THEME->GetMetricF("ScreenUnlockStatus","PointsZoom")
 
-REGISTER_SCREEN_CLASS( ScreenUnlockStatus );
+REGISTER_SCREEN_CLASS(ScreenUnlockStatus);
 
 void ScreenUnlockStatus::Init()
 {
@@ -32,41 +32,45 @@ void ScreenUnlockStatus::Init()
 
 	unsigned iNumUnlocks = UNLOCKMAN->m_UnlockEntries.size();
 
-	if( !PREFSMAN->m_bUseUnlockSystem || iNumUnlocks == 0 )
+	if (!PREFSMAN->m_bUseUnlockSystem || iNumUnlocks == 0)
 	{
-		this->PostScreenMessage( SM_GoToNextScreen, 0 );
+		this->PostScreenMessage(SM_GoToNextScreen, 0);
 		return;
 	}
 
 	unsigned NumUnlocks = UNLOCKMAN->m_UnlockEntries.size();
 
-	PointsUntilNextUnlock.LoadFromFont( THEME->GetPathF("Common","normal") );
-	PointsUntilNextUnlock.SetHorizAlign( align_left );
+	PointsUntilNextUnlock.LoadFromFont(THEME->GetPathF("Common", "normal"));
+	PointsUntilNextUnlock.SetHorizAlign(align_left);
 
 	apActorCommands IconCommand = ICON_COMMAND;
-	for( unsigned i=1; i <= NumUnlocks; i++ )
+	for (unsigned i = 1; i <= NumUnlocks; i++)
 	{
 		// get pertaining UnlockEntry
-		const UnlockEntry &entry = UNLOCKMAN->m_UnlockEntries[i-1];
+		const UnlockEntry &entry = UNLOCKMAN->m_UnlockEntries[i - 1];
 		const Song *pSong = entry.m_Song.ToSong();
 
-		if( pSong == NULL)
+		if (pSong == NULL)
+		{
 			continue;
+		}
 
 		Sprite* pSpr = new Sprite;
 
 		// new unlock graphic
-		pSpr->Load( THEME->GetPathG("ScreenUnlockStatus",ssprintf("%04d icon", i)) );
+		pSpr->Load(THEME->GetPathG("ScreenUnlockStatus", ssprintf("%04d icon", i)));
 
 		// set graphic location
-		pSpr->SetName( ssprintf("Unlock%04d",i) );
-		LOAD_ALL_COMMANDS_AND_SET_XY( pSpr );
+		pSpr->SetName(ssprintf("Unlock%04d", i));
+		LOAD_ALL_COMMANDS_AND_SET_XY(pSpr);
 
 		pSpr->RunCommands(IconCommand);
 		Unlocks.push_back(pSpr);
 
-		if ( !entry.IsLocked() )
+		if (!entry.IsLocked())
+		{
 			this->AddChild(Unlocks[Unlocks.size() - 1]);
+		}
 	}
 
 	// scrolling text
@@ -80,58 +84,67 @@ void ScreenUnlockStatus::Init()
 		float MaxWidth = UNLOCK_TEXT_SCROLL_MAX_WIDTH;
 
 		float SecondsToScroll = TIME_TO_DISPLAY;
-		
-		if (SecondsToScroll > 2) SecondsToScroll--;
+
+		if (SecondsToScroll > 2)
+		{
+			SecondsToScroll--;
+		}
 
 		float SECS_PER_CYCLE = 0;
 
 		if (UNLOCK_TEXT_SCROLL != 3)
-			SECS_PER_CYCLE = (float)SecondsToScroll/(ScrollingTextRows + NumUnlocks);
-		else
-			SECS_PER_CYCLE = (float)SecondsToScroll/(ScrollingTextRows * 3 + NumUnlocks + 4);
-
-		for(unsigned i = 1; i <= NumUnlocks; i++)
 		{
-			const UnlockEntry &entry = UNLOCKMAN->m_UnlockEntries[i-1];
-			
+			SECS_PER_CYCLE = (float)SecondsToScroll / (ScrollingTextRows + NumUnlocks);
+		}
+		else
+		{
+			SECS_PER_CYCLE = (float)SecondsToScroll / (ScrollingTextRows * 3 + NumUnlocks + 4);
+		}
+
+		for (unsigned i = 1; i <= NumUnlocks; i++)
+		{
+			const UnlockEntry &entry = UNLOCKMAN->m_UnlockEntries[i - 1];
+
 			BitmapText* text = new BitmapText;
 
-			text->LoadFromFont( THEME->GetPathF("ScreenUnlockStatus","text") );
-			text->SetHorizAlign( align_left );
+			text->LoadFromFont(THEME->GetPathF("ScreenUnlockStatus", "text"));
+			text->SetHorizAlign(align_left);
 			text->SetZoom(ScrollingTextZoom);
 
-			switch( entry.m_Type )
+			switch (entry.m_Type)
 			{
-			case UnlockRewardType_Song:
+				case UnlockRewardType_Song:
 				{
 					const Song *pSong = entry.m_Song.ToSong();
-					ASSERT( pSong );
-		
+					ASSERT(pSong);
+
 					RString title = pSong->GetDisplayMainTitle();
 					RString subtitle = pSong->GetDisplaySubTitle();
-					if( subtitle != "" )
+					if (subtitle != "")
+					{
 						title = title + "\n" + subtitle;
-					text->SetMaxWidth( MaxWidth );
-					text->SetText( title );
+					}
+					text->SetMaxWidth(MaxWidth);
+					text->SetText(title);
 				}
 				break;
-			case UnlockRewardType_Course:
+				case UnlockRewardType_Course:
 				{
 					const Course *pCourse = entry.m_Course.ToCourse();
-					ASSERT( pCourse );
+					ASSERT(pCourse);
 
-					text->SetMaxWidth( MaxWidth );
-					text->SetText( pCourse->GetDisplayFullTitle() );
-					text->SetDiffuse( RageColor(0,1,0,1) );
+					text->SetMaxWidth(MaxWidth);
+					text->SetText(pCourse->GetDisplayFullTitle());
+					text->SetDiffuse(RageColor(0, 1, 0, 1));
 				}
 				break;
-			default:
-				text->SetText( "" );
-				text->SetDiffuse( RageColor(0.5,0,0,1) );
-				break;
+				default:
+					text->SetText("");
+					text->SetDiffuse(RageColor(0.5, 0, 0, 1));
+					break;
 			}
 
-			if( entry.IsLocked() )
+			if (entry.IsLocked())
 			{
 				text->SetText("???");
 				text->SetZoomX(1);
@@ -140,16 +153,19 @@ void ScreenUnlockStatus::Init()
 			{
 				// unlocked. change color
 				const Song *pSong = entry.m_Song.ToSong();
-				RageColor color = RageColor(1,1,1,1);
-				if( pSong )
+				RageColor color = RageColor(1, 1, 1, 1);
+				if (pSong)
+				{
 					color = SONGMAN->GetSongGroupColor(pSong->m_sGroupName);
+				}
 				text->SetGlobalDiffuseColor(color);
 			}
 
-			text->SetXY( ScrollingTextX, ScrollingTextStartY );
+			text->SetXY(ScrollingTextX, ScrollingTextStartY);
 
 			if (UNLOCK_TEXT_SCROLL == 3 && UNLOCK_TEXT_SCROLL_ROWS + i > NumUnlocks)
-			{   // special command for last unlocks when scrolling is in effect
+			{
+				// special command for last unlocks when scrolling is in effect
 				float TargetRow = -0.5f + i + UNLOCK_TEXT_SCROLL_ROWS - NumUnlocks;
 				float StopOffPoint = ScrollingTextEndY - TargetRow / UNLOCK_TEXT_SCROLL_ROWS * (ScrollingTextEndY - ScrollingTextStartY);
 				float FirstCycleTime = (UNLOCK_TEXT_SCROLL_ROWS - TargetRow) * SECS_PER_CYCLE;
@@ -157,12 +173,12 @@ void ScreenUnlockStatus::Init()
 				//LOG->Trace("Target Row: %f", TargetRow);
 				//LOG->Trace("command for icon %d: %s", i, ssprintf("diffusealpha,0;sleep,%f;diffusealpha,1;linear,%f;y,%f;linear,%f;y,%f;linear,0.1;diffusealpha,0", SECS_PER_CYCLE * (i - 1), FirstCycleTime, StopOffPoint, SecondCycleTime * 2, ScrollingTextEndY).c_str() );
 				RString sCommand = ssprintf("diffusealpha,0;sleep,%f;diffusealpha,1;linear,%f;y,%f;linear,%f;y,%f;linear,0.1;diffusealpha,0", SECS_PER_CYCLE * (i - 1), FirstCycleTime, StopOffPoint, SecondCycleTime, ScrollingTextEndY);
-				text->RunCommands( ActorUtil::ParseActorCommands(sCommand) );
+				text->RunCommands(ActorUtil::ParseActorCommands(sCommand));
 			}
 			else
 			{
 				RString sCommand = ssprintf("diffusealpha,0;sleep,%f;diffusealpha,1;linear,%f;y,%f;linear,0.1;diffusealpha,0", SECS_PER_CYCLE * (i - 1), SECS_PER_CYCLE * (ScrollingTextRows), ScrollingTextEndY);
-				text->RunCommands( ActorUtil::ParseActorCommands(sCommand) );
+				text->RunCommands(ActorUtil::ParseActorCommands(sCommand));
 			}
 
 			item.push_back(text);
@@ -172,10 +188,10 @@ void ScreenUnlockStatus::Init()
 				Sprite* IconCount = new Sprite;
 
 				// new unlock graphic
-				IconCount->Load( THEME->GetPathG("ScreenUnlockStatus",ssprintf("%04d icon", i)) );
+				IconCount->Load(THEME->GetPathG("ScreenUnlockStatus", ssprintf("%04d icon", i)));
 
 				// set graphic location
-				IconCount->SetXY( UNLOCK_TEXT_SCROLL_ICON_X, ScrollingTextStartY);
+				IconCount->SetXY(UNLOCK_TEXT_SCROLL_ICON_X, ScrollingTextStartY);
 
 				IconCount->SetHeight(UNLOCK_TEXT_SCROLL_ICON_SIZE);
 				IconCount->SetWidth(UNLOCK_TEXT_SCROLL_ICON_SIZE);
@@ -189,22 +205,24 @@ void ScreenUnlockStatus::Init()
 					//LOG->Trace("Target Row: %f", TargetRow);
 					//LOG->Trace("command for icon %d: %s", i, ssprintf("diffusealpha,0;sleep,%f;diffusealpha,1;linear,%f;y,%f;linear,%f;y,%f;linear,0.1;diffusealpha,0", SECS_PER_CYCLE * (i - 1), FirstCycleTime, StopOffPoint, SecondCycleTime * 2, ScrollingTextEndY).c_str() );
 					RString sCommand = ssprintf("diffusealpha,0;sleep,%f;diffusealpha,1;linear,%f;y,%f;linear,%f;y,%f;linear,0.1;diffusealpha,0", SECS_PER_CYCLE * (i - 1), FirstCycleTime, StopOffPoint, SecondCycleTime, ScrollingTextEndY);
-					IconCount->RunCommands( ActorUtil::ParseActorCommands(sCommand) );
+					IconCount->RunCommands(ActorUtil::ParseActorCommands(sCommand));
 				}
 				else
 				{
 					RString sCommand = ssprintf("diffusealpha,0;sleep,%f;diffusealpha,1;linear,%f;y,%f;linear,0.1;diffusealpha,0", SECS_PER_CYCLE * (i - 1), SECS_PER_CYCLE * (ScrollingTextRows), ScrollingTextEndY);
-					IconCount->RunCommands( ActorUtil::ParseActorCommands(sCommand) );
+					IconCount->RunCommands(ActorUtil::ParseActorCommands(sCommand));
 				}
 
 				ItemIcons.push_back(IconCount);
 
 				//LOG->Trace("Added unlock text %d", i);
-					
+
 				if (UNLOCK_TEXT_SCROLL == 3)
 				{
-					if ( !entry.IsLocked() )
+					if (!entry.IsLocked())
+					{
 						LastUnlocks.push_back(i);
+					}
 				}
 			}
 		}
@@ -218,52 +236,58 @@ void ScreenUnlockStatus::Init()
 		float ScrollingTextRows = UNLOCK_TEXT_SCROLL_ROWS;
 		float MaxWidth = UNLOCK_TEXT_SCROLL_MAX_WIDTH;
 		float SecondsToScroll = TIME_TO_DISPLAY - 1;
-		float SECS_PER_CYCLE = (float)SecondsToScroll/(ScrollingTextRows * 3 + NumUnlocks + 4);
+		float SECS_PER_CYCLE = (float)SecondsToScroll / (ScrollingTextRows * 3 + NumUnlocks + 4);
 
-		for(unsigned i=1; i <= UNLOCK_TEXT_SCROLL_ROWS; i++)
+		for (unsigned i = 1; i <= UNLOCK_TEXT_SCROLL_ROWS; i++)
 		{
 			if (i > LastUnlocks.size())
+			{
 				continue;
+			}
 
 			unsigned NextIcon = LastUnlocks[LastUnlocks.size() - i];
 
-			const UnlockEntry &entry = UNLOCKMAN->m_UnlockEntries[NextIcon-1];
+			const UnlockEntry &entry = UNLOCKMAN->m_UnlockEntries[NextIcon - 1];
 			const Song *pSong = entry.m_Song.ToSong();
-			if( pSong == NULL )
+			if (pSong == NULL)
+			{
 				continue;
+			}
 
 			BitmapText* NewText = new BitmapText;
 
-			NewText->LoadFromFont( THEME->GetPathF("ScreenUnlockStatus","text") );
-			NewText->SetHorizAlign( align_left );
+			NewText->LoadFromFont(THEME->GetPathF("ScreenUnlockStatus", "text"));
+			NewText->SetHorizAlign(align_left);
 
 			RString title = pSong->GetDisplayMainTitle();
 			RString subtitle = pSong->GetDisplaySubTitle();
 
-			if( subtitle != "" )
+			if (subtitle != "")
+			{
 				title = title + "\n" + subtitle;
+			}
 			NewText->SetZoom(UNLOCK_TEXT_SCROLL_ZOOM);
-			NewText->SetMaxWidth( MaxWidth );
-			NewText->SetText( title );
+			NewText->SetMaxWidth(MaxWidth);
+			NewText->SetText(title);
 
 			RageColor color = SONGMAN->GetSongGroupColor(pSong->m_sGroupName);
 			NewText->SetGlobalDiffuseColor(color);
 
 			NewText->SetXY(ScrollingTextX, ScrollingTextStartY);
 			{
-				RString sCommand = ssprintf("diffusealpha,0;sleep,%f;diffusealpha,1;linear,%f;y,%f;", SECS_PER_CYCLE * (NumUnlocks + 2 * i - 2), SECS_PER_CYCLE * ((ScrollingTextRows - i) * 2 + 1 ), (ScrollingTextStartY + (ScrollingTextEndY - ScrollingTextStartY) * (ScrollingTextRows - i + 0.5) / ScrollingTextRows ));
-				NewText->RunCommands( ActorUtil::ParseActorCommands(sCommand) );
+				RString sCommand = ssprintf("diffusealpha,0;sleep,%f;diffusealpha,1;linear,%f;y,%f;", SECS_PER_CYCLE * (NumUnlocks + 2 * i - 2), SECS_PER_CYCLE * ((ScrollingTextRows - i) * 2 + 1), (ScrollingTextStartY + (ScrollingTextEndY - ScrollingTextStartY) * (ScrollingTextRows - i + 0.5) / ScrollingTextRows));
+				NewText->RunCommands(ActorUtil::ParseActorCommands(sCommand));
 			}
 
 			// new unlock graphic
 			Sprite* NewIcon = new Sprite;
-			NewIcon->Load( THEME->GetPathG("ScreenUnlockStatus",ssprintf("%04d icon", NextIcon)) );
-			NewIcon->SetXY( UNLOCK_TEXT_SCROLL_ICON_X, ScrollingTextStartY);
+			NewIcon->Load(THEME->GetPathG("ScreenUnlockStatus", ssprintf("%04d icon", NextIcon)));
+			NewIcon->SetXY(UNLOCK_TEXT_SCROLL_ICON_X, ScrollingTextStartY);
 			NewIcon->SetHeight(UNLOCK_TEXT_SCROLL_ICON_SIZE);
 			NewIcon->SetWidth(UNLOCK_TEXT_SCROLL_ICON_SIZE);
 			{
-				RString sCommand = ssprintf("diffusealpha,0;sleep,%f;diffusealpha,1;linear,%f;y,%f;", SECS_PER_CYCLE * (NumUnlocks + 2 * i - 2), SECS_PER_CYCLE * ((ScrollingTextRows - i) * 2 + 1 ), (ScrollingTextStartY + (ScrollingTextEndY - ScrollingTextStartY) * (ScrollingTextRows - i + 0.5) / ScrollingTextRows ));
-				NewIcon->RunCommands( ActorUtil::ParseActorCommands(sCommand) );
+				RString sCommand = ssprintf("diffusealpha,0;sleep,%f;diffusealpha,1;linear,%f;y,%f;", SECS_PER_CYCLE * (NumUnlocks + 2 * i - 2), SECS_PER_CYCLE * ((ScrollingTextRows - i) * 2 + 1), (ScrollingTextStartY + (ScrollingTextEndY - ScrollingTextStartY) * (ScrollingTextRows - i + 0.5) / ScrollingTextRows));
+				NewIcon->RunCommands(ActorUtil::ParseActorCommands(sCommand));
 			}
 
 			ItemIcons.push_back(NewIcon);
@@ -271,63 +295,67 @@ void ScreenUnlockStatus::Init()
 		}
 	}
 
-	// NOTE: the following two loops require the iterator to 
+	// NOTE: the following two loops require the iterator to
 	// be ints because if you decrement an unsigned when it
 	// equals zero, you get the maximum value of an unsigned,
 	// which is still greater than 0.  By typecasting it as
 	// an integer, you can achieve -1, which exits the loop.
 
-	for(int i = item.size() - 1; (int)i >= 0; i--)
+	for (int i = item.size() - 1; (int)i >= 0; i--)
+	{
 		this->AddChild(item[i]);
+	}
 
-	for(int i = ItemIcons.size() - 1; (int)i >= 0; i--)
+	for (int i = ItemIcons.size() - 1; (int)i >= 0; i--)
+	{
 		this->AddChild(ItemIcons[i]);
+	}
 
-	PointsUntilNextUnlock.SetName( "PointsDisplay" );
-	
+	PointsUntilNextUnlock.SetName("PointsDisplay");
+
 	RString PointDisplay = TYPE_TO_DISPLAY;
 	if (PointDisplay == "DP" || PointDisplay == "Dance")
 	{
-		RString sDP = ssprintf( "%d", (int)UNLOCKMAN->PointsUntilNextUnlock(UnlockRequirement_DancePoints) );
-		PointsUntilNextUnlock.SetText( sDP );
+		RString sDP = ssprintf("%d", (int)UNLOCKMAN->PointsUntilNextUnlock(UnlockRequirement_DancePoints));
+		PointsUntilNextUnlock.SetText(sDP);
 	}
-	else if (PointDisplay == "AP" || PointDisplay == "Arcade") 
+	else if (PointDisplay == "AP" || PointDisplay == "Arcade")
 	{
-		RString sAP = ssprintf( "%d", (int)UNLOCKMAN->PointsUntilNextUnlock(UnlockRequirement_ArcadePoints) );
-		PointsUntilNextUnlock.SetText( sAP );
+		RString sAP = ssprintf("%d", (int)UNLOCKMAN->PointsUntilNextUnlock(UnlockRequirement_ArcadePoints));
+		PointsUntilNextUnlock.SetText(sAP);
 	}
-	else if (PointDisplay == "SP" || PointDisplay == "Song") 
+	else if (PointDisplay == "SP" || PointDisplay == "Song")
 	{
-		RString sSP = ssprintf( "%d", (int)UNLOCKMAN->PointsUntilNextUnlock(UnlockRequirement_SongPoints) );
-		PointsUntilNextUnlock.SetText( sSP );
+		RString sSP = ssprintf("%d", (int)UNLOCKMAN->PointsUntilNextUnlock(UnlockRequirement_SongPoints));
+		PointsUntilNextUnlock.SetText(sSP);
 	}
 
-	PointsUntilNextUnlock.SetZoom( POINTS_ZOOM );
-	LOAD_ALL_COMMANDS_AND_SET_XY( PointsUntilNextUnlock );
-	this->AddChild( &PointsUntilNextUnlock );
+	PointsUntilNextUnlock.SetZoom(POINTS_ZOOM);
+	LOAD_ALL_COMMANDS_AND_SET_XY(PointsUntilNextUnlock);
+	this->AddChild(&PointsUntilNextUnlock);
 
-	this->ClearMessageQueue( SM_BeginFadingOut );	// ignore ScreenAttract's SecsToShow
+	this->ClearMessageQueue(SM_BeginFadingOut);	// ignore ScreenAttract's SecsToShow
 
-	this->PostScreenMessage( SM_BeginFadingOut, TIME_TO_DISPLAY );
+	this->PostScreenMessage(SM_BeginFadingOut, TIME_TO_DISPLAY);
 }
 
 ScreenUnlockStatus::~ScreenUnlockStatus()
 {
 	while (Unlocks.size() > 0)
 	{
-		Sprite* entry = Unlocks[Unlocks.size()-1];
+		Sprite* entry = Unlocks[Unlocks.size() - 1];
 		SAFE_DELETE(entry);
 		Unlocks.pop_back();
 	}
 	while (item.size() > 0)
 	{
-		BitmapText* entry = item[item.size()-1];
+		BitmapText* entry = item[item.size() - 1];
 		SAFE_DELETE(entry);
 		item.pop_back();
 	}
 	while (ItemIcons.size() > 0)
 	{
-		Sprite* entry = ItemIcons[ItemIcons.size()-1];
+		Sprite* entry = ItemIcons[ItemIcons.size() - 1];
 		SAFE_DELETE(entry);
 		ItemIcons.pop_back();
 	}
@@ -336,7 +364,7 @@ ScreenUnlockStatus::~ScreenUnlockStatus()
 /*
  * (c) 2003 Andrew Wong
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -346,7 +374,7 @@ ScreenUnlockStatus::~ScreenUnlockStatus()
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

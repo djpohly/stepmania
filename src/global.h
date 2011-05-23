@@ -85,7 +85,7 @@ using namespace std;
 /** @brief RageThreads defines (don't pull in all of RageThreads.h here) */
 namespace Checkpoints
 {
-	void SetCheckpoint( const char *file, int line, const char *message );
+	void SetCheckpoint(const char *file, int line, const char *message);
 }
 /** @brief Set a checkpoint with no message. */
 #define CHECKPOINT (Checkpoints::SetCheckpoint(__FILE__, __LINE__, NULL))
@@ -96,7 +96,7 @@ namespace Checkpoints
 /**
  * @brief Define a macro to tell the compiler that a function doesn't return.
  *
- * This just improves compiler warnings.  This should be placed near the 
+ * This just improves compiler warnings.  This should be placed near the
  * beginning of the function prototype (although it looks better near the end,
  * VC only accepts it at the beginning). */
 #if defined(_MSC_VER)
@@ -116,14 +116,14 @@ namespace Checkpoints
  * @param reason the crash reason as determined by prior function calls.
  * @return nothing: there is no escape without quitting the program.
  */
-void NORETURN sm_crash( const char *reason = "Internal error" );
+void NORETURN sm_crash(const char *reason = "Internal error");
 
 /**
- * @brief Assertion that sets an optional message and brings up the crash 
+ * @brief Assertion that sets an optional message and brings up the crash
  * handler, so we get a backtrace.
- * 
- * This should probably be used instead of throwing an exception in most 
- * cases we expect never to happen (but not in cases that we do expect, 
+ *
+ * This should probably be used instead of throwing an exception in most
+ * cases we expect never to happen (but not in cases that we do expect,
  * such as DSound init failure.) */
 #define FAIL_M(MESSAGE) do { CHECKPOINT_M(MESSAGE); sm_crash(MESSAGE); } while(0)
 #define ASSERT_M(COND, MESSAGE) do { if(unlikely(!(COND))) { FAIL_M(MESSAGE); } } while(0)
@@ -134,7 +134,7 @@ void NORETURN sm_crash( const char *reason = "Internal error" );
 /** @brief Use this to catch switching on invalid values */
 #define DEFAULT_FAIL(i) 	default: FAIL_M( ssprintf("%s = %i", #i, (i)) )
 
-void ShowWarningOrTrace( const char *file, int line, const char *message, bool bWarning ); // don't pull in LOG here
+void ShowWarningOrTrace(const char *file, int line, const char *message, bool bWarning);   // don't pull in LOG here
 #define WARN(MESSAGE) (ShowWarningOrTrace(__FILE__, __LINE__, MESSAGE, true))
 #if !defined(CO_EXIST_WITH_MFC)
 #define TRACE(MESSAGE) (ShowWarningOrTrace(__FILE__, __LINE__, MESSAGE, false))
@@ -155,10 +155,10 @@ void ShowWarningOrTrace( const char *file, int line, const char *message, bool b
 /* XXX: VC2003 expanding __LINE__ to nothing in the first version.  Investigate why. -Chris */
 //#define UNIQUE_NAME3(x,line) x##line
 //#define UNIQUE_NAME2(x,line) UNIQUE_NAME3(x, line)
-//#define UNIQUE_NAME(x) UNIQUE_NAME2(x, __LINE__)	
+//#define UNIQUE_NAME(x) UNIQUE_NAME2(x, __LINE__)
 #define UNIQUE_NAME3(x) x
 #define UNIQUE_NAME2(x) UNIQUE_NAME3(x)
-#define UNIQUE_NAME(x) UNIQUE_NAME2(x)	
+#define UNIQUE_NAME(x) UNIQUE_NAME2(x)
 
 template <bool> struct CompileAssert;
 template <> struct CompileAssert<true> { };
@@ -208,47 +208,78 @@ typedef StdString::CStdString RString;
 #endif
 
 #ifdef NEED_POWF
-inline float powf( float x, float y ) CONST_FUNCTION;
-float powf( float x, float y ) { return float( pow(double(x), double(y)) ); }
+inline float powf(float x, float y) CONST_FUNCTION;
+float powf(float x, float y)
+{
+	return float(pow(double(x), double(y)));
+}
 #endif
 
 #ifdef NEED_SQRTF
-inline float sqrtf( float x ) CONST_FUNCTION;
-float sqrtf( float x ) { return float( sqrt(double(x)) ); }
+inline float sqrtf(float x) CONST_FUNCTION;
+float sqrtf(float x)
+{
+	return float(sqrt(double(x)));
+}
 #endif
 
 #ifdef NEED_SINF
-inline float sinf( float x ) CONST_FUNCTION;
-float sinf( float x ) { return float( sin(double(x)) ); }
+inline float sinf(float x) CONST_FUNCTION;
+float sinf(float x)
+{
+	return float(sin(double(x)));
+}
 #endif
 
 #ifdef NEED_TANF
-inline float tanf( float x ) CONST_FUNCTION;
-float tanf( float x ) { return float( tan(double(x)) ); }
+inline float tanf(float x) CONST_FUNCTION;
+float tanf(float x)
+{
+	return float(tan(double(x)));
+}
 #endif
 
 #ifdef NEED_COSF
-inline float cosf( float x ) CONST_FUNCTION;
-float cosf( float x ){ return float( cos(double(x)) ); }
+inline float cosf(float x) CONST_FUNCTION;
+float cosf(float x)
+{
+	return float(cos(double(x)));
+}
 #endif
 
 #ifdef NEED_ACOSF
-inline float acosf( float x ) CONST_FUNCTION;
-float acosf( float x ) { return float( acos(double(x)) ); }
+inline float acosf(float x) CONST_FUNCTION;
+float acosf(float x)
+{
+	return float(acos(double(x)));
+}
 #endif
 
 #ifdef NEED_TRUNCF
-inline float truncf( float f ) CONST_FUNCTION;
-float truncf( float f ) { return float( int(f) ); }
+inline float truncf(float f) CONST_FUNCTION;
+float truncf(float f)
+{
+	return float(int(f));
+}
 #endif
 
 #ifdef NEED_ROUNDF
-inline float roundf( float f ) CONST_FUNCTION;
-float roundf( float f ) { if( f < 0.0f ) return truncf( f-0.5f ); return truncf( f+0.5f ); }
+inline float roundf(float f) CONST_FUNCTION;
+float roundf(float f)
+{
+	if (f < 0.0f)
+	{
+		return truncf(f - 0.5f);
+	}
+	return truncf(f + 0.5f);
+}
 #endif
 
 #ifdef NEED_STRTOF
-inline float strtof( const char *s, char **se ) { return (float) strtod( s, se ); }
+inline float strtof(const char *s, char **se)
+{
+	return (float) strtod(s, se);
+}
 #endif
 
 /* Don't include our own headers here, since they tend to change often. */
@@ -260,7 +291,7 @@ inline float strtof( const char *s, char **se ) { return (float) strtod( s, se )
  * @author Chris Danford, Glenn Maynard (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -270,7 +301,7 @@ inline float strtof( const char *s, char **se ) { return (float) strtod( s, se )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

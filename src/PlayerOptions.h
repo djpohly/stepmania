@@ -38,39 +38,54 @@ public:
 		m_ScoreDisplay(SCORING_ADD)
 	{
 		m_sNoteSkin = "";
-		ZERO( m_fAccels );	ONE( m_SpeedfAccels );
-		ZERO( m_fEffects );	ONE( m_SpeedfEffects );
-		ZERO( m_fAppearances );	ONE( m_SpeedfAppearances );
-		ZERO( m_fScrolls );	ONE( m_SpeedfScrolls );
-		ZERO( m_bTurns );	ZERO( m_bTransforms );
+		ZERO(m_fAccels);
+		ONE(m_SpeedfAccels);
+		ZERO(m_fEffects);
+		ONE(m_SpeedfEffects);
+		ZERO(m_fAppearances);
+		ONE(m_SpeedfAppearances);
+		ZERO(m_fScrolls);
+		ONE(m_SpeedfScrolls);
+		ZERO(m_bTurns);
+		ZERO(m_bTransforms);
 	};
 	void Init();
-	void Approach( const PlayerOptions& other, float fDeltaSeconds );
-	RString GetString( bool bForceNoteSkin = false ) const;
+	void Approach(const PlayerOptions& other, float fDeltaSeconds);
+	RString GetString(bool bForceNoteSkin = false) const;
 	RString GetSavedPrefsString() const;	// only the basic options that players would want for every song
 	enum ResetPrefsType
-	{ 
-		saved_prefs, 
+	{
+		saved_prefs,
 		saved_prefs_invalid_for_course
 	};
-	void ResetPrefs( ResetPrefsType type );
-	void ResetSavedPrefs() { ResetPrefs(saved_prefs); };
-	void ResetSavedPrefsInvalidForCourse() { ResetPrefs(saved_prefs_invalid_for_course); }
-	void GetMods( vector<RString> &AddTo, bool bForceNoteSkin = false ) const;
-	void GetLocalizedMods( vector<RString> &AddTo ) const;
-	void FromString( const RString &sMultipleMods );
-	bool FromOneModString( const RString &sOneMod, RString &sErrorDetailOut );	// On error, return false and optionally set sErrorDetailOut
+	void ResetPrefs(ResetPrefsType type);
+	void ResetSavedPrefs()
+	{
+		ResetPrefs(saved_prefs);
+	};
+	void ResetSavedPrefsInvalidForCourse()
+	{
+		ResetPrefs(saved_prefs_invalid_for_course);
+	}
+	void GetMods(vector<RString> &AddTo, bool bForceNoteSkin = false) const;
+	void GetLocalizedMods(vector<RString> &AddTo) const;
+	void FromString(const RString &sMultipleMods);
+	bool FromOneModString(const RString &sOneMod, RString &sErrorDetailOut);	// On error, return false and optionally set sErrorDetailOut
 	void ChooseRandomModifiers();
 	bool ContainsTransformOrTurn() const;
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
-	bool operator==( const PlayerOptions &other ) const;
-	bool operator!=( const PlayerOptions &other ) const { return !operator==(other); }
+	bool operator==(const PlayerOptions &other) const;
+	bool operator!=(const PlayerOptions &other) const
+	{
+		return !operator==(other);
+	}
 
 	/** @brief The various acceleration mods. */
-	enum Accel {
+	enum Accel
+	{
 		ACCEL_BOOST, /**< The arrows start slow, then zoom towards the targets. */
 		ACCEL_BRAKE, /**< The arrows start fast, then slow down as they approach the targets. */
 		ACCEL_WAVE,
@@ -78,7 +93,8 @@ public:
 		ACCEL_BOOMERANG, /**< The arrows start from above the targets, go down, then come back up. */
 		NUM_ACCELS
 	};
-	enum Effect	{
+	enum Effect
+	{
 		EFFECT_DRUNK,
 		EFFECT_DIZZY,
 		EFFECT_CONFUSION,
@@ -96,7 +112,8 @@ public:
 		NUM_EFFECTS
 	};
 	/** @brief The various appearance mods. */
-	enum Appearance {
+	enum Appearance
+	{
 		APPEARANCE_HIDDEN, /**< The arrows disappear partway up. */
 		APPEARANCE_HIDDEN_OFFSET, /**< This determines when the arrows disappear. */
 		APPEARANCE_SUDDEN, /**< The arrows appear partway up. */
@@ -107,17 +124,19 @@ public:
 		NUM_APPEARANCES
 	};
 	/** @brief The various turn mods. */
-	enum Turn {
-		TURN_NONE=0, /**< No turning of the arrows is performed. */
+	enum Turn
+	{
+		TURN_NONE = 0, /**< No turning of the arrows is performed. */
 		TURN_MIRROR, /**< The arrows are mirrored from their normal position. */
 		TURN_LEFT, /**< The arrows are turned 90 degrees to the left. */
 		TURN_RIGHT, /**< The arrows are turned 90 degress to the right. */
 		TURN_SHUFFLE, /**< Some of the arrow columns are changed throughout the whole song. */
 		TURN_SOFT_SHUFFLE, /**< Only shuffle arrow columns on an axis of symmetry. */
 		TURN_SUPER_SHUFFLE, /**< Every arrow is placed on a random column. */
-		NUM_TURNS 
+		NUM_TURNS
 	};
-	enum Transform {
+	enum Transform
+	{
 		TRANSFORM_NOHOLDS,
 		TRANSFORM_NOROLLS,
 		TRANSFORM_NOMINES,
@@ -143,22 +162,24 @@ public:
 		TRANSFORM_NOSTRETCH,
 		NUM_TRANSFORMS
 	};
-	enum Scroll {
-		SCROLL_REVERSE=0,
+	enum Scroll
+	{
+		SCROLL_REVERSE = 0,
 		SCROLL_SPLIT,
 		SCROLL_ALTERNATE,
 		SCROLL_CROSS,
 		SCROLL_CENTERED,
 		NUM_SCROLLS
 	};
-	enum ScoreDisplay {
-		SCORING_ADD=0,
+	enum ScoreDisplay
+	{
+		SCORING_ADD = 0,
 		SCORING_SUBTRACT,
 		SCORING_AVERAGE,
 		NUM_SCOREDISPLAYS
 	};
 
-	float GetReversePercentForColumn( int iCol ) const; // accounts for all Directions
+	float GetReversePercentForColumn(int iCol) const;   // accounts for all Directions
 
 	/* All floats have a corresponding speed setting, which determines how fast
 	 * PlayerOptions::Approach approaches. */
@@ -168,7 +189,7 @@ public:
 	float	m_fScrollBPM,			m_SpeedfScrollBPM;		// used if m_bTimeSpacing (CMod)
 	float	m_fAccels[NUM_ACCELS],		m_SpeedfAccels[NUM_ACCELS];
 	float	m_fEffects[NUM_EFFECTS],	m_SpeedfEffects[NUM_EFFECTS];
-	float	m_fAppearances[NUM_APPEARANCES],m_SpeedfAppearances[NUM_APPEARANCES];
+	float	m_fAppearances[NUM_APPEARANCES], m_SpeedfAppearances[NUM_APPEARANCES];
 	float	m_fScrolls[NUM_SCROLLS],	m_SpeedfScrolls[NUM_SCROLLS];
 	float	m_fDark,			m_SpeedfDark;
 	float	m_fBlind,			m_SpeedfBlind;
@@ -190,8 +211,9 @@ public:
 	bool		m_bTransforms[NUM_TRANSFORMS];
 	bool		m_bMuteOnError;
 	/** @brief How can the Player fail a song? */
-	enum FailType {
-		FAIL_IMMEDIATE=0,		/**< fail immediately when life touches 0 */
+	enum FailType
+	{
+		FAIL_IMMEDIATE = 0,		/**< fail immediately when life touches 0 */
 		FAIL_IMMEDIATE_CONTINUE,	/**< Same as above, but allow playing the rest of the song */
 		FAIL_AT_END,			/**< fail if life is at 0 when the song ends */
 		FAIL_OFF			/**< never fail */
@@ -219,15 +241,15 @@ public:
 	Appearance GetFirstAppearance();
 	Scroll GetFirstScroll();
 
-	void SetOneAccel( Accel a );
-	void SetOneEffect( Effect e );
-	void SetOneAppearance( Appearance a );
-	void SetOneScroll( Scroll s );
-	void ToggleOneTurn( Turn t );
+	void SetOneAccel(Accel a);
+	void SetOneEffect(Effect e);
+	void SetOneAppearance(Appearance a);
+	void SetOneScroll(Scroll s);
+	void ToggleOneTurn(Turn t);
 
 	// return true if any mods being used will make the song(s) easier
-	bool IsEasierForSongAndSteps( Song* pSong, Steps* pSteps, PlayerNumber pn ) const;
-	bool IsEasierForCourseAndTrail( Course* pCourse, Trail* pTrail ) const;
+	bool IsEasierForSongAndSteps(Song* pSong, Steps* pSteps, PlayerNumber pn) const;
+	bool IsEasierForCourseAndTrail(Course* pCourse, Trail* pTrail) const;
 };
 
 #endif
@@ -235,7 +257,7 @@ public:
 /*
  * (c) 2001-2004 Chris Danford, Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -245,7 +267,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

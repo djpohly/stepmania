@@ -16,34 +16,40 @@ public:
 	NoteSkinManager();
 	~NoteSkinManager();
 
-	void RefreshNoteSkinData( const Game* game );
-	void GetNoteSkinNames( const Game* game, vector<RString> &AddTo );
-	void GetNoteSkinNames( vector<RString> &AddTo );	// looks up current const Game* in GAMESTATE
-	bool DoesNoteSkinExist( const RString &sNoteSkin );	// looks up current const Game* in GAMESTATE
-	bool DoNoteSkinsExistForGame( const Game *pGame );
+	void RefreshNoteSkinData(const Game* game);
+	void GetNoteSkinNames(const Game* game, vector<RString> &AddTo);
+	void GetNoteSkinNames(vector<RString> &AddTo);	// looks up current const Game* in GAMESTATE
+	bool DoesNoteSkinExist(const RString &sNoteSkin);	// looks up current const Game* in GAMESTATE
+	bool DoNoteSkinsExistForGame(const Game *pGame);
 
-	void SetCurrentNoteSkin( const RString &sNoteSkin ) { m_sCurrentNoteSkin = sNoteSkin; }
-	const RString &GetCurrentNoteSkin() { return m_sCurrentNoteSkin; }
+	void SetCurrentNoteSkin(const RString &sNoteSkin)
+	{
+		m_sCurrentNoteSkin = sNoteSkin;
+	}
+	const RString &GetCurrentNoteSkin()
+	{
+		return m_sCurrentNoteSkin;
+	}
 
-	RString GetPath( const RString &sButtonName, const RString &sElement );
-	bool PushActorTemplate( Lua *L, const RString &sButton, const RString &sElement, bool bSpriteOnly );
-	Actor *LoadActor( const RString &sButton, const RString &sElement, Actor *pParent = NULL, bool bSpriteOnly = false );
+	RString GetPath(const RString &sButtonName, const RString &sElement);
+	bool PushActorTemplate(Lua *L, const RString &sButton, const RString &sElement, bool bSpriteOnly);
+	Actor *LoadActor(const RString &sButton, const RString &sElement, Actor *pParent = NULL, bool bSpriteOnly = false);
 
-	RString		GetMetric( const RString &sButtonName, const RString &sValue );
-	int		GetMetricI( const RString &sButtonName, const RString &sValueName );
-	float		GetMetricF( const RString &sButtonName, const RString &sValueName );
-	bool		GetMetricB( const RString &sButtonName, const RString &sValueName );
-	apActorCommands	GetMetricA( const RString &sButtonName, const RString &sValueName );
+	RString		GetMetric(const RString &sButtonName, const RString &sValue);
+	int		GetMetricI(const RString &sButtonName, const RString &sValueName);
+	float		GetMetricF(const RString &sButtonName, const RString &sValueName);
+	bool		GetMetricB(const RString &sButtonName, const RString &sValueName);
+	apActorCommands	GetMetricA(const RString &sButtonName, const RString &sValueName);
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
 protected:
-	RString GetPathFromDirAndFile( const RString &sDir, const RString &sFileName );
-	void GetAllNoteSkinNamesForGame( const Game *pGame, vector<RString> &AddTo );
+	RString GetPathFromDirAndFile(const RString &sDir, const RString &sFileName);
+	void GetAllNoteSkinNamesForGame(const Game *pGame, vector<RString> &AddTo);
 
-	void LoadNoteSkinData( const RString &sNoteSkinName, NoteSkinData& data_out );
-	void LoadNoteSkinDataRecursive( const RString &sNoteSkinName, NoteSkinData& data_out );
+	void LoadNoteSkinData(const RString &sNoteSkinName, NoteSkinData& data_out);
+	void LoadNoteSkinDataRecursive(const RString &sNoteSkinName, NoteSkinData& data_out);
 	RString m_sCurrentNoteSkin;
 	const Game* m_pCurGame;
 };
@@ -53,8 +59,15 @@ extern NoteSkinManager*	NOTESKIN;	// global and accessable from anywhere in our 
 class LockNoteSkin
 {
 public:
-	LockNoteSkin( const RString &sNoteSkin ) { ASSERT( NOTESKIN->GetCurrentNoteSkin().empty() ); NOTESKIN->SetCurrentNoteSkin( sNoteSkin ); }
-	~LockNoteSkin() { NOTESKIN->SetCurrentNoteSkin( RString() ); }
+	LockNoteSkin(const RString &sNoteSkin)
+	{
+		ASSERT(NOTESKIN->GetCurrentNoteSkin().empty());
+		NOTESKIN->SetCurrentNoteSkin(sNoteSkin);
+	}
+	~LockNoteSkin()
+	{
+		NOTESKIN->SetCurrentNoteSkin(RString());
+	}
 };
 
 
@@ -65,7 +78,7 @@ public:
  * @author Chris Danford (c) 2003-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -75,7 +88,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

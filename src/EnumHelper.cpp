@@ -3,144 +3,151 @@
 #include "LuaManager.h"
 #include "RageUtil.h"
 
-int CheckEnum( lua_State *L, LuaReference &table, int iPos, int iInvalid, const char *szType, bool bAllowInvalid )
+int CheckEnum(lua_State *L, LuaReference &table, int iPos, int iInvalid, const char *szType, bool bAllowInvalid)
 {
-	luaL_checkany( L, iPos );
+	luaL_checkany(L, iPos);
 
-	if( lua_isnil(L, iPos) )
+	if (lua_isnil(L, iPos))
 	{
-		if( bAllowInvalid )
+		if (bAllowInvalid)
+		{
 			return iInvalid;
+		}
 
-		LuaHelpers::Push( L, ssprintf("Expected %s; got nil", szType) );
-		lua_error( L );
+		LuaHelpers::Push(L, ssprintf("Expected %s; got nil", szType));
+		lua_error(L);
 	}
 
-	iPos = LuaHelpers::AbsIndex( L, iPos );
+	iPos = LuaHelpers::AbsIndex(L, iPos);
 
-	table.PushSelf( L );
-	lua_pushvalue( L, iPos );
-	lua_gettable( L, -2 );
+	table.PushSelf(L);
+	lua_pushvalue(L, iPos);
+	lua_gettable(L, -2);
 
 	// If the result is nil, then a string was passed that is not a member of this enum.  Throw
 	// an error.  To specify the invalid value, pass nil.  That way, typos will throw an error,
 	// and not silently result in nil, or an out-of-bounds value.
-	if( unlikely(lua_isnil(L, -1)) )
+	if (unlikely(lua_isnil(L, -1)))
 	{
 		RString sGot;
-		if( lua_isstring(L, iPos) )
+		if (lua_isstring(L, iPos))
 		{
 			/* We were given a string, but it wasn't a valid value for this enum.  Show
 			 * the string. */
-			lua_pushvalue( L, iPos );
-			LuaHelpers::Pop( L, sGot );
-			sGot = ssprintf( "\"%s\"", sGot.c_str() );
+			lua_pushvalue(L, iPos);
+			LuaHelpers::Pop(L, sGot);
+			sGot = ssprintf("\"%s\"", sGot.c_str());
 		}
 		else
 		{
 			/* We didn't get a string.  Show the type. */
-			luaL_pushtype( L, iPos );
-			LuaHelpers::Pop( L, sGot );
+			luaL_pushtype(L, iPos);
+			LuaHelpers::Pop(L, sGot);
 		}
-		LuaHelpers::Push( L, ssprintf("Expected %s; got %s", szType, sGot.c_str() ) );
-		lua_error( L );
+		LuaHelpers::Push(L, ssprintf("Expected %s; got %s", szType, sGot.c_str()));
+		lua_error(L);
 	}
-	int iRet = lua_tointeger( L, -1 );
-	lua_pop( L, 2 );
+	int iRet = lua_tointeger(L, -1);
+	lua_pop(L, 2);
 	return iRet;
 }
 
 // szNameArray is of size iMax; pNameCache is of size iMax+2.
-const RString &EnumToString( int iVal, int iMax, const char **szNameArray, auto_ptr<RString> *pNameCache )
+const RString &EnumToString(int iVal, int iMax, const char **szNameArray, auto_ptr<RString> *pNameCache)
 {
-	if( unlikely(pNameCache[0].get() == NULL) )
+	if (unlikely(pNameCache[0].get() == NULL))
 	{
-		for( int i = 0; i < iMax; ++i )
+		for (int i = 0; i < iMax; ++i)
 		{
-			auto_ptr<RString> ap( new RString( szNameArray[i] ) );
+			auto_ptr<RString> ap(new RString(szNameArray[i]));
 			pNameCache[i] = ap;
 		}
 
-		auto_ptr<RString> ap( new RString );
-		pNameCache[iMax+1] = ap;
+		auto_ptr<RString> ap(new RString);
+		pNameCache[iMax + 1] = ap;
 	}
 
 	// iMax+1 is "Invalid".  iMax+0 is the NUM_ size value, which can not be converted
 	// to a string.
-	// Maybe we should assert on _Invalid?  It seems better to make 
-	// the caller check that they're supplying a valid enum value instead of 
+	// Maybe we should assert on _Invalid?  It seems better to make
+	// the caller check that they're supplying a valid enum value instead of
 	// returning an inconspicuous garbage value (empty string). -Chris
-	ASSERT_M( iVal >= 0 && (iVal < iMax || iVal == iMax+1), ssprintf("%i, %i, (%s)", iVal, iMax, szNameArray[0])  );
+	ASSERT_M(iVal >= 0 && (iVal < iMax || iVal == iMax + 1), ssprintf("%i, %i, (%s)", iVal, iMax, szNameArray[0]));
 	return *pNameCache[iVal];
 }
 
 namespace
 {
-	int GetName( lua_State *L )
+	int GetName(lua_State *L)
 	{
-		luaL_checktype( L, 1, LUA_TTABLE );
+		luaL_checktype(L, 1, LUA_TTABLE);
 
 		/* Look up the reverse table. */
-		luaL_getmetafield( L, 1, "name" );
+		luaL_getmetafield(L, 1, "name");
 
 		/* If there was no metafield, then we were called on the wrong type. */
-		if( lua_isnil(L, -1) )
-			luaL_typerror( L, 1, "enum" );
+		if (lua_isnil(L, -1))
+		{
+			luaL_typerror(L, 1, "enum");
+		}
 
 		return 1;
 	}
-	
-	int Reverse( lua_State *L )
+
+	int Reverse(lua_State *L)
 	{
-		luaL_checktype( L, 1, LUA_TTABLE );
+		luaL_checktype(L, 1, LUA_TTABLE);
 
 		/* Look up the reverse table.  If there is no metafield, then we were
 		 * called on the wrong type. */
-		if( !luaL_getmetafield(L, 1, "reverse") )
-			luaL_typerror( L, 1, "enum" );
+		if (!luaL_getmetafield(L, 1, "reverse"))
+		{
+			luaL_typerror(L, 1, "enum");
+		}
 
 		return 1;
 	}
 }
 
-static const luaL_Reg EnumLib[] = {
+static const luaL_Reg EnumLib[] =
+{
 	{ "GetName", GetName },
 	{ "Reverse", Reverse },
 	{ NULL, NULL }
 };
 
-static void PushEnumMethodTable( lua_State *L )
+static void PushEnumMethodTable(lua_State *L)
 {
-	luaL_register( L, "Enum", EnumLib );
+	luaL_register(L, "Enum", EnumLib);
 }
 
 /* Set up the enum table on the stack, and pop the table. */
-void Enum::SetMetatable( lua_State *L, LuaReference &EnumTable, LuaReference &EnumIndexTable, const char *szName )
+void Enum::SetMetatable(lua_State *L, LuaReference &EnumTable, LuaReference &EnumIndexTable, const char *szName)
 {
-	EnumTable.PushSelf( L );
+	EnumTable.PushSelf(L);
 	{
-		lua_newtable( L );
-		EnumIndexTable.PushSelf( L );
-		lua_setfield( L, -2, "reverse" );
+		lua_newtable(L);
+		EnumIndexTable.PushSelf(L);
+		lua_setfield(L, -2, "reverse");
 
-		lua_pushstring( L, szName );
-		lua_setfield( L, -2, "name" );
+		lua_pushstring(L, szName);
+		lua_setfield(L, -2, "name");
 
-		PushEnumMethodTable( L );
-		lua_setfield( L, -2, "__index" );
+		PushEnumMethodTable(L);
+		lua_setfield(L, -2, "__index");
 
-		lua_pushliteral( L, "Enum" );
-		LuaHelpers::PushValueFunc( L, 1 );
-		lua_setfield( L, -2, "__type" ); // for luaL_pushtype
+		lua_pushliteral(L, "Enum");
+		LuaHelpers::PushValueFunc(L, 1);
+		lua_setfield(L, -2, "__type");   // for luaL_pushtype
 	}
-	lua_setmetatable( L, -2 );
-	lua_pop( L, 2 );
+	lua_setmetatable(L, -2);
+	lua_pop(L, 2);
 }
 
 /*
  * (c) 2006 Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -150,7 +157,7 @@ void Enum::SetMetatable( lua_State *L, LuaReference &EnumTable, LuaReference &En
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

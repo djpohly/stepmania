@@ -16,9 +16,9 @@ enum PlayerNumber
 };
 const PlayerNumber NUM_PLAYERS = NUM_PlayerNumber;
 const PlayerNumber PLAYER_INVALID = PlayerNumber_Invalid;
-const RString& PlayerNumberToString( PlayerNumber pn );
-const RString& PlayerNumberToLocalizedString( PlayerNumber pn );
-LuaDeclareType( PlayerNumber );
+const RString& PlayerNumberToString(PlayerNumber pn);
+const RString& PlayerNumberToLocalizedString(PlayerNumber pn);
+LuaDeclareType(PlayerNumber);
 /** @brief A foreach loop to handle the different players. */
 #define FOREACH_PlayerNumber( pn ) FOREACH_ENUM( PlayerNumber, pn )
 
@@ -62,9 +62,9 @@ enum MultiPlayer
 	NUM_MultiPlayer,	// leave this at the end
 	MultiPlayer_Invalid
 };
-const RString& MultiPlayerToString( MultiPlayer mp );
-const RString& MultiPlayerToLocalizedString( MultiPlayer mp );
-LuaDeclareType( MultiPlayer );
+const RString& MultiPlayerToString(MultiPlayer mp);
+const RString& MultiPlayerToLocalizedString(MultiPlayer mp);
+LuaDeclareType(MultiPlayer);
 /** @brief A foreach loop to handle the different Players in MultiPlayer. */
 #define FOREACH_MultiPlayer( pn ) FOREACH_ENUM( MultiPlayer, pn )
 
@@ -73,7 +73,7 @@ LuaDeclareType( MultiPlayer );
 /*
  * (c) 2001-2004 Chris Danford, Chris Gomez
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -83,7 +83,7 @@ LuaDeclareType( MultiPlayer );
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

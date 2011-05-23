@@ -41,14 +41,16 @@ void PlayerState::Reset()
 	m_fSuperMeter = 0;	// between 0 and NUM_ATTACK_LEVELS
 	m_fSuperMeterGrowthScale = 1;
 
-	for( int i=0; i<NUM_INVENTORY_SLOTS; i++ )
+	for (int i = 0; i < NUM_INVENTORY_SLOTS; i++)
+	{
 		m_Inventory[i].MakeBlank();
+	}
 
 	m_fLastStrumMusicSeconds = -1;
 	ClearHopoState();
 }
 
-void PlayerState::Update( float fDelta )
+void PlayerState::Update(float fDelta)
 {
 	// TRICKY: GAMESTATE->Update is run before any of the Screen update's,
 	// so we'll clear these flags here and let them get turned on later
@@ -58,55 +60,65 @@ void PlayerState::Update( float fDelta )
 	bool bRebuildPlayerOptions = false;
 
 	// See if any delayed attacks are starting or ending.
-	for( unsigned s=0; s<m_ActiveAttacks.size(); s++ )
+	for (unsigned s = 0; s < m_ActiveAttacks.size(); s++)
 	{
 		Attack &attack = m_ActiveAttacks[s];
 
 		// -1 is the "starts now" sentinel value. You must add the attack
-		// by calling GameState::LaunchAttack, or else the -1 won't be 
-		// converted into the current music time.  
-		ASSERT( attack.fStartSecond != -1 );
+		// by calling GameState::LaunchAttack, or else the -1 won't be
+		// converted into the current music time.
+		ASSERT(attack.fStartSecond != -1);
 
 		bool bCurrentlyEnabled =
-			attack.bGlobal ||
-			( attack.fStartSecond < m_Position.m_fMusicSeconds &&
-			m_Position.m_fMusicSeconds < attack.fStartSecond+attack.fSecsRemaining );
+		        attack.bGlobal ||
+		        (attack.fStartSecond < m_Position.m_fMusicSeconds &&
+		         m_Position.m_fMusicSeconds < attack.fStartSecond + attack.fSecsRemaining);
 
-		if( m_ActiveAttacks[s].bOn == bCurrentlyEnabled )
-			continue; // OK
+		if (m_ActiveAttacks[s].bOn == bCurrentlyEnabled)
+		{
+			continue;        // OK
+		}
 
-		if( m_ActiveAttacks[s].bOn && !bCurrentlyEnabled )
+		if (m_ActiveAttacks[s].bOn && !bCurrentlyEnabled)
+		{
 			m_bAttackEndedThisUpdate = true;
-		else if( !m_ActiveAttacks[s].bOn && bCurrentlyEnabled )
+		}
+		else if (!m_ActiveAttacks[s].bOn && bCurrentlyEnabled)
+		{
 			m_bAttackBeganThisUpdate = true;
+		}
 
 		bRebuildPlayerOptions = true;
 
 		m_ActiveAttacks[s].bOn = bCurrentlyEnabled;
 	}
 
-	if( bRebuildPlayerOptions )
+	if (bRebuildPlayerOptions)
+	{
 		RebuildPlayerOptionsFromActiveAttacks();
+	}
 
 	// Update after enabling attacks, so we approach the new state.
-	m_PlayerOptions.Update( fDelta );
+	m_PlayerOptions.Update(fDelta);
 
-	if( m_fSecondsUntilAttacksPhasedOut > 0 )
-		m_fSecondsUntilAttacksPhasedOut = max( 0, m_fSecondsUntilAttacksPhasedOut - fDelta );
+	if (m_fSecondsUntilAttacksPhasedOut > 0)
+	{
+		m_fSecondsUntilAttacksPhasedOut = max(0, m_fSecondsUntilAttacksPhasedOut - fDelta);
+	}
 }
 
-void PlayerState::ResetToDefaultPlayerOptions( ModsLevel l )
+void PlayerState::ResetToDefaultPlayerOptions(ModsLevel l)
 {
 	PlayerOptions po;
-	GAMESTATE->GetDefaultPlayerOptions( po );
-	m_PlayerOptions.Assign( l, po );
+	GAMESTATE->GetDefaultPlayerOptions(po);
+	m_PlayerOptions.Assign(l, po);
 }
 
 /* This is called to launch an attack, or to queue an attack if a.fStartSecond
  * is set.  This is also called by GameState::Update when activating a queued attack. */
-void PlayerState::LaunchAttack( const Attack& a )
+void PlayerState::LaunchAttack(const Attack& a)
 {
-	LOG->Trace( "Launch attack '%s' against P%d at %f", a.sModifiers.c_str(), m_PlayerNumber+1, a.fStartSecond );
+	LOG->Trace("Launch attack '%s' against P%d at %f", a.sModifiers.c_str(), m_PlayerNumber + 1, a.fStartSecond);
 
 	Attack attack = a;
 
@@ -114,21 +126,25 @@ void PlayerState::LaunchAttack( const Attack& a )
 	 * mark the real time it's starting (now), so Update() can know when the attack
 	 * started so it can be removed later.  For m_ModsToApply, leave the -1 in,
 	 * so Player::Update knows to apply attack transforms correctly. (yuck) */
-	m_ModsToApply.push_back( attack );
-	if( attack.fStartSecond == -1 )
+	m_ModsToApply.push_back(attack);
+	if (attack.fStartSecond == -1)
+	{
 		attack.fStartSecond = m_Position.m_fMusicSeconds;
-	m_ActiveAttacks.push_back( attack );
+	}
+	m_ActiveAttacks.push_back(attack);
 
 	RebuildPlayerOptionsFromActiveAttacks();
 }
 
-void PlayerState::RemoveActiveAttacks( AttackLevel al )
+void PlayerState::RemoveActiveAttacks(AttackLevel al)
 {
-	for( unsigned s=0; s<m_ActiveAttacks.size(); s++ )
+	for (unsigned s = 0; s < m_ActiveAttacks.size(); s++)
 	{
-		if( al != NUM_ATTACK_LEVELS && al != m_ActiveAttacks[s].level )
+		if (al != NUM_ATTACK_LEVELS && al != m_ActiveAttacks[s].level)
+		{
 			continue;
-		m_ActiveAttacks.erase( m_ActiveAttacks.begin()+s, m_ActiveAttacks.begin()+s+1 );
+		}
+		m_ActiveAttacks.erase(m_ActiveAttacks.begin() + s, m_ActiveAttacks.begin() + s + 1);
 		--s;
 	}
 	RebuildPlayerOptionsFromActiveAttacks();
@@ -136,13 +152,13 @@ void PlayerState::RemoveActiveAttacks( AttackLevel al )
 
 void PlayerState::EndActiveAttacks()
 {
-	FOREACH( Attack, m_ActiveAttacks, a )
-		a->fSecsRemaining = 0;
+	FOREACH(Attack, m_ActiveAttacks, a)
+	a->fSecsRemaining = 0;
 }
 
 void PlayerState::RemoveAllInventory()
 {
-	for( int s=0; s<NUM_INVENTORY_SLOTS; s++ )
+	for (int s = 0; s < NUM_INVENTORY_SLOTS; s++)
 	{
 		m_Inventory[s].fSecsRemaining = 0;
 		m_Inventory[s].sModifiers = "";
@@ -154,19 +170,23 @@ void PlayerState::RebuildPlayerOptionsFromActiveAttacks()
 	// rebuild player options
 	PlayerOptions po = m_PlayerOptions.GetStage();
 	SongOptions so = GAMESTATE->m_SongOptions.GetStage();
-	for( unsigned s=0; s<m_ActiveAttacks.size(); s++ )
+	for (unsigned s = 0; s < m_ActiveAttacks.size(); s++)
 	{
-		if( !m_ActiveAttacks[s].bOn )
-			continue; /* hasn't started yet */
-		po.FromString( m_ActiveAttacks[s].sModifiers );
-		so.FromString( m_ActiveAttacks[s].sModifiers );
+		if (!m_ActiveAttacks[s].bOn)
+		{
+			continue;        /* hasn't started yet */
+		}
+		po.FromString(m_ActiveAttacks[s].sModifiers);
+		so.FromString(m_ActiveAttacks[s].sModifiers);
 	}
-	m_PlayerOptions.Assign( ModsLevel_Song, po );
-	if( m_PlayerNumber == GAMESTATE->m_MasterPlayerNumber )
-		GAMESTATE->m_SongOptions.Assign( ModsLevel_Song, so );
+	m_PlayerOptions.Assign(ModsLevel_Song, po);
+	if (m_PlayerNumber == GAMESTATE->m_MasterPlayerNumber)
+	{
+		GAMESTATE->m_SongOptions.Assign(ModsLevel_Song, so);
+	}
 
 	int iSumOfAttackLevels = GetSumOfActiveAttackLevels();
-	if( iSumOfAttackLevels > 0 )
+	if (iSumOfAttackLevels > 0)
 	{
 		m_iLastPositiveSumOfAttackLevels = iSumOfAttackLevels;
 		m_fSecondsUntilAttacksPhasedOut = 10000;	// any positive number that won't run out before the attacks
@@ -182,9 +202,11 @@ int PlayerState::GetSumOfActiveAttackLevels() const
 {
 	int iSum = 0;
 
-	for( unsigned s=0; s<m_ActiveAttacks.size(); s++ )
-		if( m_ActiveAttacks[s].fSecsRemaining > 0 && m_ActiveAttacks[s].level != NUM_ATTACK_LEVELS )
+	for (unsigned s = 0; s < m_ActiveAttacks.size(); s++)
+		if (m_ActiveAttacks[s].fSecsRemaining > 0 && m_ActiveAttacks[s].level != NUM_ATTACK_LEVELS)
+		{
 			iSum += m_ActiveAttacks[s].level;
+		}
 
 	return iSum;
 }
@@ -192,77 +214,77 @@ int PlayerState::GetSumOfActiveAttackLevels() const
 // lua start
 #include "LuaBinding.h"
 
-/** @brief Allow Lua to have access to the PlayerState. */ 
+/** @brief Allow Lua to have access to the PlayerState. */
 class LunaPlayerState: public Luna<PlayerState>
 {
 public:
-	DEFINE_METHOD( GetPlayerNumber, m_PlayerNumber );
-	static int GetSongPosition( T* p, lua_State *L )
+	DEFINE_METHOD(GetPlayerNumber, m_PlayerNumber);
+	static int GetSongPosition(T* p, lua_State *L)
 	{
 		p->m_Position.PushSelf(L);
 		return 1;
 	}
-	DEFINE_METHOD( GetMultiPlayerNumber, m_mp );
-	DEFINE_METHOD( GetPlayerController, m_PlayerController );
-	static int SetPlayerOptions( T* p, lua_State *L )
+	DEFINE_METHOD(GetMultiPlayerNumber, m_mp);
+	DEFINE_METHOD(GetPlayerController, m_PlayerController);
+	static int SetPlayerOptions(T* p, lua_State *L)
 	{
-		ModsLevel m = Enum::Check<ModsLevel>( L, 1 );
+		ModsLevel m = Enum::Check<ModsLevel>(L, 1);
 		PlayerOptions po;
-		po.FromString( SArg(2) );
-		p->m_PlayerOptions.Assign( m, po );
+		po.FromString(SArg(2));
+		p->m_PlayerOptions.Assign(m, po);
 		return 0;
 	}
-	static int GetPlayerOptions( T* p, lua_State *L )
+	static int GetPlayerOptions(T* p, lua_State *L)
 	{
-		ModsLevel m = Enum::Check<ModsLevel>( L, 1 );
+		ModsLevel m = Enum::Check<ModsLevel>(L, 1);
 		PlayerOptions po = p->m_PlayerOptions.Get(m);
 		po.PushSelf(L);
 		return 1;
 	}
-	static int GetPlayerOptionsArray( T* p, lua_State *L )
+	static int GetPlayerOptionsArray(T* p, lua_State *L)
 	{
-		ModsLevel m = Enum::Check<ModsLevel>( L, 1 );
+		ModsLevel m = Enum::Check<ModsLevel>(L, 1);
 		vector<RString> s;
 		p->m_PlayerOptions.Get(m).GetMods(s);
-		LuaHelpers::CreateTableFromArray<RString>( s, L );
+		LuaHelpers::CreateTableFromArray<RString>(s, L);
 		return 1;
 	}
-	static int GetPlayerOptionsString( T* p, lua_State *L )
+	static int GetPlayerOptionsString(T* p, lua_State *L)
 	{
-		ModsLevel m = Enum::Check<ModsLevel>( L, 1 );
+		ModsLevel m = Enum::Check<ModsLevel>(L, 1);
 		RString s = p->m_PlayerOptions.Get(m).GetString();
-		LuaHelpers::Push( L, s );
+		LuaHelpers::Push(L, s);
 		return 1;
 	}
-	static int GetCurrentPlayerOptions( T* p, lua_State *L )
+	static int GetCurrentPlayerOptions(T* p, lua_State *L)
 	{
 		PlayerOptions po = p->m_PlayerOptions.GetCurrent();
 		po.PushSelf(L);
 		return 1;
 	}
-	DEFINE_METHOD( GetHealthState, m_HealthState );
+	DEFINE_METHOD(GetHealthState, m_HealthState);
 
 	LunaPlayerState()
 	{
-		ADD_METHOD( GetPlayerNumber );
-		ADD_METHOD( GetMultiPlayerNumber );
-		ADD_METHOD( SetPlayerOptions );
-		ADD_METHOD( GetPlayerOptions );
-		ADD_METHOD( GetPlayerOptionsArray );
-		ADD_METHOD( GetPlayerOptionsString );
-		ADD_METHOD( GetCurrentPlayerOptions );
-		ADD_METHOD( GetSongPosition );
-		ADD_METHOD( GetHealthState );
+		ADD_METHOD(GetPlayerNumber);
+		ADD_METHOD(GetMultiPlayerNumber);
+		ADD_METHOD(SetPlayerOptions);
+		ADD_METHOD(GetPlayerOptions);
+		ADD_METHOD(GetPlayerOptionsArray);
+		ADD_METHOD(GetPlayerOptionsString);
+		ADD_METHOD(GetCurrentPlayerOptions);
+		ADD_METHOD(GetSongPosition);
+		ADD_METHOD(GetHealthState);
 	}
 };
 
-LUA_REGISTER_CLASS( PlayerState )
+LUA_REGISTER_CLASS(PlayerState)
 // lua end
 
 /*
  * (c) 2001-2004 Chris Danford, Chris Gomez
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -272,7 +294,7 @@ LUA_REGISTER_CLASS( PlayerState )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

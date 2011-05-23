@@ -23,8 +23,8 @@ enum CabinetLight
 };
 /** @brief Loop through each CabinetLight on the machine. */
 #define FOREACH_CabinetLight( i ) FOREACH_ENUM( CabinetLight, i )
-const RString& CabinetLightToString( CabinetLight cl );
-CabinetLight StringToCabinetLight( const RString& s);
+const RString& CabinetLightToString(CabinetLight cl);
+CabinetLight StringToCabinetLight(const RString& s);
 
 enum LightsMode
 {
@@ -41,8 +41,8 @@ enum LightsMode
 	NUM_LightsMode,
 	LightsMode_Invalid
 };
-const RString& LightsModeToString( LightsMode lm );
-LuaDeclareType( LightsMode );
+const RString& LightsModeToString(LightsMode lm);
+LuaDeclareType(LightsMode);
 
 struct LightsState
 {
@@ -61,29 +61,44 @@ public:
 	LightsManager();
 	~LightsManager();
 
-	void Update( float fDeltaTime );
+	void Update(float fDeltaTime);
 	bool IsEnabled() const;
 
-	void BlinkCabinetLight( CabinetLight cl );
-	void BlinkGameButton( GameInput gi );
-	void BlinkActorLight( CabinetLight cl );
-	void PulseCoinCounter() { ++m_iQueuedCoinCounterPulses; }
+	void BlinkCabinetLight(CabinetLight cl);
+	void BlinkGameButton(GameInput gi);
+	void BlinkActorLight(CabinetLight cl);
+	void PulseCoinCounter()
+	{
+		++m_iQueuedCoinCounterPulses;
+	}
 	float GetActorLightLatencySeconds() const;
 
-	void SetLightsMode( LightsMode lm );
+	void SetLightsMode(LightsMode lm);
 	LightsMode GetLightsMode();
 
-	void PrevTestCabinetLight()		{ ChangeTestCabinetLight(-1); }
-	void NextTestCabinetLight()		{ ChangeTestCabinetLight(+1); }
-	void PrevTestGameButtonLight()	{ ChangeTestGameButtonLight(-1); }
-	void NextTestGameButtonLight()	{ ChangeTestGameButtonLight(+1); }
+	void PrevTestCabinetLight()
+	{
+		ChangeTestCabinetLight(-1);
+	}
+	void NextTestCabinetLight()
+	{
+		ChangeTestCabinetLight(+1);
+	}
+	void PrevTestGameButtonLight()
+	{
+		ChangeTestGameButtonLight(-1);
+	}
+	void NextTestGameButtonLight()
+	{
+		ChangeTestGameButtonLight(+1);
+	}
 
 	CabinetLight	GetFirstLitCabinetLight();
 	GameInput	GetFirstLitGameButtonLight();
 
 private:
-	void ChangeTestCabinetLight( int iDir );
-	void ChangeTestGameButtonLight( int iDir );
+	void ChangeTestCabinetLight(int iDir);
+	void ChangeTestGameButtonLight(int iDir);
 
 	float m_fSecsLeftInCabinetLightBlink[NUM_CabinetLight];
 	float m_fSecsLeftInGameButtonBlink[NUM_GameController][NUM_GameButton];
@@ -97,7 +112,10 @@ private:
 	int m_iQueuedCoinCounterPulses;
 	RageTimer m_CoinCounterTimer;
 
-	int GetTestAutoCycleCurrentIndex() { return (int)m_fTestAutoCycleCurrentIndex; }
+	int GetTestAutoCycleCurrentIndex()
+	{
+		return (int)m_fTestAutoCycleCurrentIndex;
+	}
 
 	float			m_fTestAutoCycleCurrentIndex;
 	CabinetLight	m_clTestManualCycleCurrent;
@@ -111,7 +129,7 @@ extern LightsManager*	LIGHTSMAN;	// global and accessable from anywhere in our p
 /*
  * (c) 2003-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -121,7 +139,7 @@ extern LightsManager*	LIGHTSMAN;	// global and accessable from anywhere in our p
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

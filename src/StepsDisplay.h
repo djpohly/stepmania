@@ -23,18 +23,18 @@ class StepsDisplay : public ActorFrame
 public:
 	StepsDisplay();
 
-	void Load( const RString &sMetricsGroup, const PlayerState *pPlayerState );
+	void Load(const RString &sMetricsGroup, const PlayerState *pPlayerState);
 
 	virtual StepsDisplay *Copy() const;
 
-	void SetFromGameState( PlayerNumber pn );
-	void SetFromStepsTypeAndMeterAndDifficultyAndCourseType( StepsType st, int iMeter, Difficulty dc, CourseType ct );
-	void SetFromSteps( const Steps* pSteps );
-	void SetFromTrail( const Trail* pTrail );
+	void SetFromGameState(PlayerNumber pn);
+	void SetFromStepsTypeAndMeterAndDifficultyAndCourseType(StepsType st, int iMeter, Difficulty dc, CourseType ct);
+	void SetFromSteps(const Steps* pSteps);
+	void SetFromTrail(const Trail* pTrail);
 	void Unset();
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
 private:
 	struct SetParams
@@ -46,7 +46,7 @@ private:
 		Difficulty dc;
 		CourseType ct;
 	};
-	void SetInternal( const SetParams &params );
+	void SetInternal(const SetParams &params);
 
 	RString		m_sMetricsGroup;
 
@@ -80,7 +80,7 @@ private:
 /*
  * (c) 2001-2004 Chris Danford, Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -90,7 +90,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

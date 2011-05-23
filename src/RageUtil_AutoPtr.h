@@ -31,33 +31,33 @@ public:
 	{
 	}
 
-	explicit inline AutoPtrCopyOnWrite( T *p ): m_pPtr(p), m_iRefCount(new int(1))
+	explicit inline AutoPtrCopyOnWrite(T *p): m_pPtr(p), m_iRefCount(new int(1))
 	{
 	}
 
-	inline AutoPtrCopyOnWrite( const AutoPtrCopyOnWrite &rhs ):
+	inline AutoPtrCopyOnWrite(const AutoPtrCopyOnWrite &rhs):
 		m_pPtr(rhs.m_pPtr), m_iRefCount(rhs.m_iRefCount)
 	{
 		++(*m_iRefCount);
 	}
 
-	void Swap( AutoPtrCopyOnWrite<T> &rhs )
+	void Swap(AutoPtrCopyOnWrite<T> &rhs)
 	{
-		swap( m_pPtr, rhs.m_pPtr );
-		swap( m_iRefCount, rhs.m_iRefCount );
+		swap(m_pPtr, rhs.m_pPtr);
+		swap(m_iRefCount, rhs.m_iRefCount);
 	}
 
-	inline AutoPtrCopyOnWrite<T> &operator=( const AutoPtrCopyOnWrite &rhs )
+	inline AutoPtrCopyOnWrite<T> &operator=(const AutoPtrCopyOnWrite &rhs)
 	{
-		AutoPtrCopyOnWrite<T> obj( rhs );
-		this->Swap( obj );
+		AutoPtrCopyOnWrite<T> obj(rhs);
+		this->Swap(obj);
 		return *this;
 	}
 
 	~AutoPtrCopyOnWrite()
 	{
 		--(*m_iRefCount);
-		if( *m_iRefCount == 0 )
+		if (*m_iRefCount == 0)
 		{
 			delete m_pPtr;
 			delete m_iRefCount;
@@ -67,7 +67,7 @@ public:
 	/* Get a non-const pointer.  This will deep-copy the object if necessary. */
 	T *Get()
 	{
-		if( *m_iRefCount > 1 )
+		if (*m_iRefCount > 1)
 		{
 			--*m_iRefCount;
 			m_pPtr = new T(*m_pPtr);
@@ -77,10 +77,19 @@ public:
 		return m_pPtr;
 	}
 
-	int GetReferenceCount() const { return *m_iRefCount; }
+	int GetReferenceCount() const
+	{
+		return *m_iRefCount;
+	}
 
-	const T &operator *() const { return *m_pPtr; }
-	const T *operator ->() const { return m_pPtr; }
+	const T &operator *() const
+	{
+		return *m_pPtr;
+	}
+	const T *operator ->() const
+	{
+		return m_pPtr;
+	}
 
 private:
 	T *m_pPtr;
@@ -88,7 +97,7 @@ private:
 };
 
 template<class T>
-inline void swap( AutoPtrCopyOnWrite<T> &a, AutoPtrCopyOnWrite<T> &b )
+inline void swap(AutoPtrCopyOnWrite<T> &a, AutoPtrCopyOnWrite<T> &b)
 {
 	a.Swap(b);
 }
@@ -111,8 +120,8 @@ inline void swap( AutoPtrCopyOnWrite<T> &a, AutoPtrCopyOnWrite<T> &b )
 template<class T>
 struct HiddenPtrTraits
 {
-	static T *Copy( const T *pCopy );
-	static void Delete( T *p );
+	static T *Copy(const T *pCopy);
+	static void Delete(T *p);
 };
 #define REGISTER_CLASS_TRAITS(T, CopyExpr) \
 	template<> T *HiddenPtrTraits<T>::Copy( const T *pCopy ) { return CopyExpr; } \
@@ -122,56 +131,77 @@ template<class T>
 class HiddenPtr
 {
 public:
-	const T& operator*() const { return *m_pPtr; }
-	const T* operator->() const { return m_pPtr; }
-	T& operator*() { return *m_pPtr; }
-	T* operator->() { return m_pPtr; }
-
-	explicit HiddenPtr( T *p = NULL ): m_pPtr(p) {}
-
-	HiddenPtr( const HiddenPtr<T> &cpy ): m_pPtr(NULL)
+	const T& operator*() const
 	{
-		if( cpy.m_pPtr != NULL )
-			m_pPtr = HiddenPtrTraits<T>::Copy( cpy.m_pPtr );
+		return *m_pPtr;
+	}
+	const T* operator->() const
+	{
+		return m_pPtr;
+	}
+	T& operator*()
+	{
+		return *m_pPtr;
+	}
+	T* operator->()
+	{
+		return m_pPtr;
+	}
+
+	explicit HiddenPtr(T *p = NULL): m_pPtr(p) {}
+
+	HiddenPtr(const HiddenPtr<T> &cpy): m_pPtr(NULL)
+	{
+		if (cpy.m_pPtr != NULL)
+		{
+			m_pPtr = HiddenPtrTraits<T>::Copy(cpy.m_pPtr);
+		}
 	}
 
 #if 0 // broken VC6
 	template<class U>
-	HiddenPtr( const HiddenPtr<U> &cpy )
+	HiddenPtr(const HiddenPtr<U> &cpy)
 	{
-		if( cpy.m_pPtr == NULL )
+		if (cpy.m_pPtr == NULL)
+		{
 			m_pPtr = NULL;
+		}
 		else
-			m_pPtr = HiddenPtrTraits<U>::Copy( cpy.m_pPtr );
+		{
+			m_pPtr = HiddenPtrTraits<U>::Copy(cpy.m_pPtr);
+		}
 	}
 #endif
 
 	~HiddenPtr()
 	{
-		HiddenPtrTraits<T>::Delete( m_pPtr );
+		HiddenPtrTraits<T>::Delete(m_pPtr);
 	}
-	void Swap( HiddenPtr<T> &rhs ) { swap( m_pPtr, rhs.m_pPtr ); }
-
-	HiddenPtr<T> &operator=( T *p )
+	void Swap(HiddenPtr<T> &rhs)
 	{
-		HiddenPtr<T> t( p );
-		Swap( t );
+		swap(m_pPtr, rhs.m_pPtr);
+	}
+
+	HiddenPtr<T> &operator=(T *p)
+	{
+		HiddenPtr<T> t(p);
+		Swap(t);
 		return *this;
 	}
 
-	HiddenPtr<T> &operator=( const HiddenPtr &cpy )
+	HiddenPtr<T> &operator=(const HiddenPtr &cpy)
 	{
-		HiddenPtr<T> t( cpy );
-		Swap( t );
+		HiddenPtr<T> t(cpy);
+		Swap(t);
 		return *this;
 	}
 
 #if 0 // broken VC6
 	template<class U>
-	HiddenPtr<T> &operator=( const HiddenPtr<U> &cpy )
+	HiddenPtr<T> &operator=(const HiddenPtr<U> &cpy)
 	{
-		HiddenPtr<T> t( cpy );
-		Swap( t );
+		HiddenPtr<T> t(cpy);
+		Swap(t);
 		return *this;
 	}
 #endif
@@ -186,7 +216,7 @@ private:
 };
 
 template<class T>
-inline void swap( HiddenPtr<T> &a, HiddenPtr<T> &b )
+inline void swap(HiddenPtr<T> &a, HiddenPtr<T> &b)
 {
 	a.Swap(b);
 }
@@ -196,7 +226,7 @@ inline void swap( HiddenPtr<T> &a, HiddenPtr<T> &b )
 /*
  * (c) 2005 Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -206,7 +236,7 @@ inline void swap( HiddenPtr<T> &a, HiddenPtr<T> &b )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

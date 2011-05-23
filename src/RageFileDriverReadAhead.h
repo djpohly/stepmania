@@ -9,28 +9,49 @@ class RageFileDriverReadAhead: public RageFileObj
 {
 public:
 	/* This filter can only be used on supported files; test before using. */
-	static bool FileSupported( RageFileBasic *pFile );
+	static bool FileSupported(RageFileBasic *pFile);
 
 	/* pFile will be freed if DeleteFileWhenFinished is called. */
-	RageFileDriverReadAhead( RageFileBasic *pFile, int iCacheBytes, int iPostBufferReadAhead = -1 );
-	RageFileDriverReadAhead( const RageFileDriverReadAhead &cpy );
+	RageFileDriverReadAhead(RageFileBasic *pFile, int iCacheBytes, int iPostBufferReadAhead = -1);
+	RageFileDriverReadAhead(const RageFileDriverReadAhead &cpy);
 	~RageFileDriverReadAhead();
 	RageFileDriverReadAhead *Copy() const;
 
-	void DeleteFileWhenFinished() { m_bFileOwned = true; }
+	void DeleteFileWhenFinished()
+	{
+		m_bFileOwned = true;
+	}
 
-	virtual RString GetError() const { return m_pFile->GetError(); }
-	virtual void ClearError()  { return m_pFile->ClearError(); }
+	virtual RString GetError() const
+	{
+		return m_pFile->GetError();
+	}
+	virtual void ClearError()
+	{
+		return m_pFile->ClearError();
+	}
 
-	int ReadInternal( void *pBuffer, size_t iBytes );
-	int WriteInternal( const void *pBuffer, size_t iBytes ) { return m_pFile->Write( pBuffer, iBytes ); }
-	int SeekInternal( int iOffset );
-	int GetFileSize() const { return m_pFile->GetFileSize(); }
-	int GetFD() { return m_pFile->GetFD(); }
-	int Tell() const { return m_iFilePos; }
+	int ReadInternal(void *pBuffer, size_t iBytes);
+	int WriteInternal(const void *pBuffer, size_t iBytes)
+	{
+		return m_pFile->Write(pBuffer, iBytes);
+	}
+	int SeekInternal(int iOffset);
+	int GetFileSize() const
+	{
+		return m_pFile->GetFileSize();
+	}
+	int GetFD()
+	{
+		return m_pFile->GetFD();
+	}
+	int Tell() const
+	{
+		return m_iFilePos;
+	}
 
 private:
-	void FillBuffer( int iBytes );
+	void FillBuffer(int iBytes);
 
 	RageFileBasic *m_pFile;
 	int m_iFilePos;

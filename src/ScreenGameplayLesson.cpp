@@ -6,7 +6,7 @@
 #include "StatsManager.h"
 #include "Song.h"
 
-REGISTER_SCREEN_CLASS( ScreenGameplayLesson );
+REGISTER_SCREEN_CLASS(ScreenGameplayLesson);
 ScreenGameplayLesson::ScreenGameplayLesson()
 {
 	m_iCurrentPageIndex = 0;
@@ -15,15 +15,15 @@ ScreenGameplayLesson::ScreenGameplayLesson()
 
 void ScreenGameplayLesson::Init()
 {
-	ASSERT( GAMESTATE->GetCurrentStyle() );
-	ASSERT( GAMESTATE->m_pCurSong );
+	ASSERT(GAMESTATE->GetCurrentStyle());
+	ASSERT(GAMESTATE->m_pCurSong);
 
 	/* Now that we've set up, init the base class. */
 	ScreenGameplayNormal::Init();
 
 	ClearMessageQueue();	// remove all of the messages set in ScreenGameplay that animate "ready", "here we go", etc.
 
-	GAMESTATE->m_bGameplayLeadIn.Set( false );
+	GAMESTATE->m_bGameplayLeadIn.Set(false);
 
 	m_DancingState = STATE_DANCING;
 
@@ -31,62 +31,62 @@ void ScreenGameplayLesson::Init()
 	Song *pSong = GAMESTATE->m_pCurSong;
 	RString sDir = pSong->GetSongDir();
 	vector<RString> vs;
-	GetDirListing( sDir+"Page*", vs, true, true );
-	m_vPages.resize( vs.size() );
-	FOREACH( RString, vs, s )
+	GetDirListing(sDir + "Page*", vs, true, true);
+	m_vPages.resize(vs.size());
+	FOREACH(RString, vs, s)
 	{
 		int i = s - vs.begin();
 		AutoActor &aa = m_vPages[i];
 
-		LuaThreadVariable iIndex( "PageIndex", LuaReference::Create(i) );
-		LuaThreadVariable iPages( "NumPages", LuaReference::Create( (int)vs.size() ) );
-		aa.Load( *s );
+		LuaThreadVariable iIndex("PageIndex", LuaReference::Create(i));
+		LuaThreadVariable iPages("NumPages", LuaReference::Create((int)vs.size()));
+		aa.Load(*s);
 
-		aa->SetDrawOrder( DRAW_ORDER_OVERLAY+1 );
-		this->AddChild( aa );
+		aa->SetDrawOrder(DRAW_ORDER_OVERLAY + 1);
+		this->AddChild(aa);
 	}
 
-	FOREACH( AutoActor, m_vPages, aa )
+	FOREACH(AutoActor, m_vPages, aa)
 	{
 		bool bIsFirst = aa == m_vPages.begin();
-		(*aa)->PlayCommand( bIsFirst ? "Show" : "Hide" );
-		(*aa)->PlayCommand( "On" );
+		(*aa)->PlayCommand(bIsFirst ? "Show" : "Hide");
+		(*aa)->PlayCommand("On");
 	}
 
 	// Reset stage number (not relevant in lessons)
 	GAMESTATE->m_iCurrentStageIndex = 0;
-	FOREACH_ENUM( PlayerNumber, p )
-		GAMESTATE->m_iPlayerStageTokens[p] = 1;
+	FOREACH_ENUM(PlayerNumber, p)
+	GAMESTATE->m_iPlayerStageTokens[p] = 1;
 
 	// Autoplay during demonstration
-	FOREACH_EnabledPlayerInfo( m_vPlayerInfo, pi )
-		pi->GetPlayerState()->m_PlayerController = PC_AUTOPLAY;
+	FOREACH_EnabledPlayerInfo(m_vPlayerInfo, pi)
+	pi->GetPlayerState()->m_PlayerController = PC_AUTOPLAY;
 }
 
-void ScreenGameplayLesson::Input( const InputEventPlus &input )
+void ScreenGameplayLesson::Input(const InputEventPlus &input)
 {
 	//LOG->Trace( "ScreenGameplayLesson::Input()" );
 
-	if( m_iCurrentPageIndex != -1 )
+	if (m_iCurrentPageIndex != -1)
 	{
 		// show a lesson page
-		Screen::Input( input );
+		Screen::Input(input);
 	}
 	else
 	{
 		// in the "your turn" section"
-		ScreenGameplay::Input( input );
+		ScreenGameplay::Input(input);
 	}
 }
 
-void ScreenGameplayLesson::HandleScreenMessage( const ScreenMessage SM )
+void ScreenGameplayLesson::HandleScreenMessage(const ScreenMessage SM)
 {
-	if( SM == SM_NotesEnded )
+	if (SM == SM_NotesEnded)
 	{
 		bool bShowingAPage = m_iCurrentPageIndex != -1;
 
 		// While showing a page, loop the music.
-		if( bShowingAPage )
+		if (bShowingAPage)
 		{
 			ResetAndRestartCurrentSong();
 		}
@@ -98,88 +98,96 @@ void ScreenGameplayLesson::HandleScreenMessage( const ScreenMessage SM )
 			bool bCleared = iActual >= iNeeded;
 			bool bAnyTriesLeft = m_Try + 1 < NUM_Try;
 
-			if( bCleared )
+			if (bCleared)
 			{
-				MESSAGEMAN->Broadcast( Message_LessonCleared );
-				this->HandleScreenMessage( SM_LeaveGameplay );
+				MESSAGEMAN->Broadcast(Message_LessonCleared);
+				this->HandleScreenMessage(SM_LeaveGameplay);
 
 				// Commit scores here since we don't go through an eval screen.
 				// Only commit if we've cleared.  Don't commit if we've failed all 3 tries.
-				STATSMAN->m_CurStageStats.FinalizeScores( false );
+				STATSMAN->m_CurStageStats.FinalizeScores(false);
 			}
-			else if( bAnyTriesLeft )
+			else if (bAnyTriesLeft)
 			{
 				ResetAndRestartCurrentSong();
 
-				m_Try = (Try)(m_Try+1);
-				MESSAGEMAN->Broadcast( (MessageID)(Message_LessonTry1+m_Try) );
+				m_Try = (Try)(m_Try + 1);
+				MESSAGEMAN->Broadcast((MessageID)(Message_LessonTry1 + m_Try));
 			}
 			else
 			{
-				this->HandleScreenMessage( SM_BeginFailed );
-				MESSAGEMAN->Broadcast( Message_LessonFailed );
+				this->HandleScreenMessage(SM_BeginFailed);
+				MESSAGEMAN->Broadcast(Message_LessonFailed);
 			}
 		}
 		return;	// handled
 	}
 
-	ScreenGameplay::HandleScreenMessage( SM );
+	ScreenGameplay::HandleScreenMessage(SM);
 }
 
-void ScreenGameplayLesson::MenuStart( const InputEventPlus &input )
+void ScreenGameplayLesson::MenuStart(const InputEventPlus &input)
 {
 	// XXX: Allow repeats?
-	if( m_iCurrentPageIndex == -1 )
+	if (m_iCurrentPageIndex == -1)
+	{
 		return;
-	ChangeLessonPage( +1 );
+	}
+	ChangeLessonPage(+1);
 }
 
-void ScreenGameplayLesson::MenuBack( const InputEventPlus &input )
+void ScreenGameplayLesson::MenuBack(const InputEventPlus &input)
 {
 	// XXX: Allow repeats?
-	if( m_iCurrentPageIndex == 0 )
+	if (m_iCurrentPageIndex == 0)
 	{
 		BeginBackingOutFromGameplay();
 		return;
 	}
-	if( m_iCurrentPageIndex == -1 )
+	if (m_iCurrentPageIndex == -1)
+	{
 		return;
-	ChangeLessonPage( -1 );
+	}
+	ChangeLessonPage(-1);
 }
 
-void ScreenGameplayLesson::ChangeLessonPage( int iDir )
+void ScreenGameplayLesson::ChangeLessonPage(int iDir)
 {
-	if( m_iCurrentPageIndex + iDir < 0 )
+	if (m_iCurrentPageIndex + iDir < 0)
 	{
 		// don't change
 		return;
 	}
-	else if( m_iCurrentPageIndex + iDir >= (int)m_vPages.size() )
+	else if (m_iCurrentPageIndex + iDir >= (int)m_vPages.size())
 	{
-		m_vPages[m_iCurrentPageIndex]->PlayCommand( "Hide" );
+		m_vPages[m_iCurrentPageIndex]->PlayCommand("Hide");
 		m_iCurrentPageIndex = -1;
 
 		ResetAndRestartCurrentSong();
 
-		MESSAGEMAN->Broadcast( (MessageID)(Message_LessonTry1+m_Try) );
+		MESSAGEMAN->Broadcast((MessageID)(Message_LessonTry1 + m_Try));
 
 		// Change back to the current autoplay setting (in most cases, human controlled).
-		FOREACH_EnabledPlayerInfo( m_vPlayerInfo, pi )
+		FOREACH_EnabledPlayerInfo(m_vPlayerInfo, pi)
 		{
 			/* Mike: I'm not sure if you can actually have the player options enabled in this mode,
 			 * but I'm putting the check here anyways to play it safe. If it's unnecessary, then it
 			 * should be removed. */
-			if( pi->GetPlayerState()->m_PlayerOptions.GetCurrent().m_fPlayerAutoPlay != 0 )
+			if (pi->GetPlayerState()->m_PlayerOptions.GetCurrent().m_fPlayerAutoPlay != 0)
+			{
 				pi->GetPlayerState()->m_PlayerController = PC_AUTOPLAY;
+			}
 			else
+			{
 				pi->GetPlayerState()->m_PlayerController = GamePreferences::m_AutoPlay;
+			}
 		}
 	}
 	else
 	{
-		m_vPages[m_iCurrentPageIndex]->PlayCommand( "Hide" );
+		m_vPages[m_iCurrentPageIndex]->PlayCommand("Hide");
 		m_iCurrentPageIndex += iDir;
-		m_vPages[m_iCurrentPageIndex]->PlayCommand( "Show" );
+		m_vPages[m_iCurrentPageIndex]->PlayCommand("Show");
 	}
 }
 
@@ -188,13 +196,13 @@ void ScreenGameplayLesson::ResetAndRestartCurrentSong()
 	STATSMAN->m_CurStageStats.m_player[PLAYER_1].ResetScoreForLesson();
 	m_pSoundMusic->Stop();
 	ReloadCurrentSong();
-	StartPlayingSong( 2, 0 );
+	StartPlayingSong(2, 0);
 }
 
 /*
  * (c) 2003-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -204,7 +212,7 @@ void ScreenGameplayLesson::ResetAndRestartCurrentSong()
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

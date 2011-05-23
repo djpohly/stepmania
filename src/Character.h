@@ -14,11 +14,17 @@ public:
 	Character();
 	~Character() { }
 
-	bool Load( RString sCharDir ); // return true if successful
+	bool Load(RString sCharDir);   // return true if successful
 
 	RString GetTakingABreakPath() const;
-	RString GetCardPath() const { return m_sCardPath; }
-	RString GetIconPath() const { return m_sIconPath; }
+	RString GetCardPath() const
+	{
+		return m_sCardPath;
+	}
+	RString GetIconPath() const
+	{
+		return m_sIconPath;
+	}
 
 	RString GetModelPath() const;
 	RString GetRestAnimationPath() const;
@@ -37,10 +43,13 @@ public:
 	void UndemandGraphics();
 
 	// Lua
-	void PushSelf( Lua *L );
+	void PushSelf(Lua *L);
 
 	// smart accessor
-	const RString &GetDisplayName() { return !m_sDisplayName.empty() ? m_sDisplayName : m_sCharacterID; }
+	const RString &GetDisplayName()
+	{
+		return !m_sDisplayName.empty() ? m_sDisplayName : m_sCharacterID;
+	}
 
 	RString m_sCharDir;
 	RString m_sCharacterID;
@@ -69,7 +78,7 @@ public:
 /*
  * (c) 2003 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -79,7 +88,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

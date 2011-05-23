@@ -10,21 +10,21 @@ class RollingNumbers : public BitmapText
 public:
 	RollingNumbers();
 
-	void Load( const RString &sMetricsGroup );
+	void Load(const RString &sMetricsGroup);
 	virtual RollingNumbers *Copy() const;
 
 	virtual void DrawPrimitives();
-	virtual void Update( float fDeltaTime );
+	virtual void Update(float fDeltaTime);
 
-	/** 
+	/**
 	 * @brief Set the new target number to be reached.
 	 * @param fTargetNumber the new target number. */
-	void SetTargetNumber( float fTargetNumber );
+	void SetTargetNumber(float fTargetNumber);
 
 	void UpdateText();
 
 	// Commands
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 private:
 	ThemeMetric<RString> TEXT_FORMAT;
@@ -47,7 +47,7 @@ private:
  * @author Chris Danford (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -57,7 +57,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

@@ -30,7 +30,7 @@ struct NoteColorActor
 {
 	NoteColorActor();
 	~NoteColorActor();
-	void Load( const RString &sButton, const RString &sElement );
+	void Load(const RString &sButton, const RString &sElement);
 	Actor *Get();
 private:
 	NoteResource *m_p;
@@ -40,13 +40,13 @@ struct NoteColorSprite
 {
 	NoteColorSprite();
 	~NoteColorSprite();
-	void Load( const RString &sButton, const RString &sElement );
+	void Load(const RString &sButton, const RString &sElement);
 	Sprite *Get();
 private:
 	NoteResource *m_p;
 };
 /** @brief What types of holds are there? */
-enum HoldType 
+enum HoldType
 {
 	hold, /**< Merely keep your foot held on the body for it to count. */
 	roll, /**< Keep hitting the hold body for it to stay alive. */
@@ -56,7 +56,7 @@ enum HoldType
 };
 /** @brief Loop through each HoldType. */
 #define FOREACH_HoldType( i ) FOREACH_ENUM( HoldType, i )
-const RString &HoldTypeToString( HoldType ht );
+const RString &HoldTypeToString(HoldType ht);
 
 enum ActiveType
 {
@@ -67,7 +67,7 @@ enum ActiveType
 };
 /** @brief Loop through each ActiveType. */
 #define FOREACH_ActiveType( i ) FOREACH_ENUM( ActiveType, i )
-const RString &ActiveTypeToString( ActiveType at );
+const RString &ActiveTypeToString(ActiveType at);
 
 /** @brief Draws TapNotes and HoldNotes. */
 class NoteDisplay
@@ -76,32 +76,32 @@ public:
 	NoteDisplay();
 	~NoteDisplay();
 
-	void Load( int iColNum, const PlayerState* pPlayerState, float fYReverseOffsetPixels );
+	void Load(int iColNum, const PlayerState* pPlayerState, float fYReverseOffsetPixels);
 
-	static void Update( float fDeltaTime );
+	static void Update(float fDeltaTime);
 
-	void DrawTap( const TapNote& tn, int iCol, float fBeat, bool bOnSameRowAsHoldStart, bool bIsAddition,
-		float fPercentFadeToFail, float fReverseOffsetPixels, float fDrawDistanceAfterTargetsPixels, float fDrawDistanceBeforeTargetsPixels, float fFadeInPercentOfDrawFar );
-	void DrawHold( const TapNote& tn, int iCol, int iRow, bool bIsBeingHeld, const HoldNoteResult &Result, 
-		bool bIsAddition, float fPercentFadeToFail, float fReverseOffsetPixels, float fDrawDistanceAfterTargetsPixels, float fDrawDistanceBeforeTargetsPixels, 
-		float fDrawDistanceBeforeTargetsPixels2, float fFadeInPercentOfDrawFar );
-	
+	void DrawTap(const TapNote& tn, int iCol, float fBeat, bool bOnSameRowAsHoldStart, bool bIsAddition,
+	             float fPercentFadeToFail, float fReverseOffsetPixels, float fDrawDistanceAfterTargetsPixels, float fDrawDistanceBeforeTargetsPixels, float fFadeInPercentOfDrawFar);
+	void DrawHold(const TapNote& tn, int iCol, int iRow, bool bIsBeingHeld, const HoldNoteResult &Result,
+	              bool bIsAddition, float fPercentFadeToFail, float fReverseOffsetPixels, float fDrawDistanceAfterTargetsPixels, float fDrawDistanceBeforeTargetsPixels,
+	              float fDrawDistanceBeforeTargetsPixels2, float fFadeInPercentOfDrawFar);
+
 	bool DrawHoldHeadForTapsOnSameRow() const;
 
 private:
-	void SetActiveFrame( float fNoteBeat, Actor &actorToSet, float fAnimationLength, bool bVivid );
-	Actor *GetTapActor( NoteColorActor &nca, NotePart part, float fNoteBeat );
-	Actor *GetHoldActor( NoteColorActor nca[NUM_HoldType][NUM_ActiveType], NotePart part, float fNoteBeat, bool bIsRoll, bool bIsBeingHeld );
-	Sprite *GetHoldSprite( NoteColorSprite ncs[NUM_HoldType][NUM_ActiveType], NotePart part, float fNoteBeat, bool bIsRoll, bool bIsBeingHeld );
+	void SetActiveFrame(float fNoteBeat, Actor &actorToSet, float fAnimationLength, bool bVivid);
+	Actor *GetTapActor(NoteColorActor &nca, NotePart part, float fNoteBeat);
+	Actor *GetHoldActor(NoteColorActor nca[NUM_HoldType][NUM_ActiveType], NotePart part, float fNoteBeat, bool bIsRoll, bool bIsBeingHeld);
+	Sprite *GetHoldSprite(NoteColorSprite ncs[NUM_HoldType][NUM_ActiveType], NotePart part, float fNoteBeat, bool bIsRoll, bool bIsBeingHeld);
 
-	void DrawActor( const TapNote& tn, Actor* pActor, NotePart part, int iCol, float fYOffset, float fBeat, bool bIsAddition, float fPercentFadeToFail,
-			float fReverseOffsetPixels, float fColorScale, float fDrawDistanceAfterTargetsPixels, float fDrawDistanceBeforeTargetsPixels, float fFadeInPercentOfDrawFar );
-	void DrawHoldBody( const TapNote& tn, int iCol, float fBeat, bool bIsBeingHeld, float fYHead, float fYTail, bool bIsAddition, float fPercentFadeToFail, 
-			   float fColorScale, 
-			   bool bGlow, float fDrawDistanceAfterTargetsPixels, float fDrawDistanceBeforeTargetsPixels, float fFadeInPercentOfDrawFar );
-	void DrawHoldPart( vector<Sprite*> &vpSpr, int iCol, int fYStep, float fPercentFadeToFail, float fColorScale, bool bGlow,
-			   float fDrawDistanceAfterTargetsPixels, float fDrawDistanceBeforeTargetsPixels, float fFadeInPercentOfDrawFar, float fOverlappedTime,
-			   float fYTop, float fYBottom, float fYStartPos, float fYEndPos, bool bWrapping, bool bAnchorToTop, bool bFlipTextureVertically );
+	void DrawActor(const TapNote& tn, Actor* pActor, NotePart part, int iCol, float fYOffset, float fBeat, bool bIsAddition, float fPercentFadeToFail,
+	               float fReverseOffsetPixels, float fColorScale, float fDrawDistanceAfterTargetsPixels, float fDrawDistanceBeforeTargetsPixels, float fFadeInPercentOfDrawFar);
+	void DrawHoldBody(const TapNote& tn, int iCol, float fBeat, bool bIsBeingHeld, float fYHead, float fYTail, bool bIsAddition, float fPercentFadeToFail,
+	                  float fColorScale,
+	                  bool bGlow, float fDrawDistanceAfterTargetsPixels, float fDrawDistanceBeforeTargetsPixels, float fFadeInPercentOfDrawFar);
+	void DrawHoldPart(vector<Sprite*> &vpSpr, int iCol, int fYStep, float fPercentFadeToFail, float fColorScale, bool bGlow,
+	                  float fDrawDistanceAfterTargetsPixels, float fDrawDistanceBeforeTargetsPixels, float fFadeInPercentOfDrawFar, float fOverlappedTime,
+	                  float fYTop, float fYBottom, float fYStartPos, float fYEndPos, bool bWrapping, bool bAnchorToTop, bool bFlipTextureVertically);
 
 	const PlayerState	*m_pPlayerState;	// to look up PlayerOptions
 	NoteMetricCache_t	*cache;
@@ -125,7 +125,7 @@ private:
  * @author Brian Bugh, Ben Nordstrom, Chris Danford, Steve Checkoway (c) 2001-2006
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -135,7 +135,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

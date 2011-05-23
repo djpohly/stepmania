@@ -16,117 +16,165 @@
 
 namespace
 {
-	LocalizedString CREDITS_PRESS_START("ScreenSystemLayer","CreditsPressStart");
-	LocalizedString CREDITS_INSERT_CARD("ScreenSystemLayer","CreditsInsertCard");
-	LocalizedString CREDITS_CARD_TOO_LATE("ScreenSystemLayer","CreditsCardTooLate");
-	LocalizedString CREDITS_CARD_NO_NAME("ScreenSystemLayer","CreditsCardNoName");
-	LocalizedString CREDITS_CARD_READY("ScreenSystemLayer","CreditsCardReady");
-	LocalizedString CREDITS_CARD_CHECKING("ScreenSystemLayer","CreditsCardChecking");
-	LocalizedString CREDITS_CARD_REMOVED("ScreenSystemLayer","CreditsCardRemoved");
-	LocalizedString CREDITS_FREE_PLAY("ScreenSystemLayer","CreditsFreePlay");
-	LocalizedString CREDITS_CREDITS("ScreenSystemLayer","CreditsCredits");
-	LocalizedString CREDITS_MAX("ScreenSystemLayer","CreditsMax");
-	LocalizedString CREDITS_NOT_PRESENT("ScreenSystemLayer","CreditsNotPresent");
-	LocalizedString CREDITS_LOAD_FAILED("ScreenSystemLayer","CreditsLoadFailed");
-	LocalizedString CREDITS_LOADED_FROM_LAST_GOOD_APPEND("ScreenSystemLayer","CreditsLoadedFromLastGoodAppend");
+	LocalizedString CREDITS_PRESS_START("ScreenSystemLayer", "CreditsPressStart");
+	LocalizedString CREDITS_INSERT_CARD("ScreenSystemLayer", "CreditsInsertCard");
+	LocalizedString CREDITS_CARD_TOO_LATE("ScreenSystemLayer", "CreditsCardTooLate");
+	LocalizedString CREDITS_CARD_NO_NAME("ScreenSystemLayer", "CreditsCardNoName");
+	LocalizedString CREDITS_CARD_READY("ScreenSystemLayer", "CreditsCardReady");
+	LocalizedString CREDITS_CARD_CHECKING("ScreenSystemLayer", "CreditsCardChecking");
+	LocalizedString CREDITS_CARD_REMOVED("ScreenSystemLayer", "CreditsCardRemoved");
+	LocalizedString CREDITS_FREE_PLAY("ScreenSystemLayer", "CreditsFreePlay");
+	LocalizedString CREDITS_CREDITS("ScreenSystemLayer", "CreditsCredits");
+	LocalizedString CREDITS_MAX("ScreenSystemLayer", "CreditsMax");
+	LocalizedString CREDITS_NOT_PRESENT("ScreenSystemLayer", "CreditsNotPresent");
+	LocalizedString CREDITS_LOAD_FAILED("ScreenSystemLayer", "CreditsLoadFailed");
+	LocalizedString CREDITS_LOADED_FROM_LAST_GOOD_APPEND("ScreenSystemLayer", "CreditsLoadedFromLastGoodAppend");
 
-	ThemeMetric<bool> CREDITS_JOIN_ONLY( "ScreenSystemLayer", "CreditsJoinOnly" );
+	ThemeMetric<bool> CREDITS_JOIN_ONLY("ScreenSystemLayer", "CreditsJoinOnly");
 
-	RString GetCreditsMessage( PlayerNumber pn )
+	RString GetCreditsMessage(PlayerNumber pn)
 	{
-		if( (bool)CREDITS_JOIN_ONLY && !GAMESTATE->PlayersCanJoin() )
+		if ((bool)CREDITS_JOIN_ONLY && !GAMESTATE->PlayersCanJoin())
+		{
 			return RString();
+		}
 
 		bool bShowCreditsMessage;
-		if( SCREENMAN && SCREENMAN->GetTopScreen() && SCREENMAN->GetTopScreen()->GetScreenType() == system_menu )
-			bShowCreditsMessage = true;
-		else if( MEMCARDMAN->GetCardLocked(pn) )
-			bShowCreditsMessage = !GAMESTATE->IsPlayerEnabled( pn );
-		else 
-			bShowCreditsMessage = !GAMESTATE->m_bSideIsJoined[pn];
-			
-		if( !bShowCreditsMessage )
+		if (SCREENMAN && SCREENMAN->GetTopScreen() && SCREENMAN->GetTopScreen()->GetScreenType() == system_menu)
 		{
-			MemoryCardState mcs = MEMCARDMAN->GetCardState( pn );
-			const Profile* pProfile = PROFILEMAN->GetProfile( pn );
-			switch( mcs )
-			{
-			DEFAULT_FAIL( mcs );
-			case MemoryCardState_NoCard:
-				// this is a local machine profile
-				if( PROFILEMAN->LastLoadWasFromLastGood(pn) )
-					return pProfile->GetDisplayNameOrHighScoreName() + CREDITS_LOADED_FROM_LAST_GOOD_APPEND.GetValue();
-				else if( PROFILEMAN->LastLoadWasTamperedOrCorrupt(pn) )
-					return CREDITS_LOAD_FAILED.GetValue();
-				// Prefer the name of the profile over the name of the card.
-				else if( PROFILEMAN->IsPersistentProfile(pn) )
-					return pProfile->GetDisplayNameOrHighScoreName();
-				else if( GAMESTATE->PlayersCanJoin() )
-					return CREDITS_INSERT_CARD.GetValue();
-				else
-					return RString();
+			bShowCreditsMessage = true;
+		}
+		else if (MEMCARDMAN->GetCardLocked(pn))
+		{
+			bShowCreditsMessage = !GAMESTATE->IsPlayerEnabled(pn);
+		}
+		else
+		{
+			bShowCreditsMessage = !GAMESTATE->m_bSideIsJoined[pn];
+		}
 
-			case MemoryCardState_Error: 		return THEME->GetString( "ScreenSystemLayer", "CreditsCard" + MEMCARDMAN->GetCardError(pn) );
-			case MemoryCardState_TooLate:		return CREDITS_CARD_TOO_LATE.GetValue();
-			case MemoryCardState_Checking:		return CREDITS_CARD_CHECKING.GetValue();
-			case MemoryCardState_Removed:		return CREDITS_CARD_REMOVED.GetValue();
-			case MemoryCardState_Ready:
+		if (!bShowCreditsMessage)
+		{
+			MemoryCardState mcs = MEMCARDMAN->GetCardState(pn);
+			const Profile* pProfile = PROFILEMAN->GetProfile(pn);
+			switch (mcs)
+			{
+					DEFAULT_FAIL(mcs);
+				case MemoryCardState_NoCard:
+					// this is a local machine profile
+					if (PROFILEMAN->LastLoadWasFromLastGood(pn))
+					{
+						return pProfile->GetDisplayNameOrHighScoreName() + CREDITS_LOADED_FROM_LAST_GOOD_APPEND.GetValue();
+					}
+					else if (PROFILEMAN->LastLoadWasTamperedOrCorrupt(pn))
+					{
+						return CREDITS_LOAD_FAILED.GetValue();
+					}
+					// Prefer the name of the profile over the name of the card.
+					else if (PROFILEMAN->IsPersistentProfile(pn))
+					{
+						return pProfile->GetDisplayNameOrHighScoreName();
+					}
+					else if (GAMESTATE->PlayersCanJoin())
+					{
+						return CREDITS_INSERT_CARD.GetValue();
+					}
+					else
+					{
+						return RString();
+					}
+
+				case MemoryCardState_Error:
+					return THEME->GetString("ScreenSystemLayer", "CreditsCard" + MEMCARDMAN->GetCardError(pn));
+				case MemoryCardState_TooLate:
+					return CREDITS_CARD_TOO_LATE.GetValue();
+				case MemoryCardState_Checking:
+					return CREDITS_CARD_CHECKING.GetValue();
+				case MemoryCardState_Removed:
+					return CREDITS_CARD_REMOVED.GetValue();
+				case MemoryCardState_Ready:
 				{
 					// If the profile failed to load and there was no usable backup...
-					if( PROFILEMAN->LastLoadWasTamperedOrCorrupt(pn) && !PROFILEMAN->LastLoadWasFromLastGood(pn) )
+					if (PROFILEMAN->LastLoadWasTamperedOrCorrupt(pn) && !PROFILEMAN->LastLoadWasFromLastGood(pn))
+					{
 						return CREDITS_LOAD_FAILED.GetValue();
+					}
 
 					// If there is a local profile loaded, prefer it over the name of the memory card.
-					if( PROFILEMAN->IsPersistentProfile(pn) )
+					if (PROFILEMAN->IsPersistentProfile(pn))
 					{
 						RString s = pProfile->GetDisplayNameOrHighScoreName();
-						if( s.empty() )
+						if (s.empty())
+						{
 							s = CREDITS_CARD_NO_NAME.GetValue();
-						if( PROFILEMAN->LastLoadWasFromLastGood(pn) )
+						}
+						if (PROFILEMAN->LastLoadWasFromLastGood(pn))
+						{
 							s += CREDITS_LOADED_FROM_LAST_GOOD_APPEND.GetValue();
+						}
 						return s;
 					}
-					else if( !MEMCARDMAN->IsNameAvailable(pn) )
+					else if (!MEMCARDMAN->IsNameAvailable(pn))
+					{
 						return CREDITS_CARD_READY.GetValue();
-					else if( !MEMCARDMAN->GetName(pn).empty() )
+					}
+					else if (!MEMCARDMAN->GetName(pn).empty())
+					{
 						return MEMCARDMAN->GetName(pn);
+					}
 					else
+					{
 						return CREDITS_CARD_NO_NAME.GetValue();
+					}
 				}
 			}
 		}
 		else // bShowCreditsMessage
 		{
-			switch( GAMESTATE->GetCoinMode() )
+			switch (GAMESTATE->GetCoinMode())
 			{
-			case CoinMode_Home:
-				if( GAMESTATE->PlayersCanJoin() )
-					return CREDITS_PRESS_START.GetValue();
-				else
-					return CREDITS_NOT_PRESENT.GetValue();
+				case CoinMode_Home:
+					if (GAMESTATE->PlayersCanJoin())
+					{
+						return CREDITS_PRESS_START.GetValue();
+					}
+					else
+					{
+						return CREDITS_NOT_PRESENT.GetValue();
+					}
 
-			case CoinMode_Pay:
-			{
-				int iCredits = GAMESTATE->m_iCoins / PREFSMAN->m_iCoinsPerCredit;
-				int iCoins = GAMESTATE->m_iCoins % PREFSMAN->m_iCoinsPerCredit;
-				RString sCredits = CREDITS_CREDITS;
-				// todo: allow themers to change these strings -aj
-				if( iCredits > 0 || PREFSMAN->m_iCoinsPerCredit == 1 )
-					sCredits += ssprintf("  %d", iCredits);
-				if( PREFSMAN->m_iCoinsPerCredit > 1 )
-					sCredits += ssprintf("  %d/%d", iCoins, PREFSMAN->m_iCoinsPerCredit.Get() );
-				if( iCredits >= MAX_NUM_CREDITS )
-					sCredits += "  " + CREDITS_MAX.GetValue();
-				return sCredits;
-			}
-			case CoinMode_Free:
-				if( GAMESTATE->PlayersCanJoin() )
-					return CREDITS_FREE_PLAY.GetValue();
-				else
-					return CREDITS_NOT_PRESENT.GetValue();
+				case CoinMode_Pay:
+				{
+					int iCredits = GAMESTATE->m_iCoins / PREFSMAN->m_iCoinsPerCredit;
+					int iCoins = GAMESTATE->m_iCoins % PREFSMAN->m_iCoinsPerCredit;
+					RString sCredits = CREDITS_CREDITS;
+					// todo: allow themers to change these strings -aj
+					if (iCredits > 0 || PREFSMAN->m_iCoinsPerCredit == 1)
+					{
+						sCredits += ssprintf("  %d", iCredits);
+					}
+					if (PREFSMAN->m_iCoinsPerCredit > 1)
+					{
+						sCredits += ssprintf("  %d/%d", iCoins, PREFSMAN->m_iCoinsPerCredit.Get());
+					}
+					if (iCredits >= MAX_NUM_CREDITS)
+					{
+						sCredits += "  " + CREDITS_MAX.GetValue();
+					}
+					return sCredits;
+				}
+				case CoinMode_Free:
+					if (GAMESTATE->PlayersCanJoin())
+					{
+						return CREDITS_FREE_PLAY.GetValue();
+					}
+					else
+					{
+						return CREDITS_NOT_PRESENT.GetValue();
+					}
 
-			default:
-				ASSERT(0);
+				default:
+					ASSERT(0);
 			}
 		}
 	}
@@ -138,36 +186,36 @@ namespace
 
 namespace
 {
-	int GetCreditsMessage( lua_State *L )
+	int GetCreditsMessage(lua_State *L)
 	{
 		PlayerNumber pn = Enum::Check<PlayerNumber>(L, 1);
-		RString sText = GetCreditsMessage( pn );
-		LuaHelpers::Push( L, sText );
+		RString sText = GetCreditsMessage(pn);
+		LuaHelpers::Push(L, sText);
 		return 1;
 	}
 
 	const luaL_Reg ScreenSystemLayerHelpersTable[] =
 	{
-		LIST_METHOD( GetCreditsMessage ),
+		LIST_METHOD(GetCreditsMessage),
 		{ NULL, NULL }
 	};
 }
 
-LUA_REGISTER_NAMESPACE( ScreenSystemLayerHelpers )
+LUA_REGISTER_NAMESPACE(ScreenSystemLayerHelpers)
 
-REGISTER_SCREEN_CLASS( ScreenSystemLayer );
+REGISTER_SCREEN_CLASS(ScreenSystemLayer);
 void ScreenSystemLayer::Init()
 {
 	Screen::Init();
 
-	m_sprOverlay.Load( THEME->GetPathB("ScreenSystemLayer", "overlay") );
-	this->AddChild( m_sprOverlay );
+	m_sprOverlay.Load(THEME->GetPathB("ScreenSystemLayer", "overlay"));
+	this->AddChild(m_sprOverlay);
 }
 
 /*
  * (c) 2001-2005 Chris Danford, Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -177,7 +225,7 @@ void ScreenSystemLayer::Init()
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

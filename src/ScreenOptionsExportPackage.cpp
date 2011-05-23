@@ -12,14 +12,14 @@
 #include "SpecialFiles.h"
 #include "ScreenPrompt.h"
 
-REGISTER_SCREEN_CLASS( ScreenOptionsExportPackage );
+REGISTER_SCREEN_CLASS(ScreenOptionsExportPackage);
 
 void ScreenOptionsExportPackage::Init()
 {
 	ScreenOptions::Init();
 
-	SetNavigation( NAV_THREE_KEY_MENU );
-	SetInputMode( INPUTMODE_SHARE_CURSOR );
+	SetNavigation(NAV_THREE_KEY_MENU);
+	SetInputMode(INPUTMODE_SHARE_CURSOR);
 }
 
 void ScreenOptionsExportPackage::BeginScreen()
@@ -30,48 +30,48 @@ void ScreenOptionsExportPackage::BeginScreen()
 	{
 		// Add themes
 		{
-			GetDirListing( SpecialFiles::THEMES_DIR + "*", m_vsPossibleDirsToExport, true, true );
+			GetDirListing(SpecialFiles::THEMES_DIR + "*", m_vsPossibleDirsToExport, true, true);
 		}
 
 		// Add NoteSkins
 		{
 			vector<RString> vs;
-			GetDirListing( SpecialFiles::NOTESKINS_DIR + "*", vs, true, true );
-			FOREACH_CONST( RString, vs, s )
-				GetDirListing( *s + "*", m_vsPossibleDirsToExport, true, true );
+			GetDirListing(SpecialFiles::NOTESKINS_DIR + "*", vs, true, true);
+			FOREACH_CONST(RString, vs, s)
+			GetDirListing(*s + "*", m_vsPossibleDirsToExport, true, true);
 		}
 
 		// Add courses. Only support courses that are in a group folder.
 		// Support for courses not in a group folder should be phased out.
 		{
 			vector<RString> vs;
-			GetDirListing( SpecialFiles::COURSES_DIR + "*", vs, true, true );
-			StripCvsAndSvn( vs );
-			StripMacResourceForks( vs );
-			FOREACH_CONST( RString, vs, s )
+			GetDirListing(SpecialFiles::COURSES_DIR + "*", vs, true, true);
+			StripCvsAndSvn(vs);
+			StripMacResourceForks(vs);
+			FOREACH_CONST(RString, vs, s)
 			{
-				m_vsPossibleDirsToExport.push_back( *s );
-				GetDirListing( *s + "/*", m_vsPossibleDirsToExport, true, true );
+				m_vsPossibleDirsToExport.push_back(*s);
+				GetDirListing(*s + "/*", m_vsPossibleDirsToExport, true, true);
 			}
 		}
 
 		// Add songs
 		{
 			vector<RString> vs;
-			GetDirListing( SpecialFiles::SONGS_DIR + "*", vs, true, true );
-			FOREACH_CONST( RString, vs, s )
+			GetDirListing(SpecialFiles::SONGS_DIR + "*", vs, true, true);
+			FOREACH_CONST(RString, vs, s)
 			{
-				m_vsPossibleDirsToExport.push_back( *s );
-				GetDirListing( *s + "/*", m_vsPossibleDirsToExport, true, true );
+				m_vsPossibleDirsToExport.push_back(*s);
+				GetDirListing(*s + "/*", m_vsPossibleDirsToExport, true, true);
 			}
 		}
 
-		StripCvsAndSvn( m_vsPossibleDirsToExport );
-		StripMacResourceForks( m_vsPossibleDirsToExport );
+		StripCvsAndSvn(m_vsPossibleDirsToExport);
+		StripMacResourceForks(m_vsPossibleDirsToExport);
 	}
 
 	vector<OptionRowHandler*> OptionRowHandlers;
-	FOREACH_CONST( RString, m_vsPossibleDirsToExport, s )
+	FOREACH_CONST(RString, m_vsPossibleDirsToExport, s)
 	{
 		OptionRowHandler *pHand = OptionRowHandlerUtil::MakeNull();
 		OptionRowDefinition &def = pHand->m_Def;
@@ -82,28 +82,31 @@ void ScreenOptionsExportPackage::BeginScreen()
 		def.m_sName = *s;
 		def.m_sExplanationName = "# files, # MB, # subdirs";
 
-		def.m_vsChoices.push_back( "" );
-		OptionRowHandlers.push_back( pHand );
+		def.m_vsChoices.push_back("");
+		OptionRowHandlers.push_back(pHand);
 	}
-	ScreenOptions::InitMenu( OptionRowHandlers );
+	ScreenOptions::InitMenu(OptionRowHandlers);
 
 	ScreenOptions::BeginScreen();
 }
 
-static RString ReplaceInvalidFileNameChars( RString sOldFileName )
+static RString ReplaceInvalidFileNameChars(RString sOldFileName)
 {
 	RString sNewFileName = sOldFileName;
-	const char charsToReplace[] = { 
-		' ', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', 
+	const char charsToReplace[] =
+	{
+		' ', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
 		'+', '=', '[', ']', '{', '}', '|', ':', '\"', '\\',
-		'<', '>', ',', '?', '/' 
+		'<', '>', ',', '?', '/'
 	};
-	for( unsigned i=0; i<sizeof(charsToReplace); i++ )
-		sNewFileName.Replace( charsToReplace[i], '_' );
+	for (unsigned i = 0; i < sizeof(charsToReplace); i++)
+	{
+		sNewFileName.Replace(charsToReplace[i], '_');
+	}
 	return sNewFileName;
 }
 
-static bool ExportPackage( RString sPackageName, RString sDirToExport, RString &sErrorOut )
+static bool ExportPackage(RString sPackageName, RString sDirToExport, RString &sErrorOut)
 {
 	/*
 	RageFile f;
@@ -142,34 +145,40 @@ static bool ExportPackage( RString sPackageName, RString sDirToExport, RString &
 	return false;
 }
 
-void ScreenOptionsExportPackage::ProcessMenuStart( const InputEventPlus &input )
+void ScreenOptionsExportPackage::ProcessMenuStart(const InputEventPlus &input)
 {
-	if( IsTransitioning() )
+	if (IsTransitioning())
+	{
 		return;
+	}
 
 	int iCurRow = m_iCurrentRow[GAMESTATE->m_MasterPlayerNumber];
-	if( m_pRows[iCurRow]->GetRowType() == OptionRow::RowType_Exit )
+	if (m_pRows[iCurRow]->GetRowType() == OptionRow::RowType_Exit)
 	{
-		ScreenOptions::ProcessMenuStart( input );
+		ScreenOptions::ProcessMenuStart(input);
 		return;
 	}
 
 	RString sDirToExport = m_vsPossibleDirsToExport[ iCurRow ];
-	RString sPackageName = ReplaceInvalidFileNameChars( sDirToExport + ".smzip" );
+	RString sPackageName = ReplaceInvalidFileNameChars(sDirToExport + ".smzip");
 
 	RString sError;
-	if( ExportPackage(sPackageName, sDirToExport, sError) )
-		ScreenPrompt::Prompt( SM_None, ssprintf("Exported '%s' to the desktop", sDirToExport.c_str()) );
+	if (ExportPackage(sPackageName, sDirToExport, sError))
+	{
+		ScreenPrompt::Prompt(SM_None, ssprintf("Exported '%s' to the desktop", sDirToExport.c_str()));
+	}
 	else
-		ScreenPrompt::Prompt( SM_None, ssprintf("Failed to export package: %s",sError.c_str()) );
+	{
+		ScreenPrompt::Prompt(SM_None, ssprintf("Failed to export package: %s", sError.c_str()));
+	}
 }
 
-void ScreenOptionsExportPackage::ImportOptions( int iRow, const vector<PlayerNumber> &vpns )
+void ScreenOptionsExportPackage::ImportOptions(int iRow, const vector<PlayerNumber> &vpns)
 {
 
 }
 
-void ScreenOptionsExportPackage::ExportOptions( int iRow, const vector<PlayerNumber> &vpns )
+void ScreenOptionsExportPackage::ExportOptions(int iRow, const vector<PlayerNumber> &vpns)
 {
 
 }
@@ -177,7 +186,7 @@ void ScreenOptionsExportPackage::ExportOptions( int iRow, const vector<PlayerNum
 /*
  * (c) 2002-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -187,7 +196,7 @@ void ScreenOptionsExportPackage::ExportOptions( int iRow, const vector<PlayerNum
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

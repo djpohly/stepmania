@@ -9,7 +9,7 @@
 // Map from "&foo;" to a UTF-8 string.
 typedef map<RString, wchar_t, StdString::StdStringLessNoCase> aliasmap;
 static aliasmap CharAliases;
-static map<RString,RString> CharAliasRepl;
+static map<RString, RString> CharAliasRepl;
 
 /* Editing this file in VC6 will be rather ugly, since it contains a lot of UTF-8.
  * Just don't change anything you can't read. :) */
@@ -70,8 +70,10 @@ And here's one for a kanji page:
 
 static void InitCharAliases()
 {
-	if(!CharAliases.empty())
+	if (!CharAliases.empty())
+	{
 		return;
+	}
 
 	CharAliases["default"]		= FONT_DEFAULT_GLYPH;	// ?
 	CharAliases["invalid"]		= INVALID_CHAR;			// 0xFFFD
@@ -84,10 +86,12 @@ static void InitCharAliases()
 	// todo: convert this into a vector? that way we can dynamically add
 	// to the list easier. -aj(?)
 	// Hiragana:
-	struct alias {
+	struct alias
+	{
 		const char *str;
 		wchar_t chr;
-	} aliases[] = {
+	} aliases[] =
+	{
 		{ "ha", 	0x3042 }, /* あ */
 		{ "hi",		0x3044 }, /* い */
 		{ "hu",		0x3046 }, /* う */
@@ -317,7 +321,7 @@ static void InitCharAliases()
 		{ "select",	INTERNAL },
 		// PlayStation-style controller
 		{ "auxx",	INTERNAL },
-		{ "auxtriangle",INTERNAL },
+		{ "auxtriangle", INTERNAL },
 		{ "auxsquare",	INTERNAL },
 		{ "auxcircle",	INTERNAL },
 		{ "auxl1",	INTERNAL },
@@ -351,16 +355,18 @@ static void InitCharAliases()
 	};
 
 	int iNextInternalUseCodepoint = 0xE000;
-	for( unsigned n = 0; aliases[n].str; ++n )
+	for (unsigned n = 0; aliases[n].str; ++n)
 	{
 		int iCodepoint = aliases[n].chr;
-		if( iCodepoint == INTERNAL )
+		if (iCodepoint == INTERNAL)
+		{
 			iCodepoint = iNextInternalUseCodepoint++;
+		}
 
 		CharAliases[aliases[n].str] = iCodepoint;
 	}
 
-	for(aliasmap::const_iterator i = CharAliases.begin(); i != CharAliases.end(); ++i)
+	for (aliasmap::const_iterator i = CharAliases.begin(); i != CharAliases.end(); ++i)
 	{
 		RString from = i->first;
 		RString to = WcharToUTF8(i->second);
@@ -370,20 +376,22 @@ static void InitCharAliases()
 }
 
 // Replace all &markers; and &#NNNN;s with UTF-8.
-void FontCharAliases::ReplaceMarkers( RString &sText )
+void FontCharAliases::ReplaceMarkers(RString &sText)
 {
 	InitCharAliases();
-	ReplaceEntityText( sText, CharAliasRepl );
+	ReplaceEntityText(sText, CharAliasRepl);
 	Replace_Unicode_Markers(sText);
 }
 
 // Replace all &markers; and &#NNNN;s with UTF-8.
-bool FontCharAliases::GetChar( RString &codepoint, wchar_t &ch )
+bool FontCharAliases::GetChar(RString &codepoint, wchar_t &ch)
 {
 	InitCharAliases();
 	aliasmap::const_iterator i = CharAliases.find(codepoint);
-	if(i == CharAliases.end())
+	if (i == CharAliases.end())
+	{
 		return false;
+	}
 
 	ch = i->second;
 	return true;
@@ -392,7 +400,7 @@ bool FontCharAliases::GetChar( RString &codepoint, wchar_t &ch )
 /*
  * (c) 2003 Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -402,7 +410,7 @@ bool FontCharAliases::GetChar( RString &codepoint, wchar_t &ch )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

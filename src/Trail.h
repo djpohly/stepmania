@@ -10,12 +10,12 @@ class Song;
 class Steps;
 struct lua_State;
 
-/** @brief One such Song and 
+/** @brief One such Song and
  * <a class="el" href="class_steps.html">Step</a> in the entire Trail. */
 struct TrailEntry
 {
-	TrailEntry(): 
-		pSong(NULL), 
+	TrailEntry():
+		pSong(NULL),
 		pSteps(NULL),
 		Modifiers(""),
 		Attacks(),
@@ -25,7 +25,7 @@ struct TrailEntry
 		dc(Difficulty_Invalid)
 	{
 	}
-	void GetAttackArray( AttackArray &out ) const;
+	void GetAttackArray(AttackArray &out) const;
 
 	/** @brief The Song involved in the entry. */
 	Song*		pSong;
@@ -46,12 +46,15 @@ struct TrailEntry
 	int		iLowMeter;
 	int		iHighMeter;
 	Difficulty	dc;
-	bool operator== ( const TrailEntry &rhs ) const;
-	bool operator!= ( const TrailEntry &rhs ) const { return !(*this==rhs); }
+	bool operator== (const TrailEntry &rhs) const;
+	bool operator!= (const TrailEntry &rhs) const
+	{
+		return !(*this == rhs);
+	}
 	bool ContainsTransformOrTurn() const;
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 };
 
 /** @brief A queue of Songs and Steps that are generated from a Course. */
@@ -86,18 +89,18 @@ public:
 	}
 
 	const RadarValues &GetRadarValues() const;
-	void SetRadarValues( const RadarValues &rv ); // for pre-populating cache
+	void SetRadarValues(const RadarValues &rv);   // for pre-populating cache
 	int GetMeter() const;
 	int GetTotalMeter() const;
 	float GetLengthSeconds() const;
-	void GetDisplayBpms( DisplayBpms &AddTo ) const;
+	void GetDisplayBpms(DisplayBpms &AddTo) const;
 	bool IsSecret() const;
-	bool ContainsSong( const Song *pSong ) const;
+	bool ContainsSong(const Song *pSong) const;
 
 	CachedObject<Trail> m_CachedObject;
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 };
 
 #endif
@@ -107,7 +110,7 @@ public:
  * @author Chris Danford, Glenn Maynard (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -117,7 +120,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

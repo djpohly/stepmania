@@ -8,16 +8,19 @@ class RageFileDriverZip: public RageFileDriver
 {
 public:
 	RageFileDriverZip();
-	RageFileDriverZip( const RString &sPath );
-	bool Load( const RString &sPath );
-	bool Load( RageFileBasic *pFile );
+	RageFileDriverZip(const RString &sPath);
+	bool Load(const RString &sPath);
+	bool Load(RageFileBasic *pFile);
 
 	virtual ~RageFileDriverZip();
 
-	RageFileBasic *Open( const RString &sPath, int iMode, int &iErr );
-	void FlushDirCache( const RString &sPath );
+	RageFileBasic *Open(const RString &sPath, int iMode, int &iErr);
+	void FlushDirCache(const RString &sPath);
 
-	void DeleteFileWhenFinished() { m_bFileOwned = true; }
+	void DeleteFileWhenFinished()
+	{
+		m_bFileOwned = true;
+	}
 
 	/* Lower-level access: */
 	enum ZipCompressionMethod { STORED = 0, DEFLATED = 8 };
@@ -34,9 +37,12 @@ public:
 		/* If 0, unknown. */
 		int m_iFilePermissions;
 	};
-	const FileInfo *GetFileInfo( const RString &sPath ) const;
+	const FileInfo *GetFileInfo(const RString &sPath) const;
 
-	RString GetGlobalComment() const { return m_sComment; }
+	RString GetGlobalComment() const
+	{
+		return m_sComment;
+	}
 
 private:
 	bool m_bFileOwned;
@@ -52,10 +58,10 @@ private:
 	RageMutex m_Mutex;
 
 	bool ParseZipfile();
-	bool ReadEndCentralRecord( int &total_entries_central_dir, int &offset_start_central_directory );
-	int ProcessCdirFileHdr( FileInfo &info );
+	bool ReadEndCentralRecord(int &total_entries_central_dir, int &offset_start_central_directory);
+	int ProcessCdirFileHdr(FileInfo &info);
 	bool SeekToEndCentralRecord();
-	bool ReadLocalFileHeader( FileInfo &info );
+	bool ReadLocalFileHeader(FileInfo &info);
 };
 
 #endif

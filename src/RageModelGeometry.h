@@ -12,12 +12,12 @@ class RageCompiledGeometry;
 class RageModelGeometry
 {
 public:
-	RageModelGeometry ();
-	virtual ~RageModelGeometry ();
+	RageModelGeometry();
+	virtual ~RageModelGeometry();
 
-	void LoadMilkshapeAscii( const RString& sMilkshapeAsciiFile, bool bNeedsNormals );
+	void LoadMilkshapeAscii(const RString& sMilkshapeAsciiFile, bool bNeedsNormals);
 	void OptimizeBones();
-	void MergeMeshes( int iFromIndex, int iToIndex );
+	void MergeMeshes(int iFromIndex, int iToIndex);
 	bool HasAnyPerVertexBones() const;
 
 	int m_iRefCount;

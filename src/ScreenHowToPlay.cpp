@@ -19,12 +19,12 @@
 #include "Character.h"
 #include "LifeMeterBar.h"
 
-static const ThemeMetric<int>		NUM_W2S		("ScreenHowToPlay","NumW2s");
-static const ThemeMetric<int>		NUM_MISSES	("ScreenHowToPlay","NumMisses");
-static const ThemeMetric<bool>	USE_CHARACTER	("ScreenHowToPlay","UseCharacter");
-static const ThemeMetric<bool>	USE_PAD		("ScreenHowToPlay","UsePad");
-static const ThemeMetric<bool>	USE_PLAYER	("ScreenHowToPlay","UsePlayer");
-static const ThemeMetric<RString>	CHARACTER_NAME("ScreenHowToPlay","CharacterName");
+static const ThemeMetric<int>		NUM_W2S("ScreenHowToPlay", "NumW2s");
+static const ThemeMetric<int>		NUM_MISSES("ScreenHowToPlay", "NumMisses");
+static const ThemeMetric<bool>	USE_CHARACTER("ScreenHowToPlay", "UseCharacter");
+static const ThemeMetric<bool>	USE_PAD("ScreenHowToPlay", "UsePad");
+static const ThemeMetric<bool>	USE_PLAYER("ScreenHowToPlay", "UsePlayer");
+static const ThemeMetric<RString>	CHARACTER_NAME("ScreenHowToPlay", "CharacterName");
 
 enum Animation
 {
@@ -49,20 +49,22 @@ static const RString anims[NUM_ANIMATIONS] =
 	"BeginnerHelper_step-jumplr.bones.txt"
 };
 
-static RString GetAnimPath( Animation a )
+static RString GetAnimPath(Animation a)
 {
 	return RString("Characters/") + anims[a];
 }
 
 static bool HaveAllCharAnimations()
 {
-	for( int i = ANIM_UP; i < NUM_ANIMATIONS; ++i )
-		if( !DoesFileExist( GetAnimPath( (Animation) i ) ) )
+	for (int i = ANIM_UP; i < NUM_ANIMATIONS; ++i)
+		if (!DoesFileExist(GetAnimPath((Animation) i)))
+		{
 			return false;
+		}
 	return true;
 }
 
-REGISTER_SCREEN_CLASS( ScreenHowToPlay );
+REGISTER_SCREEN_CLASS(ScreenHowToPlay);
 ScreenHowToPlay::ScreenHowToPlay()
 {
 	m_iW2s = 0;
@@ -78,116 +80,130 @@ void ScreenHowToPlay::Init()
 {
 	ScreenAttract::Init();
 
-	if( (bool)USE_PAD && DoesFileExist( GetAnimPath(ANIM_DANCE_PAD) ) )
+	if ((bool)USE_PAD && DoesFileExist(GetAnimPath(ANIM_DANCE_PAD)))
 	{
 		m_pmDancePad = new Model;
-		m_pmDancePad->SetName( "Pad" );
-		m_pmDancePad->LoadMilkshapeAscii( GetAnimPath(ANIM_DANCE_PAD) );
+		m_pmDancePad->SetName("Pad");
+		m_pmDancePad->LoadMilkshapeAscii(GetAnimPath(ANIM_DANCE_PAD));
 		// xxx: hardcoded rotation. can be undone, but still. -freem
-		m_pmDancePad->SetRotationX( 35 );
-		ActorUtil::LoadAllCommandsAndSetXY( m_pmDancePad, m_sName );
+		m_pmDancePad->SetRotationX(35);
+		ActorUtil::LoadAllCommandsAndSetXY(m_pmDancePad, m_sName);
 	}
 
 	// Display a character
 	vector<Character*> vpCharacters;
-	CHARMAN->GetCharacters( vpCharacters );
-	if( (bool)USE_CHARACTER && vpCharacters.size() && HaveAllCharAnimations() )
+	CHARMAN->GetCharacters(vpCharacters);
+	if ((bool)USE_CHARACTER && vpCharacters.size() && HaveAllCharAnimations())
 	{
 		Character* displayChar;
-		if( !CHARACTER_NAME.GetValue().empty() && CHARMAN->GetCharacterFromID(CHARACTER_NAME) )
+		if (!CHARACTER_NAME.GetValue().empty() && CHARMAN->GetCharacterFromID(CHARACTER_NAME))
+		{
 			displayChar = CHARMAN->GetCharacterFromID(CHARACTER_NAME);
+		}
 		else
+		{
 			displayChar = CHARMAN->GetRandomCharacter();
+		}
 
 		RString sModelPath = displayChar->GetModelPath();
-		if( sModelPath != "" )
+		if (sModelPath != "")
 		{
 			m_pmCharacter = new Model;
-			m_pmCharacter->SetName( "Character" );
-			m_pmCharacter->LoadMilkshapeAscii( displayChar->GetModelPath() );
-			m_pmCharacter->LoadMilkshapeAsciiBones( "Step-LEFT", GetAnimPath( ANIM_LEFT ) );
-			m_pmCharacter->LoadMilkshapeAsciiBones( "Step-DOWN", GetAnimPath( ANIM_DOWN ) );
-			m_pmCharacter->LoadMilkshapeAsciiBones( "Step-UP", GetAnimPath( ANIM_UP ) );
-			m_pmCharacter->LoadMilkshapeAsciiBones( "Step-RIGHT", GetAnimPath( ANIM_RIGHT ) );
-			m_pmCharacter->LoadMilkshapeAsciiBones( "Step-JUMPLR", GetAnimPath( ANIM_JUMPLR ) );
+			m_pmCharacter->SetName("Character");
+			m_pmCharacter->LoadMilkshapeAscii(displayChar->GetModelPath());
+			m_pmCharacter->LoadMilkshapeAsciiBones("Step-LEFT", GetAnimPath(ANIM_LEFT));
+			m_pmCharacter->LoadMilkshapeAsciiBones("Step-DOWN", GetAnimPath(ANIM_DOWN));
+			m_pmCharacter->LoadMilkshapeAsciiBones("Step-UP", GetAnimPath(ANIM_UP));
+			m_pmCharacter->LoadMilkshapeAsciiBones("Step-RIGHT", GetAnimPath(ANIM_RIGHT));
+			m_pmCharacter->LoadMilkshapeAsciiBones("Step-JUMPLR", GetAnimPath(ANIM_JUMPLR));
 			RString sRestFile = displayChar->GetRestAnimationPath();
-			ASSERT( !sRestFile.empty() );
-			m_pmCharacter->LoadMilkshapeAsciiBones( "rest",displayChar->GetRestAnimationPath() );
-			m_pmCharacter->SetDefaultAnimation( "rest" );
-			m_pmCharacter->PlayAnimation( "rest" ); // Stay bouncing after a step has finished animating.
+			ASSERT(!sRestFile.empty());
+			m_pmCharacter->LoadMilkshapeAsciiBones("rest", displayChar->GetRestAnimationPath());
+			m_pmCharacter->SetDefaultAnimation("rest");
+			m_pmCharacter->PlayAnimation("rest");   // Stay bouncing after a step has finished animating.
 
 			// xxx: hardcoded rotation. can be undone, but still. -freem
-			m_pmCharacter->SetRotationX( 40 );
-			m_pmCharacter->SetCullMode( CULL_NONE ); // many of the models floating around have the vertex order flipped
-			ActorUtil::LoadAllCommandsAndSetXY( m_pmCharacter, m_sName );
+			m_pmCharacter->SetRotationX(40);
+			m_pmCharacter->SetCullMode(CULL_NONE);   // many of the models floating around have the vertex order flipped
+			ActorUtil::LoadAllCommandsAndSetXY(m_pmCharacter, m_sName);
 		}
 	}
 
-	GAMESTATE->SetCurrentStyle( GAMEMAN->GetHowToPlayStyleForGame(GAMESTATE->m_pCurGame) );
+	GAMESTATE->SetCurrentStyle(GAMEMAN->GetHowToPlayStyleForGame(GAMESTATE->m_pCurGame));
 
-	if( USE_PLAYER )
+	if (USE_PLAYER)
 	{
 		m_pLifeMeterBar = new LifeMeterBar;
 		m_pLifeMeterBar->SetName("LifeMeterBar");
-		m_pLifeMeterBar->Load( GAMESTATE->m_pPlayerState[PLAYER_1], &STATSMAN->m_CurStageStats.m_player[PLAYER_1] );
-		ActorUtil::LoadAllCommandsAndSetXY( m_pLifeMeterBar, m_sName );
-		m_pLifeMeterBar->FillForHowToPlay( NUM_W2S, NUM_MISSES );
+		m_pLifeMeterBar->Load(GAMESTATE->m_pPlayerState[PLAYER_1], &STATSMAN->m_CurStageStats.m_player[PLAYER_1]);
+		ActorUtil::LoadAllCommandsAndSetXY(m_pLifeMeterBar, m_sName);
+		m_pLifeMeterBar->FillForHowToPlay(NUM_W2S, NUM_MISSES);
 
 		// Allow themers to use either a .ssc or .sm file for this. -aj
 		RString sStepsPath = THEME->GetPathO(m_sName, "steps");
-		if( sStepsPath.Right(4) == ".ssc" )
-			SSCLoader::LoadFromSSCFile( sStepsPath, m_Song, false );
+		if (sStepsPath.Right(4) == ".ssc")
+		{
+			SSCLoader::LoadFromSSCFile(sStepsPath, m_Song, false);
+		}
 		else
-			SMLoader::LoadFromSMFile( sStepsPath, m_Song, false );
+		{
+			SMLoader::LoadFromSMFile(sStepsPath, m_Song, false);
+		}
 		m_Song.AddAutoGenNotes();
 
 		const Style* pStyle = GAMESTATE->GetCurrentStyle();
 
-		Steps *pSteps = SongUtil::GetStepsByDescription( &m_Song, pStyle->m_StepsType, "" );
-		ASSERT_M( pSteps != NULL, ssprintf("No playable steps of StepsType '%s' for ScreenHowToPlay", StringConversion::ToString(pStyle->m_StepsType).c_str()) );
+		Steps *pSteps = SongUtil::GetStepsByDescription(&m_Song, pStyle->m_StepsType, "");
+		ASSERT_M(pSteps != NULL, ssprintf("No playable steps of StepsType '%s' for ScreenHowToPlay", StringConversion::ToString(pStyle->m_StepsType).c_str()));
 
 		NoteData tempNoteData;
-		pSteps->GetNoteData( tempNoteData );
-		pStyle->GetTransformedNoteDataForStyle( PLAYER_1, tempNoteData, m_NoteData );
+		pSteps->GetNoteData(tempNoteData);
+		pStyle->GetTransformedNoteDataForStyle(PLAYER_1, tempNoteData, m_NoteData);
 
-		GAMESTATE->m_pCurSong.Set( &m_Song );
-		GAMESTATE->m_bGameplayLeadIn.Set( false );
+		GAMESTATE->m_pCurSong.Set(&m_Song);
+		GAMESTATE->m_bGameplayLeadIn.Set(false);
 		GAMESTATE->m_pPlayerState[PLAYER_1]->m_PlayerController = PC_AUTOPLAY;
 
-		m_Player->Init( 
-			"Player",
-			GAMESTATE->m_pPlayerState[PLAYER_1], 
-			NULL,
-			m_pLifeMeterBar, 
-			NULL, 
-			NULL, 
-			NULL, 
-			NULL, 
-			NULL, 
-			NULL );
-		m_Player.Load( m_NoteData );
-		m_Player->SetName( "Player" );
-		this->AddChild( m_Player );
-		ActorUtil::LoadAllCommandsAndSetXY( m_Player, m_sName );
+		m_Player->Init(
+		        "Player",
+		        GAMESTATE->m_pPlayerState[PLAYER_1],
+		        NULL,
+		        m_pLifeMeterBar,
+		        NULL,
+		        NULL,
+		        NULL,
+		        NULL,
+		        NULL,
+		        NULL);
+		m_Player.Load(m_NoteData);
+		m_Player->SetName("Player");
+		this->AddChild(m_Player);
+		ActorUtil::LoadAllCommandsAndSetXY(m_Player, m_sName);
 
 		// Don't show judgment
-		PO_GROUP_ASSIGN( GAMESTATE->m_pPlayerState[PLAYER_1]->m_PlayerOptions, ModsLevel_Stage, m_fBlind, 1.0f );
+		PO_GROUP_ASSIGN(GAMESTATE->m_pPlayerState[PLAYER_1]->m_PlayerOptions, ModsLevel_Stage, m_fBlind, 1.0f);
 		GAMESTATE->m_MasterPlayerNumber = PLAYER_1;
 		GAMESTATE->m_bDemonstrationOrJukebox = true;
 	}
 
 	// deferred until after the player, so the notes go under it
-	if( m_pLifeMeterBar )
-		this->AddChild( m_pLifeMeterBar );
-	if( m_pmDancePad )
-		this->AddChild( m_pmDancePad );
-	if( m_pmCharacter )
-		this->AddChild( m_pmCharacter );
+	if (m_pLifeMeterBar)
+	{
+		this->AddChild(m_pLifeMeterBar);
+	}
+	if (m_pmDancePad)
+	{
+		this->AddChild(m_pmDancePad);
+	}
+	if (m_pmCharacter)
+	{
+		this->AddChild(m_pmCharacter);
+	}
 
 	m_fFakeSecondsIntoSong = 0;
 
-	this->MoveToTail( &m_In );
-	this->MoveToTail( &m_Out );
+	this->MoveToTail(&m_In);
+	this->MoveToTail(&m_Out);
 }
 
 ScreenHowToPlay::~ScreenHowToPlay()
@@ -199,7 +215,7 @@ ScreenHowToPlay::~ScreenHowToPlay()
 
 void ScreenHowToPlay::Step()
 {
-// xxx: assumes dance. -freem
+	// xxx: assumes dance. -freem
 #define ST_LEFT		0x01
 #define ST_DOWN		0x02
 #define ST_UP		0x04
@@ -208,55 +224,71 @@ void ScreenHowToPlay::Step()
 #define ST_JUMPUD	(ST_UP | ST_DOWN)
 
 	int iStep = 0;
-	const int iNoteRow = BeatToNoteRowNotRounded( GAMESTATE->m_Position.m_fSongBeat + 0.6f );
+	const int iNoteRow = BeatToNoteRowNotRounded(GAMESTATE->m_Position.m_fSongBeat + 0.6f);
 	// if we want to miss from here on out, don't process steps.
-	if( m_iW2s < m_iNumW2s && m_NoteData.IsThereATapAtRow( iNoteRow ) )
+	if (m_iW2s < m_iNumW2s && m_NoteData.IsThereATapAtRow(iNoteRow))
 	{
 		const int iNumTracks = m_NoteData.GetNumTracks();
-		for( int k=0; k<iNumTracks; k++ )
-			if( m_NoteData.GetTapNote(k, iNoteRow).type == TapNote::tap )
+		for (int k = 0; k < iNumTracks; k++)
+			if (m_NoteData.GetTapNote(k, iNoteRow).type == TapNote::tap)
+			{
 				iStep |= 1 << k;
+			}
 
-		switch( iStep )
+		switch (iStep)
 		{
-		case ST_LEFT:	m_pmCharacter->PlayAnimation( "Step-LEFT", 1.8f ); break;
-		case ST_RIGHT:	m_pmCharacter->PlayAnimation( "Step-RIGHT", 1.8f ); break;
-		case ST_UP:	m_pmCharacter->PlayAnimation( "Step-UP", 1.8f ); break;
-		case ST_DOWN:	m_pmCharacter->PlayAnimation( "Step-DOWN", 1.8f ); break;
-		case ST_JUMPLR: m_pmCharacter->PlayAnimation( "Step-JUMPLR", 1.8f ); break;
-		case ST_JUMPUD:
-			// Until I can get an UP+DOWN jump animation, this will have to do.
-			m_pmCharacter->PlayAnimation( "Step-JUMPLR", 1.8f );
+			case ST_LEFT:
+				m_pmCharacter->PlayAnimation("Step-LEFT", 1.8f);
+				break;
+			case ST_RIGHT:
+				m_pmCharacter->PlayAnimation("Step-RIGHT", 1.8f);
+				break;
+			case ST_UP:
+				m_pmCharacter->PlayAnimation("Step-UP", 1.8f);
+				break;
+			case ST_DOWN:
+				m_pmCharacter->PlayAnimation("Step-DOWN", 1.8f);
+				break;
+			case ST_JUMPLR:
+				m_pmCharacter->PlayAnimation("Step-JUMPLR", 1.8f);
+				break;
+			case ST_JUMPUD:
+				// Until I can get an UP+DOWN jump animation, this will have to do.
+				m_pmCharacter->PlayAnimation("Step-JUMPLR", 1.8f);
 
-			m_pmCharacter->StopTweening();
-			m_pmCharacter->BeginTweening( GAMESTATE->m_Position.m_fCurBPS /8, TWEEN_LINEAR );
-			m_pmCharacter->SetRotationY( 90 );
-			m_pmCharacter->BeginTweening( (1/(GAMESTATE->m_Position.m_fCurBPS * 2) ) ); //sleep between jump-frames
-			m_pmCharacter->BeginTweening( GAMESTATE->m_Position.m_fCurBPS /6, TWEEN_LINEAR );
-			m_pmCharacter->SetRotationY( 0 );
-			break;
+				m_pmCharacter->StopTweening();
+				m_pmCharacter->BeginTweening(GAMESTATE->m_Position.m_fCurBPS / 8, TWEEN_LINEAR);
+				m_pmCharacter->SetRotationY(90);
+				m_pmCharacter->BeginTweening((1 / (GAMESTATE->m_Position.m_fCurBPS * 2)));  //sleep between jump-frames
+				m_pmCharacter->BeginTweening(GAMESTATE->m_Position.m_fCurBPS / 6, TWEEN_LINEAR);
+				m_pmCharacter->SetRotationY(0);
+				break;
 		}
 	}
 }
 
-void ScreenHowToPlay::Update( float fDelta )
+void ScreenHowToPlay::Update(float fDelta)
 {
-	if( GAMESTATE->m_pCurSong != NULL )
+	if (GAMESTATE->m_pCurSong != NULL)
 	{
-		GAMESTATE->UpdateSongPosition( m_fFakeSecondsIntoSong, GAMESTATE->m_pCurSong->m_SongTiming );
+		GAMESTATE->UpdateSongPosition(m_fFakeSecondsIntoSong, GAMESTATE->m_pCurSong->m_SongTiming);
 		m_fFakeSecondsIntoSong += fDelta;
 
 		static int iLastNoteRowCounted = 0;
-		int iCurNoteRow = BeatToNoteRowNotRounded( GAMESTATE->m_Position.m_fSongBeat );
+		int iCurNoteRow = BeatToNoteRowNotRounded(GAMESTATE->m_Position.m_fSongBeat);
 
-		if( iCurNoteRow != iLastNoteRowCounted &&m_NoteData.IsThereATapAtRow(iCurNoteRow) )
+		if (iCurNoteRow != iLastNoteRowCounted && m_NoteData.IsThereATapAtRow(iCurNoteRow))
 		{
-			if( m_pLifeMeterBar && !m_Player )
+			if (m_pLifeMeterBar && !m_Player)
 			{
-				if ( m_iW2s < m_iNumW2s )
-					m_pLifeMeterBar->ChangeLife( TNS_W2 );
+				if (m_iW2s < m_iNumW2s)
+				{
+					m_pLifeMeterBar->ChangeLife(TNS_W2);
+				}
 				else
-					m_pLifeMeterBar->ChangeLife( TNS_Miss );
+				{
+					m_pLifeMeterBar->ChangeLife(TNS_Miss);
+				}
 			}
 			m_iW2s++;
 			iLastNoteRowCounted = iCurNoteRow;
@@ -265,68 +297,72 @@ void ScreenHowToPlay::Update( float fDelta )
 		// Once we hit the number of perfects we want, we want to fail. Switch
 		// the controller to HUMAN. Since we aren't taking input, the steps will
 		// always be misses.
-		if( m_iW2s > m_iNumW2s )
+		if (m_iW2s > m_iNumW2s)
+		{
 			GAMESTATE->m_pPlayerState[PLAYER_1]->m_PlayerController = PC_HUMAN;
+		}
 
 		// Per the above code, we don't always want the character stepping.
 		// If they try to make all of the steps in the miss part, they look
 		// silly. Have then stand still instead. - freem
-		if ( m_pmCharacter )
+		if (m_pmCharacter)
 		{
-			if( m_iW2s <= m_iNumW2s )
+			if (m_iW2s <= m_iNumW2s)
+			{
 				Step();
+			}
 		}
 	}
 
-	ScreenAttract::Update( fDelta );
+	ScreenAttract::Update(fDelta);
 }
 
-void ScreenHowToPlay::HandleScreenMessage( const ScreenMessage SM )
+void ScreenHowToPlay::HandleScreenMessage(const ScreenMessage SM)
 {
-	if( SM == SM_GainFocus )
+	if (SM == SM_GainFocus)
 	{
 		// We do this ourself.
-		SOUND->HandleSongTimer( false );
+		SOUND->HandleSongTimer(false);
 	}
-	else if( SM == SM_LoseFocus )
+	else if (SM == SM_LoseFocus)
 	{
-		SOUND->HandleSongTimer( true );
+		SOUND->HandleSongTimer(true);
 	}
-	else if( SM == SM_GoToNextScreen )
+	else if (SM == SM_GoToNextScreen)
 	{
 		GAMESTATE->Reset();
 	}
-	ScreenAttract::HandleScreenMessage( SM );
+	ScreenAttract::HandleScreenMessage(SM);
 }
 
 // lua start
 #include "LuaBinding.h"
 
-/** @brief Allow Lua to have access to the ScreenHowToPlay. */ 
+/** @brief Allow Lua to have access to the ScreenHowToPlay. */
 class LunaScreenHowToPlay: public Luna<ScreenHowToPlay>
 {
 public:
-	static int GetLifeMeter( T* p, lua_State *L )
+	static int GetLifeMeter(T* p, lua_State *L)
 	{
 		//PlayerNumber pn = Enum::Check<PlayerNumber>( L, 1 );
 
-		p->m_pLifeMeterBar->PushSelf( L );
+		p->m_pLifeMeterBar->PushSelf(L);
 		return 1;
 	}
 
 	LunaScreenHowToPlay()
 	{
-  		ADD_METHOD( GetLifeMeter );
+		ADD_METHOD(GetLifeMeter);
 	}
 };
 
-LUA_REGISTER_DERIVED_CLASS( ScreenHowToPlay, ScreenAttract )
+LUA_REGISTER_DERIVED_CLASS(ScreenHowToPlay, ScreenAttract)
 // lua end
 
 /*
  * (c) 2001-2004 Chris Danford, Thad Ward
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -336,7 +372,7 @@ LUA_REGISTER_DERIVED_CLASS( ScreenHowToPlay, ScreenAttract )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

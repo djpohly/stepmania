@@ -18,31 +18,46 @@ public:
 
 	void Update();
 
-	MemoryCardState GetCardState( PlayerNumber pn ) const { return m_State[pn]; }
-	RString GetCardError( PlayerNumber pn ) const { return m_sError[pn]; }
+	MemoryCardState GetCardState(PlayerNumber pn) const
+	{
+		return m_State[pn];
+	}
+	RString GetCardError(PlayerNumber pn) const
+	{
+		return m_sError[pn];
+	}
 
 	void WaitForCheckingToComplete();
-	bool CardInserted( PlayerNumber pn );
-	void LockCard( PlayerNumber pn ); // prevent removing or changing of memory card
-	void UnlockCard( PlayerNumber pn );
-	bool MountCard( PlayerNumber pn, int iTimeout = 10 );
-	bool MountCard( PlayerNumber pn, const UsbStorageDevice &d, int iTimeout = 10 );
-	void UnmountCard( PlayerNumber pn );
+	bool CardInserted(PlayerNumber pn);
+	void LockCard(PlayerNumber pn);   // prevent removing or changing of memory card
+	void UnlockCard(PlayerNumber pn);
+	bool MountCard(PlayerNumber pn, int iTimeout = 10);
+	bool MountCard(PlayerNumber pn, const UsbStorageDevice &d, int iTimeout = 10);
+	void UnmountCard(PlayerNumber pn);
 
-	bool IsMounted( PlayerNumber pn ) const { return m_bMounted[pn]; }
+	bool IsMounted(PlayerNumber pn) const
+	{
+		return m_bMounted[pn];
+	}
 
 	// When paused, no changes in memory card state will be noticed until unpaused.
-	void PauseMountingThread( int iTimeout = 20 );
+	void PauseMountingThread(int iTimeout = 20);
 	void UnPauseMountingThread();
 
-	bool GetCardLocked( PlayerNumber pn ) const { return m_bCardLocked[pn]; }
+	bool GetCardLocked(PlayerNumber pn) const
+	{
+		return m_bCardLocked[pn];
+	}
 
-	bool PathIsMemCard( RString sDir ) const;
+	bool PathIsMemCard(RString sDir) const;
 
-	bool IsNameAvailable( PlayerNumber pn ) const;
-	RString GetName( PlayerNumber pn ) const;
+	bool IsNameAvailable(PlayerNumber pn) const;
+	RString GetName(PlayerNumber pn) const;
 
-	const vector<UsbStorageDevice> &GetStorageDevices() { return m_vStorageDevices; }
+	const vector<UsbStorageDevice> &GetStorageDevices()
+	{
+		return m_vStorageDevices;
+	}
 
 	static Preference1D<RString>	m_sMemoryCardOsMountPoint;
 	static Preference1D<int>	m_iMemoryCardUsbBus;
@@ -52,7 +67,7 @@ public:
 	static Preference<RString>	m_sEditorMemoryCardOsMountPoint;
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
 protected:
 	void UpdateAssignments();
@@ -82,7 +97,7 @@ extern MemoryCardManager*	MEMCARDMAN;	// global and accessable from anywhere in 
 /*
  * (c) 2003-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -92,7 +107,7 @@ extern MemoryCardManager*	MEMCARDMAN;	// global and accessable from anywhere in 
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

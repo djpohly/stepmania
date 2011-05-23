@@ -12,7 +12,7 @@ class GameSoundManager
 public:
 	GameSoundManager();
 	~GameSoundManager();
-	void Update( float fDeltaTime );
+	void Update(float fDeltaTime);
 
 	struct PlayMusicParams
 	{
@@ -38,32 +38,35 @@ public:
 		bool bAlignBeat;
 		bool bApplyMusicRate;
 	};
-	void PlayMusic( PlayMusicParams params, PlayMusicParams FallbackMusicParams = PlayMusicParams() );
-	void PlayMusic( 
-		RString sFile, 
-		const TimingData *pTiming = NULL, 
-		bool force_loop = false, 
-		float start_sec = 0, 
-		float length_sec = -1, 
-		float fFadeInLengthSeconds = 0,
-		float fade_len = 0, 
-		bool align_beat = true );
-	void StopMusic() { PlayMusic(""); }
-	void DimMusic( float fVolume, float fDurationSeconds );
+	void PlayMusic(PlayMusicParams params, PlayMusicParams FallbackMusicParams = PlayMusicParams());
+	void PlayMusic(
+	        RString sFile,
+	        const TimingData *pTiming = NULL,
+	        bool force_loop = false,
+	        float start_sec = 0,
+	        float length_sec = -1,
+	        float fFadeInLengthSeconds = 0,
+	        float fade_len = 0,
+	        bool align_beat = true);
+	void StopMusic()
+	{
+		PlayMusic("");
+	}
+	void DimMusic(float fVolume, float fDurationSeconds);
 	RString GetMusicPath() const;
 	void Flush();
 
-	void PlayOnce( RString sPath );
-	void PlayOnceFromDir( RString sDir );
-	void PlayOnceFromAnnouncer( RString sFolderName );
+	void PlayOnce(RString sPath);
+	void PlayOnceFromDir(RString sDir);
+	void PlayOnceFromAnnouncer(RString sFolderName);
 
-	void HandleSongTimer( bool on=true );
-	float GetFrameTimingAdjustment( float fDeltaTime );
+	void HandleSongTimer(bool on = true);
+	float GetFrameTimingAdjustment(float fDeltaTime);
 
-	static float GetPlayerBalance( PlayerNumber pn );
+	static float GetPlayerBalance(PlayerNumber pn);
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 };
 
 extern GameSoundManager *SOUND;

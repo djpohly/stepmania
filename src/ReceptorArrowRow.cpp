@@ -14,77 +14,81 @@ ReceptorArrowRow::ReceptorArrowRow()
 	m_fFadeToFailPercent = 0;
 }
 
-void ReceptorArrowRow::Load( const PlayerState* pPlayerState, float fYReverseOffset )
+void ReceptorArrowRow::Load(const PlayerState* pPlayerState, float fYReverseOffset)
 {
 	m_pPlayerState = pPlayerState;
 	m_fYReverseOffsetPixels = fYReverseOffset;
 
 	const Style* pStyle = GAMESTATE->GetCurrentStyle();
 
-	for( int c=0; c<pStyle->m_iColsPerPlayer; c++ ) 
+	for (int c = 0; c < pStyle->m_iColsPerPlayer; c++)
 	{
-		m_ReceptorArrow.push_back( new ReceptorArrow );
-		m_ReceptorArrow[c]->SetName( "ReceptorArrow" );
-		m_ReceptorArrow[c]->Load( m_pPlayerState, c );
-		this->AddChild( m_ReceptorArrow[c] );
+		m_ReceptorArrow.push_back(new ReceptorArrow);
+		m_ReceptorArrow[c]->SetName("ReceptorArrow");
+		m_ReceptorArrow[c]->Load(m_pPlayerState, c);
+		this->AddChild(m_ReceptorArrow[c]);
 	}
 }
 
 ReceptorArrowRow::~ReceptorArrowRow()
 {
-	for( unsigned i = 0; i < m_ReceptorArrow.size(); ++i )
+	for (unsigned i = 0; i < m_ReceptorArrow.size(); ++i)
+	{
 		delete m_ReceptorArrow[i];
+	}
 }
 
-void ReceptorArrowRow::Update( float fDeltaTime )
+void ReceptorArrowRow::Update(float fDeltaTime)
 {
-	ActorFrame::Update( fDeltaTime );
+	ActorFrame::Update(fDeltaTime);
 	ArrowEffects::Update();
 
-	for( unsigned c=0; c<m_ReceptorArrow.size(); c++ )
+	for (unsigned c = 0; c < m_ReceptorArrow.size(); c++)
 	{
 		// m_fDark==1 or m_fFadeToFailPercent==1 should make fBaseAlpha==0
 		float fBaseAlpha = (1 - m_pPlayerState->m_PlayerOptions.GetCurrent().m_fDark) * (1 - m_fFadeToFailPercent);
-		CLAMP( fBaseAlpha, 0.0f, 1.0f );
-		m_ReceptorArrow[c]->SetBaseAlpha( fBaseAlpha );
+		CLAMP(fBaseAlpha, 0.0f, 1.0f);
+		m_ReceptorArrow[c]->SetBaseAlpha(fBaseAlpha);
 
 		// set arrow XYZ
-		float fX = ArrowEffects::GetXPos( m_pPlayerState, c, 0 );
-		const float fY = ArrowEffects::GetYPos( m_pPlayerState, c, 0, m_fYReverseOffsetPixels );
-		const float fZ = ArrowEffects::GetZPos( m_pPlayerState, c, 0 );
-		m_ReceptorArrow[c]->SetX( fX );
-		m_ReceptorArrow[c]->SetY( fY );
-		m_ReceptorArrow[c]->SetZ( fZ );
+		float fX = ArrowEffects::GetXPos(m_pPlayerState, c, 0);
+		const float fY = ArrowEffects::GetYPos(m_pPlayerState, c, 0, m_fYReverseOffsetPixels);
+		const float fZ = ArrowEffects::GetZPos(m_pPlayerState, c, 0);
+		m_ReceptorArrow[c]->SetX(fX);
+		m_ReceptorArrow[c]->SetY(fY);
+		m_ReceptorArrow[c]->SetZ(fZ);
 
-		const float fRotation = ArrowEffects::ReceptorGetRotationZ( m_pPlayerState );
-		m_ReceptorArrow[c]->SetRotationZ( fRotation );
+		const float fRotation = ArrowEffects::ReceptorGetRotationZ(m_pPlayerState);
+		m_ReceptorArrow[c]->SetRotationZ(fRotation);
 
-		const float fZoom = ArrowEffects::GetZoom( m_pPlayerState );
-		m_ReceptorArrow[c]->SetZoom( fZoom );
+		const float fZoom = ArrowEffects::GetZoom(m_pPlayerState);
+		m_ReceptorArrow[c]->SetZoom(fZoom);
 	}
 }
 
 void ReceptorArrowRow::DrawPrimitives()
 {
-	for( unsigned c=0; c<m_ReceptorArrow.size(); c++ ) 
+	for (unsigned c = 0; c < m_ReceptorArrow.size(); c++)
+	{
 		m_ReceptorArrow[c]->Draw();
+	}
 }
 
-void ReceptorArrowRow::Step( int iCol, TapNoteScore score )
+void ReceptorArrowRow::Step(int iCol, TapNoteScore score)
 {
-	ASSERT( iCol >= 0  &&  iCol < (int) m_ReceptorArrow.size() );
-	m_ReceptorArrow[iCol]->Step( score );
+	ASSERT(iCol >= 0  &&  iCol < (int) m_ReceptorArrow.size());
+	m_ReceptorArrow[iCol]->Step(score);
 }
 
-void ReceptorArrowRow::SetPressed( int iCol )
+void ReceptorArrowRow::SetPressed(int iCol)
 {
-	ASSERT( iCol >= 0  &&  iCol < (int) m_ReceptorArrow.size() );
+	ASSERT(iCol >= 0  &&  iCol < (int) m_ReceptorArrow.size());
 	m_ReceptorArrow[iCol]->SetPressed();
 }
 
-void ReceptorArrowRow::SetNoteUpcoming( int iCol, bool b )
+void ReceptorArrowRow::SetNoteUpcoming(int iCol, bool b)
 {
-	ASSERT( iCol >= 0  &&  iCol < (int) m_ReceptorArrow.size() );
+	ASSERT(iCol >= 0  &&  iCol < (int) m_ReceptorArrow.size());
 	m_ReceptorArrow[iCol]->SetNoteUpcoming(b);
 }
 
@@ -92,7 +96,7 @@ void ReceptorArrowRow::SetNoteUpcoming( int iCol, bool b )
 /*
  * (c) 2001-2003 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -102,7 +106,7 @@ void ReceptorArrowRow::SetNoteUpcoming( int iCol, bool b )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

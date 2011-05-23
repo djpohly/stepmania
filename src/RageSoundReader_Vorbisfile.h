@@ -11,13 +11,16 @@ class RageFileBasic;
 class RageSoundReader_Vorbisfile: public RageSoundReader_FileReader
 {
 public:
-	OpenResult Open( RageFileBasic *pFile );
+	OpenResult Open(RageFileBasic *pFile);
 
 	int GetLength() const;
-	int SetPosition( int iFrame );
-	int Read( float *pBuf, int iFrames );
+	int SetPosition(int iFrame);
+	int Read(float *pBuf, int iFrames);
 	int GetSampleRate() const;
-	unsigned GetNumChannels() const { return channels; }
+	unsigned GetNumChannels() const
+	{
+		return channels;
+	}
 	int GetNextSourceFrame() const;
 	RageSoundReader_Vorbisfile();
 	~RageSoundReader_Vorbisfile();

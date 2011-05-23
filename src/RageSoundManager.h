@@ -29,21 +29,27 @@ public:
 
 	void Init();
 
-	float GetMixVolume() const { return m_fMixVolume; }
+	float GetMixVolume() const
+	{
+		return m_fMixVolume;
+	}
 	void SetMixVolume();
-	float GetVolumeOfNonCriticalSounds() const { return m_fVolumeOfNonCriticalSounds; }
-	void SetVolumeOfNonCriticalSounds( float fVolumeOfNonCriticalSounds );
+	float GetVolumeOfNonCriticalSounds() const
+	{
+		return m_fVolumeOfNonCriticalSounds;
+	}
+	void SetVolumeOfNonCriticalSounds(float fVolumeOfNonCriticalSounds);
 
 	void Update();
-	void StartMixing( RageSoundBase *snd );	/* used by RageSound */
-	void StopMixing( RageSoundBase *snd );	/* used by RageSound */
-	bool Pause( RageSoundBase *snd, bool bPause );	/* used by RageSound */
-	int64_t GetPosition( RageTimer *pTimer ) const;	/* used by RageSound */
+	void StartMixing(RageSoundBase *snd);	/* used by RageSound */
+	void StopMixing(RageSoundBase *snd);	/* used by RageSound */
+	bool Pause(RageSoundBase *snd, bool bPause);	/* used by RageSound */
+	int64_t GetPosition(RageTimer *pTimer) const;	/* used by RageSound */
 	float GetPlayLatency() const;
 	int GetDriverSampleRate() const;
 
-	RageSoundReader *GetLoadedSound( const RString &sPath );
-	void AddLoadedSound( const RString &sPath, RageSoundReader_Preload *pSound );
+	RageSoundReader *GetLoadedSound(const RString &sPath);
+	void AddLoadedSound(const RString &sPath, RageSoundReader_Preload *pSound);
 
 private:
 	map<RString, RageSoundReader_Preload *> m_mapPreloadedSounds;

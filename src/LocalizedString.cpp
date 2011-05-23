@@ -9,14 +9,20 @@ static SubscriptionManager<LocalizedString> m_Subscribers;
 class LocalizedStringImplDefault: public ILocalizedStringImpl
 {
 public:
-	static ILocalizedStringImpl *Create() { return new LocalizedStringImplDefault; }
+	static ILocalizedStringImpl *Create()
+	{
+		return new LocalizedStringImplDefault;
+	}
 
-	void Load( const RString& sGroup, const RString& sName )
+	void Load(const RString& sGroup, const RString& sName)
 	{
 		m_sValue = sName;
 	}
 
-	const RString &GetLocalized() const { return m_sValue; }
+	const RString &GetLocalized() const
+	{
+		return m_sValue;
+	}
 
 private:
 	RString m_sValue;
@@ -24,19 +30,19 @@ private:
 
 static LocalizedString::MakeLocalizer g_pMakeLocalizedStringImpl = LocalizedStringImplDefault::Create;
 
-void LocalizedString::RegisterLocalizer( MakeLocalizer pFunc )
+void LocalizedString::RegisterLocalizer(MakeLocalizer pFunc)
 {
 	g_pMakeLocalizedStringImpl = pFunc;
-	FOREACHS( LocalizedString*, *m_Subscribers.m_pSubscribers, l )
+	FOREACHS(LocalizedString*, *m_Subscribers.m_pSubscribers, l)
 	{
 		LocalizedString *pLoc = *l;
 		pLoc->CreateImpl();
 	}
 }
 
-LocalizedString::LocalizedString( const RString& sGroup, const RString& sName )
+LocalizedString::LocalizedString(const RString& sGroup, const RString& sName)
 {
-	m_Subscribers.Subscribe( this );
+	m_Subscribers.Subscribe(this);
 
 	m_sGroup = sGroup;
 	m_sName = sName;
@@ -47,19 +53,19 @@ LocalizedString::LocalizedString( const RString& sGroup, const RString& sName )
 
 LocalizedString::~LocalizedString()
 {
-	m_Subscribers.Unsubscribe( this );
+	m_Subscribers.Unsubscribe(this);
 
-	SAFE_DELETE( m_pImpl );
+	SAFE_DELETE(m_pImpl);
 }
 
 void LocalizedString::CreateImpl()
 {
-	SAFE_DELETE( m_pImpl );
+	SAFE_DELETE(m_pImpl);
 	m_pImpl = g_pMakeLocalizedStringImpl();
-	m_pImpl->Load(  m_sGroup, m_sName );
+	m_pImpl->Load(m_sGroup, m_sName);
 }
 
-void LocalizedString::Load( const RString& sGroup, const RString& sName )
+void LocalizedString::Load(const RString& sGroup, const RString& sName)
 {
 	m_sGroup = sGroup;
 	m_sName = sName;

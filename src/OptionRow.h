@@ -17,7 +17,7 @@ struct OptionRowDefinition;
 class OptionRowType
 {
 public:
-	void Load( const RString &sMetricsGroup, Actor *pParent );
+	void Load(const RString &sMetricsGroup, Actor *pParent);
 
 private:
 	RString			m_sMetricsGroup;
@@ -50,18 +50,18 @@ private:
 class OptionRow : public ActorFrame
 {
 public:
-	OptionRow( const OptionRowType *pType );
+	OptionRow(const OptionRowType *pType);
 	~OptionRow();
-	void Update( float fDeltaTime );
+	void Update(float fDeltaTime);
 
 	void Clear();
-	void LoadNormal( OptionRowHandler *pHand, bool bFirstItemGoesDown );
+	void LoadNormal(OptionRowHandler *pHand, bool bFirstItemGoesDown);
 	void LoadExit();
 
-	void SetModIcon( PlayerNumber pn, const RString &sText, GameCommand &gc );
+	void SetModIcon(PlayerNumber pn, const RString &sText, GameCommand &gc);
 
-	void ImportOptions( const vector<PlayerNumber> &vpns );
-	int ExportOptions( const vector<PlayerNumber> &vpns, bool bRowHasFocus[NUM_PLAYERS] );
+	void ImportOptions(const vector<PlayerNumber> &vpns);
+	int ExportOptions(const vector<PlayerNumber> &vpns, bool bRowHasFocus[NUM_PLAYERS]);
 
 	enum RowType
 	{
@@ -69,56 +69,71 @@ public:
 		RowType_Exit
 	};
 
-	void InitText( RowType type );
-	void AfterImportOptions( PlayerNumber pn );
+	void InitText(RowType type);
+	void AfterImportOptions(PlayerNumber pn);
 
 	RString GetRowTitle() const;
 
-	void ChoicesChanged( RowType type );
-	void PositionUnderlines( PlayerNumber pn );
-	void PositionIcons( PlayerNumber pn );
-	void UpdateText( PlayerNumber pn );
-	bool GetRowHasFocus( PlayerNumber pn ) const { return m_bRowHasFocus[pn]; }
-	void SetRowHasFocus( PlayerNumber pn, bool bRowHasFocus );
+	void ChoicesChanged(RowType type);
+	void PositionUnderlines(PlayerNumber pn);
+	void PositionIcons(PlayerNumber pn);
+	void UpdateText(PlayerNumber pn);
+	bool GetRowHasFocus(PlayerNumber pn) const
+	{
+		return m_bRowHasFocus[pn];
+	}
+	void SetRowHasFocus(PlayerNumber pn, bool bRowHasFocus);
 	void UpdateEnabledDisabled();
 
-	int GetOneSelection( PlayerNumber pn, bool bAllowFail=false ) const;
-	int GetOneSharedSelection( bool bAllowFail=false ) const;
-	void SetOneSelection( PlayerNumber pn, int iChoice );
-	void SetOneSharedSelection( int iChoice );
-	void SetOneSharedSelectionIfPresent( const RString &sChoice );
+	int GetOneSelection(PlayerNumber pn, bool bAllowFail = false) const;
+	int GetOneSharedSelection(bool bAllowFail = false) const;
+	void SetOneSelection(PlayerNumber pn, int iChoice);
+	void SetOneSharedSelection(int iChoice);
+	void SetOneSharedSelectionIfPresent(const RString &sChoice);
 
-	int GetChoiceInRowWithFocus( PlayerNumber pn ) const;
+	int GetChoiceInRowWithFocus(PlayerNumber pn) const;
 	int GetChoiceInRowWithFocusShared() const;
-	void SetChoiceInRowWithFocus( PlayerNumber pn, int iChoice );
-	void ResetFocusFromSelection( PlayerNumber pn );
+	void SetChoiceInRowWithFocus(PlayerNumber pn, int iChoice);
+	void ResetFocusFromSelection(PlayerNumber pn);
 
-	bool GetSelected( PlayerNumber pn, int iChoice ) const;
-	void SetSelected( PlayerNumber pn, int iChoice, bool b );
+	bool GetSelected(PlayerNumber pn, int iChoice) const;
+	void SetSelected(PlayerNumber pn, int iChoice, bool b);
 
 	const OptionRowDefinition &GetRowDef() const;
 	OptionRowDefinition &GetRowDef();
-	RowType GetRowType() const { return m_RowType; }
-	const OptionRowHandler *GetHandler() const { return m_pHand; }
+	RowType GetRowType() const
+	{
+		return m_RowType;
+	}
+	const OptionRowHandler *GetHandler() const
+	{
+		return m_pHand;
+	}
 
-	const BitmapText &GetTextItemForRow( PlayerNumber pn, int iChoiceOnRow ) const;
-	void GetWidthXY( PlayerNumber pn, int iChoiceOnRow, int &iWidthOut, int &iXOut, int &iYOut ) const;
+	const BitmapText &GetTextItemForRow(PlayerNumber pn, int iChoiceOnRow) const;
+	void GetWidthXY(PlayerNumber pn, int iChoiceOnRow, int &iWidthOut, int &iXOut, int &iYOut) const;
 
 	// ScreenOptions calls positions m_FrameDestination, then m_Frame tween to that same TweenState.
-	unsigned GetTextItemsSize() const { return m_textItems.size(); }
-	bool GetFirstItemGoesDown() const { return m_bFirstItemGoesDown; }
+	unsigned GetTextItemsSize() const
+	{
+		return m_textItems.size();
+	}
+	bool GetFirstItemGoesDown() const
+	{
+		return m_bFirstItemGoesDown;
+	}
 
-	RString GetThemedItemText( int iChoice ) const;
+	RString GetThemedItemText(int iChoice) const;
 
-	void SetExitText( RString sExitText );
+	void SetExitText(RString sExitText);
 
 	void Reload();
 
 	// Messages
-	virtual void HandleMessage( const Message &msg );
+	virtual void HandleMessage(const Message &msg);
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
 protected:
 	const OptionRowType *m_pParentType;
@@ -143,7 +158,7 @@ protected:
 	Actor::TweenState	m_tsDestination;	// this should approach m_tsDestination.
 
 public:
-	void SetDestination( Actor::TweenState &ts, bool bTween );
+	void SetDestination(Actor::TweenState &ts, bool bTween);
 };
 
 #endif
@@ -151,7 +166,7 @@ public:
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -161,7 +176,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

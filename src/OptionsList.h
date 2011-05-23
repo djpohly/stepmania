@@ -15,12 +15,12 @@ class OptionsList;
 class OptionListRow: public ActorFrame
 {
 public:
-	void Load( OptionsList *pOptions, const RString &sType );
-	void SetFromHandler( const OptionRowHandler *pHandler );
-	void SetTextFromHandler( const OptionRowHandler *pHandler );
-	void SetUnderlines( const vector<bool> &aSelections, const OptionRowHandler *pHandler );
+	void Load(OptionsList *pOptions, const RString &sType);
+	void SetFromHandler(const OptionRowHandler *pHandler);
+	void SetTextFromHandler(const OptionRowHandler *pHandler);
+	void SetUnderlines(const vector<bool> &aSelections, const OptionRowHandler *pHandler);
 
-	void PositionCursor( Actor *pCursor, int iSelection );
+	void PositionCursor(Actor *pCursor, int iSelection);
 
 	void Start();
 
@@ -44,10 +44,13 @@ public:
 	OptionsList();
 	~OptionsList();
 
-	void Load( RString sType, PlayerNumber pn );
+	void Load(RString sType, PlayerNumber pn);
 	void Reset();
 
-	void Link( OptionsList *pLink ) { m_pLinked = pLink; }
+	void Link(OptionsList *pLink)
+	{
+		m_pLinked = pLink;
+	}
 
 	/** @brief Show the top-level menu. */
 	void Open();
@@ -55,31 +58,34 @@ public:
 	/** @brief Close all menus (for menu timer). */
 	void Close();
 
-	void Input( const InputEventPlus &input );
-	bool IsOpened() const { return m_asMenuStack.size() > 0; }
+	void Input(const InputEventPlus &input);
+	bool IsOpened() const
+	{
+		return m_asMenuStack.size() > 0;
+	}
 
 	bool Start();	// return true if the last menu was popped in response to this press
 
 private:
 	ThemeMetric<RString> TOP_MENU;
 
-	void SelectItem( const RString &sRowName, int iMenuItem );
-	void MoveItem( const RString &sRowName, int iMove );
-	void SwitchMenu( int iDir );
+	void SelectItem(const RString &sRowName, int iMenuItem);
+	void MoveItem(const RString &sRowName, int iMove);
+	void SwitchMenu(int iDir);
 	void PositionCursor();
-	void SelectionsChanged( const RString &sRowName );
+	void SelectionsChanged(const RString &sRowName);
 	void UpdateMenuFromSelections();
 	RString GetCurrentRow() const;
 	const OptionRowHandler *GetCurrentHandler();
-	int GetOneSelection( RString sRow, bool bAllowFail=false ) const;
+	int GetOneSelection(RString sRow, bool bAllowFail = false) const;
 	void SwitchToCurrentRow();
-	void TweenOnCurrentRow( bool bForward );
+	void TweenOnCurrentRow(bool bForward);
 	void SetDefaultCurrentRow();
-	void Push( RString sDest );
+	void Push(RString sDest);
 	void Pop();
-	void ImportRow( RString sRow );
-	void ExportRow( RString sRow );
-	static int FindScreenInHandler( const OptionRowHandler *pHandler, RString sScreen );
+	void ImportRow(RString sRow);
+	void ExportRow(RString sRow);
+	static int FindScreenInHandler(const OptionRowHandler *pHandler, RString sScreen);
 
 	InputQueueCodeSet	m_Codes;
 

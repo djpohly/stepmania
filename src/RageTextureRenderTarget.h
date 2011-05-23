@@ -10,16 +10,22 @@
 class RageTextureRenderTarget: public RageTexture
 {
 public:
-	RageTextureRenderTarget( RageTextureID name, const RenderTargetParam &param );
+	RageTextureRenderTarget(RageTextureID name, const RenderTargetParam &param);
 	virtual ~RageTextureRenderTarget();
-	virtual void Invalidate() { m_iTexHandle = 0; /* don't Destroy() */ }
+	virtual void Invalidate()
+	{
+		m_iTexHandle = 0; /* don't Destroy() */
+	}
 	virtual void Reload();
-	virtual unsigned GetTexHandle() const { return m_iTexHandle; }
+	virtual unsigned GetTexHandle() const
+	{
+		return m_iTexHandle;
+	}
 
-	void BeginRenderingTo( bool bPreserveTexture = true );
+	void BeginRenderingTo(bool bPreserveTexture = true);
 	void FinishRenderingTo();
 
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 private:
 	const RenderTargetParam m_Param;

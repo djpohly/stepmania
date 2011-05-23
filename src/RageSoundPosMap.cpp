@@ -18,7 +18,13 @@ struct pos_map_t
 	int m_iFrames;
 	float m_fSourceToDestRatio;
 
-	pos_map_t() { m_iSourceFrame = 0; m_iDestFrame = 0; m_iFrames = 0; m_fSourceToDestRatio = 1.0f; }
+	pos_map_t()
+	{
+		m_iSourceFrame = 0;
+		m_iDestFrame = 0;
+		m_iFrames = 0;
+		m_fSourceToDestRatio = 1.0f;
+	}
 };
 
 struct pos_map_impl
@@ -37,33 +43,33 @@ pos_map_queue::~pos_map_queue()
 	delete m_pImpl;
 }
 
-pos_map_queue::pos_map_queue( const pos_map_queue &cpy )
+pos_map_queue::pos_map_queue(const pos_map_queue &cpy)
 {
 	*this = cpy;
-	m_pImpl = new pos_map_impl( *cpy.m_pImpl );
+	m_pImpl = new pos_map_impl(*cpy.m_pImpl);
 }
 
-pos_map_queue &pos_map_queue::operator=( const pos_map_queue &rhs )
+pos_map_queue &pos_map_queue::operator=(const pos_map_queue &rhs)
 {
 	delete m_pImpl;
-	m_pImpl = new pos_map_impl( *rhs.m_pImpl );
+	m_pImpl = new pos_map_impl(*rhs.m_pImpl);
 	return *this;
 }
 
-void pos_map_queue::Insert( int64_t iSourceFrame, int iFrames, int64_t iDestFrame, float fSourceToDestRatio )
+void pos_map_queue::Insert(int64_t iSourceFrame, int iFrames, int64_t iDestFrame, float fSourceToDestRatio)
 {
-	if( m_pImpl->m_Queue.size() )
+	if (m_pImpl->m_Queue.size())
 	{
 		/* Optimization: If the last entry lines up with this new entry, just merge them. */
 		pos_map_t &last = m_pImpl->m_Queue.back();
-		if( last.m_iSourceFrame + last.m_iFrames == iSourceFrame &&
-		    last.m_fSourceToDestRatio == fSourceToDestRatio &&
-		    llabs(last.m_iDestFrame + lrintf(last.m_iFrames * last.m_fSourceToDestRatio) - iDestFrame) <= 1 )
+		if (last.m_iSourceFrame + last.m_iFrames == iSourceFrame &&
+		                last.m_fSourceToDestRatio == fSourceToDestRatio &&
+		                llabs(last.m_iDestFrame + lrintf(last.m_iFrames * last.m_fSourceToDestRatio) - iDestFrame) <= 1)
 		{
 			last.m_iFrames += iFrames;
 
 			/* Make sure that m_Frames doesn't grow too large and overflow an int. */
-			if( !m_pImpl->m_Queue.empty() && last.m_iFrames > pos_map_backlog_frames * 2 )
+			if (!m_pImpl->m_Queue.empty() && last.m_iFrames > pos_map_backlog_frames * 2)
 			{
 				/*
 				 * Split this entry into two smaller entries.  This will cause up to one
@@ -80,9 +86,9 @@ void pos_map_queue::Insert( int64_t iSourceFrame, int iFrames, int64_t iDestFram
 
 				next.m_iSourceFrame += iDeleteFrames;
 				next.m_iFrames -= iDeleteFrames;
-				next.m_iDestFrame += lrintf( iDeleteFrames * next.m_fSourceToDestRatio );
+				next.m_iDestFrame += lrintf(iDeleteFrames * next.m_fSourceToDestRatio);
 
-				m_pImpl->m_Queue.push_back( next );
+				m_pImpl->m_Queue.push_back(next);
 			}
 
 			m_pImpl->Cleanup();
@@ -91,13 +97,13 @@ void pos_map_queue::Insert( int64_t iSourceFrame, int iFrames, int64_t iDestFram
 		}
 	}
 
-	m_pImpl->m_Queue.push_back( pos_map_t() );
+	m_pImpl->m_Queue.push_back(pos_map_t());
 	pos_map_t &m = m_pImpl->m_Queue.back();
 	m.m_iSourceFrame = iSourceFrame;
 	m.m_iDestFrame = iDestFrame;
 	m.m_iFrames = iFrames;
 	m.m_fSourceToDestRatio = fSourceToDestRatio;
-	
+
 	m_pImpl->Cleanup();
 }
 
@@ -106,26 +112,32 @@ void pos_map_impl::Cleanup()
 	/* Scan backwards until we have at least pos_map_backlog_frames. */
 	list<pos_map_t>::iterator it = m_Queue.end();
 	int iTotalFrames = 0;
-	while( iTotalFrames < pos_map_backlog_frames )
+	while (iTotalFrames < pos_map_backlog_frames)
 	{
-		if( it == m_Queue.begin() )
+		if (it == m_Queue.begin())
+		{
 			break;
+		}
 		--it;
 		iTotalFrames += it->m_iFrames;
 	}
 
-	m_Queue.erase( m_Queue.begin(), it );
+	m_Queue.erase(m_Queue.begin(), it);
 }
 
-int64_t pos_map_queue::Search( int64_t iSourceFrame, bool *bApproximate ) const
+int64_t pos_map_queue::Search(int64_t iSourceFrame, bool *bApproximate) const
 {
-	if( bApproximate )
-		*bApproximate = false;
-
-	if( IsEmpty() )
+	if (bApproximate)
 	{
-		if( bApproximate )
+		*bApproximate = false;
+	}
+
+	if (IsEmpty())
+	{
+		if (bApproximate)
+		{
 			*bApproximate = true;
+		}
 		return 0;
 	}
 
@@ -133,23 +145,23 @@ int64_t pos_map_queue::Search( int64_t iSourceFrame, bool *bApproximate ) const
 	 * it maps to. */
 	int64_t iClosestPosition = 0, iClosestPositionDist = INT_MAX;
 	const pos_map_t *pClosestBlock = &*m_pImpl->m_Queue.begin(); /* print only */
-	FOREACHL_CONST( pos_map_t, m_pImpl->m_Queue, it )
+	FOREACHL_CONST(pos_map_t, m_pImpl->m_Queue, it)
 	{
 		const pos_map_t &pm = *it;
 
-		if( iSourceFrame >= pm.m_iSourceFrame &&
-			iSourceFrame < pm.m_iSourceFrame+pm.m_iFrames )
+		if (iSourceFrame >= pm.m_iSourceFrame &&
+		                iSourceFrame < pm.m_iSourceFrame + pm.m_iFrames)
 		{
 			/* iSourceFrame lies in this block; it's an exact match.  Figure
 			 * out the exact position. */
 			int iDiff = int(iSourceFrame - pm.m_iSourceFrame);
-			iDiff = lrintf( iDiff * pm.m_fSourceToDestRatio );
+			iDiff = lrintf(iDiff * pm.m_fSourceToDestRatio);
 			return pm.m_iDestFrame + iDiff;
 		}
 
 		/* See if the current position is close to the beginning of this block. */
-		int64_t dist = llabs( pm.m_iSourceFrame - iSourceFrame );
-		if( dist < iClosestPositionDist )
+		int64_t dist = llabs(pm.m_iSourceFrame - iSourceFrame);
+		if (dist < iClosestPositionDist)
 		{
 			iClosestPositionDist = dist;
 			pClosestBlock = &pm;
@@ -157,12 +169,12 @@ int64_t pos_map_queue::Search( int64_t iSourceFrame, bool *bApproximate ) const
 		}
 
 		/* See if the current position is close to the end of this block. */
-		dist = llabs( pm.m_iSourceFrame + pm.m_iFrames - iSourceFrame );
-		if( dist < iClosestPositionDist )
+		dist = llabs(pm.m_iSourceFrame + pm.m_iFrames - iSourceFrame);
+		if (dist < iClosestPositionDist)
 		{
 			iClosestPositionDist = dist;
 			pClosestBlock = &pm;
-			iClosestPosition = pm.m_iDestFrame + lrintf( pm.m_iFrames * pm.m_fSourceToDestRatio );
+			iClosestPosition = pm.m_iDestFrame + lrintf(pm.m_iFrames * pm.m_fSourceToDestRatio);
 		}
 	}
 
@@ -170,7 +182,7 @@ int64_t pos_map_queue::Search( int64_t iSourceFrame, bool *bApproximate ) const
 	 * The frame is out of the range of data we've actually sent.
 	 * Return the closest position.
 	 *
-	 * There are three cases when this happens: 
+	 * There are three cases when this happens:
 	 * 1. Before the first CommitPlayingPosition call.
 	 * 2. After GetDataToPlay returns EOF and the sound has flushed, but before
 	 *    SoundStopped has been called.
@@ -184,16 +196,18 @@ int64_t pos_map_queue::Search( int64_t iSourceFrame, bool *bApproximate ) const
 #define LI "%lli"
 #endif
 	static RageTimer last;
-	if( last.PeekDeltaTime() >= 1.0f )
+	if (last.PeekDeltaTime() >= 1.0f)
 	{
 		last.GetDeltaTime();
-		LOG->Trace( "Approximate sound time: driver frame " LI ", m_pImpl->m_Queue frame " LI ".." LI " (dist " LI "), closest position is " LI,
-			iSourceFrame, pClosestBlock->m_iDestFrame, pClosestBlock->m_iDestFrame+pClosestBlock->m_iFrames,
-			iClosestPositionDist, iClosestPosition );
+		LOG->Trace("Approximate sound time: driver frame " LI ", m_pImpl->m_Queue frame " LI ".." LI " (dist " LI "), closest position is " LI,
+		           iSourceFrame, pClosestBlock->m_iDestFrame, pClosestBlock->m_iDestFrame + pClosestBlock->m_iFrames,
+		           iClosestPositionDist, iClosestPosition);
 	}
 
-	if( bApproximate )
+	if (bApproximate)
+	{
 		*bApproximate = true;
+	}
 	return iClosestPosition;
 }
 

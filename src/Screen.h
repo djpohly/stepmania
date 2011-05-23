@@ -19,7 +19,10 @@ typedef Screen* (*CreateScreenFn)(const RString& sClassName);
  *
  * Each Screen class should have a REGISTER_SCREEN_CLASS in its CPP file.
  */
-struct RegisterScreenClass { RegisterScreenClass( const RString &sClassName, CreateScreenFn pfn ); };
+struct RegisterScreenClass
+{
+	RegisterScreenClass(const RString &sClassName, CreateScreenFn pfn);
+};
 #define REGISTER_SCREEN_CLASS( className ) \
 	static Screen* Create##className( const RString &sName ) { LuaThreadVariable var( "LoadingScreen", sName ); Screen *pRet = new className; pRet->SetName( sName ); Screen::InitScreen( pRet ); return pRet; } \
 	static RegisterScreenClass register_##className( #className, Create##className )
@@ -34,19 +37,19 @@ enum ScreenType
 	NUM_ScreenType, /**< The number of screen types. */
 	ScreenType_Invalid
 };
-const RString& ScreenTypeToString( ScreenType st );
-LuaDeclareType( ScreenType );
+const RString& ScreenTypeToString(ScreenType st);
+LuaDeclareType(ScreenType);
 
 /** @brief Class that holds a screen-full of Actors. */
 class Screen : public ActorFrame
 {
 public:
-	static void InitScreen( Screen *pScreen );
+	static void InitScreen(Screen *pScreen);
 
 	virtual ~Screen();
 
 	/**
-	 * @brief This is called immediately after construction, 
+	 * @brief This is called immediately after construction,
 	 * to allow initializing after all derived classes exist.
 	 *
 	 * Don't call it directly; use InitScreen instead. */
@@ -58,39 +61,52 @@ public:
 	/** @brief This is called when the screen is popped. */
 	virtual void EndScreen();
 
-	virtual void Update( float fDeltaTime );
-	virtual bool OverlayInput( const InputEventPlus &input );
-	virtual void Input( const InputEventPlus &input );
-	virtual void HandleScreenMessage( const ScreenMessage SM );
-	void SetLockInputSecs( float f ) { m_fLockInputSecs = f; }
+	virtual void Update(float fDeltaTime);
+	virtual bool OverlayInput(const InputEventPlus &input);
+	virtual void Input(const InputEventPlus &input);
+	virtual void HandleScreenMessage(const ScreenMessage SM);
+	void SetLockInputSecs(float f)
+	{
+		m_fLockInputSecs = f;
+	}
 
 	/**
 	 * @brief Put the specified message onto the screen for a specified time.
 	 * @param SM the message to put on the screen.
 	 * @param fDelay The length of time it stays up. */
-	void PostScreenMessage( const ScreenMessage SM, float fDelay );
+	void PostScreenMessage(const ScreenMessage SM, float fDelay);
 	/** @brief Clear the entire message queue. */
 	void ClearMessageQueue();
 	/**
 	 * @brief Clear the message queue of a specific ScreenMessage.
 	 * @param SM the specific ScreenMessage to get out of the Queue. */
-	void ClearMessageQueue( const ScreenMessage SM );
+	void ClearMessageQueue(const ScreenMessage SM);
 
-	virtual ScreenType GetScreenType() const { return ALLOW_OPERATOR_MENU_BUTTON ? game_menu : system_menu; }
-	bool AllowOperatorMenuButton() const { return ALLOW_OPERATOR_MENU_BUTTON; }
+	virtual ScreenType GetScreenType() const
+	{
+		return ALLOW_OPERATOR_MENU_BUTTON ? game_menu : system_menu;
+	}
+	bool AllowOperatorMenuButton() const
+	{
+		return ALLOW_OPERATOR_MENU_BUTTON;
+	}
 	/**
 	 * @brief Determine if we allow extra players to join in on this screen.
 	 * @return false, for players should never be able to join while in progress. */
-	virtual bool AllowLateJoin() const { return false; }
+	virtual bool AllowLateJoin() const
+	{
+		return false;
+	}
 
 	// Lua
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 protected:
 	/** @brief Holds the messages sent to a Screen. */
-	struct QueuedScreenMessage {
+	struct QueuedScreenMessage
+	{
 		/** @brief The message being held. */
-		ScreenMessage SM;  
+		ScreenMessage SM;
 		/** @brief How long the message is up. */
 		float fDelayRemaining;
 	};
@@ -149,7 +165,7 @@ public:
  * @author Chris Danford (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -159,7 +175,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

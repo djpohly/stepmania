@@ -2,7 +2,7 @@
 #define AdjustSync_H
 
 class TimingData;
-/** 
+/**
  * @brief Allows for adjusting the sync of a song.
  *
  * This class defines two ways of adjusting the sync of a song.
@@ -26,12 +26,12 @@ public:
 
 	static void SaveSyncChanges();
 	static void RevertSyncChanges();
-	static void HandleAutosync( float fNoteOffBySeconds, float fStepTime );
+	static void HandleAutosync(float fNoteOffBySeconds, float fStepTime);
 	static void HandleSongEnd();
 	static void AutosyncOffset();
 	static void AutosyncTempo();
-	static void GetSyncChangeTextGlobal( vector<RString> &vsAddTo );
-	static void GetSyncChangeTextSong( vector<RString> &vsAddTo );
+	static void GetSyncChangeTextGlobal(vector<RString> &vsAddTo);
+	static void GetSyncChangeTextSong(vector<RString> &vsAddTo);
 
 	/** @brief The minimum number of steps to hit for syncing purposes. */
 	static const int OFFSET_SAMPLE_COUNT = 56;
@@ -40,7 +40,7 @@ public:
 	static int s_iAutosyncOffsetSample;
 	static float s_fStandardDeviation;
 
-	// Measured in seconds.  If the average error is too high, we 
+	// Measured in seconds.  If the average error is too high, we
 	// reject the recorded data for the Least Squares Regression.
 	static const float ERROR_TOO_HIGH;
 
@@ -56,7 +56,7 @@ public:
  * @author Chris Danford, John Bauer (c) 2003-2006
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -66,7 +66,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

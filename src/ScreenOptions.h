@@ -12,17 +12,17 @@
 
 class OptionRowHandler;
 
-AutoScreenMessage( SM_ExportOptions );
+AutoScreenMessage(SM_ExportOptions);
 
 /** @brief The list of input modes for the given row. */
-enum InputMode 
-{ 
+enum InputMode
+{
 	INPUTMODE_INDIVIDUAL,		/**< each player controls their own cursor */
 	INPUTMODE_SHARE_CURSOR,		/**< both players control the same cursor */
 	NUM_InputMode,			/**< The number of input modes available. */
 	InputMode_Invalid
 };
-InputMode StringToInputMode( const RString& str );
+InputMode StringToInputMode(const RString& str);
 
 /** @brief A custom foreach loop for the player options for each player. */
 #define FOREACH_OptionsPlayer( pn ) \
@@ -37,71 +37,83 @@ public:
 	ScreenOptions();
 	virtual void Init();
 	virtual void BeginScreen();
-	void InitMenu( const vector<OptionRowHandler*> &vHands );
+	void InitMenu(const vector<OptionRowHandler*> &vHands);
 	virtual ~ScreenOptions();
-	virtual void Update( float fDeltaTime );
-	virtual void Input( const InputEventPlus &input );
-	virtual void HandleScreenMessage( const ScreenMessage SM );
+	virtual void Update(float fDeltaTime);
+	virtual void Input(const InputEventPlus &input);
+	virtual void HandleScreenMessage(const ScreenMessage SM);
 
 	virtual void TweenOnScreen();
 	virtual void TweenOffScreen();
 
 	// Lua
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 	friend class LunaScreenOptions;
 
 protected:
-	virtual void ImportOptions( int iRow, const vector<PlayerNumber> &vpns ) = 0;
-	virtual void ExportOptions( int iRow, const vector<PlayerNumber> &vpns ) = 0;
+	virtual void ImportOptions(int iRow, const vector<PlayerNumber> &vpns) = 0;
+	virtual void ExportOptions(int iRow, const vector<PlayerNumber> &vpns) = 0;
 
 	void RestartOptions();
-	void GetWidthXY( PlayerNumber pn, int iRow, int iChoiceOnRow, 
-			int &iWidthOut, int &iXOut, int &iYOut ) const;
-	RString GetExplanationText( int iRow ) const;
-	void RefreshIcons( int iRow, PlayerNumber pn );
-	void PositionCursor( PlayerNumber pn );
-	void PositionRows( bool bTween );
-	void TweenCursor( PlayerNumber pn );
-	void StoreFocus( PlayerNumber pn );
+	void GetWidthXY(PlayerNumber pn, int iRow, int iChoiceOnRow,
+	                int &iWidthOut, int &iXOut, int &iYOut) const;
+	RString GetExplanationText(int iRow) const;
+	void RefreshIcons(int iRow, PlayerNumber pn);
+	void PositionCursor(PlayerNumber pn);
+	void PositionRows(bool bTween);
+	void TweenCursor(PlayerNumber pn);
+	void StoreFocus(PlayerNumber pn);
 
 	void BeginFadingOut();
-	virtual bool FocusedItemEndsScreen( PlayerNumber pn ) const;
-	RString GetNextScreenForFocusedItem( PlayerNumber pn ) const;
+	virtual bool FocusedItemEndsScreen(PlayerNumber pn) const;
+	RString GetNextScreenForFocusedItem(PlayerNumber pn) const;
 
-	void ChangeValueInRowRelative( int iRow, PlayerNumber pn, int iDelta, bool bRepeat );
-	void ChangeValueInRowAbsolute( int iRow, PlayerNumber pn, int iChoiceIndex, bool bRepeat );
+	void ChangeValueInRowRelative(int iRow, PlayerNumber pn, int iDelta, bool bRepeat);
+	void ChangeValueInRowAbsolute(int iRow, PlayerNumber pn, int iChoiceIndex, bool bRepeat);
 	/**
 	 * @brief Perform an action after a row has changed its value.
 	 *
 	 * Override this to detect when the value in a row has changed. */
-	virtual void AfterChangeValueInRow( int iRow, PlayerNumber pn );
-	bool MoveRowRelative( PlayerNumber pn, int iDir, bool bRepeat );
-	bool MoveRowAbsolute( PlayerNumber pn, int iRow );
+	virtual void AfterChangeValueInRow(int iRow, PlayerNumber pn);
+	bool MoveRowRelative(PlayerNumber pn, int iDir, bool bRepeat);
+	bool MoveRowAbsolute(PlayerNumber pn, int iRow);
 	/**
 	 * @brief Perform an action after moving to a new row.
 	 *
 	 * Override this to detect when the row has changed. */
-	virtual void AfterChangeRow( PlayerNumber pn );
-	virtual void AfterChangeValueOrRow( PlayerNumber pn );
+	virtual void AfterChangeRow(PlayerNumber pn);
+	virtual void AfterChangeValueOrRow(PlayerNumber pn);
 
-	virtual void MenuBack( const InputEventPlus &input );
-	virtual void MenuStart( const InputEventPlus &input );
-	virtual void ProcessMenuStart( const InputEventPlus &input );
-	virtual void MenuLeft( const InputEventPlus &input );
-	virtual void MenuRight( const InputEventPlus &input );
-	virtual void MenuUp( const InputEventPlus &input );
-	virtual void MenuDown( const InputEventPlus &input );
-	virtual void MenuSelect( const InputEventPlus &input );
-	virtual void MenuUpDown( const InputEventPlus &input, int iDir );	// iDir == -1 or iDir == +1
+	virtual void MenuBack(const InputEventPlus &input);
+	virtual void MenuStart(const InputEventPlus &input);
+	virtual void ProcessMenuStart(const InputEventPlus &input);
+	virtual void MenuLeft(const InputEventPlus &input);
+	virtual void MenuRight(const InputEventPlus &input);
+	virtual void MenuUp(const InputEventPlus &input);
+	virtual void MenuDown(const InputEventPlus &input);
+	virtual void MenuSelect(const InputEventPlus &input);
+	virtual void MenuUpDown(const InputEventPlus &input, int iDir);	// iDir == -1 or iDir == +1
 
-	int GetCurrentRow( PlayerNumber pn = PLAYER_1 ) const { return m_iCurrentRow[pn]; }
+	int GetCurrentRow(PlayerNumber pn = PLAYER_1) const
+	{
+		return m_iCurrentRow[pn];
+	}
 	bool AllAreOnLastRow() const;
-	OptionRow* GetRow( int iRow ) const { return m_pRows[iRow]; }
+	OptionRow* GetRow(int iRow) const
+	{
+		return m_pRows[iRow];
+	}
 
 protected:	// derived classes need access to these
 	enum Navigation { NAV_THREE_KEY, NAV_THREE_KEY_MENU, NAV_THREE_KEY_ALT, NAV_FIVE_KEY, NAV_TOGGLE_THREE_KEY, NAV_TOGGLE_FIVE_KEY };
-	void SetNavigation( Navigation nav ) { m_OptionsNavigation = nav; }
-	void SetInputMode( InputMode im ) { m_InputMode = im; }
+	void SetNavigation(Navigation nav)
+	{
+		m_OptionsNavigation = nav;
+	}
+	void SetInputMode(InputMode im)
+	{
+		m_InputMode = im;
+	}
 
 	/** @brief Map menu lines to m_OptionRow entries. */
 	vector<OptionRow*>	m_pRows;
@@ -118,7 +130,7 @@ protected:	// derived classes need access to these
 	bool			m_bWasOnExit[NUM_PLAYERS];
 
 	/** @brief True if at least one player pressed Start after selecting the song.
-	 * 
+	 *
 	 * TRICKY: People hold Start to get to PlayerOptions, then the repeat events
 	 * cause them to zip to the bottom. So, ignore Start repeat events until
 	 * we've seen one first pressed event. */
@@ -167,10 +179,10 @@ protected:	// derived classes need access to these
 
 /**
  * @file
- * @author Chris Danford, Glenn Maynard (c) 2001-2004 
+ * @author Chris Danford, Glenn Maynard (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -180,7 +192,7 @@ protected:	// derived classes need access to these
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

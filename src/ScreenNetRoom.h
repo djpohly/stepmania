@@ -9,16 +9,41 @@
 #include "RoomWheel.h"
 #include "RoomInfoDisplay.h"
 
-class RoomData {
+class RoomData
+{
 public:
-	void SetName( const RString& name ) { m_name = name; }
-	void SetDescription( const RString& desc ) { m_description = desc; }
-	void SetState(unsigned int state) { m_state = state; }
-	void SetFlags( unsigned int iFlags ) { m_iFlags = iFlags; }
-	inline RString Name() { return m_name; }
-	inline RString Description() { return m_description; }
-	inline unsigned int State() { return m_state; }
-	inline unsigned int GetFlags() { return m_iFlags; }
+	void SetName(const RString& name)
+	{
+		m_name = name;
+	}
+	void SetDescription(const RString& desc)
+	{
+		m_description = desc;
+	}
+	void SetState(unsigned int state)
+	{
+		m_state = state;
+	}
+	void SetFlags(unsigned int iFlags)
+	{
+		m_iFlags = iFlags;
+	}
+	inline RString Name()
+	{
+		return m_name;
+	}
+	inline RString Description()
+	{
+		return m_description;
+	}
+	inline unsigned int State()
+	{
+		return m_state;
+	}
+	inline unsigned int GetFlags()
+	{
+		return m_iFlags;
+	}
 private:
 	RString m_name;
 	RString m_description;
@@ -30,20 +55,20 @@ class ScreenNetRoom : public ScreenNetSelectBase
 {
 public:
 	virtual void Init();
-	virtual void Input( const InputEventPlus &input );
-	virtual void HandleScreenMessage( const ScreenMessage SM );
+	virtual void Input(const InputEventPlus &input);
+	virtual void HandleScreenMessage(const ScreenMessage SM);
 
 protected:
-	virtual void MenuStart( const InputEventPlus &input );
-	virtual void MenuBack( const InputEventPlus &input );
+	virtual void MenuStart(const InputEventPlus &input);
+	virtual void MenuBack(const InputEventPlus &input);
 
-	virtual void TweenOffScreen( );
+	virtual void TweenOffScreen();
 
 private:
 	void UpdateRoomsList();
-	void MenuLeft( const InputEventPlus &input );
-	void MenuRight( const InputEventPlus &input );
-	void CreateNewRoom( const RString& rName,  const RString& rDesc, const RString& rPass );
+	void MenuLeft(const InputEventPlus &input);
+	void MenuRight(const InputEventPlus &input);
+	void CreateNewRoom(const RString& rName,  const RString& rDesc, const RString& rPass);
 
 	RageSound m_soundChangeSel;
 
@@ -73,7 +98,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

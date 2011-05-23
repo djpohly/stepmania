@@ -5,7 +5,7 @@ class Game;
 class RageTimer;
 class VideoModeParams;
 
-int main( int argc, char* argv[] );
+int main(int argc, char* argv[]);
 
 /** @brief Utility functions for controlling the whole game. */
 namespace StepMania
@@ -15,16 +15,16 @@ namespace StepMania
 	void ResetGame();
 	RString GetInitialScreen();
 	RString GetSelectMusicScreen();
-	void ChangeCurrentGame( const Game* g );
+	void ChangeCurrentGame(const Game* g);
 
 	// If successful, return filename of screenshot in sDir, else return ""
-	RString SaveScreenshot( RString sDir, bool bSaveCompressed, bool bMakeSignature, int iIndex = -1 );
+	RString SaveScreenshot(RString sDir, bool bSaveCompressed, bool bMakeSignature, int iIndex = -1);
 
-	void InsertCoin( int iNum = 1, bool bCountInBookkeeping = true );
+	void InsertCoin(int iNum = 1, bool bCountInBookkeeping = true);
 	void InsertCredit();
 	void ClearCredits();
 
-	void GetPreferredVideoModeParams( VideoModeParams &paramsOut );
+	void GetPreferredVideoModeParams(VideoModeParams &paramsOut);
 	bool GetHighResolutionTextures();
 }
 

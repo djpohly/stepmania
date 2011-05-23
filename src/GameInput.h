@@ -13,8 +13,8 @@ enum GameController
 	NUM_GameController,	/**< The number of controllers allowed. */
 	GameController_Invalid,
 };
-const RString& GameControllerToString( GameController mp );
-LuaDeclareType( GameController );
+const RString& GameControllerToString(GameController mp);
+LuaDeclareType(GameController);
 
 /** @brief the list of buttons StepMania recognizes. */
 enum GameButton
@@ -54,9 +54,9 @@ enum GameButton
 	GameButton_Invalid
 };
 
-RString GameButtonToString( const InputScheme* pInputs, GameButton i );
-RString GameButtonToLocalizedString( const InputScheme* pInputs, GameButton i );
-GameButton StringToGameButton( const InputScheme* pInputs, const RString& s );
+RString GameButtonToString(const InputScheme* pInputs, GameButton i);
+RString GameButtonToLocalizedString(const InputScheme* pInputs, GameButton i);
+GameButton StringToGameButton(const InputScheme* pInputs, const RString& s);
 
 /** @brief A special way to loop through each game button. */
 #define FOREACH_GameButton_Custom( gb ) for( GameButton gb=GAME_BUTTON_CUSTOM_01; gb<NUM_GameButton; enum_add(gb, +1) )
@@ -194,26 +194,40 @@ struct GameInput
 {
 	GameInput(): controller(GameController_Invalid), button(GameButton_Invalid) { }
 
-	GameInput( GameController c, GameButton b ): controller(c), button(b) { }
+	GameInput(GameController c, GameButton b): controller(c), button(b) { }
 
 	GameController	controller;
 	GameButton	button;
 
-	bool operator==( const GameInput &other ) const { return controller == other.controller && button == other.button; };
-	bool operator<( const GameInput &other ) const
+	bool operator==(const GameInput &other) const
 	{
-		if( controller < other.controller )
+		return controller == other.controller && button == other.button;
+	};
+	bool operator<(const GameInput &other) const
+	{
+		if (controller < other.controller)
+		{
 			return true;
-		else if( controller > other.controller )
+		}
+		else if (controller > other.controller)
+		{
 			return false;
+		}
 		return button < other.button;
 	}
 
-	inline bool IsValid() const { return controller != GameController_Invalid && button != GameButton_Invalid; };
-	inline void MakeInvalid() { controller = GameController_Invalid; button = GameButton_Invalid; };
+	inline bool IsValid() const
+	{
+		return controller != GameController_Invalid && button != GameButton_Invalid;
+	};
+	inline void MakeInvalid()
+	{
+		controller = GameController_Invalid;
+		button = GameButton_Invalid;
+	};
 
-	RString ToString( const InputScheme* pInputs ) const;
-	bool FromString( const InputScheme* pInputs, const RString &s );
+	RString ToString(const InputScheme* pInputs) const;
+	bool FromString(const InputScheme* pInputs, const RString &s);
 };
 
 #endif
@@ -223,7 +237,7 @@ struct GameInput
  * @author Chris Danford (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -233,7 +247,7 @@ struct GameInput
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

@@ -8,7 +8,7 @@ class SongOptions
 public:
 	enum LifeType
 	{
-		LIFE_BAR=0,
+		LIFE_BAR = 0,
 		LIFE_BATTERY,
 		LIFE_TIME,
 		NUM_LIFE_TYPES
@@ -26,7 +26,8 @@ public:
 	bool m_bAssistMetronome;
 	float m_fMusicRate,	m_SpeedfMusicRate;
 	float m_fHaste, m_SpeedfHaste;
-	enum AutosyncType { 
+	enum AutosyncType
+	{
 		AUTOSYNC_OFF,
 		AUTOSYNC_SONG,
 		AUTOSYNC_MACHINE,
@@ -34,7 +35,8 @@ public:
 		NUM_AUTOSYNC_TYPES
 	};
 	AutosyncType m_AutosyncType;
-	enum SoundEffectType {
+	enum SoundEffectType
+	{
 		SOUNDEFFECT_OFF,
 		SOUNDEFFECT_SPEED,
 		SOUNDEFFECT_PITCH,
@@ -60,16 +62,19 @@ public:
 		m_bStaticBackground(false), m_bRandomBGOnly(false),
 		m_bSaveScore(true), m_bSaveReplay(false) {};
 	void Init();
-	void Approach( const SongOptions& other, float fDeltaSeconds );
-	void GetMods( vector<RString> &AddTo ) const;
-	void GetLocalizedMods( vector<RString> &AddTo ) const;
+	void Approach(const SongOptions& other, float fDeltaSeconds);
+	void GetMods(vector<RString> &AddTo) const;
+	void GetLocalizedMods(vector<RString> &AddTo) const;
 	RString GetString() const;
 	RString GetLocalizedString() const;
-	void FromString( const RString &sOptions );
-	bool FromOneModString( const RString &sOneMod, RString &sErrorDetailOut );	// On error, return false and optionally set sErrorDetailOut
+	void FromString(const RString &sOptions);
+	bool FromOneModString(const RString &sOneMod, RString &sErrorDetailOut);	// On error, return false and optionally set sErrorDetailOut
 
-	bool operator==( const SongOptions &other ) const;
-	bool operator!=( const SongOptions &other ) const { return !operator==(other); }
+	bool operator==(const SongOptions &other) const;
+	bool operator!=(const SongOptions &other) const
+	{
+		return !operator==(other);
+	}
 };
 
 #endif
@@ -77,7 +82,7 @@ public:
 /*
  * (c) 2001-2004 Chris Danford, Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -87,7 +92,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

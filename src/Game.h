@@ -20,8 +20,8 @@ class Style;
 // to the GameButtons "MenuLeft (optional)", "MenuStart", and "MenuRight (optional)".
 
 // Example 2:  A user is using PlayStation dance pads to play. These controllers
-// don't have dedicated DeviceInputs for MenuLeft and MenuRight. The user maps 
-// Up, Down, Left, and Right as normal. Since the Left and Right GameButtons 
+// don't have dedicated DeviceInputs for MenuLeft and MenuRight. The user maps
+// Up, Down, Left, and Right as normal. Since the Left and Right GameButtons
 // have the flag FLAG_SECONDARY_MENU_*, they will function as MenuLeft and
 // MenuRight as long as "MenuLeft (optional)" and "MenuRight (optional)" are not mapped.
 
@@ -49,9 +49,9 @@ public:
 	 *
 	 * This starts at GAME_BUTTON_NEXT. */
 	PerButtonInfo		m_PerButtonInfo[NUM_GameButton];
-	const PerButtonInfo *GetPerButtonInfo( GameButton gb ) const;
+	const PerButtonInfo *GetPerButtonInfo(GameButton gb) const;
 
-	TapNoteScore MapTapNoteScore( TapNoteScore tns ) const;
+	TapNoteScore MapTapNoteScore(TapNoteScore tns) const;
 	TapNoteScore m_mapW1To;
 	TapNoteScore m_mapW2To;
 	TapNoteScore m_mapW3To;
@@ -59,7 +59,7 @@ public:
 	TapNoteScore m_mapW5To;
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 };
 
 #endif
@@ -69,7 +69,7 @@ public:
  * @author Chris Danford (c) 2001-2002
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -79,7 +79,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

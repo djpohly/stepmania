@@ -7,64 +7,64 @@
 #include "PlayerOptions.h"
 #include "PlayerState.h"
 
-void Attack::GetAttackBeats( const Song *pSong, float &fStartBeat, float &fEndBeat ) const
+void Attack::GetAttackBeats(const Song *pSong, float &fStartBeat, float &fEndBeat) const
 {
-	ASSERT( pSong );
-	ASSERT_M( fStartSecond >= 0, ssprintf("StartSecond: %f",fStartSecond) );
-	
+	ASSERT(pSong);
+	ASSERT_M(fStartSecond >= 0, ssprintf("StartSecond: %f", fStartSecond));
+
 	const TimingData &timing = pSong->m_SongTiming;
-	fStartBeat = timing.GetBeatFromElapsedTime( fStartSecond );
-	fEndBeat = timing.GetBeatFromElapsedTime( fStartSecond+fSecsRemaining );
+	fStartBeat = timing.GetBeatFromElapsedTime(fStartSecond);
+	fEndBeat = timing.GetBeatFromElapsedTime(fStartSecond + fSecsRemaining);
 }
 
 /* Get the range for an attack that's being applied in realtime, eg. during battle
  * mode.  We need a PlayerState for this, so we can push the region off-screen to
  * prevent popping when the attack has note modifers. */
-void Attack::GetRealtimeAttackBeats( const Song *pSong, const PlayerState* pPlayerState, float &fStartBeat, float &fEndBeat ) const
+void Attack::GetRealtimeAttackBeats(const Song *pSong, const PlayerState* pPlayerState, float &fStartBeat, float &fEndBeat) const
 {
-	if( fStartSecond >= 0 )
+	if (fStartSecond >= 0)
 	{
-		GetAttackBeats( pSong, fStartBeat, fEndBeat );
+		GetAttackBeats(pSong, fStartBeat, fEndBeat);
 		return;
 	}
 
-	ASSERT( pPlayerState );
-	ASSERT( pSong );
+	ASSERT(pPlayerState);
+	ASSERT(pSong);
 
 	/* If reasonable, push the attack forward 8 beats so that notes on screen don't change suddenly. */
-	fStartBeat = min( GAMESTATE->m_Position.m_fSongBeat+8, pPlayerState->m_fLastDrawnBeat );
-	fStartBeat = truncf(fStartBeat)+1;
+	fStartBeat = min(GAMESTATE->m_Position.m_fSongBeat + 8, pPlayerState->m_fLastDrawnBeat);
+	fStartBeat = truncf(fStartBeat) + 1;
 
 	const TimingData &timing = pSong->m_SongTiming;
-	const float lStartSecond = timing.GetElapsedTimeFromBeat( fStartBeat );
+	const float lStartSecond = timing.GetElapsedTimeFromBeat(fStartBeat);
 	const float fEndSecond = lStartSecond + fSecsRemaining;
-	fEndBeat = timing.GetBeatFromElapsedTime( fEndSecond );
-	fEndBeat = truncf(fEndBeat)+1;
+	fEndBeat = timing.GetBeatFromElapsedTime(fEndSecond);
+	fEndBeat = truncf(fEndBeat) + 1;
 
 	// loading the course should have caught this.
-	ASSERT_M( fEndBeat >= fStartBeat, ssprintf("EndBeat %f >= StartBeat %f", fEndBeat, fStartBeat) );
+	ASSERT_M(fEndBeat >= fStartBeat, ssprintf("EndBeat %f >= StartBeat %f", fEndBeat, fStartBeat));
 }
 
-bool Attack::operator== ( const Attack &rhs ) const
+bool Attack::operator== (const Attack &rhs) const
 {
 #define EQUAL(a) (a==rhs.a)
-	return 
-		EQUAL(level) &&
-		EQUAL(fStartSecond) &&
-		EQUAL(fSecsRemaining) &&
-		EQUAL(sModifiers) &&
-		EQUAL(bOn) &&
-		EQUAL(bGlobal);
+	return
+	        EQUAL(level) &&
+	        EQUAL(fStartSecond) &&
+	        EQUAL(fSecsRemaining) &&
+	        EQUAL(sModifiers) &&
+	        EQUAL(bOn) &&
+	        EQUAL(bGlobal);
 }
 
 bool Attack::ContainsTransformOrTurn() const
 {
 	PlayerOptions po;
-	po.FromString( sModifiers );
+	po.FromString(sModifiers);
 	return po.ContainsTransformOrTurn();
 }
 
-Attack Attack::FromGlobalCourseModifier( const RString &sModifiers )
+Attack Attack::FromGlobalCourseModifier(const RString &sModifiers)
 {
 	Attack a;
 	a.fStartSecond = 0;
@@ -83,10 +83,12 @@ RString Attack::GetTextDescription() const
 
 bool AttackArray::ContainsTransformOrTurn() const
 {
-	FOREACH_CONST( Attack, *this, a )
+	FOREACH_CONST(Attack, *this, a)
 	{
-		if( a->ContainsTransformOrTurn() )
+		if (a->ContainsTransformOrTurn())
+		{
 			return true;
+		}
 	}
 	return false;
 }
@@ -94,7 +96,7 @@ bool AttackArray::ContainsTransformOrTurn() const
 /*
  * (c) 2003-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -104,7 +106,7 @@ bool AttackArray::ContainsTransformOrTurn() const
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

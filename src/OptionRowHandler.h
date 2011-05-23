@@ -17,9 +17,9 @@ enum SelectType
 	NUM_SelectType,
 	SelectType_Invalid
 };
-const RString& SelectTypeToString( SelectType pm );
-SelectType StringToSelectType( const RString& s );
-LuaDeclareType( SelectType );
+const RString& SelectTypeToString(SelectType pm);
+SelectType StringToSelectType(const RString& s);
+LuaDeclareType(SelectType);
 /** @brief How many items are shown on the row? */
 enum LayoutType
 {
@@ -28,9 +28,9 @@ enum LayoutType
 	NUM_LayoutType,
 	LayoutType_Invalid
 };
-const RString& LayoutTypeToString( LayoutType pm );
-LayoutType StringToLayoutType( const RString& s );
-LuaDeclareType( LayoutType );
+const RString& LayoutTypeToString(LayoutType pm);
+LayoutType StringToLayoutType(const RString& s);
+LuaDeclareType(LayoutType);
 
 /** @brief Define the purpose of the OptionRow. */
 struct OptionRowDefinition
@@ -70,21 +70,21 @@ struct OptionRowDefinition
 	 * @brief Is this option enabled for the Player?
 	 * @param pn the Player the PlayerNumber represents.
 	 * @return true if the option is enabled, false otherwise. */
-	bool IsEnabledForPlayer( PlayerNumber pn ) const 
+	bool IsEnabledForPlayer(PlayerNumber pn) const
 	{
-		return m_vEnabledForPlayers.find(pn) != m_vEnabledForPlayers.end(); 
+		return m_vEnabledForPlayers.find(pn) != m_vEnabledForPlayers.end();
 	}
 
 	OptionRowDefinition(): m_sName(""), m_sExplanationName(""),
 		m_bOneChoiceForAllPlayers(false), m_selectType(SELECT_ONE),
-		m_layoutType(LAYOUT_SHOW_ALL_IN_ROW), m_vsChoices(), 
+		m_layoutType(LAYOUT_SHOW_ALL_IN_ROW), m_vsChoices(),
 		m_vEnabledForPlayers(), m_iDefault(-1),
 		m_bExportOnChange(false), m_bAllowThemeItems(true),
 		m_bAllowThemeTitle(true), m_bAllowExplanation(true),
 		m_bShowChoicesListOnSelect(false)
 	{
-		FOREACH_PlayerNumber( pn )
-			m_vEnabledForPlayers.insert( pn ); 
+		FOREACH_PlayerNumber(pn)
+		m_vEnabledForPlayers.insert(pn);
 	}
 	void Init()
 	{
@@ -95,8 +95,8 @@ struct OptionRowDefinition
 		m_layoutType = LAYOUT_SHOW_ALL_IN_ROW;
 		m_vsChoices.clear();
 		m_vEnabledForPlayers.clear();
-		FOREACH_PlayerNumber( pn )
-			m_vEnabledForPlayers.insert( pn );
+		FOREACH_PlayerNumber(pn)
+		m_vEnabledForPlayers.insert(pn);
 		m_iDefault = -1;
 		m_bExportOnChange = false;
 		m_bAllowThemeItems = true;
@@ -105,33 +105,49 @@ struct OptionRowDefinition
 		m_bShowChoicesListOnSelect = false;
 	}
 
-	OptionRowDefinition( const char *n, bool b, const char *c0=NULL, 
-			    const char *c1=NULL, const char *c2=NULL, 
-			    const char *c3=NULL, const char *c4=NULL, 
-			    const char *c5=NULL, const char *c6=NULL, 
-			    const char *c7=NULL, const char *c8=NULL, 
-			    const char *c9=NULL, const char *c10=NULL, 
-			    const char *c11=NULL, const char *c12=NULL, 
-			    const char *c13=NULL, const char *c14=NULL, 
-			    const char *c15=NULL, const char *c16=NULL, 
-			    const char *c17=NULL, const char *c18=NULL, 
-			    const char *c19=NULL ): m_sName(n),
+	OptionRowDefinition(const char *n, bool b, const char *c0 = NULL,
+	                    const char *c1 = NULL, const char *c2 = NULL,
+	                    const char *c3 = NULL, const char *c4 = NULL,
+	                    const char *c5 = NULL, const char *c6 = NULL,
+	                    const char *c7 = NULL, const char *c8 = NULL,
+	                    const char *c9 = NULL, const char *c10 = NULL,
+	                    const char *c11 = NULL, const char *c12 = NULL,
+	                    const char *c13 = NULL, const char *c14 = NULL,
+	                    const char *c15 = NULL, const char *c16 = NULL,
+	                    const char *c17 = NULL, const char *c18 = NULL,
+	                    const char *c19 = NULL): m_sName(n),
 		m_sExplanationName(""), m_bOneChoiceForAllPlayers(b),
 		m_selectType(SELECT_ONE),
-		m_layoutType(LAYOUT_SHOW_ALL_IN_ROW), m_vsChoices(), 
+		m_layoutType(LAYOUT_SHOW_ALL_IN_ROW), m_vsChoices(),
 		m_vEnabledForPlayers(), m_iDefault(-1),
 		m_bExportOnChange(false), m_bAllowThemeItems(true),
 		m_bAllowThemeTitle(true), m_bAllowExplanation(true),
 		m_bShowChoicesListOnSelect(false)
 	{
-		FOREACH_PlayerNumber( pn )
-			m_vEnabledForPlayers.insert( pn );
-		
+		FOREACH_PlayerNumber(pn)
+		m_vEnabledForPlayers.insert(pn);
+
 #define PUSH( c )	if(c) m_vsChoices.push_back(c);
-		PUSH(c0);PUSH(c1);PUSH(c2);PUSH(c3);PUSH(c4);PUSH(c5);
-		PUSH(c6);PUSH(c7);PUSH(c8);PUSH(c9);PUSH(c10);PUSH(c11);
-		PUSH(c12);PUSH(c13);PUSH(c14);PUSH(c15);PUSH(c16);PUSH(c17);
-		PUSH(c18);PUSH(c19);
+		PUSH(c0);
+		PUSH(c1);
+		PUSH(c2);
+		PUSH(c3);
+		PUSH(c4);
+		PUSH(c5);
+		PUSH(c6);
+		PUSH(c7);
+		PUSH(c8);
+		PUSH(c9);
+		PUSH(c10);
+		PUSH(c11);
+		PUSH(c12);
+		PUSH(c13);
+		PUSH(c14);
+		PUSH(c15);
+		PUSH(c16);
+		PUSH(c17);
+		PUSH(c18);
+		PUSH(c19);
 #undef PUSH
 	}
 };
@@ -150,15 +166,15 @@ public:
 		m_Def.Init();
 		m_vsReloadRowMessages.clear();
 	}
-	void Load( const Commands &cmds )
+	void Load(const Commands &cmds)
 	{
 		Init();
-		this->LoadInternal( cmds );
+		this->LoadInternal(cmds);
 	}
 	RString OptionTitle() const;
-	RString GetThemedItemText( int iChoice ) const;
+	RString GetThemedItemText(int iChoice) const;
 
-	virtual void LoadInternal( const Commands &cmds ) { }
+	virtual void LoadInternal(const Commands &cmds) { }
 
 	/* We may re-use OptionRowHandlers. This is called before each use. If the
 	 * contents of the row are dependent on external state (for example, the
@@ -170,37 +186,51 @@ public:
 	 * has been changed, return RELOAD_CHANGED_ENABLED. If the row is static, and
 	 * nothing has changed, return RELOAD_CHANGED_NONE. */
 	enum ReloadChanged { RELOAD_CHANGED_NONE, RELOAD_CHANGED_ENABLED, RELOAD_CHANGED_ALL };
-	virtual ReloadChanged Reload() { return RELOAD_CHANGED_NONE; }
+	virtual ReloadChanged Reload()
+	{
+		return RELOAD_CHANGED_NONE;
+	}
 
-	virtual int GetDefaultOption() const { return -1; }
-	virtual void ImportOption( OptionRow *pRow, const vector<PlayerNumber> &vpns, vector<bool> vbSelectedOut[NUM_PLAYERS] ) const { }
+	virtual int GetDefaultOption() const
+	{
+		return -1;
+	}
+	virtual void ImportOption(OptionRow *pRow, const vector<PlayerNumber> &vpns, vector<bool> vbSelectedOut[NUM_PLAYERS]) const { }
 	// Returns an OPT mask.
-	virtual int ExportOption( const vector<PlayerNumber> &vpns, const vector<bool> vbSelected[NUM_PLAYERS] ) const { return 0; }
-	virtual void GetIconTextAndGameCommand( int iFirstSelection, RString &sIconTextOut, GameCommand &gcOut ) const;
-	virtual RString GetScreen( int iChoice ) const { return RString(); }
+	virtual int ExportOption(const vector<PlayerNumber> &vpns, const vector<bool> vbSelected[NUM_PLAYERS]) const
+	{
+		return 0;
+	}
+	virtual void GetIconTextAndGameCommand(int iFirstSelection, RString &sIconTextOut, GameCommand &gcOut) const;
+	virtual RString GetScreen(int iChoice) const
+	{
+		return RString();
+	}
 };
 
 /** @brief Utilities for the OptionRowHandlers. */
 namespace OptionRowHandlerUtil
 {
-	OptionRowHandler* Make( const Commands &cmds );
+	OptionRowHandler* Make(const Commands &cmds);
 	OptionRowHandler* MakeNull();
-	OptionRowHandler* MakeSimple( const MenuRowDef &mrd );
+	OptionRowHandler* MakeSimple(const MenuRowDef &mrd);
 
-	void SelectExactlyOne( int iSelection, vector<bool> &vbSelectedOut );
-	int GetOneSelection( const vector<bool> &vbSelected );
+	void SelectExactlyOne(int iSelection, vector<bool> &vbSelectedOut);
+	int GetOneSelection(const vector<bool> &vbSelected);
 }
 
-inline void VerifySelected( SelectType st, const vector<bool> &vbSelected, const RString &sName )
+inline void VerifySelected(SelectType st, const vector<bool> &vbSelected, const RString &sName)
 {
 	int iNumSelected = 0;
-	if( st == SELECT_ONE )
+	if (st == SELECT_ONE)
 	{
-		ASSERT_M( vbSelected.size() > 0, ssprintf("%s: %i/%i", sName.c_str(), iNumSelected, int(vbSelected.size())) );
-		for( unsigned e = 0; e < vbSelected.size(); ++e )
-			if( vbSelected[e] )
+		ASSERT_M(vbSelected.size() > 0, ssprintf("%s: %i/%i", sName.c_str(), iNumSelected, int(vbSelected.size())));
+		for (unsigned e = 0; e < vbSelected.size(); ++e)
+			if (vbSelected[e])
+			{
 				iNumSelected++;
-		ASSERT_M( iNumSelected == 1, ssprintf("%s: %i/%i", sName.c_str(), iNumSelected, int(vbSelected.size())) );
+			}
+		ASSERT_M(iNumSelected == 1, ssprintf("%s: %i/%i", sName.c_str(), iNumSelected, int(vbSelected.size())));
 	}
 }
 
@@ -211,7 +241,7 @@ inline void VerifySelected( SelectType st, const vector<bool> &vbSelected, const
  * @author Chris Danford (c) 2002-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -221,7 +251,7 @@ inline void VerifySelected( SelectType st, const vector<bool> &vbSelected, const
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

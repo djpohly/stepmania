@@ -11,22 +11,24 @@ ActiveAttackList::ActiveAttackList()
 {
 }
 
-void ActiveAttackList::Init( const PlayerState* pPlayerState )
+void ActiveAttackList::Init(const PlayerState* pPlayerState)
 {
 	m_pPlayerState = pPlayerState;
 }
 
-void ActiveAttackList::Update( float fDelta ) 
+void ActiveAttackList::Update(float fDelta)
 {
-	bool bTimeToRefresh = 
-		IsFirstUpdate() || // check this before running Actor::Update()
-		m_pPlayerState->m_bAttackBeganThisUpdate ||
-		m_pPlayerState->m_bAttackEndedThisUpdate;
+	bool bTimeToRefresh =
+	        IsFirstUpdate() || // check this before running Actor::Update()
+	        m_pPlayerState->m_bAttackBeganThisUpdate ||
+	        m_pPlayerState->m_bAttackEndedThisUpdate;
 
-	BitmapText::Update( fDelta ); 
+	BitmapText::Update(fDelta);
 
-	if( bTimeToRefresh )
+	if (bTimeToRefresh)
+	{
 		Refresh();
+	}
 }
 
 void ActiveAttackList::Refresh()
@@ -34,29 +36,33 @@ void ActiveAttackList::Refresh()
 	const AttackArray& attacks = m_pPlayerState->m_ActiveAttacks;
 
 	vector<RString> vsThemedMods;
-	for( unsigned i=0; i<attacks.size(); i++ )
+	for (unsigned i = 0; i < attacks.size(); i++)
 	{
 		const Attack& attack = attacks[i];
 
-		if( !attack.bOn )
-			continue; // hasn't started yet
-		if( !attack.bShowInAttackList )
+		if (!attack.bOn)
+		{
+			continue;        // hasn't started yet
+		}
+		if (!attack.bShowInAttackList)
+		{
 			continue;
+		}
 
 		PlayerOptions po;
-		po.FromString( attack.sModifiers );
-		po.GetLocalizedMods( vsThemedMods );
+		po.FromString(attack.sModifiers);
+		po.GetLocalizedMods(vsThemedMods);
 	}
 
-	RString s = join( "\n", vsThemedMods );
+	RString s = join("\n", vsThemedMods);
 
-	this->SetText( s );	// BitmapText will not rebuild vertices if these strings are the same.
+	this->SetText(s);	// BitmapText will not rebuild vertices if these strings are the same.
 }
 
 /*
  * (c) 2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -66,7 +72,7 @@ void ActiveAttackList::Refresh()
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

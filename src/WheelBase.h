@@ -19,38 +19,60 @@ class WheelBase : public ActorFrame
 {
 public:
 	virtual ~WheelBase();
-	virtual void Load( RString sType );
+	virtual void Load(RString sType);
 	void BeginScreen();
 
-	virtual void Update( float fDeltaTime );
+	virtual void Update(float fDeltaTime);
 
 	virtual void Move(int n);
-	void ChangeMusicUnlessLocked( int n ); /* +1 or -1 */
+	void ChangeMusicUnlessLocked(int n);   /* +1 or -1 */
 	virtual void ChangeMusic(int dist); /* +1 or -1 */
-	virtual void SetOpenSection( RString group ) { }
+	virtual void SetOpenSection(RString group) { }
 
 	// Return true if we're moving fast automatically.
 	int IsMoving() const;
 	bool IsSettled() const;
 
-	void GetItemPosition( float fPosOffsetsFromMiddle, float& fX_out, float& fY_out, float& fZ_out, float& fRotationX_out );
-	void SetItemPosition( Actor &item, float fPosOffsetsFromMiddle );
+	void GetItemPosition(float fPosOffsetsFromMiddle, float& fX_out, float& fY_out, float& fZ_out, float& fRotationX_out);
+	void SetItemPosition(Actor &item, float fPosOffsetsFromMiddle);
 
 	virtual bool Select();	// return true if this selection can end the screen
 
-	bool WheelIsLocked() { return (m_WheelState == STATE_LOCKED ? true : false); }
-	void RebuildWheelItems( int dist = INT_MAX );	// INT_MAX = refresh all
+	bool WheelIsLocked()
+	{
+		return (m_WheelState == STATE_LOCKED ? true : false);
+	}
+	void RebuildWheelItems(int dist = INT_MAX);	// INT_MAX = refresh all
 
-	virtual unsigned int GetNumItems() const { return m_CurWheelItemData.size(); }
-	bool IsEmpty() { return m_bEmpty; }
+	virtual unsigned int GetNumItems() const
+	{
+		return m_CurWheelItemData.size();
+	}
+	bool IsEmpty()
+	{
+		return m_bEmpty;
+	}
 	WheelItemBaseData* GetItem(unsigned int index);
 	WheelItemBaseData* LastSelected();
-	WheelItemBase *GetWheelItem( int i ) { if( i < 0 || i >= (int) m_WheelBaseItems.size() ) return NULL; return m_WheelBaseItems[i]; }
-	RString GetExpandedSectionName() { return m_sExpandedSectionName; }
-	int GetCurrentIndex() { return m_iSelection; }
+	WheelItemBase *GetWheelItem(int i)
+	{
+		if (i < 0 || i >= (int) m_WheelBaseItems.size())
+		{
+			return NULL;
+		}
+		return m_WheelBaseItems[i];
+	}
+	RString GetExpandedSectionName()
+	{
+		return m_sExpandedSectionName;
+	}
+	int GetCurrentIndex()
+	{
+		return m_iSelection;
+	}
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
 protected:
 	void TweenOnScreenForSort();
@@ -69,7 +91,7 @@ protected:
 	vector<WheelItemBaseData *> m_CurWheelItemData;
 	vector<WheelItemBase *> m_WheelBaseItems;
 	WheelItemBaseData* m_LastSelection;
-	
+
 	bool		m_bEmpty;
 	int		m_iSelection;		// index into m_CurWheelItemBaseData
 	RString		m_sExpandedSectionName;
@@ -81,10 +103,11 @@ protected:
 	RageTimer	m_MovingSoundTimer;
 	float		m_TimeBeforeMovingBegins;
 	float		m_SpinSpeed;
-	enum WheelState { 
+	enum WheelState
+	{
 		STATE_SELECTING,
-		STATE_FLYING_OFF_BEFORE_NEXT_SORT, 
-		STATE_FLYING_ON_AFTER_NEXT_SORT, 
+		STATE_FLYING_OFF_BEFORE_NEXT_SORT,
+		STATE_FLYING_ON_AFTER_NEXT_SORT,
 		STATE_ROULETTE_SPINNING,
 		STATE_ROULETTE_SLOWING_DOWN,
 		STATE_RANDOM_SPINNING,
@@ -99,7 +122,7 @@ protected:
 	RageSound m_soundExpand;
 	RageSound m_soundLocked;
 
-//	bool WheelItemIsVisible(int n);
+	//	bool WheelItemIsVisible(int n);
 	void UpdateScrollbar();
 
 	ThemeMetric<float>	SWITCH_SECONDS;
@@ -115,7 +138,7 @@ protected:
 /*
  * (c) 2001-2004 Chris Danford, Chris Gomez, Glenn Maynard, Josh Allen
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -125,7 +148,7 @@ protected:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

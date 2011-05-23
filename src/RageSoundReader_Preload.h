@@ -12,16 +12,28 @@ public:
 	RageSoundReader_Preload();
 	/* Return true if the sound has been preloaded, in which case source will
 	 * be deleted.  Otherwise, return false. */
-	bool Open( RageSoundReader *pSource );
+	bool Open(RageSoundReader *pSource);
 	int GetLength() const;
 	int GetLength_Fast() const;
-	int SetPosition( int iFrame );
-	int Read( float *pBuffer, int iLength );
-	int GetSampleRate() const { return m_iSampleRate; }
-	unsigned GetNumChannels() const { return m_iChannels; }
+	int SetPosition(int iFrame);
+	int Read(float *pBuffer, int iLength);
+	int GetSampleRate() const
+	{
+		return m_iSampleRate;
+	}
+	unsigned GetNumChannels() const
+	{
+		return m_iChannels;
+	}
 	int GetNextSourceFrame() const;
-	float GetStreamToSourceRatio() const { return m_fRate; }
-	RString GetError() const { return ""; }
+	float GetStreamToSourceRatio() const
+	{
+		return m_fRate;
+	}
+	RString GetError() const
+	{
+		return "";
+	}
 
 	/* Return the total number of copies of this sound.  (If 1 is returned,
 	 * this is the last copy.) */
@@ -31,7 +43,7 @@ public:
 	~RageSoundReader_Preload() { }
 
 	/* Attempt to preload a sound.  pSound must be rewound. */
-	static bool PreloadSound( RageSoundReader *&pSound );
+	static bool PreloadSound(RageSoundReader *&pSound);
 
 private:
 	AutoPtrCopyOnWrite<RString> m_Buffer;

@@ -10,25 +10,28 @@ class RageSoundSplitterImpl;
 class RageSoundReader_Split: public RageSoundReader
 {
 public:
-	RageSoundReader_Split( const RageSoundReader_Split &cpy );
+	RageSoundReader_Split(const RageSoundReader_Split &cpy);
 	~RageSoundReader_Split();
-	virtual RageSoundReader_Split *Copy() const { return new RageSoundReader_Split(*this); }
+	virtual RageSoundReader_Split *Copy() const
+	{
+		return new RageSoundReader_Split(*this);
+	}
 
 	virtual int GetLength() const;
 	virtual int GetLength_Fast() const;
-	virtual int SetPosition( int iFrame );
-	virtual int Read( float *pBuf, int iFrames );
+	virtual int SetPosition(int iFrame);
+	virtual int Read(float *pBuf, int iFrames);
 	virtual int GetSampleRate() const;
 	virtual unsigned GetNumChannels() const;
-	virtual bool SetProperty( const RString &sProperty, float fValue );
+	virtual bool SetProperty(const RString &sProperty, float fValue);
 	virtual int GetNextSourceFrame() const;
 	virtual float GetStreamToSourceRatio() const;
 	virtual RString GetError() const;
 
-	void AddSourceChannelToSound( int iFromChannel, int iToChannel );
+	void AddSourceChannelToSound(int iFromChannel, int iToChannel);
 
 private:
-	RageSoundReader_Split( RageSoundSplitterImpl *pImpl ); // create with RageSoundSplitter
+	RageSoundReader_Split(RageSoundSplitterImpl *pImpl);   // create with RageSoundSplitter
 	friend class RageSoundSplitterImpl;
 	friend class RageSoundSplitter;
 
@@ -37,7 +40,11 @@ private:
 	{
 		int m_iFromChannel;
 		int m_iToChannel;
-		ChannelMap( int iFromChannel, int iToChannel ) { m_iFromChannel = iFromChannel; m_iToChannel = iToChannel; }
+		ChannelMap(int iFromChannel, int iToChannel)
+		{
+			m_iFromChannel = iFromChannel;
+			m_iToChannel = iToChannel;
+		}
 	};
 	vector<ChannelMap> m_aChannels;
 
@@ -49,7 +56,7 @@ private:
 class RageSoundSplitter
 {
 public:
-	RageSoundSplitter( RageSoundReader *pSource );
+	RageSoundSplitter(RageSoundReader *pSource);
 	~RageSoundSplitter();
 	RageSoundReader_Split *CreateSound();
 

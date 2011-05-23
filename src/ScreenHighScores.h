@@ -17,27 +17,31 @@ enum HighScoresType
 	NUM_HighScoresType,
 	HighScoresType_Invalid
 };
-LuaDeclareType( HighScoresType );
+LuaDeclareType(HighScoresType);
 
 
 class ScoreScroller: public DynamicActorScroller
 {
 public:
 	ScoreScroller();
-	void LoadSongs( int iNumRecentScores );
-	void LoadCourses( CourseType ct, int iNumRecentScores );
-	void Load( RString sClassName );
-	void SetDisplay( const vector<DifficultyAndStepsType> &DifficultiesToShow );
-	bool Scroll( int iDir );
+	void LoadSongs(int iNumRecentScores);
+	void LoadCourses(CourseType ct, int iNumRecentScores);
+	void Load(RString sClassName);
+	void SetDisplay(const vector<DifficultyAndStepsType> &DifficultiesToShow);
+	bool Scroll(int iDir);
 	void ScrollTop();
 
 protected:
-	virtual void ConfigureActor( Actor *pActor, int iItem );
+	virtual void ConfigureActor(Actor *pActor, int iItem);
 	vector<DifficultyAndStepsType> m_DifficultiesToShow;
 
 	struct ScoreRowItemData // for all_steps and all_courses
 	{
-		ScoreRowItemData() { m_pSong = NULL; m_pCourse = NULL; }
+		ScoreRowItemData()
+		{
+			m_pSong = NULL;
+			m_pCourse = NULL;
+		}
 
 		Song *m_pSong;
 		Course *m_pCourse;
@@ -54,17 +58,29 @@ public:
 	virtual void Init();
 	virtual void BeginScreen();
 
-	void HandleScreenMessage( const ScreenMessage SM );
-	virtual void Input( const InputEventPlus &input );
-	virtual void MenuStart( const InputEventPlus &input );
-	virtual void MenuBack( const InputEventPlus &input );
-	virtual void MenuLeft( const InputEventPlus &input )	{ DoScroll(-1); }
-	virtual void MenuRight( const InputEventPlus &input )	{ DoScroll(+1); }
-	virtual void MenuUp( const InputEventPlus &input )	{ DoScroll(-1); }
-	virtual void MenuDown( const InputEventPlus &input )	{ DoScroll(+1); }
+	void HandleScreenMessage(const ScreenMessage SM);
+	virtual void Input(const InputEventPlus &input);
+	virtual void MenuStart(const InputEventPlus &input);
+	virtual void MenuBack(const InputEventPlus &input);
+	virtual void MenuLeft(const InputEventPlus &input)
+	{
+		DoScroll(-1);
+	}
+	virtual void MenuRight(const InputEventPlus &input)
+	{
+		DoScroll(+1);
+	}
+	virtual void MenuUp(const InputEventPlus &input)
+	{
+		DoScroll(-1);
+	}
+	virtual void MenuDown(const InputEventPlus &input)
+	{
+		DoScroll(+1);
+	}
 
 private:
-	void DoScroll( int iDir );
+	void DoScroll(int iDir);
 
 	ThemeMetric<bool>	MANUAL_SCROLLING;
 	ThemeMetric<HighScoresType>	HIGH_SCORES_TYPE;
@@ -80,7 +96,7 @@ private:
 /*
  * (c) 2001-2007 Chris Danford, Ben Nordstrom, Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -90,7 +106,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

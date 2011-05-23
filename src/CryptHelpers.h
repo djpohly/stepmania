@@ -8,9 +8,9 @@
 class PRNGWrapper
 {
 public:
-	PRNGWrapper( const struct ltc_prng_descriptor *pPRNGDescriptor );
+	PRNGWrapper(const struct ltc_prng_descriptor *pPRNGDescriptor);
 	~PRNGWrapper();
-	void AddEntropy( const void *pData, int iSize );
+	void AddEntropy(const void *pData, int iSize);
 	void AddRandomEntropy();
 
 	int m_iPRNG;
@@ -23,8 +23,8 @@ public:
 	RSAKeyWrapper();
 	~RSAKeyWrapper();
 	void Unload();
-	void Generate( PRNGWrapper &prng, int iKeyLenBits );
-	bool Load( const RString &sKey, RString &sError );
+	void Generate(PRNGWrapper &prng, int iKeyLenBits);
+	bool Load(const RString &sKey, RString &sError);
 
 	rsa_key m_Key;
 };

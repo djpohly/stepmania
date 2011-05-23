@@ -13,122 +13,136 @@
 class DeviceList: public BitmapText
 {
 public:
-	void Update( float fDeltaTime )
+	void Update(float fDeltaTime)
 	{
 		// Update devices text
-		this->SetText( INPUTMAN->GetDisplayDevicesString() );
+		this->SetText(INPUTMAN->GetDisplayDevicesString());
 
-		BitmapText::Update( fDeltaTime );
+		BitmapText::Update(fDeltaTime);
 	}
 
 	virtual DeviceList *Copy() const;
 };
 
-REGISTER_ACTOR_CLASS( DeviceList );
+REGISTER_ACTOR_CLASS(DeviceList);
 
-static LocalizedString CONTROLLER	( "ScreenTestInput", "Controller" );
-static LocalizedString SECONDARY	( "ScreenTestInput", "secondary" );
-static LocalizedString NOT_MAPPED	( "ScreenTestInput", "not mapped" );
+static LocalizedString CONTROLLER("ScreenTestInput", "Controller");
+static LocalizedString SECONDARY("ScreenTestInput", "secondary");
+static LocalizedString NOT_MAPPED("ScreenTestInput", "not mapped");
 class InputList: public BitmapText
 {
 	virtual InputList *Copy() const;
 
-	void Update( float fDeltaTime )
+	void Update(float fDeltaTime)
 	{
 		// Update input texts
 		vector<RString> asInputs;
 
 		vector<DeviceInput> DeviceInputs;
-		INPUTFILTER->GetPressedButtons( DeviceInputs );
-		FOREACH( DeviceInput, DeviceInputs, di )
+		INPUTFILTER->GetPressedButtons(DeviceInputs);
+		FOREACH(DeviceInput, DeviceInputs, di)
 		{
-			if( !di->bDown && di->level == 0.0f )
+			if (!di->bDown && di->level == 0.0f)
+			{
 				continue;
+			}
 
 			RString sTemp;
 			sTemp += INPUTMAN->GetDeviceSpecificInputString(*di);
-			if( di->level == 1.0f )
-				sTemp += ssprintf(" - 1 " );
-			else
-				sTemp += ssprintf(" - %.3f ", di->level );
-			
-			GameInput gi;
-			if( INPUTMAPPER->DeviceToGame(*di,gi) )
+			if (di->level == 1.0f)
 			{
-				RString sName = GameButtonToLocalizedString( INPUTMAPPER->GetInputScheme(), gi.button );
-				sTemp += ssprintf(" - %s %d %s", CONTROLLER.GetValue().c_str(), gi.controller+1, sName.c_str() );
+				sTemp += ssprintf(" - 1 ");
+			}
+			else
+			{
+				sTemp += ssprintf(" - %.3f ", di->level);
+			}
 
-				if( !PREFSMAN->m_bOnlyDedicatedMenuButtons )
+			GameInput gi;
+			if (INPUTMAPPER->DeviceToGame(*di, gi))
+			{
+				RString sName = GameButtonToLocalizedString(INPUTMAPPER->GetInputScheme(), gi.button);
+				sTemp += ssprintf(" - %s %d %s", CONTROLLER.GetValue().c_str(), gi.controller + 1, sName.c_str());
+
+				if (!PREFSMAN->m_bOnlyDedicatedMenuButtons)
 				{
-					GameButton mb = INPUTMAPPER->GetInputScheme()->GameButtonToMenuButton( gi.button );
-					if( mb != GameButton_Invalid && mb != gi.button )
+					GameButton mb = INPUTMAPPER->GetInputScheme()->GameButtonToMenuButton(gi.button);
+					if (mb != GameButton_Invalid && mb != gi.button)
 					{
-						RString sGameButtonString = GameButtonToLocalizedString( INPUTMAPPER->GetInputScheme(), mb );
-						sTemp += ssprintf( " - (%s %s)", sGameButtonString.c_str(), SECONDARY.GetValue().c_str() );
+						RString sGameButtonString = GameButtonToLocalizedString(INPUTMAPPER->GetInputScheme(), mb);
+						sTemp += ssprintf(" - (%s %s)", sGameButtonString.c_str(), SECONDARY.GetValue().c_str());
 					}
 				}
 			}
 			else
 			{
-				sTemp += " - "+NOT_MAPPED.GetValue();
+				sTemp += " - " + NOT_MAPPED.GetValue();
 			}
 
-			RString sComment = INPUTFILTER->GetButtonComment( *di );
-			if( sComment != "" )
+			RString sComment = INPUTFILTER->GetButtonComment(*di);
+			if (sComment != "")
+			{
 				sTemp += " - " + sComment;
+			}
 
-			asInputs.push_back( sTemp );
+			asInputs.push_back(sTemp);
 		}
 
-		this->SetText( join( "\n", asInputs ) );
+		this->SetText(join("\n", asInputs));
 
-		BitmapText::Update( fDeltaTime );
+		BitmapText::Update(fDeltaTime);
 	}
 };
 
-REGISTER_ACTOR_CLASS( InputList );
+REGISTER_ACTOR_CLASS(InputList);
 
-REGISTER_SCREEN_CLASS( ScreenTestInput );
+REGISTER_SCREEN_CLASS(ScreenTestInput);
 
-void ScreenTestInput::Input( const InputEventPlus &input )
+void ScreenTestInput::Input(const InputEventPlus &input)
 {
 	RString sMessage = input.DeviceI.ToString();
-	switch( input.type )
+	switch (input.type)
 	{
-	case IET_FIRST_PRESS:
-	case IET_RELEASE:
-		switch( input.type )
-		{
-		case IET_FIRST_PRESS:	sMessage += "Pressed";	break;
-		case IET_RELEASE:	sMessage += "Released";	break;
-		}
-		MESSAGEMAN->Broadcast( sMessage );
+		case IET_FIRST_PRESS:
+		case IET_RELEASE:
+			switch (input.type)
+			{
+				case IET_FIRST_PRESS:
+					sMessage += "Pressed";
+					break;
+				case IET_RELEASE:
+					sMessage += "Released";
+					break;
+			}
+			MESSAGEMAN->Broadcast(sMessage);
 	}
 
-	Screen::Input( input );	// default handler
+	Screen::Input(input);	// default handler
 }
 
-void ScreenTestInput::MenuStart( const InputEventPlus &input )
+void ScreenTestInput::MenuStart(const InputEventPlus &input)
 {
-	MenuBack( input );
+	MenuBack(input);
 }
 
-void ScreenTestInput::MenuBack( const InputEventPlus &input )
+void ScreenTestInput::MenuBack(const InputEventPlus &input)
 {
-	if( input.type != IET_REPEAT )
-		return;	// ignore
+	if (input.type != IET_REPEAT)
+	{
+		return;        // ignore
+	}
 
-	if( !IsTransitioning() )
+	if (!IsTransitioning())
 	{
 		SCREENMAN->PlayStartSound();
-		StartTransitioningScreen( SM_GoToPrevScreen );
+		StartTransitioningScreen(SM_GoToPrevScreen);
 	}
 }
 
 /*
  * (c) 2003-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -138,7 +152,7 @@ void ScreenTestInput::MenuBack( const InputEventPlus &input )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

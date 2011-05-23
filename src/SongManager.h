@@ -31,67 +31,76 @@ public:
 	SongManager();
 	~SongManager();
 
-	void InitSongsFromDisk( LoadingWindow *ld );
+	void InitSongsFromDisk(LoadingWindow *ld);
 	void FreeSongs();
 	void Cleanup();
 
-	void Invalidate( const Song *pStaleSong );
+	void Invalidate(const Song *pStaleSong);
 
 	void RegenerateNonFixedCourses();
 	void SetPreferences();
 	void SaveEnabledSongsToPref();
 	void LoadEnabledSongsFromPref();
 
-	void LoadStepEditsFromProfileDir( const RString &sProfileDir, ProfileSlot slot );
-	void LoadCourseEditsFromProfileDir( const RString &sProfileDir, ProfileSlot slot );
+	void LoadStepEditsFromProfileDir(const RString &sProfileDir, ProfileSlot slot);
+	void LoadCourseEditsFromProfileDir(const RString &sProfileDir, ProfileSlot slot);
 	int GetNumStepsLoadedFromProfile();
-	void FreeAllLoadedFromProfile( ProfileSlot slot = ProfileSlot_Invalid );
+	void FreeAllLoadedFromProfile(ProfileSlot slot = ProfileSlot_Invalid);
 
-	void LoadGroupSymLinks( RString sDir, RString sGroupFolder );
+	void LoadGroupSymLinks(RString sDir, RString sGroupFolder);
 
-	void InitCoursesFromDisk( LoadingWindow *ld );
+	void InitCoursesFromDisk(LoadingWindow *ld);
 	void InitAutogenCourses();
 	void InitRandomAttacks();
 	void FreeCourses();
-	void AddCourse( Course *pCourse );	// transfers ownership of pCourse
-	void DeleteCourse( Course *pCourse );	// transfers ownership of pCourse
+	void AddCourse(Course *pCourse);	// transfers ownership of pCourse
+	void DeleteCourse(Course *pCourse);	// transfers ownership of pCourse
 	/** @brief Remove all of the auto generated courses. */
 	void DeleteAutogenCourses();
 	void InvalidateCachedTrails();
 
-	void InitAll( LoadingWindow *ld );	// songs, courses, groups - everything.
-	void Reload( bool bAllowFastLoad, LoadingWindow *ld=NULL );	// songs, courses, groups - everything.
+	void InitAll(LoadingWindow *ld);	// songs, courses, groups - everything.
+	void Reload(bool bAllowFastLoad, LoadingWindow *ld = NULL);	// songs, courses, groups - everything.
 	void PreloadSongImages();
 
-	RString GetSongGroupBannerPath( RString sSongGroup ) const;
+	RString GetSongGroupBannerPath(RString sSongGroup) const;
 	//RString GetSongGroupBackgroundPath( RString sSongGroup ) const;
-	void GetSongGroupNames( vector<RString> &AddTo ) const;
-	bool DoesSongGroupExist( RString sSongGroup ) const;
-	RageColor GetSongGroupColor( const RString &sSongGroupName ) const;
-	RageColor GetSongColor( const Song* pSong ) const;
+	void GetSongGroupNames(vector<RString> &AddTo) const;
+	bool DoesSongGroupExist(RString sSongGroup) const;
+	RageColor GetSongGroupColor(const RString &sSongGroupName) const;
+	RageColor GetSongColor(const Song* pSong) const;
 
-	RString GetCourseGroupBannerPath( const RString &sCourseGroup ) const;
+	RString GetCourseGroupBannerPath(const RString &sCourseGroup) const;
 	//RString GetCourseGroupBackgroundPath( const RString &sCourseGroup ) const;
-	void GetCourseGroupNames( vector<RString> &AddTo ) const;
-	bool DoesCourseGroupExist( const RString &sCourseGroup ) const;
-	RageColor GetCourseGroupColor( const RString &sCourseGroupName ) const;
-	RageColor GetCourseColor( const Course* pCourse ) const;
+	void GetCourseGroupNames(vector<RString> &AddTo) const;
+	bool DoesCourseGroupExist(const RString &sCourseGroup) const;
+	RageColor GetCourseGroupColor(const RString &sCourseGroupName) const;
+	RageColor GetCourseColor(const Course* pCourse) const;
 
 	void ResetGroupColors(); // sm-ssc add
 
-	static RString ShortenGroupName( RString sLongGroupName );
+	static RString ShortenGroupName(RString sLongGroupName);
 
 	// Lookup
-	const vector<Song*> &GetSongs( const RString &sGroupName ) const;
-	const vector<Song*> &GetAllSongs() const { return GetSongs(GROUP_ALL); }
-	const vector<Song*> &GetPopularSongs() const { return m_pPopularSongs; }
-	void GetPreferredSortSongs( vector<Song*> &AddTo ) const;
-	RString SongToPreferredSortSectionName( const Song *pSong ) const;
-	const vector<Course*> &GetPopularCourses( CourseType ct ) const { return m_pPopularCourses[ct]; }
-	Song *FindSong( RString sPath ) const;
-	Song *FindSong( RString sGroup, RString sSong ) const;
-	Course *FindCourse( RString sPath ) const;
-	Course *FindCourse( RString sGroup, RString sName ) const;
+	const vector<Song*> &GetSongs(const RString &sGroupName) const;
+	const vector<Song*> &GetAllSongs() const
+	{
+		return GetSongs(GROUP_ALL);
+	}
+	const vector<Song*> &GetPopularSongs() const
+	{
+		return m_pPopularSongs;
+	}
+	void GetPreferredSortSongs(vector<Song*> &AddTo) const;
+	RString SongToPreferredSortSectionName(const Song *pSong) const;
+	const vector<Course*> &GetPopularCourses(CourseType ct) const
+	{
+		return m_pPopularCourses[ct];
+	}
+	Song *FindSong(RString sPath) const;
+	Song *FindSong(RString sGroup, RString sSong) const;
+	Course *FindCourse(RString sPath) const;
+	Course *FindCourse(RString sGroup, RString sName) const;
 	int GetNumSongs() const;
 	int GetNumUnlockedSongs() const;
 	int GetNumSelectableAndUnlockedSongs() const;
@@ -103,43 +112,46 @@ public:
 	Song* GetRandomSong();
 	Course* GetRandomCourse();
 	// sm-ssc addition:
-	RString GetSongGroupByIndex(unsigned index) { return m_sSongGroupNames[index]; }
+	RString GetSongGroupByIndex(unsigned index)
+	{
+		return m_sSongGroupNames[index];
+	}
 	int GetSongRank(Song* pSong);
 
-	void GetStepsLoadedFromProfile( vector<Steps*> &AddTo, ProfileSlot slot ) const;
-	Song *GetSongFromSteps( Steps *pSteps ) const;
-	void DeleteSteps( Steps *pSteps );	// transfers ownership of pSteps
-	bool WasLoadedFromAdditionalSongs( const Song *pSong ) const;
-	bool WasLoadedFromAdditionalCourses( const Course *pCourse ) const;
+	void GetStepsLoadedFromProfile(vector<Steps*> &AddTo, ProfileSlot slot) const;
+	Song *GetSongFromSteps(Steps *pSteps) const;
+	void DeleteSteps(Steps *pSteps);	// transfers ownership of pSteps
+	bool WasLoadedFromAdditionalSongs(const Song *pSong) const;
+	bool WasLoadedFromAdditionalCourses(const Course *pCourse) const;
 
-	void GetAllCourses( vector<Course*> &AddTo, bool bIncludeAutogen ) const;
-	void GetCourses( CourseType ct, vector<Course*> &AddTo, bool bIncludeAutogen ) const;
-	void GetCoursesInGroup( vector<Course*> &AddTo, const RString &sCourseGroup, bool bIncludeAutogen ) const;
-	void GetPreferredSortCourses( CourseType ct, vector<Course*> &AddTo, bool bIncludeAutogen ) const;
+	void GetAllCourses(vector<Course*> &AddTo, bool bIncludeAutogen) const;
+	void GetCourses(CourseType ct, vector<Course*> &AddTo, bool bIncludeAutogen) const;
+	void GetCoursesInGroup(vector<Course*> &AddTo, const RString &sCourseGroup, bool bIncludeAutogen) const;
+	void GetPreferredSortCourses(CourseType ct, vector<Course*> &AddTo, bool bIncludeAutogen) const;
 
-	void GetExtraStageInfo( bool bExtra2, const Style *s, Song*& pSongOut, Steps*& pStepsOut );
-	Song* GetSongFromDir( RString sDir ) const;
-	Course* GetCourseFromPath( RString sPath ) const;	// path to .crs file, or path to song group dir
-	Course* GetCourseFromName( RString sName ) const;
+	void GetExtraStageInfo(bool bExtra2, const Style *s, Song*& pSongOut, Steps*& pStepsOut);
+	Song* GetSongFromDir(RString sDir) const;
+	Course* GetCourseFromPath(RString sPath) const;	// path to .crs file, or path to song group dir
+	Course* GetCourseFromName(RString sName) const;
 
 	void UpdatePopular();
 	void UpdateShuffled();	// re-shuffle songs and courses
-	void UpdatePreferredSort(RString sPreferredSongs = "PreferredSongs.txt", RString sPreferredCourses = "PreferredCourses.txt"); 
+	void UpdatePreferredSort(RString sPreferredSongs = "PreferredSongs.txt", RString sPreferredCourses = "PreferredCourses.txt");
 	void SortSongs();		// sort m_pSongs by CompareSongPointersByTitle
 
 	void UpdateRankingCourses();	// courses shown on the ranking screen
 	void RefreshCourseGroupInfo();
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
 protected:
-	void LoadStepManiaSongDir( RString sDir, LoadingWindow *ld );
-	void LoadDWISongDir( RString sDir );
-	bool GetExtraStageInfoFromCourse( bool bExtra2, RString sPreferredGroup, Song*& pSongOut, Steps*& pStepsOut );
-	void SanityCheckGroupDir( RString sDir ) const;
-	void AddGroup( RString sDir, RString sGroupDirName );
-	int GetNumEditsLoadedFromProfile( ProfileSlot slot ) const;
+	void LoadStepManiaSongDir(RString sDir, LoadingWindow *ld);
+	void LoadDWISongDir(RString sDir);
+	bool GetExtraStageInfoFromCourse(bool bExtra2, RString sPreferredGroup, Song*& pSongOut, Steps*& pStepsOut);
+	void SanityCheckGroupDir(RString sDir) const;
+	void AddGroup(RString sDir, RString sGroupDirName);
+	int GetNumEditsLoadedFromProfile(ProfileSlot slot) const;
 
 	/** @brief All of the songs that can be played. */
 	vector<Song*>		m_pSongs;
@@ -157,9 +169,15 @@ protected:
 	vector<RString>		m_sSongGroupBannerPaths; // each song group may have a banner associated with it
 	//vector<RString>		m_sSongGroupBackgroundPaths; // each song group may have a background associated with it (very rarely)
 
-	struct Comp { bool operator()(const RString& s, const RString &t) const { return CompareRStringsAsc(s,t); } };
+	struct Comp
+	{
+		bool operator()(const RString& s, const RString &t) const
+		{
+			return CompareRStringsAsc(s, t);
+		}
+	};
 	typedef vector<Song*> SongPointerVector;
-	map<RString,SongPointerVector,Comp> m_mapSongGroupIndex;
+	map<RString, SongPointerVector, Comp> m_mapSongGroupIndex;
 
 	vector<Course*>		m_pCourses;
 	vector<Course*>		m_pPopularCourses[NUM_CourseType];
@@ -169,7 +187,7 @@ protected:
 		RString m_sBannerPath;
 		//RString m_sBackgroundPath;
 	};
-	map<RString,CourseGroupInfo> m_mapCourseGroupToInfo;
+	map<RString, CourseGroupInfo> m_mapCourseGroupToInfo;
 	typedef vector<Course*> CoursePointerVector;
 	vector<CoursePointerVector> m_vPreferredCourseSort;
 
@@ -190,7 +208,7 @@ extern SongManager*	SONGMAN;	// global and accessable from anywhere in our progr
  * @author Chris Danford, Glenn Maynard (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -200,7 +218,7 @@ extern SongManager*	SONGMAN;	// global and accessable from anywhere in our progr
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

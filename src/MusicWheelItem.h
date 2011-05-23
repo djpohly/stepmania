@@ -31,18 +31,21 @@ enum MusicWheelItemType
 	NUM_MusicWheelItemType,
 	MusicWheelItemType_Invalid,
 };
-const RString& MusicWheelItemTypeToString( MusicWheelItemType i );
+const RString& MusicWheelItemTypeToString(MusicWheelItemType i);
 /** @brief An item on the MusicWheel. */
 class MusicWheelItem : public WheelItemBase
 {
 public:
 	MusicWheelItem(RString sType = "MusicWheelItem");
-	MusicWheelItem( const MusicWheelItem &cpy );
+	MusicWheelItem(const MusicWheelItem &cpy);
 	virtual ~MusicWheelItem();
-	virtual MusicWheelItem *Copy() const { return new MusicWheelItem(*this); }
+	virtual MusicWheelItem *Copy() const
+	{
+		return new MusicWheelItem(*this);
+	}
 
-	virtual void LoadFromWheelItemData( const WheelItemBaseData* pWID, int iIndex, bool bHasFocus, int iDrawIndex );
-	virtual void HandleMessage( const Message &msg );
+	virtual void LoadFromWheelItemData(const WheelItemBaseData* pWID, int iIndex, bool bHasFocus, int iDrawIndex);
+	virtual void HandleMessage(const Message &msg);
 	void RefreshGrades();
 
 private:
@@ -64,9 +67,9 @@ struct MusicWheelItemData : public WheelItemBaseData
 {
 	MusicWheelItemData() : m_pCourse(NULL), m_pSong(NULL), m_Flags(),
 		m_iSectionCount(0), m_sLabel(""), m_pAction() { }
-	MusicWheelItemData( WheelItemDataType type, Song* pSong, 
-			   RString sSectionName, Course* pCourse, 
-			   RageColor color, int iSectionCount );
+	MusicWheelItemData(WheelItemDataType type, Song* pSong,
+	                   RString sSectionName, Course* pCourse,
+	                   RageColor color, int iSectionCount);
 
 	Course*			m_pCourse;
 	Song*			m_pSong;
@@ -87,7 +90,7 @@ struct MusicWheelItemData : public WheelItemBaseData
  * @author Chris Danford, Chris Gomez, Glenn Maynard (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -97,7 +100,7 @@ struct MusicWheelItemData : public WheelItemBaseData
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

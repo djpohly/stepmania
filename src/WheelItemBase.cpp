@@ -1,17 +1,17 @@
 #include "global.h"
 #include "WheelItemBase.h"
 
-WheelItemBaseData::WheelItemBaseData( WheelItemDataType type, RString sText, RageColor color )
+WheelItemBaseData::WheelItemBaseData(WheelItemDataType type, RString sText, RageColor color)
 {
 	m_Type = type;
 	m_sText = sText;
 	m_color = color;
 }
 
-WheelItemBase::WheelItemBase( const WheelItemBase &cpy ):
-	ActorFrame( cpy ),
-	m_pData( cpy.m_pData ),
-	m_bExpanded( cpy.m_bExpanded )
+WheelItemBase::WheelItemBase(const WheelItemBase &cpy):
+	ActorFrame(cpy),
+	m_pData(cpy.m_pData),
+	m_bExpanded(cpy.m_bExpanded)
 {
 	// FIXME
 	//if( cpy.m_pGrayBar == cpy.m_sprBar )
@@ -20,53 +20,57 @@ WheelItemBase::WheelItemBase( const WheelItemBase &cpy ):
 
 WheelItemBase::WheelItemBase(RString sType)
 {
-	SetName( sType );
+	SetName(sType);
 	m_pData = NULL;
 	m_bExpanded = false;
 	m_pGrayBar = NULL;
 	Load(sType);
 }
 
-void WheelItemBase::Load( RString sType )
+void WheelItemBase::Load(RString sType)
 {
-	m_colorLocked = RageColor(0,0,0,0);
+	m_colorLocked = RageColor(0, 0, 0, 0);
 }
 
-void WheelItemBase::LoadFromWheelItemData( const WheelItemBaseData* pWID, int iIndex, bool bHasFocus, int iDrawIndex )
+void WheelItemBase::LoadFromWheelItemData(const WheelItemBaseData* pWID, int iIndex, bool bHasFocus, int iDrawIndex)
 {
-	ASSERT( pWID != NULL );
+	ASSERT(pWID != NULL);
 	m_pData = pWID;
 }
 
-void WheelItemBase::DrawGrayBar( Actor& bar )
+void WheelItemBase::DrawGrayBar(Actor& bar)
 {
-	if( m_colorLocked.a == 0 )
+	if (m_colorLocked.a == 0)
+	{
 		return;
+	}
 
 	RageColor glow = bar.GetGlow();
 	RageColor diffuse = bar.GetDiffuse();
 
-	bar.SetGlow( m_colorLocked );
-	bar.SetDiffuse( RageColor(0,0,0,0) );
+	bar.SetGlow(m_colorLocked);
+	bar.SetDiffuse(RageColor(0, 0, 0, 0));
 
 	bar.Draw();
 
-	bar.SetGlow( glow );
-	bar.SetDiffuse( diffuse );
+	bar.SetGlow(glow);
+	bar.SetDiffuse(diffuse);
 }
 
 void WheelItemBase::DrawPrimitives()
 {
 	ActorFrame::DrawPrimitives();
 
-	if( m_pGrayBar != NULL )
-		DrawGrayBar( *m_pGrayBar );
+	if (m_pGrayBar != NULL)
+	{
+		DrawGrayBar(*m_pGrayBar);
+	}
 }
-  
+
 /*
  * (c) 2001-2004 Chris Danford, Chris Gomez, Glenn Maynard, Josh Allen
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -76,7 +80,7 @@ void WheelItemBase::DrawPrimitives()
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

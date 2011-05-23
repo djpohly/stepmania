@@ -13,16 +13,18 @@ struct TapScoreDistribution
 
 	TapNoteScore GetTapNoteScore()
 	{
-		float fRand = randomf(0,1);
+		float fRand = randomf(0, 1);
 		float fCumulativePercent = 0;
-		for( int i=0; i<=TNS_W1; i++ )
+		for (int i = 0; i <= TNS_W1; i++)
 		{
 			fCumulativePercent += fPercent[i];
-			if( fRand <= fCumulativePercent+1e-4 ) // rounding error
+			if (fRand <= fCumulativePercent + 1e-4) // rounding error
+			{
 				return (TapNoteScore)i;
+			}
 		}
 		// the fCumulativePercents must sum to 1.0, so we should never get here!
-		ASSERT_M( 0, ssprintf("%f,%f",fRand,fCumulativePercent) );
+		ASSERT_M(0, ssprintf("%f,%f", fRand, fCumulativePercent));
 		return TNS_W1;
 	}
 };
@@ -34,43 +36,51 @@ void PlayerAI::InitFromDisk()
 	bool bSuccess;
 
 	IniFile ini;
-	bSuccess = ini.ReadFile( AI_PATH );
-	ASSERT( bSuccess );
+	bSuccess = ini.ReadFile(AI_PATH);
+	ASSERT(bSuccess);
 
-	for( int i=0; i<NUM_SKILL_LEVELS; i++ )
+	for (int i = 0; i < NUM_SKILL_LEVELS; i++)
 	{
 		RString sKey = ssprintf("Skill%d", i);
 		XNode* pNode = ini.GetChild(sKey);
-		if( pNode == NULL )
-			RageException::Throw( "AI.ini: \"%s\" doesn't exist.", sKey.c_str() );
+		if (pNode == NULL)
+		{
+			RageException::Throw("AI.ini: \"%s\" doesn't exist.", sKey.c_str());
+		}
 
 		TapScoreDistribution& dist = g_Distributions[i];
 		dist.fPercent[TNS_None] = 0;
-		bSuccess = pNode->GetAttrValue( "WeightMiss", dist.fPercent[TNS_Miss] );
-		ASSERT( bSuccess );
-		bSuccess = pNode->GetAttrValue( "WeightW5", dist.fPercent[TNS_W5] );
-		ASSERT( bSuccess );
-		bSuccess = pNode->GetAttrValue( "WeightW4", dist.fPercent[TNS_W4] );
-		ASSERT( bSuccess );
-		bSuccess = pNode->GetAttrValue( "WeightW3", dist.fPercent[TNS_W3] );
-		ASSERT( bSuccess );
-		bSuccess = pNode->GetAttrValue( "WeightW2", dist.fPercent[TNS_W2] );
-		ASSERT( bSuccess );
-		bSuccess = pNode->GetAttrValue( "WeightW1", dist.fPercent[TNS_W1] );
-		ASSERT( bSuccess );
+		bSuccess = pNode->GetAttrValue("WeightMiss", dist.fPercent[TNS_Miss]);
+		ASSERT(bSuccess);
+		bSuccess = pNode->GetAttrValue("WeightW5", dist.fPercent[TNS_W5]);
+		ASSERT(bSuccess);
+		bSuccess = pNode->GetAttrValue("WeightW4", dist.fPercent[TNS_W4]);
+		ASSERT(bSuccess);
+		bSuccess = pNode->GetAttrValue("WeightW3", dist.fPercent[TNS_W3]);
+		ASSERT(bSuccess);
+		bSuccess = pNode->GetAttrValue("WeightW2", dist.fPercent[TNS_W2]);
+		ASSERT(bSuccess);
+		bSuccess = pNode->GetAttrValue("WeightW1", dist.fPercent[TNS_W1]);
+		ASSERT(bSuccess);
 
 		float fSum = 0;
-		for( int j=0; j<NUM_TapNoteScore; j++ )
+		for (int j = 0; j < NUM_TapNoteScore; j++)
+		{
 			fSum += dist.fPercent[j];
-		for( int j=0; j<NUM_TapNoteScore; j++ )
+		}
+		for (int j = 0; j < NUM_TapNoteScore; j++)
+		{
 			dist.fPercent[j] /= fSum;
+		}
 	}
 }
 
-TapNoteScore PlayerAI::GetTapNoteScore( const PlayerState* pPlayerState )
+TapNoteScore PlayerAI::GetTapNoteScore(const PlayerState* pPlayerState)
 {
-	if( pPlayerState->m_PlayerController == PC_AUTOPLAY )
+	if (pPlayerState->m_PlayerController == PC_AUTOPLAY)
+	{
 		return TNS_W1;
+	}
 
 	/*
 	// handle replay data playback -aj
@@ -87,18 +97,18 @@ TapNoteScore PlayerAI::GetTapNoteScore( const PlayerState* pPlayerState )
 	 * modifiers attached, don't make demonstration miss a lot. */
 	// Idea: weight certain modifiers (boomerang, tornado) more? (to simulate
 	// readability problems) -aj
-	if( !GAMESTATE->m_bDemonstrationOrJukebox )
+	if (!GAMESTATE->m_bDemonstrationOrJukebox)
 	{
-		int iSumOfAttackLevels = 
-			pPlayerState->m_fSecondsUntilAttacksPhasedOut > 0 ? 
-			pPlayerState->m_iLastPositiveSumOfAttackLevels : 
-			0;
+		int iSumOfAttackLevels =
+		        pPlayerState->m_fSecondsUntilAttacksPhasedOut > 0 ?
+		        pPlayerState->m_iLastPositiveSumOfAttackLevels :
+		        0;
 
-		ASSERT_M( iCpuSkill>=0 && iCpuSkill<NUM_SKILL_LEVELS, ssprintf("%i", iCpuSkill) );
-		ASSERT_M( pPlayerState->m_PlayerController == PC_CPU, ssprintf("%i", pPlayerState->m_PlayerController) );
+		ASSERT_M(iCpuSkill >= 0 && iCpuSkill < NUM_SKILL_LEVELS, ssprintf("%i", iCpuSkill));
+		ASSERT_M(pPlayerState->m_PlayerController == PC_CPU, ssprintf("%i", pPlayerState->m_PlayerController));
 
-		iCpuSkill -= iSumOfAttackLevels*3;
-		CLAMP( iCpuSkill, 0, NUM_SKILL_LEVELS-1 );
+		iCpuSkill -= iSumOfAttackLevels * 3;
+		CLAMP(iCpuSkill, 0, NUM_SKILL_LEVELS - 1);
 	}
 
 	TapScoreDistribution& distribution = g_Distributions[iCpuSkill];
@@ -109,7 +119,7 @@ TapNoteScore PlayerAI::GetTapNoteScore( const PlayerState* pPlayerState )
 /*
  * (c) 2003-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -119,7 +129,7 @@ TapNoteScore PlayerAI::GetTapNoteScore( const PlayerState* pPlayerState )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

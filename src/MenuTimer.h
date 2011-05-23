@@ -13,30 +13,36 @@ class MenuTimer : public ActorFrame
 {
 public:
 	MenuTimer();
-	void Load( RString sMetricsGroup );
-	
-	virtual void Update( float fDeltaTime ); 
+	void Load(RString sMetricsGroup);
 
-	void SetSeconds( float fSeconds );
-	float GetSeconds() const { return m_fSecondsLeft; }
+	virtual void Update(float fDeltaTime);
+
+	void SetSeconds(float fSeconds);
+	float GetSeconds() const
+	{
+		return m_fSecondsLeft;
+	}
 	void Start();		// resume countdown from paused
 	void Pause();		// don't count down
 	void Stop();		// set to "00" and pause
 	void Disable();	// set to "99" and pause
 	void Stall();		// pause countdown for a sec
-	void EnableSilent( bool bSilent ) { m_bSilent = bSilent; } // make timer silent
-	void EnableStealth( bool bStealth ); // make timer invisible and silent
+	void EnableSilent(bool bSilent)
+	{
+		m_bSilent = bSilent;        // make timer silent
+	}
+	void EnableStealth(bool bStealth);   // make timer invisible and silent
 
 
 	// Lua
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 protected:
 	float m_fSecondsLeft;
 	float m_fStallSeconds, m_fStallSecondsLeft;
 	bool m_bPaused;
 
-	void SetText( float fSeconds );
+	void SetText(float fSeconds);
 
 #define NUM_MENU_TIMER_TEXTS 2
 
@@ -62,7 +68,7 @@ protected:
 /*
  * (c) 2002-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -72,7 +78,7 @@ protected:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

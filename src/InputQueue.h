@@ -13,10 +13,13 @@ class InputQueue
 public:
 	InputQueue();
 
-	void RememberInput( const InputEventPlus &gi );
-	bool WasPressedRecently( GameController c, const GameButton button, const RageTimer &OldestTimeAllowed, InputEventPlus *pIEP = NULL );
-	const vector<InputEventPlus> &GetQueue( GameController c ) const { return m_aQueue[c]; }
-	void ClearQueue( GameController c );
+	void RememberInput(const InputEventPlus &gi);
+	bool WasPressedRecently(GameController c, const GameButton button, const RageTimer &OldestTimeAllowed, InputEventPlus *pIEP = NULL);
+	const vector<InputEventPlus> &GetQueue(GameController c) const
+	{
+		return m_aQueue[c];
+	}
+	void ClearQueue(GameController c);
 
 protected:
 	vector<InputEventPlus> m_aQueue[NUM_GameController];
@@ -25,9 +28,9 @@ protected:
 struct InputQueueCode
 {
 public:
-	bool Load( RString sButtonsNames );
-	bool EnteredCode( GameController controller ) const;
-	
+	bool Load(RString sButtonsNames);
+	bool EnteredCode(GameController controller) const;
+
 	InputQueueCode(): m_aPresses() {}
 
 private:
@@ -37,7 +40,7 @@ private:
 			m_aButtonsToPress(),
 			m_bAllowIntermediatePresses(false)
 		{
-			memset( m_InputTypes, 0, sizeof(m_InputTypes) );
+			memset(m_InputTypes, 0, sizeof(m_InputTypes));
 			m_InputTypes[IET_FIRST_PRESS] = true;
 		}
 		vector<GameButton> m_aButtonsToHold;
@@ -50,7 +53,7 @@ private:
 	vector<ButtonPress> m_aPresses;
 
 	float m_fMaxSecondsBack;
-};	
+};
 
 extern InputQueue*	INPUTQUEUE;	// global and accessable from anywhere in our program
 
@@ -59,7 +62,7 @@ extern InputQueue*	INPUTQUEUE;	// global and accessable from anywhere in our pro
 /*
  * (c) 2001-2007 Chris Danford, Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -69,7 +72,7 @@ extern InputQueue*	INPUTQUEUE;	// global and accessable from anywhere in our pro
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

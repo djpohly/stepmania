@@ -20,16 +20,16 @@ public:
 	PlayerState();
 	/** @brief Reset the PlayerState with the initial values. */
 	void Reset();
-	/** 
+	/**
 	 * @brief Update the PlayerState based on the present time.
 	 * @param fDelta the current time. */
-	void Update( float fDelta );
+	void Update(float fDelta);
 
 	/**
 	 * @brief The PlayerNumber assigned to this Player: usually 1 or 2.
 	 *
-	 * TODO: Remove use of PlayerNumber.  All data about the player should live 
-	 * in PlayerState and callers should not use PlayerNumber to index into 
+	 * TODO: Remove use of PlayerNumber.  All data about the player should live
+	 * in PlayerState and callers should not use PlayerNumber to index into
 	 * GameState. */
 	PlayerNumber	m_PlayerNumber;
 	/**
@@ -46,7 +46,7 @@ public:
 	 * @brief Change the PlayerOptions to their default.
 	 * @param l the level of mods to reset.
 	 */
-	void ResetToDefaultPlayerOptions( ModsLevel l );
+	void ResetToDefaultPlayerOptions(ModsLevel l);
 	/** @brief The PlayerOptions presently in use by the Player. */
 	ModsGroup<PlayerOptions>	m_PlayerOptions;
 
@@ -59,7 +59,7 @@ public:
 	HealthState		m_HealthState;
 
 	/**
-	 * @brief Set to the MusicSeconds of when the a strum button was pressed. 
+	 * @brief Set to the MusicSeconds of when the a strum button was pressed.
 	 *
 	 * If -1, the strum window has passed. */
 	float		m_fLastStrumMusicSeconds;
@@ -86,8 +86,8 @@ public:
 	SampleHistory m_EffectHistory;
 
 	// Used in Battle and Rave
-	void LaunchAttack( const Attack& a );
-	void RemoveActiveAttacks( AttackLevel al=NUM_ATTACK_LEVELS /*all*/ );
+	void LaunchAttack(const Attack& a);
+	void RemoveActiveAttacks(AttackLevel al = NUM_ATTACK_LEVELS /*all*/);
 	void EndActiveAttacks();
 	void RebuildPlayerOptionsFromActiveAttacks();
 	int GetSumOfActiveAttackLevels() const;
@@ -114,7 +114,7 @@ public:
 	Attack	m_Inventory[NUM_INVENTORY_SLOTS];
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 };
 
 #endif
@@ -124,7 +124,7 @@ public:
  * @author Chris Danford, Chris Gomez (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -134,7 +134,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

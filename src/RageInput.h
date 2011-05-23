@@ -17,18 +17,18 @@ public:
 	void LoadDrivers();
 	void Update();
 	bool DevicesChanged();
-	void GetDevicesAndDescriptions( vector<InputDeviceInfo>& vOut ) const;
+	void GetDevicesAndDescriptions(vector<InputDeviceInfo>& vOut) const;
 	void WindowReset();
-	void AddHandler( InputHandler *pHandler );
-	InputHandler *GetHandlerForDevice( const InputDevice id );
-	RString GetDeviceSpecificInputString( const DeviceInput &di );
-	RString GetLocalizedInputString( const DeviceInput &di );
-	wchar_t DeviceInputToChar( DeviceInput di, bool bUseCurrentKeyModifiers );
-	InputDeviceState GetInputDeviceState( InputDevice id );
+	void AddHandler(InputHandler *pHandler);
+	InputHandler *GetHandlerForDevice(const InputDevice id);
+	RString GetDeviceSpecificInputString(const DeviceInput &di);
+	RString GetLocalizedInputString(const DeviceInput &di);
+	wchar_t DeviceInputToChar(DeviceInput di, bool bUseCurrentKeyModifiers);
+	InputDeviceState GetInputDeviceState(InputDevice id);
 	RString GetDisplayDevicesString() const;
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 };
 
 extern RageInput*			INPUTMAN;	// global and accessable from anywhere in our program

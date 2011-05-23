@@ -18,8 +18,14 @@ class Game;
 
 const int MAX_EDIT_COURSE_TITLE_LENGTH = 12;
 
-inline PlayMode CourseTypeToPlayMode( CourseType ct ) { return (PlayMode)(PLAY_MODE_NONSTOP+ct); }
-inline CourseType PlayModeToCourseType( PlayMode pm ) { return (CourseType)(pm-PLAY_MODE_NONSTOP); }
+inline PlayMode CourseTypeToPlayMode(CourseType ct)
+{
+	return (PlayMode)(PLAY_MODE_NONSTOP + ct);
+}
+inline CourseType PlayModeToCourseType(PlayMode pm)
+{
+	return (CourseType)(pm - PLAY_MODE_NONSTOP);
+}
 
 
 enum SongSort
@@ -33,8 +39,8 @@ enum SongSort
 };
 /** @brief Loop through the various Song Sorts. */
 #define FOREACH_SongSort( i ) FOREACH_ENUM( SongSort, i )
-const RString& SongSortToString( SongSort ss );
-const RString& SongSortToLocalizedString( SongSort ss );
+const RString& SongSortToString(SongSort ss);
+const RString& SongSortToLocalizedString(SongSort ss);
 
 class CourseEntry
 {
@@ -48,7 +54,7 @@ public:
 	bool bNoDifficult;		// if true, CourseDifficulty doesn't affect this entry
 
 	SongSort songSort;		// sort by this after filtering
-	int iChooseIndex;		// 
+	int iChooseIndex;		//
 
 	RString sModifiers;		// set player and song options using these
 	AttackArray attacks;	// timed sModifiers
@@ -61,13 +67,16 @@ public:
 		sModifiers(RString("")), attacks(), fGainSeconds(0),
 		iGainLives(-1) {}
 
-	bool IsFixedSong() const { return songID.IsValid(); }
+	bool IsFixedSong() const
+	{
+		return songID.IsValid();
+	}
 
 	RString GetTextDescription() const;
 	int GetNumModChanges() const;
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 };
 
 /** @brief A queue of songs and notes. */
@@ -87,35 +96,53 @@ public:
 	RString GetDisplaySubTitle() const;
 
 	// Returns the transliterated titles, if any; otherwise returns the main titles.
-	RString GetTranslitMainTitle() const { return m_sMainTitleTranslit.size()? m_sMainTitleTranslit: m_sMainTitle; }
-	RString GetTranslitSubTitle() const { return m_sSubTitleTranslit.size()? m_sSubTitleTranslit: m_sSubTitle; }
+	RString GetTranslitMainTitle() const
+	{
+		return m_sMainTitleTranslit.size() ? m_sMainTitleTranslit : m_sMainTitle;
+	}
+	RString GetTranslitSubTitle() const
+	{
+		return m_sSubTitleTranslit.size() ? m_sSubTitleTranslit : m_sSubTitle;
+	}
 
 	// "title subtitle"
 	RString GetDisplayFullTitle() const;
 	RString GetTranslitFullTitle() const;
 
 	// Dereferences course_entries and returns only the playable Songs and Steps
-	Trail* GetTrail( StepsType st, CourseDifficulty cd=Difficulty_Medium ) const;
-	Trail* GetTrailForceRegenCache( StepsType st, CourseDifficulty cd=Difficulty_Medium ) const;
-	void GetTrails( vector<Trail*> &AddTo, StepsType st ) const;
-	void GetAllTrails( vector<Trail*> &AddTo ) const;
-	int GetMeter( StepsType st, CourseDifficulty cd=Difficulty_Medium ) const;
+	Trail* GetTrail(StepsType st, CourseDifficulty cd = Difficulty_Medium) const;
+	Trail* GetTrailForceRegenCache(StepsType st, CourseDifficulty cd = Difficulty_Medium) const;
+	void GetTrails(vector<Trail*> &AddTo, StepsType st) const;
+	void GetAllTrails(vector<Trail*> &AddTo) const;
+	int GetMeter(StepsType st, CourseDifficulty cd = Difficulty_Medium) const;
 	bool HasMods() const;
 	bool HasTimedMods() const;
 	bool AllSongsAreFixed() const;
-	const Style *GetCourseStyle( const Game *pGame, int iNumPlayers ) const;
+	const Style *GetCourseStyle(const Game *pGame, int iNumPlayers) const;
 
-	int GetEstimatedNumStages() const { return m_vEntries.size(); }
-	bool IsPlayableIn( StepsType st ) const;
+	int GetEstimatedNumStages() const
+	{
+		return m_vEntries.size();
+	}
+	bool IsPlayableIn(StepsType st) const;
 	bool CourseHasBestOrWorst() const;
 	RageColor GetColor() const;
-	bool GetTotalSeconds( StepsType st, float& fSecondsOut ) const;
+	bool GetTotalSeconds(StepsType st, float& fSecondsOut) const;
 
-	bool IsNonstop() const { return GetPlayMode() == PLAY_MODE_NONSTOP; }
-	bool IsOni() const { return GetPlayMode() == PLAY_MODE_ONI; }
-	bool IsEndless() const { return GetPlayMode() == PLAY_MODE_ENDLESS; }
+	bool IsNonstop() const
+	{
+		return GetPlayMode() == PLAY_MODE_NONSTOP;
+	}
+	bool IsOni() const
+	{
+		return GetPlayMode() == PLAY_MODE_ONI;
+	}
+	bool IsEndless() const
+	{
+		return GetPlayMode() == PLAY_MODE_ENDLESS;
+	}
 	CourseType GetCourseType() const;
-	void SetCourseType( CourseType ct );
+	void SetCourseType(CourseType ct);
 	PlayMode GetPlayMode() const;
 
 	bool ShowInDemonstrationAndRanking() const;
@@ -125,7 +152,7 @@ public:
 
 	bool	IsRanking() const;
 
-	void UpdateCourseStats( StepsType st );
+	void UpdateCourseStats(StepsType st);
 
 	// Call to regenerate Trails with random entries
 	void RegenerateNonFixedTrails() const;
@@ -133,27 +160,36 @@ public:
 	void InvalidateTrailCache();
 
 	// Call when a Song or its Steps are deleted/changed.
-	void Invalidate( const Song *pStaleSong );
+	void Invalidate(const Song *pStaleSong);
 
-	void GetAllCachedTrails( vector<Trail *> &out );
+	void GetAllCachedTrails(vector<Trail *> &out);
 	RString GetCacheFilePath() const;
 
-	const CourseEntry *FindFixedSong( const Song *pSong ) const;
+	const CourseEntry *FindFixedSong(const Song *pSong) const;
 
-	ProfileSlot GetLoadedFromProfileSlot() const { return m_LoadedFromProfile; }
-	void SetLoadedFromProfile( ProfileSlot slot ) { m_LoadedFromProfile = slot; }
+	ProfileSlot GetLoadedFromProfileSlot() const
+	{
+		return m_LoadedFromProfile;
+	}
+	void SetLoadedFromProfile(ProfileSlot slot)
+	{
+		m_LoadedFromProfile = slot;
+	}
 
 	bool Matches(RString sGroup, RString sCourse) const;
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
 	void CalculateRadarValues();
 
-	bool GetTrailUnsorted( StepsType st, CourseDifficulty cd, Trail &trail ) const;
-	bool GetTrailSorted( StepsType st, CourseDifficulty cd, Trail &trail ) const;
+	bool GetTrailUnsorted(StepsType st, CourseDifficulty cd, Trail &trail) const;
+	bool GetTrailSorted(StepsType st, CourseDifficulty cd, Trail &trail) const;
 
-	bool IsAnEdit() const { return m_LoadedFromProfile != ProfileSlot_Invalid; }
+	bool IsAnEdit() const
+	{
+		return m_LoadedFromProfile != ProfileSlot_Invalid;
+	}
 
 
 	bool	m_bIsAutogen; // was this created by AutoGen?
@@ -185,12 +221,12 @@ public:
 
 	ProfileSlot		m_LoadedFromProfile;	// ProfileSlot_Invalid if wasn't loaded from a profile
 
-	typedef pair<StepsType,Difficulty> CacheEntry;
+	typedef pair<StepsType, Difficulty> CacheEntry;
 	struct CacheData
 	{
 		Trail trail;
 		bool null;
-		
+
 		CacheData(): trail(), null(false) {}
 	};
 	typedef map<CacheEntry, CacheData> TrailCache_t;
@@ -211,7 +247,7 @@ public:
 /*
  * (c) 2001-2004 Chris Danford, Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -221,7 +257,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

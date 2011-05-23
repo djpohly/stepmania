@@ -12,42 +12,66 @@ class BitmapText : public Actor
 {
 public:
 	BitmapText();
-	BitmapText( const BitmapText &cpy );
+	BitmapText(const BitmapText &cpy);
 	BitmapText &operator=(const BitmapText &cpy);
 	virtual ~BitmapText();
 
-	virtual void LoadFromNode( const XNode* pNode );
+	virtual void LoadFromNode(const XNode* pNode);
 	virtual BitmapText *Copy() const;
 
-	bool LoadFromFont( const RString& sFontName );
-	bool LoadFromTextureAndChars( const RString& sTexturePath, const RString& sChars );
-	virtual void SetText( const RString& sText, const RString& sAlternateText = "", int iWrapWidthPixels = -1 );
-	void SetVertSpacing( int iSpacing );
-	void SetMaxWidth( float fMaxWidth );
-	void SetMaxHeight( float fMaxHeight );
-	void SetWrapWidthPixels( int iWrapWidthPixels );
-	void CropToWidth( int iWidthInSourcePixels );
+	bool LoadFromFont(const RString& sFontName);
+	bool LoadFromTextureAndChars(const RString& sTexturePath, const RString& sChars);
+	virtual void SetText(const RString& sText, const RString& sAlternateText = "", int iWrapWidthPixels = -1);
+	void SetVertSpacing(int iSpacing);
+	void SetMaxWidth(float fMaxWidth);
+	void SetMaxHeight(float fMaxHeight);
+	void SetWrapWidthPixels(int iWrapWidthPixels);
+	void CropToWidth(int iWidthInSourcePixels);
 
 	virtual bool EarlyAbortDraw() const;
 	virtual void DrawPrimitives();
 
-	void SetUppercase( bool b );
-	void SetRainbowScroll( bool b )	{ m_bRainbowScroll = b; }
-	void SetJitter( bool b )	{ m_bJitter = b; }
+	void SetUppercase(bool b);
+	void SetRainbowScroll(bool b)
+	{
+		m_bRainbowScroll = b;
+	}
+	void SetJitter(bool b)
+	{
+		m_bJitter = b;
+	}
 
-	void SetHorizAlign( float f );
+	void SetHorizAlign(float f);
 
-	void SetStrokeColor( RageColor c )	{ m_StrokeColor = c; }
-	RageColor GetStrokeColor()		{ return m_StrokeColor; }
+	void SetStrokeColor(RageColor c)
+	{
+		m_StrokeColor = c;
+	}
+	RageColor GetStrokeColor()
+	{
+		return m_StrokeColor;
+	}
 
-	void SetTextGlowMode( TextGlowMode tgm )	{ m_TextGlowMode = tgm; }
+	void SetTextGlowMode(TextGlowMode tgm)
+	{
+		m_TextGlowMode = tgm;
+	}
 
-	void GetLines( vector<wstring> &wTextLines ) const { wTextLines = m_wTextLines; }
-	const vector<wstring> &GetLines() const { return m_wTextLines; }
+	void GetLines(vector<wstring> &wTextLines) const
+	{
+		wTextLines = m_wTextLines;
+	}
+	const vector<wstring> &GetLines() const
+	{
+		return m_wTextLines;
+	}
 
-	RString GetText() const { return m_sText; }
+	RString GetText() const
+	{
+		return m_sText;
+	}
 	// Return true if the string 's' will use an alternate string, if available.
-	bool StringWillUseAlternate( const RString& sText, const RString& sAlternateText ) const;
+	bool StringWillUseAlternate(const RString& sText, const RString& sAlternateText) const;
 
 	struct Attribute
 	{
@@ -56,15 +80,15 @@ public:
 		RageColor	diffuse[4];
 		RageColor	glow;
 
-		void FromStack( lua_State *L, int iPos );
+		void FromStack(lua_State *L, int iPos);
 	};
 
 	Attribute GetDefaultAttribute() const;
-	void AddAttribute( size_t iPos, const Attribute &attr );
+	void AddAttribute(size_t iPos, const Attribute &attr);
 	void ClearAttributes();
 
 	// Commands
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 protected:
 	Font		*m_pFont;
@@ -90,7 +114,7 @@ protected:
 
 	// recalculate the items in SetText()
 	void BuildChars();
-	void DrawChars( bool bUseStrokeTexture );
+	void DrawChars(bool bUseStrokeTexture);
 	void UpdateBaseZoom();
 
 private:
@@ -104,7 +128,7 @@ private:
  * @author Chris Danford, Charles Lohr, Steve Checkoway (c) 2001-2007
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -114,7 +138,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

@@ -8,12 +8,12 @@
 class RageFileDriverDirect: public RageFileDriver
 {
 public:
-	RageFileDriverDirect( const RString &sRoot );
+	RageFileDriverDirect(const RString &sRoot);
 
-	RageFileBasic *Open( const RString &sPath, int iMode, int &iError );
-	bool Move( const RString &sOldPath, const RString &sNewPath );
-	bool Remove( const RString &sPath );
-	bool Remount( const RString &sPath );
+	RageFileBasic *Open(const RString &sPath, int iMode, int &iError);
+	bool Move(const RString &sOldPath, const RString &sNewPath);
+	bool Remove(const RString &sPath);
+	bool Remount(const RString &sPath);
 
 private:
 	RString m_sRoot;
@@ -22,10 +22,10 @@ private:
 class RageFileDriverDirectReadOnly: public RageFileDriverDirect
 {
 public:
-	RageFileDriverDirectReadOnly( const RString &sRoot );
-	RageFileBasic *Open( const RString &sPath, int iMode, int &iError );
-	bool Move( const RString &sOldPath, const RString &sNewPath );
-	bool Remove( const RString &sPath );
+	RageFileDriverDirectReadOnly(const RString &sRoot);
+	RageFileBasic *Open(const RString &sPath, int iMode, int &iError);
+	bool Move(const RString &sOldPath, const RString &sNewPath);
+	bool Remove(const RString &sPath);
 };
 
 #endif

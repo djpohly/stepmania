@@ -12,34 +12,40 @@
 #if defined(HAVE_POSIX_FADVISE)
 void RageFileManagerReadAhead::Init() { }
 void RageFileManagerReadAhead::Shutdown() { }
-void RageFileManagerReadAhead::ReadAhead( RageFileBasic *pFile, int iBytes )
+void RageFileManagerReadAhead::ReadAhead(RageFileBasic *pFile, int iBytes)
 {
 	int iFD = pFile->GetFD();
-	if( iFD == -1 )
+	if (iFD == -1)
+	{
 		return;
+	}
 
-	int iStart = lseek( iFD, 0, SEEK_CUR );
-	posix_fadvise( iFD, iStart, iBytes, POSIX_FADV_WILLNEED );
+	int iStart = lseek(iFD, 0, SEEK_CUR);
+	posix_fadvise(iFD, iStart, iBytes, POSIX_FADV_WILLNEED);
 }
 
-void RageFileManagerReadAhead::DiscardCache( RageFileBasic *pFile, int iRelativePosition, int iBytes )
+void RageFileManagerReadAhead::DiscardCache(RageFileBasic *pFile, int iRelativePosition, int iBytes)
 {
 	int iFD = pFile->GetFD();
-	if( iFD == -1 )
+	if (iFD == -1)
+	{
 		return;
+	}
 
-	int iStart = lseek( iFD, 0, SEEK_CUR );
+	int iStart = lseek(iFD, 0, SEEK_CUR);
 	iStart += iRelativePosition;
-	if( iStart < 0 )
+	if (iStart < 0)
 	{
 		iBytes -= iStart;
 		iStart = 0;
 	}
 
-	if( iBytes == 0 )
+	if (iBytes == 0)
+	{
 		return;
+	}
 
-	posix_fadvise( iFD, iStart, iBytes, POSIX_FADV_DONTNEED );
+	posix_fadvise(iFD, iStart, iBytes, POSIX_FADV_DONTNEED);
 }
 
 #else
@@ -50,43 +56,46 @@ void RageFileManagerReadAhead::DiscardCache( RageFileBasic *pFile, int iRelative
 class RageFileReadAheadThread
 {
 public:
-	RageFileReadAheadThread( int iFD, int iFrom, int iBytes )
+	RageFileReadAheadThread(int iFD, int iFrom, int iBytes)
 	{
 		m_iFD = iFD;
 		m_iFrom = iFrom;
 		m_iBytes = iBytes;
 		m_bFinished = false;
 
-		m_WorkerThread.SetName( "Read-ahead thread" );
-		m_WorkerThread.Create( StartWorkerMain, this );
+		m_WorkerThread.SetName("Read-ahead thread");
+		m_WorkerThread.Create(StartWorkerMain, this);
 	}
 
 	~RageFileReadAheadThread()
 	{
-		close( m_iFD );
+		close(m_iFD);
 		m_WorkerThread.Wait();
 	}
-	bool IsFinished() const { return m_bFinished; }
+	bool IsFinished() const
+	{
+		return m_bFinished;
+	}
 
 private:
-	static int StartWorkerMain( void *pThis )
+	static int StartWorkerMain(void *pThis)
 	{
-		((RageFileReadAheadThread *) (pThis))->WorkerMain();
+		((RageFileReadAheadThread *)(pThis))->WorkerMain();
 		return 0;
 	}
-	
+
 	void WorkerMain()
 	{
 		RString sBuffer;
-		int iFDCopy = dup( m_iFD );
-		if( iFDCopy != -1 )
+		int iFDCopy = dup(m_iFD);
+		if (iFDCopy != -1)
 		{
-			char *pBuf = sBuffer.GetBuffer( m_iBytes );
-			lseek( iFDCopy, m_iFrom, SEEK_SET );
-			read( iFDCopy, pBuf, m_iBytes );
-			sBuffer.ReleaseBuffer( m_iBytes );
+			char *pBuf = sBuffer.GetBuffer(m_iBytes);
+			lseek(iFDCopy, m_iFrom, SEEK_SET);
+			read(iFDCopy, pBuf, m_iBytes);
+			sBuffer.ReleaseBuffer(m_iBytes);
 
-			close( iFDCopy );
+			close(iFDCopy);
 			LOG->Trace("read");
 		}
 
@@ -107,66 +116,72 @@ static vector<RageFileReadAheadThread *> g_apReadAheads;
 void RageFileManagerReadAhead::Init() { }
 void RageFileManagerReadAhead::Shutdown()
 {
-	for( size_t i = 0; i < g_apReadAheads.size(); ++i )
+	for (size_t i = 0; i < g_apReadAheads.size(); ++i)
+	{
 		delete g_apReadAheads[i];
+	}
 	g_apReadAheads.clear();
 }
 
 /* This emulates posix_fadvise(POSIX_FADV_WILLNEED), to force data into cache and hint the
  * kernel to start read-ahead from that point. */
-void RageFileManagerReadAhead::ReadAhead( RageFileBasic *pFile, int iBytes )
+void RageFileManagerReadAhead::ReadAhead(RageFileBasic *pFile, int iBytes)
 {
 	int iFD = pFile->GetFD();
-	if( iFD == -1 )
-		return;
-
-	iFD = dup( iFD );
-	if( iFD == -1 )
+	if (iFD == -1)
 	{
-		LOG->Trace( "error: dup(): %s", strerror(errno) );
 		return;
 	}
 
-	int iStart = lseek( iFD, 0, SEEK_CUR );
-
-	RageFileReadAheadThread *pReadAhead = new RageFileReadAheadThread( iFD, iStart, iBytes );
-	g_apReadAheads.push_back( pReadAhead );
-	
-	for( size_t i = 0; i < g_apReadAheads.size(); ++i )
+	iFD = dup(iFD);
+	if (iFD == -1)
 	{
-		if( g_apReadAheads[i]->IsFinished() )
+		LOG->Trace("error: dup(): %s", strerror(errno));
+		return;
+	}
+
+	int iStart = lseek(iFD, 0, SEEK_CUR);
+
+	RageFileReadAheadThread *pReadAhead = new RageFileReadAheadThread(iFD, iStart, iBytes);
+	g_apReadAheads.push_back(pReadAhead);
+
+	for (size_t i = 0; i < g_apReadAheads.size(); ++i)
+	{
+		if (g_apReadAheads[i]->IsFinished())
 		{
 			LOG->Trace("cleaned");
 			delete g_apReadAheads[i];
-			g_apReadAheads.erase( g_apReadAheads.begin()+i, g_apReadAheads.begin()+i+1 );
+			g_apReadAheads.erase(g_apReadAheads.begin() + i, g_apReadAheads.begin() + i + 1);
 			--i;
 		}
 	}
 }
-void RageFileManagerReadAhead::DiscardCache( RageFileBasic *pFile, int iRelativePosition, int iBytes ) { }
+void RageFileManagerReadAhead::DiscardCache(RageFileBasic *pFile, int iRelativePosition, int iBytes) { }
 #else
 void RageFileManagerReadAhead::Init() { }
 void RageFileManagerReadAhead::Shutdown() { }
-void RageFileManagerReadAhead::ReadAhead( RageFileBasic *pFile, int iBytes ) { }
-void RageFileManagerReadAhead::DiscardCache( RageFileBasic *pFile, int iRelativePosition, int iBytes ) { }
+void RageFileManagerReadAhead::ReadAhead(RageFileBasic *pFile, int iBytes) { }
+void RageFileManagerReadAhead::DiscardCache(RageFileBasic *pFile, int iRelativePosition, int iBytes) { }
 #endif
 #endif
 
 #if defined(HAVE_POSIX_FADVISE)
-void RageFileManagerReadAhead::CacheHintStreaming( RageFileBasic *pFile )
+void RageFileManagerReadAhead::CacheHintStreaming(RageFileBasic *pFile)
 {
 	/* This guesses at the actual size of the file on disk, which may be smaller if this file is compressed.
 	 * Since this is usually used on music and video files, it generally shouldn't be. */
 	int iFD = pFile->GetFD();
-	if( iFD == -1 )
+	if (iFD == -1)
+	{
 		return;
+	}
 	int iPos = pFile->Tell();
-	int iFrom = lseek( iFD, 0, SEEK_CUR );
+	int iFrom = lseek(iFD, 0, SEEK_CUR);
 	int iBytes = pFile->GetFileSize() - iPos;
-	posix_fadvise( iFD, iFrom, iBytes, POSIX_FADV_SEQUENTIAL );
+	posix_fadvise(iFD, iFrom, iBytes, POSIX_FADV_SEQUENTIAL);
 }
 #else
-void RageFileManagerReadAhead::CacheHintStreaming( RageFileBasic *pFile ) { }
+void RageFileManagerReadAhead::CacheHintStreaming(RageFileBasic *pFile) { }
 #endif
 
 

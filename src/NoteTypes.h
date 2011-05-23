@@ -19,7 +19,7 @@ struct TapNoteResult
 	/**
 	 * @brief Offset, in seconds, for a tap grade.
 	 *
-	 * Negative numbers mean the note was hit early; positive numbers mean 
+	 * Negative numbers mean the note was hit early; positive numbers mean
 	 * it was hit late. These values are only meaningful for graded taps
 	 * (tns >= TNS_W5). */
 	float		fTapNoteOffset;
@@ -29,7 +29,7 @@ struct TapNoteResult
 
 	// XML
 	XNode* CreateNode() const;
-	void LoadFromNode( const XNode* pNode );
+	void LoadFromNode(const XNode* pNode);
 };
 /** @brief The result of holding (or letting go of) a hold note. */
 struct HoldNoteResult
@@ -41,11 +41,11 @@ struct HoldNoteResult
 
 	/**
 	 * @brief the current life of the hold.
-	 * 
+	 *
 	 * 1.0 means this HoldNote has full life.
-	 * 
+	 *
 	 * 0.0 means this HoldNote is dead.
-	 * 
+	 *
 	 * When this value hits 0.0 for the first time, m_HoldScore becomes HNS_LetGo.
 	 * If the life is > 0.0 when the HoldNote ends, then m_HoldScore becomes HNS_Held. */
 	float	fLife;
@@ -71,7 +71,7 @@ struct HoldNoteResult
 
 	// XML
 	XNode* CreateNode() const;
-	void LoadFromNode( const XNode* pNode );
+	void LoadFromNode(const XNode* pNode);
 };
 
 /** @brief The various properties of a tap note. */
@@ -79,7 +79,7 @@ struct TapNote
 {
 	/** @brief What is the TapNote's core type? */
 	enum Type
-	{ 
+	{
 		empty, 		/**< There is no note here. */
 		tap,		/**< The player simply steps on this. */
 		hold_head,	/**< This is graded like the Tap type, but should be held. */
@@ -89,7 +89,7 @@ struct TapNote
 		attack,		/**< Hitting this note causes an attack to take place. */
 		autoKeysound,	/**< A special sound is played when this note crosses the target area. */
 		fake,		/**< This arrow can't be scored for or against the player. */
- 	};
+	};
 	/** @brief The list of a TapNote's sub types. */
 	enum SubType
 	{
@@ -131,30 +131,30 @@ struct TapNote
 
 	// XML
 	XNode* CreateNode() const;
-	void LoadFromNode( const XNode* pNode );
+	void LoadFromNode(const XNode* pNode);
 
 	TapNote(): type(empty), subType(SubType_Invalid), source(original),
-		result(), pn(PLAYER_INVALID), bHopoPossible(false), 
-		sAttackModifiers(""), fAttackDurationSeconds(0), 
+		result(), pn(PLAYER_INVALID), bHopoPossible(false),
+		sAttackModifiers(""), fAttackDurationSeconds(0),
 		iKeysoundIndex(-1), iDuration(0), HoldResult() {}
 	void Init()
 	{
 		type = empty;
-		subType = SubType_Invalid; 
-		source = original; 
-		pn = PLAYER_INVALID, 
+		subType = SubType_Invalid;
+		source = original;
+		pn = PLAYER_INVALID,
 		bHopoPossible = false;
-		fAttackDurationSeconds = 0.f; 
+		fAttackDurationSeconds = 0.f;
 		iKeysoundIndex = -1;
 		iDuration = 0;
 	}
-	TapNote( 
-		Type type_,
-		SubType subType_,
-		Source source_, 
-		RString sAttackModifiers_,
-		float fAttackDurationSeconds_,
-		int iKeysoundIndex_ ):
+	TapNote(
+	        Type type_,
+	        SubType subType_,
+	        Source source_,
+	        RString sAttackModifiers_,
+	        float fAttackDurationSeconds_,
+	        int iKeysoundIndex_):
 		type(type_), subType(subType_), source(source_), result(),
 		pn(PLAYER_INVALID), bHopoPossible(false),
 		sAttackModifiers(sAttackModifiers_),
@@ -165,7 +165,7 @@ struct TapNote
 	 * @brief Determine if the two TapNotes are equal to each other.
 	 * @param other the other TapNote we're checking.
 	 * @return true if the two TapNotes are equal, or false otherwise. */
-	bool operator==( const TapNote &other ) const
+	bool operator==(const TapNote &other) const
 	{
 #define COMPARE(x)	if(x!=other.x) return false
 		COMPARE(type);
@@ -183,7 +183,10 @@ struct TapNote
 	 * @brief Determine if the two TapNotes are not equal to each other.
 	 * @param other the other TapNote we're checking.
 	 * @return true if the two TapNotes are not equal, or false otherwise. */
-	bool operator!=( const TapNote &other ) const { return !operator==( other ); }
+	bool operator!=(const TapNote &other) const
+	{
+		return !operator==(other);
+	}
 };
 
 extern TapNote TAP_EMPTY;			// '0'
@@ -205,20 +208,30 @@ extern TapNote TAP_ADDITION_MINE;
  * TODO: Find a way to standardize this with the other enum string calls.
  * @param tn the TapNote's type.
  * @return the intended string. */
-inline const RString TapNoteTypeToString( TapNote::Type tn )
+inline const RString TapNoteTypeToString(TapNote::Type tn)
 {
-	switch( tn )
+	switch (tn)
 	{
-		case TapNote::empty:		return RString("empty");
-		case TapNote::tap:		return RString("tap");
-		case TapNote::hold_head:	return RString("hold_head");
-		case TapNote::hold_tail:	return RString("hold_tail");
-		case TapNote::mine:		return RString("mine");
-		case TapNote::lift:		return RString("lift");
-		case TapNote::attack:		return RString("attack");
-		case TapNote::autoKeysound:	return RString("autoKeysound");
-		case TapNote::fake:		return RString("fake");
-		default:			return RString();
+		case TapNote::empty:
+			return RString("empty");
+		case TapNote::tap:
+			return RString("tap");
+		case TapNote::hold_head:
+			return RString("hold_head");
+		case TapNote::hold_tail:
+			return RString("hold_tail");
+		case TapNote::mine:
+			return RString("mine");
+		case TapNote::lift:
+			return RString("lift");
+		case TapNote::attack:
+			return RString("attack");
+		case TapNote::autoKeysound:
+			return RString("autoKeysound");
+		case TapNote::fake:
+			return RString("fake");
+		default:
+			return RString();
 	}
 }
 
@@ -247,11 +260,11 @@ const int ROWS_PER_BEAT	= 48;
 const int MAX_NOTES_PER_MEASURE = 50;
 
 /** @brief The max number of rows allowed for a Steps pattern. */
-const int MAX_NOTE_ROW = (1<<30);
+const int MAX_NOTE_ROW = (1 << 30);
 
 /** @brief The list of quantized note types allowed at present. */
-enum NoteType 
-{ 
+enum NoteType
+{
 	NOTE_TYPE_4TH,	/**< quarter note */
 	NOTE_TYPE_8TH,	/**< eighth note */
 	NOTE_TYPE_12TH,	/**< quarter note triplet */
@@ -264,13 +277,13 @@ enum NoteType
 	NUM_NoteType,
 	NoteType_Invalid
 };
-const RString& NoteTypeToString( NoteType nt );
-const RString& NoteTypeToLocalizedString( NoteType nt );
-LuaDeclareType( NoteType );
-float NoteTypeToBeat( NoteType nt );
-NoteType GetNoteType( int row );
-NoteType BeatToNoteType( float fBeat );
-bool IsNoteOfType( int row, NoteType t );
+const RString& NoteTypeToString(NoteType nt);
+const RString& NoteTypeToLocalizedString(NoteType nt);
+LuaDeclareType(NoteType);
+float NoteTypeToBeat(NoteType nt);
+NoteType GetNoteType(int row);
+NoteType BeatToNoteType(float fBeat);
+bool IsNoteOfType(int row, NoteType t);
 
 /* This is more accurate: by computing the integer and fractional parts separately, we
  * can avoid storing very large numbers in a float and possibly losing precision.  It's
@@ -287,17 +300,26 @@ inline int   BeatToNoteRow( float fBeatNum )
  * @brief Convert the beat into a note row.
  * @param fBeatNum the beat to convert.
  * @return the note row. */
-inline int   BeatToNoteRow( float fBeatNum )		{ return lrintf( fBeatNum * ROWS_PER_BEAT ); }	// round
+inline int   BeatToNoteRow(float fBeatNum)
+{
+	return lrintf(fBeatNum * ROWS_PER_BEAT);        // round
+}
 /**
  * @brief Convert the beat into a note row without rounding.
  * @param fBeatNum the beat to convert.
  * @return the note row. */
-inline int   BeatToNoteRowNotRounded( float fBeatNum )	{ return (int)( fBeatNum * ROWS_PER_BEAT ); }
+inline int   BeatToNoteRowNotRounded(float fBeatNum)
+{
+	return (int)(fBeatNum * ROWS_PER_BEAT);
+}
 /**
  * @brief Convert the note row to a beat.
  * @param iRow the row to convert.
  * @return the beat. */
-inline float NoteRowToBeat( int iRow )			{ return iRow / (float)ROWS_PER_BEAT; }
+inline float NoteRowToBeat(int iRow)
+{
+	return iRow / (float)ROWS_PER_BEAT;
+}
 
 #endif
 
@@ -306,7 +328,7 @@ inline float NoteRowToBeat( int iRow )			{ return iRow / (float)ROWS_PER_BEAT; }
  * @author Chris Danford, Glenn Maynard (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -316,7 +338,7 @@ inline float NoteRowToBeat( int iRow )			{ return iRow / (float)ROWS_PER_BEAT; }
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

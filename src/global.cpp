@@ -18,25 +18,31 @@ using CrashHandler::DebugBreak;
 #include "archutils/Unix/CrashHandler.h"
 #endif
 
-void NORETURN sm_crash( const char *reason )
+void NORETURN sm_crash(const char *reason)
 {
 #if ( defined(_WINDOWS) && defined(CRASH_HANDLER) ) || defined(MACOSX) || defined(_XDBG)
 	/* If we're being debugged, throw a debug break so it'll suspend the process. */
-	if( IsDebuggerPresent() )
+	if (IsDebuggerPresent())
 	{
 		DebugBreak();
-		while(1); /* don't return */
+		while (1)
+		{
+			;        /* don't return */
+		}
 	}
 #endif
 
 #if defined(CRASH_HANDLER)
-	CrashHandler::ForceCrash( reason );
+	CrashHandler::ForceCrash(reason);
 #else
-	*(char*)0=0;
+	*(char*)0 = 0;
 
 	/* This isn't actually reached.  We just do this to convince the compiler that the
 	 * function really doesn't return. */
-	while(1);
+	while (1)
+	{
+		;
+	}
 #endif
 
 #if defined(_WINDOWS)
@@ -48,14 +54,14 @@ void NORETURN sm_crash( const char *reason )
 	asm("nop");
 #endif
 #else
-	_exit( 1 );
+	_exit(1);
 #endif
 }
 
 /*
  * (c) 2004 Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -65,7 +71,7 @@ void NORETURN sm_crash( const char *reason )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

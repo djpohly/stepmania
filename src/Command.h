@@ -6,22 +6,25 @@
 class Command
 {
 public:
-	void Load( const RString &sCommand );
+	void Load(const RString &sCommand);
 
 	RString GetOriginalCommandString() const;	// used when reporting an error in number of args
-	RString GetName() const;	// the command name is the first argument in all-lowercase 
+	RString GetName() const;	// the command name is the first argument in all-lowercase
 
-	void Clear() { m_vsArgs.clear(); }
+	void Clear()
+	{
+		m_vsArgs.clear();
+	}
 
 	struct Arg
 	{
 		RString s;
 		Arg(): s("") {}
 	};
-	Arg GetArg( unsigned index ) const;
+	Arg GetArg(unsigned index) const;
 
 	vector<RString> m_vsArgs;
-	
+
 	Command(): m_vsArgs() {}
 };
 
@@ -33,19 +36,19 @@ public:
 	RString GetOriginalCommandString() const;	// used when reporting an error in number of args
 };
 
-// Take a command list string and return pointers to each of the tokens in the 
+// Take a command list string and return pointers to each of the tokens in the
 // string. sCommand list is a list of commands separated by ';'.
 // TODO: This is expensive to do during the game.  Eventually,  move all calls to
 // ParseCommands to happen during load, then execute from the parsed Command structures.
-void ParseCommands( const RString &sCmds, Commands &vCmdsOut );
-Commands ParseCommands( const RString &sCmds );
+void ParseCommands(const RString &sCmds, Commands &vCmdsOut);
+Commands ParseCommands(const RString &sCmds);
 
 #endif
 
 /*
  * (c) 2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -55,7 +58,7 @@ Commands ParseCommands( const RString &sCmds );
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

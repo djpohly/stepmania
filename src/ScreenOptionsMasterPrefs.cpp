@@ -21,21 +21,25 @@
 
 using namespace StringConversion;
 
-static void GetPrefsDefaultModifiers( PlayerOptions &po, SongOptions &so )
+static void GetPrefsDefaultModifiers(PlayerOptions &po, SongOptions &so)
 {
-	po.FromString( PREFSMAN->m_sDefaultModifiers );
-	so.FromString( PREFSMAN->m_sDefaultModifiers );
+	po.FromString(PREFSMAN->m_sDefaultModifiers);
+	so.FromString(PREFSMAN->m_sDefaultModifiers);
 }
 
-static void SetPrefsDefaultModifiers( const PlayerOptions &po, const SongOptions &so )
+static void SetPrefsDefaultModifiers(const PlayerOptions &po, const SongOptions &so)
 {
 	vector<RString> as;
-	if( po.GetString() != "" )
-		as.push_back( po.GetString() );
-	if( so.GetString() != "" )
-		as.push_back( so.GetString() );
+	if (po.GetString() != "")
+	{
+		as.push_back(po.GetString());
+	}
+	if (so.GetString() != "")
+	{
+		as.push_back(so.GetString());
+	}
 
-	PREFSMAN->m_sDefaultModifiers.Set( join(", ",as) );
+	PREFSMAN->m_sDefaultModifiers.Set(join(", ", as));
 }
 
 
@@ -43,19 +47,21 @@ static void SetPrefsDefaultModifiers( const PlayerOptions &po, const SongOptions
  * the mapping may be an enum, and value an int.  This is because we don't
  * have FromString/ToString for every enum type.  Assume that the distance between
  * T and U can be represented as a float. */
-template<class T,class U>
-int FindClosestEntry( T value, const U *mapping, unsigned cnt )
+template<class T, class U>
+int FindClosestEntry(T value, const U *mapping, unsigned cnt)
 {
 	int iBestIndex = 0;
 	float best_dist = 0;
 	bool have_best = false;
 
-	for( unsigned i = 0; i < cnt; ++i )
+	for (unsigned i = 0; i < cnt; ++i)
 	{
 		const U val = mapping[i];
-		float dist = value < val? (float)(val-value):(float)(value-val);
-		if( have_best && best_dist < dist )
+		float dist = value < val ? (float)(val - value) : (float)(value - val);
+		if (have_best && best_dist < dist)
+		{
 			continue;
+		}
 
 		have_best = true;
 		best_dist = dist;
@@ -63,83 +69,91 @@ int FindClosestEntry( T value, const U *mapping, unsigned cnt )
 		iBestIndex = i;
 	}
 
-	if( have_best )
+	if (have_best)
+	{
 		return iBestIndex;
+	}
 	else
+	{
 		return 0;
+	}
 }
 
 template <class T>
-static void MoveMap( int &sel, T &opt, bool ToSel, const T *mapping, unsigned cnt )
+static void MoveMap(int &sel, T &opt, bool ToSel, const T *mapping, unsigned cnt)
 {
-	if( ToSel )
+	if (ToSel)
 	{
-		sel = FindClosestEntry( opt, mapping, cnt );
-	} else {
+		sel = FindClosestEntry(opt, mapping, cnt);
+	}
+	else
+	{
 		// sel -> opt
 		opt = mapping[sel];
 	}
 }
 
 template <class T>
-static void MoveMap( int &sel, IPreference &opt, bool ToSel, const T *mapping, unsigned cnt )
+static void MoveMap(int &sel, IPreference &opt, bool ToSel, const T *mapping, unsigned cnt)
 {
-	if( ToSel )
+	if (ToSel)
 	{
 		RString sOpt = opt.ToString();
 		// This should really be T, but we can't FromString an enum.
 		float val;
-		FromString( sOpt, val );
-		sel = FindClosestEntry( val, mapping, cnt );
-	} else {
+		FromString(sOpt, val);
+		sel = FindClosestEntry(val, mapping, cnt);
+	}
+	else
+	{
 		// sel -> opt
-		RString sOpt = ToString( mapping[sel] );
-		opt.FromString( sOpt );
+		RString sOpt = ToString(mapping[sel]);
+		opt.FromString(sOpt);
 	}
 }
 
 template <class T>
-static void MoveMap( int &sel, const ConfOption *pConfOption, bool ToSel, const T *mapping, unsigned cnt )
+static void MoveMap(int &sel, const ConfOption *pConfOption, bool ToSel, const T *mapping, unsigned cnt)
 {
-	ASSERT( pConfOption );
-	IPreference *pPref = IPreference::GetPreferenceByName( pConfOption->m_sPrefName );
-	ASSERT_M( pPref != NULL, pConfOption->m_sPrefName );
+	ASSERT(pConfOption);
+	IPreference *pPref = IPreference::GetPreferenceByName(pConfOption->m_sPrefName);
+	ASSERT_M(pPref != NULL, pConfOption->m_sPrefName);
 
-	MoveMap( sel, *pPref, ToSel, mapping, cnt );
+	MoveMap(sel, *pPref, ToSel, mapping, cnt);
 }
 
 template <class T>
-static void MovePref( int &iSel, bool bToSel, const ConfOption *pConfOption )
+static void MovePref(int &iSel, bool bToSel, const ConfOption *pConfOption)
 {
-	IPreference *pPref = IPreference::GetPreferenceByName( pConfOption->m_sPrefName );
-	ASSERT_M( pPref != NULL, pConfOption->m_sPrefName );
+	IPreference *pPref = IPreference::GetPreferenceByName(pConfOption->m_sPrefName);
+	ASSERT_M(pPref != NULL, pConfOption->m_sPrefName);
 
-	if( bToSel )
+	if (bToSel)
 	{
 		// TODO: why not get the int directly from pPref?
 		// Why are we writing it to a string and then back?
 		T t;
-		FromString( pPref->ToString(), t );
-		iSel = static_cast<int>( t );
+		FromString(pPref->ToString(), t);
+		iSel = static_cast<int>(t);
 	}
 	else
 	{
-		pPref->FromString( ToString( static_cast<T>( iSel ) ) );
+		pPref->FromString(ToString(static_cast<T>(iSel)));
 	}
 }
 
 template <>
-void MovePref<bool>( int &iSel, bool bToSel, const ConfOption *pConfOption )
+void MovePref<bool>(int &iSel, bool bToSel, const ConfOption *pConfOption)
 {
-	IPreference *pPref = IPreference::GetPreferenceByName( pConfOption->m_sPrefName );
-	ASSERT_M( pPref != NULL, pConfOption->m_sPrefName );
+	IPreference *pPref = IPreference::GetPreferenceByName(pConfOption->m_sPrefName);
+	ASSERT_M(pPref != NULL, pConfOption->m_sPrefName);
 
-	if( bToSel )
+	if (bToSel)
 	{
 		// TODO: why not get the int directly from pPref?
 		// Why are we writing it to a string and then back?
 		bool b;
-		FromString( pPref->ToString(), b );
+		FromString(pPref->ToString(), b);
 		iSel = b ? 1 : 0;
 	}
 	else
@@ -147,46 +161,52 @@ void MovePref<bool>( int &iSel, bool bToSel, const ConfOption *pConfOption )
 		// If we don't make a specific instantiation of MovePref<bool>, there is
 		// a compile warning here because of static_cast<bool>( iSel ) where
 		// iSel is an int. What is the best way to remove that compile warning?
-		pPref->FromString( ToString<bool>( iSel ? true : false ) );
+		pPref->FromString(ToString<bool>(iSel ? true : false));
 	}
 }
 
-static void MoveNop( int &iSel, bool bToSel, const ConfOption *pConfOption )
+static void MoveNop(int &iSel, bool bToSel, const ConfOption *pConfOption)
 {
-	if( bToSel )
+	if (bToSel)
+	{
 		iSel = 0;
+	}
 }
 
 // TODO: Write GenerateValueList() function that can use ints and floats. -aj
 
-static void GameChoices( vector<RString> &out )
+static void GameChoices(vector<RString> &out)
 {
 	vector<const Game*> aGames;
-	GAMEMAN->GetEnabledGames( aGames );
-	FOREACH( const Game*, aGames, g )
+	GAMEMAN->GetEnabledGames(aGames);
+	FOREACH(const Game*, aGames, g)
 	{
 		RString sGameName = (*g)->m_szName;
-		out.push_back( sGameName );
+		out.push_back(sGameName);
 	}
 }
 
-static void GameSel( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void GameSel(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
 	vector<RString> choices;
-	pConfOption->MakeOptionsList( choices );
+	pConfOption->MakeOptionsList(choices);
 
-	if( ToSel )
+	if (ToSel)
 	{
 		const RString sCurGameName = GAMESTATE->m_pCurGame->m_szName;
 
 		sel = 0;
-		for(unsigned i = 0; i < choices.size(); ++i)
-			if( !stricmp(choices[i], sCurGameName) )
+		for (unsigned i = 0; i < choices.size(); ++i)
+			if (!stricmp(choices[i], sCurGameName))
+			{
 				sel = i;
-	} else {
+			}
+	}
+	else
+	{
 		vector<const Game*> aGames;
-		GAMEMAN->GetEnabledGames( aGames );
-		StepMania::ChangeCurrentGame( aGames[sel] );
+		GAMEMAN->GetEnabledGames(aGames);
+		StepMania::ChangeCurrentGame(aGames[sel]);
 		/* Reload metrics to force a refresh of CommonMetrics::DIFFICULTIES_TO_SHOW,
 		 * mainly if we're not switching themes. I'm not sure if this was the
 		 * case going from theme to theme, but if it was, it should be fixed
@@ -196,261 +216,291 @@ static void GameSel( int &sel, bool ToSel, const ConfOption *pConfOption )
 	}
 }
 
-static void LanguageChoices( vector<RString> &out )
+static void LanguageChoices(vector<RString> &out)
 {
 	vector<RString> vs;
-	THEME->GetLanguages( vs );
-	SortRStringArray( vs, true );
+	THEME->GetLanguages(vs);
+	SortRStringArray(vs, true);
 
-	FOREACH_CONST( RString, vs, s )
+	FOREACH_CONST(RString, vs, s)
 	{
-		const LanguageInfo *pLI = GetLanguageInfo( *s );
-		if( pLI )
-			out.push_back( THEME->GetString("NativeLanguageNames", pLI->szEnglishName) );
+		const LanguageInfo *pLI = GetLanguageInfo(*s);
+		if (pLI)
+		{
+			out.push_back(THEME->GetString("NativeLanguageNames", pLI->szEnglishName));
+		}
 		else
-			out.push_back( *s );
+		{
+			out.push_back(*s);
+		}
 	}
 }
 
-static void Language( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void Language(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
 	vector<RString> vs;
-	THEME->GetLanguages( vs );
-	SortRStringArray( vs, true );
+	THEME->GetLanguages(vs);
+	SortRStringArray(vs, true);
 
-	if( ToSel )
+	if (ToSel)
 	{
 		sel = -1;
-		for( unsigned i=0; sel == -1 && i < vs.size(); ++i )
-			if( !stricmp(vs[i], THEME->GetCurLanguage()) )
+		for (unsigned i = 0; sel == -1 && i < vs.size(); ++i)
+			if (!stricmp(vs[i], THEME->GetCurLanguage()))
+			{
 				sel = i;
+			}
 
 		// If the current language doesn't exist, we'll show BASE_LANGUAGE, so select that.
-		for( unsigned i=0; sel == -1 && i < vs.size(); ++i )
-			if( !stricmp(vs[i], SpecialFiles::BASE_LANGUAGE) )
+		for (unsigned i = 0; sel == -1 && i < vs.size(); ++i)
+			if (!stricmp(vs[i], SpecialFiles::BASE_LANGUAGE))
+			{
 				sel = i;
+			}
 
-		if( sel == -1 )
+		if (sel == -1)
 		{
-			LOG->Warn( "Couldn't find language \"%s\" or fallback \"%s\"; using \"%s\"",
-				THEME->GetCurLanguage().c_str(), SpecialFiles::BASE_LANGUAGE.c_str(), vs[0].c_str() );
+			LOG->Warn("Couldn't find language \"%s\" or fallback \"%s\"; using \"%s\"",
+			          THEME->GetCurLanguage().c_str(), SpecialFiles::BASE_LANGUAGE.c_str(), vs[0].c_str());
 			sel = 0;
 		}
-	} else {
+	}
+	else
+	{
 		const RString &sNewLanguage = vs[sel];
 
-		PREFSMAN->m_sLanguage.Set( sNewLanguage );
-		if( THEME->GetCurLanguage() != sNewLanguage )
-			THEME->SwitchThemeAndLanguage( THEME->GetCurThemeName(), PREFSMAN->m_sLanguage, PREFSMAN->m_bPseudoLocalize );
+		PREFSMAN->m_sLanguage.Set(sNewLanguage);
+		if (THEME->GetCurLanguage() != sNewLanguage)
+		{
+			THEME->SwitchThemeAndLanguage(THEME->GetCurThemeName(), PREFSMAN->m_sLanguage, PREFSMAN->m_bPseudoLocalize);
+		}
 	}
 }
 
-static void ThemeChoices( vector<RString> &out )
+static void ThemeChoices(vector<RString> &out)
 {
-	THEME->GetSelectableThemeNames( out );
-	FOREACH( RString, out, s )
-		*s = THEME->GetThemeDisplayName( *s );
+	THEME->GetSelectableThemeNames(out);
+	FOREACH(RString, out, s)
+	*s = THEME->GetThemeDisplayName(*s);
 }
 
-static void DisplayResolutionChoices( vector<RString> &out )
+static void DisplayResolutionChoices(vector<RString> &out)
 {
 	DisplayResolutions d;
-	DISPLAY->GetDisplayResolutions( d );
+	DISPLAY->GetDisplayResolutions(d);
 
-	FOREACHS_CONST( DisplayResolution, d, iter )
+	FOREACHS_CONST(DisplayResolution, d, iter)
 	{
 		RString s = ssprintf("%dx%d", iter->iWidth, iter->iHeight);
-		out.push_back( s );
+		out.push_back(s);
 	}
 }
 
-static void RequestedTheme( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void RequestedTheme(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
 	vector<RString> choices;
-	pConfOption->MakeOptionsList( choices );
+	pConfOption->MakeOptionsList(choices);
 
 	vector<RString> vsThemeNames;
-	THEME->GetSelectableThemeNames( vsThemeNames );
+	THEME->GetSelectableThemeNames(vsThemeNames);
 
-	if( ToSel )
+	if (ToSel)
 	{
 		sel = 0;
-		for( unsigned i=1; i<vsThemeNames.size(); i++ )
-			if( !stricmp(vsThemeNames[i], PREFSMAN->m_sTheme.Get()) )
+		for (unsigned i = 1; i < vsThemeNames.size(); i++)
+			if (!stricmp(vsThemeNames[i], PREFSMAN->m_sTheme.Get()))
+			{
 				sel = i;
+			}
 	}
 	else
 	{
 		const RString sNewTheme = vsThemeNames[sel];
-		PREFSMAN->m_sTheme.Set( sNewTheme ); // OPT_APPLY_THEME will load the theme
+		PREFSMAN->m_sTheme.Set(sNewTheme);   // OPT_APPLY_THEME will load the theme
 	}
 }
 
-static LocalizedString OFF ("ScreenOptionsMasterPrefs","Off");
-static void AnnouncerChoices( vector<RString> &out )
+static LocalizedString OFF("ScreenOptionsMasterPrefs", "Off");
+static void AnnouncerChoices(vector<RString> &out)
 {
-	ANNOUNCER->GetAnnouncerNames( out );
-	out.insert( out.begin(), OFF );
+	ANNOUNCER->GetAnnouncerNames(out);
+	out.insert(out.begin(), OFF);
 }
 
-static void Announcer( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void Announcer(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
 	vector<RString> choices;
-	pConfOption->MakeOptionsList( choices );
+	pConfOption->MakeOptionsList(choices);
 
-	if( ToSel )
+	if (ToSel)
 	{
 		sel = 0;
-		for( unsigned i=1; i<choices.size(); i++ )
-			if( !stricmp(choices[i], ANNOUNCER->GetCurAnnouncerName()) )
+		for (unsigned i = 1; i < choices.size(); i++)
+			if (!stricmp(choices[i], ANNOUNCER->GetCurAnnouncerName()))
+			{
 				sel = i;
+			}
 	}
 	else
 	{
-		const RString sNewAnnouncer = sel? choices[sel]:RString("");
-		ANNOUNCER->SwitchAnnouncer( sNewAnnouncer );
-		PREFSMAN->m_sAnnouncer.Set( sNewAnnouncer );
+		const RString sNewAnnouncer = sel ? choices[sel] : RString("");
+		ANNOUNCER->SwitchAnnouncer(sNewAnnouncer);
+		PREFSMAN->m_sAnnouncer.Set(sNewAnnouncer);
 	}
 }
 
-static void DefaultNoteSkinChoices( vector<RString> &out )
+static void DefaultNoteSkinChoices(vector<RString> &out)
 {
-	NOTESKIN->GetNoteSkinNames( out );
+	NOTESKIN->GetNoteSkinNames(out);
 }
 
-static void DefaultNoteSkin( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void DefaultNoteSkin(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
 	vector<RString> choices;
-	pConfOption->MakeOptionsList( choices );
+	pConfOption->MakeOptionsList(choices);
 
-	if( ToSel )
+	if (ToSel)
 	{
 		PlayerOptions po;
-		po.FromString( PREFSMAN->m_sDefaultModifiers );
+		po.FromString(PREFSMAN->m_sDefaultModifiers);
 		sel = 0;
-		for( unsigned i=0; i < choices.size(); i++ )
-			if( !stricmp(choices[i], po.m_sNoteSkin) )
+		for (unsigned i = 0; i < choices.size(); i++)
+			if (!stricmp(choices[i], po.m_sNoteSkin))
+			{
 				sel = i;
+			}
 	}
 	else
 	{
 		PlayerOptions po;
 		SongOptions so;
-		GetPrefsDefaultModifiers( po, so );
+		GetPrefsDefaultModifiers(po, so);
 		po.m_sNoteSkin = choices[sel];
-		SetPrefsDefaultModifiers( po, so );
+		SetPrefsDefaultModifiers(po, so);
 	}
 }
 
 // Background options
-static void BGBrightness( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void BGBrightness(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
 	// TODO: I hate the way the list of numbers is duplicated here and where the
 	// option is created. Try to find a way to only use the same list once.
 	// Do that for all of these float and int lists.
-	const float mapping[] = { 0.0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f,1.0f };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const float mapping[] = { 0.0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-static void BGBrightnessNoZero( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void BGBrightnessNoZero(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const float mapping[] = { 0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f,1.0f };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const float mapping[] = { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-static void BGBrightnessOrStatic( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void BGBrightnessOrStatic(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const float mapping[] = { 0.5f,0.25f,0.5f,0.75f };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const float mapping[] = { 0.5f, 0.25f, 0.5f, 0.75f };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 
-	IPreference *pSongBackgroundsPref = IPreference::GetPreferenceByName( "SongBackgrounds" );
-	if( ToSel && pSongBackgroundsPref->ToString() == "0" )
+	IPreference *pSongBackgroundsPref = IPreference::GetPreferenceByName("SongBackgrounds");
+	if (ToSel && pSongBackgroundsPref->ToString() == "0")
+	{
 		sel = 0;
-	if( !ToSel )
-		pSongBackgroundsPref->FromString( sel? "1":"0" );
+	}
+	if (!ToSel)
+	{
+		pSongBackgroundsPref->FromString(sel ? "1" : "0");
+	}
 }
 
-static void NumBackgrounds( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void NumBackgrounds(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const int mapping[] = { 5,10,15,20 };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const int mapping[] = { 5, 10, 15, 20 };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
 // Input options
-static void MusicWheelSwitchSpeed( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void MusicWheelSwitchSpeed(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
 	const int mapping[] = { 5, 10, 15, 25 };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
 // Gameplay options
-static void CoinModeNoHome( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void CoinModeNoHome(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
 	// The mapping without home is easy: subtract one to compensate for the missing CoinMode_Home
-	if( ToSel )
+	if (ToSel)
 	{
-		MovePref<CoinMode>( sel, ToSel, pConfOption );
-		if( sel > static_cast<int>(CoinMode_Home) )
+		MovePref<CoinMode>(sel, ToSel, pConfOption);
+		if (sel > static_cast<int>(CoinMode_Home))
+		{
 			--sel;
+		}
 	}
 	else
 	{
-		if( sel >= static_cast<int>(CoinMode_Home) )
+		if (sel >= static_cast<int>(CoinMode_Home))
+		{
 			++sel;
-		MovePref<CoinMode>( sel, ToSel, pConfOption );
+		}
+		MovePref<CoinMode>(sel, ToSel, pConfOption);
 	}
 }
 
-static void CoinsPerCredit( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void CoinsPerCredit(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const int mapping[] = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const int mapping[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-static void JointPremium( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void JointPremium(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
 	const Premium mapping[] = { Premium_DoubleFor1Credit, Premium_2PlayersFor1Credit };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-static void SongsPerPlay( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void SongsPerPlay(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const int mapping[] = { 1,2,3,4,5 };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const int mapping[] = { 1, 2, 3, 4, 5 };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-static void SongsPerPlayOrEventMode( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void SongsPerPlayOrEventMode(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const int mapping[] = { 1,2,3,4,5,6 };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const int mapping[] = { 1, 2, 3, 4, 5, 6 };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 
-	if( ToSel && PREFSMAN->m_bEventMode )
+	if (ToSel && PREFSMAN->m_bEventMode)
+	{
 		sel = 5;
-	if( !ToSel )
-		PREFSMAN->m_bEventMode.Set( sel == 5 );
+	}
+	if (!ToSel)
+	{
+		PREFSMAN->m_bEventMode.Set(sel == 5);
+	}
 }
 
 // Machine options
 /** @brief Timing Window scale */
-static void TimingWindowScale( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void TimingWindowScale(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
 	// StepMania 5 values (implemented 2008/03/12)
 	//const float mapping[] = { 2.0f,1.66f,1.33f,1.00f,0.75f,0.50f,0.25f };
 	// StepMania 3.9 and 4.0 values:
-	const float mapping[] = { 1.50f,1.33f,1.16f,1.00f,0.84f,0.66f,0.50f,0.33f,0.20f };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const float mapping[] = { 1.50f, 1.33f, 1.16f, 1.00f, 0.84f, 0.66f, 0.50f, 0.33f, 0.20f };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
 /** @brief Life Difficulty scale */
-static void LifeDifficulty( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void LifeDifficulty(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
 	// StepMania 5 values (implemented 2008/03/12)
 	//const float mapping[] = { 2.0f,1.50f,1.00f,0.66f,0.33f };
 	// StepMania 3.9 and 4.0 values:
 	//const float mapping[] = { 1.60f,1.40f,1.20f,1.00f,0.80f,0.60f,0.40f };
 	// 3.9 modified so that L6 is L4
-	const float mapping[] = { 1.20f,1.00f,0.80f,0.60f,0.40f,0.33f,0.25f };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const float mapping[] = { 1.20f, 1.00f, 0.80f, 0.60f, 0.40f, 0.33f, 0.25f };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
 
@@ -458,46 +508,54 @@ static void LifeDifficulty( int &sel, bool ToSel, const ConfOption *pConfOption 
 static int GetTimingDifficulty()
 {
 	int iTimingDifficulty = 0;
-	TimingWindowScale( iTimingDifficulty, true, ConfOption::Find("TimingWindowScale") );	
+	TimingWindowScale(iTimingDifficulty, true, ConfOption::Find("TimingWindowScale"));
 	iTimingDifficulty++; // TimingDifficulty returns an index
 	return iTimingDifficulty;
 }
-LuaFunction( GetTimingDifficulty, GetTimingDifficulty() );
+LuaFunction(GetTimingDifficulty, GetTimingDifficulty());
 static int GetLifeDifficulty()
 {
 	int iLifeDifficulty = 0;
-	LifeDifficulty( iLifeDifficulty, true, ConfOption::Find("LifeDifficulty") );	
+	LifeDifficulty(iLifeDifficulty, true, ConfOption::Find("LifeDifficulty"));
 	iLifeDifficulty++; // LifeDifficulty returns an index
 	return iLifeDifficulty;
 }
-LuaFunction( GetLifeDifficulty, GetLifeDifficulty() );
+LuaFunction(GetLifeDifficulty, GetLifeDifficulty());
 
 
-static void DefaultFailType( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void DefaultFailType(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	if( ToSel )
+	if (ToSel)
 	{
 		PlayerOptions po;
-		po.FromString( PREFSMAN->m_sDefaultModifiers );
+		po.FromString(PREFSMAN->m_sDefaultModifiers);
 		sel = po.m_FailType;
 	}
 	else
 	{
 		PlayerOptions po;
 		SongOptions so;
-		GetPrefsDefaultModifiers( po, so );
+		GetPrefsDefaultModifiers(po, so);
 
-		switch( sel )
+		switch (sel)
 		{
-		case 0:	po.m_FailType = PlayerOptions::FAIL_IMMEDIATE;	break;
-		case 1:	po.m_FailType = PlayerOptions::FAIL_IMMEDIATE_CONTINUE;	break;
-		case 2:	po.m_FailType = PlayerOptions::FAIL_AT_END;	break;
-		case 3:	po.m_FailType = PlayerOptions::FAIL_OFF;		break;
-		default:
-			ASSERT(0);
+			case 0:
+				po.m_FailType = PlayerOptions::FAIL_IMMEDIATE;
+				break;
+			case 1:
+				po.m_FailType = PlayerOptions::FAIL_IMMEDIATE_CONTINUE;
+				break;
+			case 2:
+				po.m_FailType = PlayerOptions::FAIL_AT_END;
+				break;
+			case 3:
+				po.m_FailType = PlayerOptions::FAIL_OFF;
+				break;
+			default:
+				ASSERT(0);
 		}
 
-		SetPrefsDefaultModifiers( po, so );
+		SetPrefsDefaultModifiers(po, so);
 	}
 }
 
@@ -506,92 +564,97 @@ struct res_t
 {
 	int w, h;
 	res_t(): w(0), h(0) { }
-	res_t( int w_, int h_ ): w(w_), h(h_) { }
-	res_t operator-( const res_t &rhs ) const
+	res_t(int w_, int h_): w(w_), h(h_) { }
+	res_t operator-(const res_t &rhs) const
 	{
-		return res_t( w-rhs.w, h-rhs.h );
+		return res_t(w - rhs.w, h - rhs.h);
 	}
 
-	bool operator<( const res_t &rhs ) const
+	bool operator<(const res_t &rhs) const
 	{
-		if( w != rhs.w )
+		if (w != rhs.w)
+		{
 			return w < rhs.w;
+		}
 		return h < rhs.h;
 	}
 
 	// Ugly: allow convert to a float for FindClosestEntry.
-	operator float() const { return w * 5000.0f + h; }
+	operator float() const
+	{
+		return w * 5000.0f + h;
+	}
 };
 
-static void DisplayResolutionM( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void DisplayResolutionM(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
 	vector<res_t> v;
 
 	DisplayResolutions d;
-	DISPLAY->GetDisplayResolutions( d );
+	DISPLAY->GetDisplayResolutions(d);
 
-	FOREACHS_CONST( DisplayResolution, d, iter )
+	FOREACHS_CONST(DisplayResolution, d, iter)
 	{
-		v.push_back( res_t(iter->iWidth, iter->iHeight) );
+		v.push_back(res_t(iter->iWidth, iter->iHeight));
 	}
 
-	res_t sel_res( PREFSMAN->m_iDisplayWidth, PREFSMAN->m_iDisplayHeight );
-	MoveMap( sel, sel_res, ToSel, &v[0], v.size() );
-	if( !ToSel )
+	res_t sel_res(PREFSMAN->m_iDisplayWidth, PREFSMAN->m_iDisplayHeight);
+	MoveMap(sel, sel_res, ToSel, &v[0], v.size());
+	if (!ToSel)
 	{
-		PREFSMAN->m_iDisplayWidth.Set( sel_res.w );
-		PREFSMAN->m_iDisplayHeight.Set( sel_res.h );
+		PREFSMAN->m_iDisplayWidth.Set(sel_res.w);
+		PREFSMAN->m_iDisplayHeight.Set(sel_res.h);
 	}
 }
 
-static void DisplayColorDepth( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void DisplayColorDepth(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const int mapping[] = { 16,32 };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const int mapping[] = { 16, 32 };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-static void MaxTextureResolution( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void MaxTextureResolution(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const int mapping[] = { 256,512,1024,2048 };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const int mapping[] = { 256, 512, 1024, 2048 };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-static void TextureColorDepth( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void TextureColorDepth(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const int mapping[] = { 16,32 };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const int mapping[] = { 16, 32 };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-static void MovieColorDepth( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void MovieColorDepth(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const int mapping[] = { 16,32 };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const int mapping[] = { 16, 32 };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-static void RefreshRate( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void RefreshRate(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const int mapping[] = { (int) REFRESH_DEFAULT,60,70,72,75,80,85,90,100,120,150 };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const int mapping[] = { (int) REFRESH_DEFAULT, 60, 70, 72, 75, 80, 85, 90, 100, 120, 150 };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-static void DisplayAspectRatio( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void DisplayAspectRatio(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const float mapping[] = { 3/4.f, 1, 4/3.0f, 5/4.0f, 16/10.0f, 16/9.f, 8/3.f };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const float mapping[] = { 3 / 4.f, 1, 4 / 3.0f, 5 / 4.0f, 16 / 10.0f, 16 / 9.f, 8 / 3.f };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
 /* Simpler DisplayAspectRatio setting, which only offers "on" and "off".
  * "On" can be 16:9 or 16:10. */
-static void WideScreen16_10( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void WideScreen16_10(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const float mapping[] = { 4/3.0f, 16/10.0f };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const float mapping[] = { 4 / 3.0f, 16 / 10.0f };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-static void WideScreen16_9( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void WideScreen16_9(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const float mapping[] = { 4/3.0f, 16/9.0f };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const float mapping[] = { 4 / 3.0f, 16 / 9.0f };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
 // BackgroundCache code isn't live yet -aj
@@ -604,38 +667,42 @@ static void BackgroundCache( int &sel, bool ToSel, const ConfOption *pConfOption
 */
 
 // Sound options
-static void SoundVolume( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void SoundVolume(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const float mapping[] = { 0.0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f,1.0f };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const float mapping[] = { 0.0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-static void SoundVolumeAttract( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void SoundVolumeAttract(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const float mapping[] = { 0.0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f,1.0f };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const float mapping[] = { 0.0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-static void VisualDelaySeconds( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void VisualDelaySeconds(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
-	const float mapping[] = { -0.125f,-0.1f,-0.075f,-0.05f,-0.025f,0.0f,0.025f,0.05f,0.075f,0.1f,0.125f };
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	const float mapping[] = { -0.125f, -0.1f, -0.075f, -0.05f, -0.025f, 0.0f, 0.025f, 0.05f, 0.075f, 0.1f, 0.125f };
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-static void GlobalOffsetSeconds( int &sel, bool ToSel, const ConfOption *pConfOption )
+static void GlobalOffsetSeconds(int &sel, bool ToSel, const ConfOption *pConfOption)
 {
 	float mapping[41];
-	for( int i = 0; i < 41; ++i )
-		mapping[i] = SCALE( i, 0.0f, 40.0f, -0.1f, +0.1f );
+	for (int i = 0; i < 41; ++i)
+	{
+		mapping[i] = SCALE(i, 0.0f, 40.0f, -0.1f, +0.1f);
+	}
 
-	MoveMap( sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping) );
+	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
 static vector<ConfOption> g_ConfOptions;
 static void InitializeConfOptions()
 {
-	if( !g_ConfOptions.empty() )
+	if (!g_ConfOptions.empty())
+	{
 		return;
+	}
 
 	// There are a couple ways of getting the current preference column or turning
 	// a new choice in the interface into a new preference. The easiest is when
@@ -648,144 +715,146 @@ static void InitializeConfOptions()
 	// Those require individual attention.
 #define ADD(x) g_ConfOptions.push_back( x )
 	// Select game
-	ADD( ConfOption( "Game",			GameSel,		GameChoices ) );
+	ADD(ConfOption("Game",			GameSel,		GameChoices));
 	g_ConfOptions.back().m_iEffects = OPT_RESET_GAME;
 
 	// Appearance options
-	ADD( ConfOption( "Language",			Language,		LanguageChoices ) );
-	ADD( ConfOption( "Theme",			RequestedTheme,		ThemeChoices ) );
+	ADD(ConfOption("Language",			Language,		LanguageChoices));
+	ADD(ConfOption("Theme",			RequestedTheme,		ThemeChoices));
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_THEME;
 
-	ADD( ConfOption( "Announcer",			Announcer,		AnnouncerChoices ) );
-	ADD( ConfOption( "DefaultNoteSkin",		DefaultNoteSkin,	DefaultNoteSkinChoices ) );
-	ADD( ConfOption( "ShowInstructions",		MovePref<bool>,		"Skip","Show") );
-	ADD( ConfOption( "ShowCaution",			MovePref<bool>,		"Skip","Show") );
-	ADD( ConfOption( "DancePointsForOni",		MovePref<bool>,		"Percent","Dance Points") );
-	ADD( ConfOption( "ShowSelectGroup",		MovePref<bool>,		"All Music","Choose") );
-	ADD( ConfOption( "MusicWheelUsesSections",	MovePref<MusicWheelUsesSections>, "Never","Always","Title Only") );
-	ADD( ConfOption( "CourseSortOrder",		MovePref<CourseSortOrders>, "Num Songs","Average Feet","Total Feet","Ranking") );
-	ADD( ConfOption( "MoveRandomToEnd",		MovePref<bool>,		"No","Yes") );
-	ADD( ConfOption( "ShowNativeLanguage",		MovePref<bool>,		"Romanization","Native Language") );
-	ADD( ConfOption( "ShowLyrics",			MovePref<bool>,		"Hide","Show") );
+	ADD(ConfOption("Announcer",			Announcer,		AnnouncerChoices));
+	ADD(ConfOption("DefaultNoteSkin",		DefaultNoteSkin,	DefaultNoteSkinChoices));
+	ADD(ConfOption("ShowInstructions",		MovePref<bool>,		"Skip", "Show"));
+	ADD(ConfOption("ShowCaution",			MovePref<bool>,		"Skip", "Show"));
+	ADD(ConfOption("DancePointsForOni",		MovePref<bool>,		"Percent", "Dance Points"));
+	ADD(ConfOption("ShowSelectGroup",		MovePref<bool>,		"All Music", "Choose"));
+	ADD(ConfOption("MusicWheelUsesSections",	MovePref<MusicWheelUsesSections>, "Never", "Always", "Title Only"));
+	ADD(ConfOption("CourseSortOrder",		MovePref<CourseSortOrders>, "Num Songs", "Average Feet", "Total Feet", "Ranking"));
+	ADD(ConfOption("MoveRandomToEnd",		MovePref<bool>,		"No", "Yes"));
+	ADD(ConfOption("ShowNativeLanguage",		MovePref<bool>,		"Romanization", "Native Language"));
+	ADD(ConfOption("ShowLyrics",			MovePref<bool>,		"Hide", "Show"));
 
 	// Misc options
-	ADD( ConfOption( "AutogenSteps",		MovePref<bool>,		"Off","On" ) );
-	ADD( ConfOption( "OnlyPreferredDifficulties", MovePref<bool>, "Off","On" ) );
+	ADD(ConfOption("AutogenSteps",		MovePref<bool>,		"Off", "On"));
+	ADD(ConfOption("OnlyPreferredDifficulties", MovePref<bool>, "Off", "On"));
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_SONG;
 
-	ADD( ConfOption( "AutogenGroupCourses",		MovePref<bool>,		"Off","On" ) );
-	ADD( ConfOption( "FastLoad",			MovePref<bool>,		"Off","On" ) );
+	ADD(ConfOption("AutogenGroupCourses",		MovePref<bool>,		"Off", "On"));
+	ADD(ConfOption("FastLoad",			MovePref<bool>,		"Off", "On"));
 
 	// Background options
-	ADD( ConfOption( "RandomBackgroundMode",	MovePref<RandomBackgroundMode>, "Off","Animations","Random Movies" ) );
-	ADD( ConfOption( "BGBrightness",		BGBrightness,		"|0%","|10%","|20%","|30%","|40%","|50%","|60%","|70%","|80%","|90%","|100%" ) );
-	ADD( ConfOption( "BGBrightnessNoZero",		BGBrightnessNoZero,	"|10%","|20%","|30%","|40%","|50%","|60%","|70%","|80%","|90%","|100%" ) );
+	ADD(ConfOption("RandomBackgroundMode",	MovePref<RandomBackgroundMode>, "Off", "Animations", "Random Movies"));
+	ADD(ConfOption("BGBrightness",		BGBrightness,		"|0%", "|10%", "|20%", "|30%", "|40%", "|50%", "|60%", "|70%", "|80%", "|90%", "|100%"));
+	ADD(ConfOption("BGBrightnessNoZero",		BGBrightnessNoZero,	"|10%", "|20%", "|30%", "|40%", "|50%", "|60%", "|70%", "|80%", "|90%", "|100%"));
 	g_ConfOptions.back().m_sPrefName = "BGBrightness";
-	ADD( ConfOption( "BGBrightnessOrStatic",	BGBrightnessOrStatic,	"Disabled","25% Bright","50% Bright","75% Bright" ) );
+	ADD(ConfOption("BGBrightnessOrStatic",	BGBrightnessOrStatic,	"Disabled", "25% Bright", "50% Bright", "75% Bright"));
 	g_ConfOptions.back().m_sPrefName = "BGBrightness";
 
-	ADD( ConfOption( "ShowDanger",			MovePref<bool>,		"Hide","Show" ) );
-	ADD( ConfOption( "ShowDancingCharacters",	MovePref<ShowDancingCharacters>, "Default to Off","Default to Random","Select" ) );
-	ADD( ConfOption( "ShowBeginnerHelper",		MovePref<bool>,		"Off","On" ) );
-	ADD( ConfOption( "NumBackgrounds",		NumBackgrounds,		"|5","|10","|15","|20" ) );
+	ADD(ConfOption("ShowDanger",			MovePref<bool>,		"Hide", "Show"));
+	ADD(ConfOption("ShowDancingCharacters",	MovePref<ShowDancingCharacters>, "Default to Off", "Default to Random", "Select"));
+	ADD(ConfOption("ShowBeginnerHelper",		MovePref<bool>,		"Off", "On"));
+	ADD(ConfOption("NumBackgrounds",		NumBackgrounds,		"|5", "|10", "|15", "|20"));
 
 	// Input options
-	ADD( ConfOption( "AutoMapOnJoyChange",		MovePref<bool>,		"Off","On (recommended)" ) );
-	ADD( ConfOption( "OnlyDedicatedMenuButtons",	MovePref<bool>,		"Use Gameplay Buttons","Only Dedicated Buttons" ) );
-	ADD( ConfOption( "AutoPlay",			MovePref<PlayerController>, "Off","On","CPU-Controlled" ) );
-	ADD( ConfOption( "DelayedBack",			MovePref<bool>,		"Instant","Hold" ) );
-	ADD( ConfOption( "ArcadeOptionsNavigation",	MovePref<bool>,		"StepMania Style","Arcade Style" ) );
-	ADD( ConfOption( "MusicWheelSwitchSpeed",	MusicWheelSwitchSpeed,	"Slow","Normal","Fast","Really Fast" ) );
+	ADD(ConfOption("AutoMapOnJoyChange",		MovePref<bool>,		"Off", "On (recommended)"));
+	ADD(ConfOption("OnlyDedicatedMenuButtons",	MovePref<bool>,		"Use Gameplay Buttons", "Only Dedicated Buttons"));
+	ADD(ConfOption("AutoPlay",			MovePref<PlayerController>, "Off", "On", "CPU-Controlled"));
+	ADD(ConfOption("DelayedBack",			MovePref<bool>,		"Instant", "Hold"));
+	ADD(ConfOption("ArcadeOptionsNavigation",	MovePref<bool>,		"StepMania Style", "Arcade Style"));
+	ADD(ConfOption("MusicWheelSwitchSpeed",	MusicWheelSwitchSpeed,	"Slow", "Normal", "Fast", "Really Fast"));
 
 	// Gameplay options
-	ADD( ConfOption( "Center1Player",		MovePref<bool>,		"Off","On" ) );
-	ADD( ConfOption( "HiddenSongs",			MovePref<bool>,		"Off","On" ) );
-	ADD( ConfOption( "EasterEggs",			MovePref<bool>,		"Off","On" ) );
+	ADD(ConfOption("Center1Player",		MovePref<bool>,		"Off", "On"));
+	ADD(ConfOption("HiddenSongs",			MovePref<bool>,		"Off", "On"));
+	ADD(ConfOption("EasterEggs",			MovePref<bool>,		"Off", "On"));
 	// W1 is Fantastic Timing
-	ADD( ConfOption( "AllowW1",			MovePref<AllowW1>,	"Never","Courses Only","Always" ) );
-	ADD( ConfOption( "AllowExtraStage",		MovePref<bool>,		"Off","On" ) );
-	ADD( ConfOption( "PickExtraStage",		MovePref<bool>,		"Off","On" ) );
-	ADD( ConfOption( "UseUnlockSystem",		MovePref<bool>,		"Off","On" ) );
+	ADD(ConfOption("AllowW1",			MovePref<AllowW1>,	"Never", "Courses Only", "Always"));
+	ADD(ConfOption("AllowExtraStage",		MovePref<bool>,		"Off", "On"));
+	ADD(ConfOption("PickExtraStage",		MovePref<bool>,		"Off", "On"));
+	ADD(ConfOption("UseUnlockSystem",		MovePref<bool>,		"Off", "On"));
 
 	// Machine options
-	ADD( ConfOption( "MenuTimer",			MovePref<bool>,		"Off","On" ) );
-	ADD( ConfOption( "CoinMode",			MovePref<CoinMode>,	"Home","Pay","Free Play" ) );
-	ADD( ConfOption( "CoinModeNoHome",		CoinModeNoHome,		"Pay","Free Play" ) );
+	ADD(ConfOption("MenuTimer",			MovePref<bool>,		"Off", "On"));
+	ADD(ConfOption("CoinMode",			MovePref<CoinMode>,	"Home", "Pay", "Free Play"));
+	ADD(ConfOption("CoinModeNoHome",		CoinModeNoHome,		"Pay", "Free Play"));
 	g_ConfOptions.back().m_sPrefName = "CoinMode";
 
-	ADD( ConfOption( "SongsPerPlay",		SongsPerPlay,		"|1","|2","|3","|4","|5" ) );
-	ADD( ConfOption( "SongsPerPlayOrEvent",		SongsPerPlayOrEventMode,"|1","|2","|3","|4","|5","Event" ) );
+	ADD(ConfOption("SongsPerPlay",		SongsPerPlay,		"|1", "|2", "|3", "|4", "|5"));
+	ADD(ConfOption("SongsPerPlayOrEvent",		SongsPerPlayOrEventMode, "|1", "|2", "|3", "|4", "|5", "Event"));
 	g_ConfOptions.back().m_sPrefName = "SongsPerPlay";
 
-	ADD( ConfOption( "EventMode",			MovePref<bool>,		"Off","On (recommended)" ) );
-	ADD( ConfOption( "TimingWindowScale",		TimingWindowScale,	"|1","|2","|3","|4","|5","|6","|7","|8","Justice" ) );
-	ADD( ConfOption( "LifeDifficulty",		LifeDifficulty,		"|1.2","|1.0","|0.8","|0.6","|0.4","|0.33","|0.25" ) );
+	ADD(ConfOption("EventMode",			MovePref<bool>,		"Off", "On (recommended)"));
+	ADD(ConfOption("TimingWindowScale",		TimingWindowScale,	"|1", "|2", "|3", "|4", "|5", "|6", "|7", "|8", "Justice"));
+	ADD(ConfOption("LifeDifficulty",		LifeDifficulty,		"|1.2", "|1.0", "|0.8", "|0.6", "|0.4", "|0.33", "|0.25"));
 	g_ConfOptions.back().m_sPrefName = "LifeDifficultyScale";
-	ADD( ConfOption( "ProgressiveLifebar",		MovePref<int>,		"Off","|1","|2","|3","|4","|5","|6","|7","|8") );
-	ADD( ConfOption( "ProgressiveStageLifebar",	MovePref<int>,		"Off","|1","|2","|3","|4","|5","|6","|7","|8","Insanity") );
-	ADD( ConfOption( "ProgressiveNonstopLifebar",	MovePref<int>,		"Off","|1","|2","|3","|4","|5","|6","|7","|8","Insanity") );
-	ADD( ConfOption( "DefaultFailType",		DefaultFailType,	"Immediate","ImmediateContinue","EndOfSong","Off" ) );	
-	ADD( ConfOption( "CoinsPerCredit",		CoinsPerCredit,		"|1","|2","|3","|4","|5","|6","|7","|8","|9","|10","|11","|12","|13","|14","|15","|16" ) );
-	ADD( ConfOption( "Premium",			MovePref<Premium>,	"Off","Double for 1 Credit","2 Players for 1 Credit" ) );
-	ADD( ConfOption( "JointPremium",		JointPremium,		"Off","2 Players for 1 Credit" ) );
+	ADD(ConfOption("ProgressiveLifebar",		MovePref<int>,		"Off", "|1", "|2", "|3", "|4", "|5", "|6", "|7", "|8"));
+	ADD(ConfOption("ProgressiveStageLifebar",	MovePref<int>,		"Off", "|1", "|2", "|3", "|4", "|5", "|6", "|7", "|8", "Insanity"));
+	ADD(ConfOption("ProgressiveNonstopLifebar",	MovePref<int>,		"Off", "|1", "|2", "|3", "|4", "|5", "|6", "|7", "|8", "Insanity"));
+	ADD(ConfOption("DefaultFailType",		DefaultFailType,	"Immediate", "ImmediateContinue", "EndOfSong", "Off"));
+	ADD(ConfOption("CoinsPerCredit",		CoinsPerCredit,		"|1", "|2", "|3", "|4", "|5", "|6", "|7", "|8", "|9", "|10", "|11", "|12", "|13", "|14", "|15", "|16"));
+	ADD(ConfOption("Premium",			MovePref<Premium>,	"Off", "Double for 1 Credit", "2 Players for 1 Credit"));
+	ADD(ConfOption("JointPremium",		JointPremium,		"Off", "2 Players for 1 Credit"));
 	g_ConfOptions.back().m_sPrefName = "Premium";
-	ADD( ConfOption( "ShowSongOptions",		MovePref<Maybe>,	"Ask", "Hide","Show" ) );
-	ADD( ConfOption( "PercentageScoring",	MovePref<bool>,	"Off","On" ) );
-	ADD( ConfOption( "GetRankingName",		MovePref<GetRankingName>, "Off", "On", "Ranking Songs" ) );
+	ADD(ConfOption("ShowSongOptions",		MovePref<Maybe>,	"Ask", "Hide", "Show"));
+	ADD(ConfOption("PercentageScoring",	MovePref<bool>,	"Off", "On"));
+	ADD(ConfOption("GetRankingName",		MovePref<GetRankingName>, "Off", "On", "Ranking Songs"));
 
 	// Graphic options
-	ADD( ConfOption( "Windowed",			MovePref<bool>,		"Full Screen", "Windowed" ) );
+	ADD(ConfOption("Windowed",			MovePref<bool>,		"Full Screen", "Windowed"));
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_GRAPHICS;
-	ADD( ConfOption( "DisplayResolution",		DisplayResolutionM, DisplayResolutionChoices ) );
+	ADD(ConfOption("DisplayResolution",		DisplayResolutionM, DisplayResolutionChoices));
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_GRAPHICS | OPT_APPLY_ASPECT_RATIO;
-	ADD( ConfOption( "DisplayAspectRatio",		DisplayAspectRatio,	"|3:4","|1:1","|4:3","|5:4","|16:10","|16:9","|8:3" ) );
+	ADD(ConfOption("DisplayAspectRatio",		DisplayAspectRatio,	"|3:4", "|1:1", "|4:3", "|5:4", "|16:10", "|16:9", "|8:3"));
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_GRAPHICS | OPT_APPLY_ASPECT_RATIO;	// need OPT_APPLY_GRAPHICS because if windowed the width may change to make square pixels
-	ADD( ConfOption( "WideScreen16_10",		WideScreen16_10,	"Off", "On" ) );
+	ADD(ConfOption("WideScreen16_10",		WideScreen16_10,	"Off", "On"));
 	g_ConfOptions.back().m_sPrefName = "DisplayAspectRatio";
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_ASPECT_RATIO;
-	ADD( ConfOption( "WideScreen16_9",		WideScreen16_9,		"Off", "On" ) );
+	ADD(ConfOption("WideScreen16_9",		WideScreen16_9,		"Off", "On"));
 	g_ConfOptions.back().m_sPrefName = "DisplayAspectRatio";
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_ASPECT_RATIO;
-	ADD( ConfOption( "DisplayColorDepth",		DisplayColorDepth,	"16bit","32bit" ) );
+	ADD(ConfOption("DisplayColorDepth",		DisplayColorDepth,	"16bit", "32bit"));
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_GRAPHICS;
-	ADD( ConfOption( "HighResolutionTextures",	MovePref<HighResolutionTextures>, "Auto","Force Off","Force On" ) );
+	ADD(ConfOption("HighResolutionTextures",	MovePref<HighResolutionTextures>, "Auto", "Force Off", "Force On"));
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_GRAPHICS;
-	ADD( ConfOption( "MaxTextureResolution",	MaxTextureResolution,	"|256","|512","|1024","|2048" ) );
+	ADD(ConfOption("MaxTextureResolution",	MaxTextureResolution,	"|256", "|512", "|1024", "|2048"));
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_GRAPHICS;
-	ADD( ConfOption( "TextureColorDepth",		TextureColorDepth,	"16bit","32bit" ) );
+	ADD(ConfOption("TextureColorDepth",		TextureColorDepth,	"16bit", "32bit"));
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_GRAPHICS;
-	ADD( ConfOption( "MovieColorDepth",		MovieColorDepth,	"16bit","32bit" ) );
-	ADD( ConfOption( "DelayedTextureDelete",	MovePref<bool>,		"Off","On" ) );
+	ADD(ConfOption("MovieColorDepth",		MovieColorDepth,	"16bit", "32bit"));
+	ADD(ConfOption("DelayedTextureDelete",	MovePref<bool>,		"Off", "On"));
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_GRAPHICS;
-	ADD( ConfOption( "CelShadeModels",		MovePref<bool>,		"Off","On" ) );
-	ADD( ConfOption( "SmoothLines",			MovePref<bool>,		"Off","On" ) );
+	ADD(ConfOption("CelShadeModels",		MovePref<bool>,		"Off", "On"));
+	ADD(ConfOption("SmoothLines",			MovePref<bool>,		"Off", "On"));
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_GRAPHICS;
-	ADD( ConfOption( "RefreshRate",			RefreshRate,		"Default","|60","|70","|72","|75","|80","|85","|90","|100","|120","|150" ) );
+	ADD(ConfOption("RefreshRate",			RefreshRate,		"Default", "|60", "|70", "|72", "|75", "|80", "|85", "|90", "|100", "|120", "|150"));
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_GRAPHICS;
-	ADD( ConfOption( "Vsync",			MovePref<bool>,		"No", "Yes" ) );
+	ADD(ConfOption("Vsync",			MovePref<bool>,		"No", "Yes"));
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_GRAPHICS;
-	ADD( ConfOption( "ShowStats",			MovePref<bool>,		"Off","On" ) );
-	ADD( ConfOption( "ShowBanners",			MovePref<bool>,		"Off","On" ) );
+	ADD(ConfOption("ShowStats",			MovePref<bool>,		"Off", "On"));
+	ADD(ConfOption("ShowBanners",			MovePref<bool>,		"Off", "On"));
 
 	// Sound options
-	ADD( ConfOption( "AttractSoundFrequency",	MovePref<AttractSoundFrequency>, "Never","Always","2 Times","3 Times","4 Times","5 Times" ) );
-	ADD( ConfOption( "SoundVolume",			SoundVolume,		"Silent","|10%","|20%","|30%","|40%","|50%","|60%","|70%","|80%","|90%","|100%" ) );
+	ADD(ConfOption("AttractSoundFrequency",	MovePref<AttractSoundFrequency>, "Never", "Always", "2 Times", "3 Times", "4 Times", "5 Times"));
+	ADD(ConfOption("SoundVolume",			SoundVolume,		"Silent", "|10%", "|20%", "|30%", "|40%", "|50%", "|60%", "|70%", "|80%", "|90%", "|100%"));
 	g_ConfOptions.back().m_iEffects = OPT_APPLY_SOUND;
-	ADD( ConfOption( "SoundVolumeAttract",		SoundVolumeAttract,	"Silent","|10%","|20%","|30%","|40%","|50%","|60%","|70%","|80%","|90%","|100%" ) );
-	ADD( ConfOption( "VisualDelaySeconds",		VisualDelaySeconds,	"|-5","|-4","|-3","|-2","|-1","|0","|+1","|+2","|+3","|+4","|+5" ) );
+	ADD(ConfOption("SoundVolumeAttract",		SoundVolumeAttract,	"Silent", "|10%", "|20%", "|30%", "|40%", "|50%", "|60%", "|70%", "|80%", "|90%", "|100%"));
+	ADD(ConfOption("VisualDelaySeconds",		VisualDelaySeconds,	"|-5", "|-4", "|-3", "|-2", "|-1", "|0", "|+1", "|+2", "|+3", "|+4", "|+5"));
 	{
-		ConfOption c( "GlobalOffsetSeconds",		GlobalOffsetSeconds );
-		for( int i = -100; i <= +100; i += 5 )
-			c.AddOption( ssprintf("%+i ms", i) );
-		ADD( c );
+		ConfOption c("GlobalOffsetSeconds",		GlobalOffsetSeconds);
+		for (int i = -100; i <= +100; i += 5)
+		{
+			c.AddOption(ssprintf("%+i ms", i));
+		}
+		ADD(c);
 	}
-	ADD( ConfOption( "EnableAttackSounds",		MovePref<bool>,		"No","Yes" ) );
-	ADD( ConfOption( "EnableMineHitSound",		MovePref<bool>,		"No","Yes" ) );
+	ADD(ConfOption("EnableAttackSounds",		MovePref<bool>,		"No", "Yes"));
+	ADD(ConfOption("EnableMineHitSound",		MovePref<bool>,		"No", "Yes"));
 
 	// Editor options
-	ADD( ConfOption( "EditorShowBGChangesPlay",	MovePref<bool>,		"Hide","Show") );
+	ADD(ConfOption("EditorShowBGChangesPlay",	MovePref<bool>,		"Hide", "Show"));
 
-	ADD( ConfOption( "Invalid",			MoveNop,		"|Invalid option") );
+	ADD(ConfOption("Invalid",			MoveNop,		"|Invalid option"));
 }
 
 // Get a mask of effects to apply if the given option changes.
@@ -794,15 +863,17 @@ int ConfOption::GetEffects() const
 	return m_iEffects | OPT_SAVE_PREFERENCES;
 }
 
-ConfOption *ConfOption::Find( RString name )
+ConfOption *ConfOption::Find(RString name)
 {
 	InitializeConfOptions();
-	for( unsigned i = 0; i < g_ConfOptions.size(); ++i )
+	for (unsigned i = 0; i < g_ConfOptions.size(); ++i)
 	{
 		ConfOption *opt = &g_ConfOptions[i];
 		RString match(opt->name);
-		if( match.CompareNoCase(name) )
+		if (match.CompareNoCase(name))
+		{
 			continue;
+		}
 		return opt;
 	}
 
@@ -811,14 +882,14 @@ ConfOption *ConfOption::Find( RString name )
 
 void ConfOption::UpdateAvailableOptions()
 {
-	if( MakeOptionsListCB != NULL )
+	if (MakeOptionsListCB != NULL)
 	{
 		names.clear();
-		MakeOptionsListCB( names );
+		MakeOptionsListCB(names);
 	}
 }
 
-void ConfOption::MakeOptionsList( vector<RString> &out ) const
+void ConfOption::MakeOptionsList(vector<RString> &out) const
 {
 	out = names;
 }
@@ -828,7 +899,7 @@ void ConfOption::MakeOptionsList( vector<RString> &out ) const
  * @author Glenn Maynard (c) 2003-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -838,7 +909,7 @@ void ConfOption::MakeOptionsList( vector<RString> &out ) const
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

@@ -18,7 +18,7 @@ struct msMesh
 
 	vector<RageModelVertex>	Vertices;
 
-	// OPTIMIZATION: If all verts in a mesh are transformed by the same bone, 
+	// OPTIMIZATION: If all verts in a mesh are transformed by the same bone,
 	// then send the transform to the graphics card for the whole mesh instead
 	// of transforming each vertex on the CPU;
 	char			m_iBoneIndex;	// -1 = no bone
@@ -36,23 +36,26 @@ public:
 	~AnimatedTexture();
 
 	void LoadBlank();
-	void Load( const RString &sTexOrIniFile );
+	void Load(const RString &sTexOrIniFile);
 	void Unload();
-	void Update( float fDelta );
+	void Update(float fDelta);
 
 	RageTexture* GetCurrentTexture();
 
 	int GetNumStates() const;
-	void SetState( int iNewState );
+	void SetState(int iNewState);
 	float GetAnimationLengthSeconds() const;
-	void SetSecondsIntoAnimation( float fSeconds );
+	void SetSecondsIntoAnimation(float fSeconds);
 	float GetSecondsIntoAnimation() const;
 	RageVector2 GetTextureTranslate();
 
 	bool		m_bSphereMapped;
 	BlendMode	m_BlendMode;
 
-	bool NeedsNormals() const { return m_bSphereMapped; }
+	bool NeedsNormals() const
+	{
+		return m_bSphereMapped;
+	}
 
 private:
 	RageVector2		m_vTexOffset;
@@ -63,10 +66,10 @@ private:
 	struct AnimatedTextureState
 	{
 		AnimatedTextureState(
-			RageTexture* pTexture_,
-			float		fDelaySecs_,
-			RageVector2	vTranslate_
-				     ):
+		        RageTexture* pTexture_,
+		        float		fDelaySecs_,
+		        RageVector2	vTranslate_
+		):
 			pTexture(pTexture_), fDelaySecs(fDelaySecs_),
 			vTranslate(vTranslate_) {}
 
@@ -91,7 +94,10 @@ struct msMaterial
 	AnimatedTexture	diffuse;
 	AnimatedTexture	alpha;
 
-	bool NeedsNormals() const { return diffuse.NeedsNormals() || alpha.NeedsNormals() ; }
+	bool NeedsNormals() const
+	{
+		return diffuse.NeedsNormals() || alpha.NeedsNormals() ;
+	}
 };
 
 struct msPositionKey
@@ -120,15 +126,17 @@ struct msBone
 
 struct msAnimation
 {
-	int FindBoneByName( const RString &sName ) const
+	int FindBoneByName(const RString &sName) const
 	{
-		for( unsigned i=0; i<Bones.size(); i++ )
-			if( Bones[i].sName == sName )
+		for (unsigned i = 0; i < Bones.size(); i++)
+			if (Bones[i].sName == sName)
+			{
 				return i;
+			}
 		return -1;
 	}
 
-	bool LoadMilkshapeAsciiBones( RString sAniName, RString sPath );
+	bool LoadMilkshapeAsciiBones(RString sAniName, RString sPath);
 
 	vector<msBone>		Bones;
 	int			nTotalFrames;
@@ -146,7 +154,7 @@ struct myBone_t
 /*
  * (c) 2003-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -156,7 +164,7 @@ struct myBone_t
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

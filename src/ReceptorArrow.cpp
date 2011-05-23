@@ -14,38 +14,42 @@ ReceptorArrow::ReceptorArrow()
 	m_bWasReverse = false;
 }
 
-void ReceptorArrow::Load( const PlayerState* pPlayerState, int iColNo )
+void ReceptorArrow::Load(const PlayerState* pPlayerState, int iColNo)
 {
 	m_pPlayerState = pPlayerState;
 	m_iColNo = iColNo;
 
-	RString sButton = GAMESTATE->GetCurrentStyle()->ColToButtonName( iColNo );
-	m_pReceptor.Load( NOTESKIN->LoadActor(sButton, "Receptor") );
-	this->AddChild( m_pReceptor );
+	RString sButton = GAMESTATE->GetCurrentStyle()->ColToButtonName(iColNo);
+	m_pReceptor.Load(NOTESKIN->LoadActor(sButton, "Receptor"));
+	this->AddChild(m_pReceptor);
 
 	bool bReverse = m_pPlayerState->m_PlayerOptions.GetCurrent().GetReversePercentForColumn(m_iColNo) > 0.5f;
-	m_pReceptor->PlayCommand( bReverse? "ReverseOn":"ReverseOff" );
+	m_pReceptor->PlayCommand(bReverse ? "ReverseOn" : "ReverseOff");
 	m_bWasReverse = bReverse;
 }
 
-void ReceptorArrow::Update( float fDeltaTime )
+void ReceptorArrow::Update(float fDeltaTime)
 {
-	ActorFrame::Update( fDeltaTime );
+	ActorFrame::Update(fDeltaTime);
 
 	bool bReverse = m_pPlayerState->m_PlayerOptions.GetCurrent().GetReversePercentForColumn(m_iColNo) > 0.5f;
-	if( bReverse != m_bWasReverse )
+	if (bReverse != m_bWasReverse)
 	{
-		m_pReceptor->PlayCommand( bReverse? "ReverseOn":"ReverseOff" );
+		m_pReceptor->PlayCommand(bReverse ? "ReverseOn" : "ReverseOff");
 		m_bWasReverse = bReverse;
 	}
 }
 
 void ReceptorArrow::DrawPrimitives()
 {
-	if( m_bWasPressed  &&  !m_bIsPressed )
-		m_pReceptor->PlayCommand( "Lift" );
-	else if( !m_bWasPressed  &&  m_bIsPressed )
-		m_pReceptor->PlayCommand( "Press" );
+	if (m_bWasPressed  &&  !m_bIsPressed)
+	{
+		m_pReceptor->PlayCommand("Lift");
+	}
+	else if (!m_bWasPressed  &&  m_bIsPressed)
+	{
+		m_pReceptor->PlayCommand("Press");
+	}
 
 	m_bWasPressed = m_bIsPressed;
 	m_bIsPressed = false;	// it may get turned back on next update
@@ -53,23 +57,23 @@ void ReceptorArrow::DrawPrimitives()
 	ActorFrame::DrawPrimitives();
 }
 
-void ReceptorArrow::Step( TapNoteScore score )
+void ReceptorArrow::Step(TapNoteScore score)
 {
 	m_bIsPressed = true;
 
-	RString sJudge = TapNoteScoreToString( score );
-	m_pReceptor->PlayCommand( Capitalize(sJudge) );
+	RString sJudge = TapNoteScoreToString(score);
+	m_pReceptor->PlayCommand(Capitalize(sJudge));
 }
 
-void ReceptorArrow::SetNoteUpcoming( bool b )
+void ReceptorArrow::SetNoteUpcoming(bool b)
 {
-	m_pReceptor->PlayCommand( b ? "ShowNoteUpcoming" : "HideNoteUpcoming" );
+	m_pReceptor->PlayCommand(b ? "ShowNoteUpcoming" : "HideNoteUpcoming");
 }
 
 /*
  * (c) 2001-2004 Ben Nordstrom, Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -79,7 +83,7 @@ void ReceptorArrow::SetNoteUpcoming( bool b )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

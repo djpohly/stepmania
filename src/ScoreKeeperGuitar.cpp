@@ -5,21 +5,21 @@
 #include "PlayerState.h"
 
 
-ScoreKeeperGuitar::ScoreKeeperGuitar( PlayerState *pPlayerState, PlayerStageStats *pPlayerStageStats ) : 
+ScoreKeeperGuitar::ScoreKeeperGuitar(PlayerState *pPlayerState, PlayerStageStats *pPlayerStageStats) :
 	ScoreKeeperNormal(pPlayerState, pPlayerStageStats)
 {
 	m_fMusicSecondsHeldRemainder = 0;
 }
 
-void ScoreKeeperGuitar::AddTapScore( TapNoteScore tns )
+void ScoreKeeperGuitar::AddTapScore(TapNoteScore tns)
 {
 }
 
-void ScoreKeeperGuitar::AddHoldScore( HoldNoteScore hns )
+void ScoreKeeperGuitar::AddHoldScore(HoldNoteScore hns)
 {
 }
 
-void ScoreKeeperGuitar::HandleHoldActiveSeconds( float fMusicSecondsHeld )
+void ScoreKeeperGuitar::HandleHoldActiveSeconds(float fMusicSecondsHeld)
 {
 	int &iScore = m_pPlayerStageStats->m_iScore;
 	int &iCurMaxScore = m_pPlayerStageStats->m_iCurMaxScore;
@@ -27,56 +27,56 @@ void ScoreKeeperGuitar::HandleHoldActiveSeconds( float fMusicSecondsHeld )
 	const float fPointsPerSecond = 25;
 	const float fMusicSecondsHeldPlusRemainer = m_fMusicSecondsHeldRemainder + fMusicSecondsHeld;
 	const float fPoints = fMusicSecondsHeldPlusRemainer * fPointsPerSecond;
-	const int iPoints = (int)floorf( fPoints );
+	const int iPoints = (int)floorf(fPoints);
 	const float fPointsRemainder = fPoints - iPoints;
 	m_fMusicSecondsHeldRemainder = (fPointsRemainder) / fPointsPerSecond;
 
-	if( iPoints != 0 ) 
+	if (iPoints != 0)
 	{
 		iScore += iPoints;
 		iCurMaxScore += iPoints;
-		Message msg( "ScoreChanged" );
-		msg.SetParam( "PlayerNumber", m_pPlayerState->m_PlayerNumber );
-		msg.SetParam( "MultiPlayer", m_pPlayerState->m_mp );
-		MESSAGEMAN->Broadcast( msg );
+		Message msg("ScoreChanged");
+		msg.SetParam("PlayerNumber", m_pPlayerState->m_PlayerNumber);
+		msg.SetParam("MultiPlayer", m_pPlayerState->m_mp);
+		MESSAGEMAN->Broadcast(msg);
 	}
 }
 
-void ScoreKeeperGuitar::AddTapRowScore( TapNoteScore tns, const NoteData &nd, int iRow )
+void ScoreKeeperGuitar::AddTapRowScore(TapNoteScore tns, const NoteData &nd, int iRow)
 {
 	// calculate score multiplier
 	int iNewCurScoreMultiplier = m_pPlayerStageStats->m_iCurScoreMultiplier;
 	iNewCurScoreMultiplier = 1 + (m_pPlayerStageStats->m_iCurCombo / 10);
-	iNewCurScoreMultiplier = min( iNewCurScoreMultiplier, 4 );
-	if( iNewCurScoreMultiplier != m_pPlayerStageStats->m_iCurScoreMultiplier )
+	iNewCurScoreMultiplier = min(iNewCurScoreMultiplier, 4);
+	if (iNewCurScoreMultiplier != m_pPlayerStageStats->m_iCurScoreMultiplier)
 	{
 		m_pPlayerStageStats->m_iCurScoreMultiplier = iNewCurScoreMultiplier;
-		MESSAGEMAN->Broadcast( Message_ScoreMultiplierChangedP1 );
+		MESSAGEMAN->Broadcast(Message_ScoreMultiplierChangedP1);
 	}
 
 	int &iScore = m_pPlayerStageStats->m_iScore;
 
-	if( tns != TNS_Miss )
+	if (tns != TNS_Miss)
 	{
 		TapNoteScore scoreOfLastTap;
 		int iNumTapsInRow;
-		
-		GetScoreOfLastTapInRow( nd, iRow, scoreOfLastTap, iNumTapsInRow );
-		
-		ASSERT( iNumTapsInRow > 0 );
+
+		GetScoreOfLastTapInRow(nd, iRow, scoreOfLastTap, iNumTapsInRow);
+
+		ASSERT(iNumTapsInRow > 0);
 
 		iScore += 50 * iNumTapsInRow * iNewCurScoreMultiplier;
-		Message msg( "ScoreChanged" );
-		msg.SetParam( "PlayerNumber", m_pPlayerState->m_PlayerNumber );
-		msg.SetParam( "MultiPlayer", m_pPlayerState->m_mp );
-		MESSAGEMAN->Broadcast( msg );
+		Message msg("ScoreChanged");
+		msg.SetParam("PlayerNumber", m_pPlayerState->m_PlayerNumber);
+		msg.SetParam("MultiPlayer", m_pPlayerState->m_mp);
+		MESSAGEMAN->Broadcast(msg);
 	}
 }
 
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -86,7 +86,7 @@ void ScoreKeeperGuitar::AddTapRowScore( TapNoteScore tns, const NoteData &nd, in
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

@@ -2,86 +2,99 @@
 #include "RageTypes.h"
 #include "LuaManager.h"
 
-void RageColor::PushTable( lua_State *L ) const
+void RageColor::PushTable(lua_State *L) const
 {
-	lua_newtable( L );
+	lua_newtable(L);
 	int iTable = lua_gettop(L);
 
-	lua_pushnumber( L, r );
-	lua_rawseti( L, iTable, 1 );
-	lua_pushnumber( L, g );
-	lua_rawseti( L, iTable, 2 );
-	lua_pushnumber( L, b );
-	lua_rawseti( L, iTable, 3 );
-	lua_pushnumber( L, a );
-	lua_rawseti( L, iTable, 4 );
+	lua_pushnumber(L, r);
+	lua_rawseti(L, iTable, 1);
+	lua_pushnumber(L, g);
+	lua_rawseti(L, iTable, 2);
+	lua_pushnumber(L, b);
+	lua_rawseti(L, iTable, 3);
+	lua_pushnumber(L, a);
+	lua_rawseti(L, iTable, 4);
 }
 
-void RageColor::FromStack( lua_State *L, int iPos )
+void RageColor::FromStack(lua_State *L, int iPos)
 {
-	if( lua_type(L, iPos) != LUA_TTABLE )
-		return;
-
-	lua_pushvalue( L, iPos );
-	int iFrom = lua_gettop( L );
-
-	lua_rawgeti( L, iFrom, 1 );
-	r = (float)lua_tonumber( L, -1 );
-	lua_rawgeti( L, iFrom, 2 );
-	g = (float)lua_tonumber( L, -1 );
-	lua_rawgeti( L, iFrom, 3 );
-	b = (float)lua_tonumber( L, -1 );
-	lua_rawgeti( L, iFrom, 4 );
-	a = (float)lua_tonumber( L, -1 );
-	lua_pop( L, 5 );
-}
-
-void RageColor::FromStackCompat( lua_State *L, int iPos )
-{
-	if( lua_type(L, iPos) == LUA_TTABLE )
+	if (lua_type(L, iPos) != LUA_TTABLE)
 	{
-		FromStack( L, iPos );
+		return;
+	}
+
+	lua_pushvalue(L, iPos);
+	int iFrom = lua_gettop(L);
+
+	lua_rawgeti(L, iFrom, 1);
+	r = (float)lua_tonumber(L, -1);
+	lua_rawgeti(L, iFrom, 2);
+	g = (float)lua_tonumber(L, -1);
+	lua_rawgeti(L, iFrom, 3);
+	b = (float)lua_tonumber(L, -1);
+	lua_rawgeti(L, iFrom, 4);
+	a = (float)lua_tonumber(L, -1);
+	lua_pop(L, 5);
+}
+
+void RageColor::FromStackCompat(lua_State *L, int iPos)
+{
+	if (lua_type(L, iPos) == LUA_TTABLE)
+	{
+		FromStack(L, iPos);
 	}
 	else
 	{
-		r = FArg(iPos+0);
-		g = FArg(iPos+1);
-		b = FArg(iPos+2);
-		a = FArg(iPos+3);
+		r = FArg(iPos + 0);
+		g = FArg(iPos + 1);
+		b = FArg(iPos + 2);
+		a = FArg(iPos + 3);
 	}
 }
 
 RString RageColor::ToString() const
 {
-	int iR = clamp( (int) lrintf(r * 255), 0, 255 );
-	int iG = clamp( (int) lrintf(g * 255), 0, 255 );
-	int iB = clamp( (int) lrintf(b * 255), 0, 255 );
-	int iA = clamp( (int) lrintf(a * 255), 0, 255 );
+	int iR = clamp((int) lrintf(r * 255), 0, 255);
+	int iG = clamp((int) lrintf(g * 255), 0, 255);
+	int iB = clamp((int) lrintf(b * 255), 0, 255);
+	int iA = clamp((int) lrintf(a * 255), 0, 255);
 
-	if( iA == 255 )
-		return ssprintf( "#%02X%02X%02X", iR, iG, iB );
+	if (iA == 255)
+	{
+		return ssprintf("#%02X%02X%02X", iR, iG, iB);
+	}
 	else
-		return ssprintf( "#%02X%02X%02X%02X", iR, iG, iB, iA );
+	{
+		return ssprintf("#%02X%02X%02X%02X", iR, iG, iB, iA);
+	}
 }
 
-RString RageColor::NormalizeColorString( RString sColor )
+RString RageColor::NormalizeColorString(RString sColor)
 {
-	if( sColor.empty() )
+	if (sColor.empty())
+	{
 		return "";
+	}
 	RageColor c;
-	if( !c.FromString(sColor) )
+	if (!c.FromString(sColor))
+	{
 		return "";
+	}
 	return c.ToString();
 }
 /** @brief Utilities for working with Lua. */
 namespace LuaHelpers
 {
-	template<> bool FromStack<RageColor>( lua_State *L, RageColor &Object, int iOffset )
+	template<> bool FromStack<RageColor>(lua_State *L, RageColor &Object, int iOffset)
 	{
-		Object.FromStack( L, iOffset );
+		Object.FromStack(L, iOffset);
 		return true;
 	}
-	template<> void Push<RageColor>( lua_State *L, const RageColor &Object ) { Object.PushTable( L ); }
+	template<> void Push<RageColor>(lua_State *L, const RageColor &Object)
+	{
+		Object.PushTable(L);
+	}
 }
 
 static const char *CullModeNames[] =
@@ -90,8 +103,8 @@ static const char *CullModeNames[] =
 	"Front",
 	"None"
 };
-XToString( CullMode );
-LuaXType( CullMode );
+XToString(CullMode);
+LuaXType(CullMode);
 
 static const char *BlendModeNames[] =
 {
@@ -131,9 +144,9 @@ static const char *BlendModeNames[] =
 	"InvertDest",
 	"NoEffect"
 };
-XToString( BlendMode );
-StringToX( BlendMode );
-LuaXType( BlendMode );
+XToString(BlendMode);
+StringToX(BlendMode);
+LuaXType(BlendMode);
 
 static const char *TextureModeNames[] =
 {
@@ -141,8 +154,8 @@ static const char *TextureModeNames[] =
 	"Glow",
 	"Add",
 };
-XToString( TextureMode );
-LuaXType( TextureMode );
+XToString(TextureMode);
+LuaXType(TextureMode);
 
 
 static const char *EffectModeNames[] =
@@ -165,8 +178,8 @@ static const char *EffectModeNames[] =
 
 	"YUYV422"
 };
-XToString( EffectMode );
-LuaXType( EffectMode );
+XToString(EffectMode);
+LuaXType(EffectMode);
 
 
 static const char *ZTestModeNames[] =
@@ -175,8 +188,8 @@ static const char *ZTestModeNames[] =
 	"WriteOnPass",
 	"WriteOnFail"
 };
-XToString( ZTestMode );
-LuaXType( ZTestMode );
+XToString(ZTestMode);
+LuaXType(ZTestMode);
 
 static const char *TextGlowModeNames[] =
 {
@@ -184,19 +197,22 @@ static const char *TextGlowModeNames[] =
 	"Stroke",
 	"Both"
 };
-XToString( TextGlowMode );
-LuaXType( TextGlowMode );
+XToString(TextGlowMode);
+LuaXType(TextGlowMode);
 
-int LuaFunc_color( lua_State *L )
+int LuaFunc_color(lua_State *L)
 {
 	RString sColor = SArg(1);
 	RageColor c;
-	c.FromString( sColor );
-	c.PushTable( L );
+	c.FromString(sColor);
+	c.PushTable(L);
 	return 1;
 }
-void LuaFunc_Register_color( lua_State *L ) { lua_register( L, "color", LuaFunc_color ); }
-REGISTER_WITH_LUA_FUNCTION( LuaFunc_Register_color );
+void LuaFunc_Register_color(lua_State *L)
+{
+	lua_register(L, "color", LuaFunc_color);
+}
+REGISTER_WITH_LUA_FUNCTION(LuaFunc_Register_color);
 
 /*
  * Copyright (c) 2006 Glenn Maynard

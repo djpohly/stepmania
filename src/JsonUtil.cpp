@@ -32,7 +32,7 @@ bool JsonUtil::LoadFromFileShowErrors(Json::Value &root, RageFileBasic &f)
 bool JsonUtil::LoadFromFileShowErrors(Json::Value &root, const RString &sFile)
 {
 	RageFile f;
-	if(!f.Open(sFile, RageFile::READ))
+	if (!f.Open(sFile, RageFile::READ))
 	{
 		LOG->Warn("Couldn't open %s for reading: %s", sFile.c_str(), f.GetError().c_str());
 		return false;
@@ -44,7 +44,7 @@ bool JsonUtil::LoadFromFileShowErrors(Json::Value &root, const RString &sFile)
 bool JsonUtil::LoadFromStringShowErrors(Json::Value &root, RString sData)
 {
 	RString sError;
-	if(!LoadFromString(root, sData, sError))
+	if (!LoadFromString(root, sData, sError))
 	{
 		Dialog::OK(sError, "JSON_PARSE_ERROR");
 		return false;
@@ -55,19 +55,19 @@ bool JsonUtil::LoadFromStringShowErrors(Json::Value &root, RString sData)
 bool JsonUtil::WriteFile(const Json::Value &root, const RString &sFile, bool bMinified)
 {
 	std::string s;
-	if(!bMinified)
+	if (!bMinified)
 	{
 		Json::StyledWriter writer;
 		s = writer.write(root);
 	}
-	else 
+	else
 	{
 		Json::FastWriter writer;
 		s = writer.write(root);
 	}
 
 	RageFile f;
-	if(!f.Open(sFile, RageFile::WRITE))
+	if (!f.Open(sFile, RageFile::WRITE))
 	{
 		LOG->Warn("Couldn't open %s for reading: %s", sFile.c_str(), f.GetError().c_str());
 		return false;
@@ -79,7 +79,7 @@ bool JsonUtil::WriteFile(const Json::Value &root, const RString &sFile, bool bMi
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -89,7 +89,7 @@ bool JsonUtil::WriteFile(const Json::Value &root, const RString &sFile, bool bMi
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

@@ -23,23 +23,23 @@ public:
 	 * @brief Update the display as required.
 	 * @param fDeltaTime the changed time.
 	 */
-	virtual void Update( float fDeltaTime ); 
-	void LoadFromNode( const XNode *pNode );
+	virtual void Update(float fDeltaTime);
+	void LoadFromNode(const XNode *pNode);
 	/**
 	 * @brief Use the BPM[s] from a song.
 	 * @param pSong the song in question.
 	 */
-	void SetBpmFromSong( const Song* pSong );
+	void SetBpmFromSong(const Song* pSong);
 	/**
 	 * @brief Use the BPM[s] from a course.
 	 * @param pCourse the course in question.
 	 */
-	void SetBpmFromCourse( const Course* pCourse );
+	void SetBpmFromCourse(const Course* pCourse);
 	/**
 	 * @brief Use a specified, constant BPM.
 	 * @param fBPM the constant BPM.
 	 */
-	void SetConstantBpm( float fBPM );
+	void SetConstantBpm(float fBPM);
 	/**
 	 * @brief Have the BPMDisplay cycle between various BPMs.
 	 */
@@ -52,7 +52,7 @@ public:
 	void SetFromGameState();
 
 	// Lua
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 protected:
 	/**
@@ -64,7 +64,7 @@ protected:
 	 * @brief Set the range to be used for the display.
 	 * @param bpms the set of BPMs to be used.
 	 */
-	void SetBPMRange( const DisplayBpms &bpms );
+	void SetBPMRange(const DisplayBpms &bpms);
 
 	/** @brief The commands to use when there is no BPM. */
 	ThemeMetric<apActorCommands> SET_NO_BPM_COMMAND;
@@ -116,7 +116,7 @@ protected:
  * @author Chris Danford (c) 2001-2002
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -126,7 +126,7 @@ protected:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

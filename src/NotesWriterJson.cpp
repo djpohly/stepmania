@@ -23,8 +23,8 @@ static void Serialize(const StopSegment &seg, Json::Value &root)
 
 static void Serialize(const TimingData &td, Json::Value &root)
 {
-	JsonUtil::SerializeVectorObjects( td.m_BPMSegments, Serialize, root["BpmSegments"] );
-	JsonUtil::SerializeVectorObjects( td.m_StopSegments, Serialize, root["StopSegments"] );
+	JsonUtil::SerializeVectorObjects(td.m_BPMSegments, Serialize, root["BpmSegments"]);
+	JsonUtil::SerializeVectorObjects(td.m_StopSegments, Serialize, root["StopSegments"]);
 }
 
 static void Serialize(const LyricSegment &o, Json::Value &root)
@@ -42,85 +42,99 @@ static void Serialize(const BackgroundDef &o, Json::Value &root)
 	root["Color1"] = o.m_sColor1;
 }
 
-static void Serialize(const BackgroundChange &o, Json::Value &root )
+static void Serialize(const BackgroundChange &o, Json::Value &root)
 {
-	Serialize( o.m_def, root["Def"] );
+	Serialize(o.m_def, root["Def"]);
 	root["StartBeat"] = o.m_fStartBeat;
 	root["Rate"] = o.m_fRate;
 	root["Transition"] = o.m_sTransition;
 }
 
-static void Serialize( const TapNote &o, Json::Value &root )
+static void Serialize(const TapNote &o, Json::Value &root)
 {
 	root = Json::Value(Json::objectValue);
 
-	if( o.type != TapNote::tap )
+	if (o.type != TapNote::tap)
+	{
 		root["Type"] = (int)o.type;
-	if( o.type == TapNote::hold_head )
+	}
+	if (o.type == TapNote::hold_head)
+	{
 		root["SubType"] = (int)o.subType;
+	}
 	//root["Source"] = (int)source;
-	if( !o.sAttackModifiers.empty() )
+	if (!o.sAttackModifiers.empty())
+	{
 		root["AttackModifiers"] = o.sAttackModifiers;
-	if( o.fAttackDurationSeconds > 0 )
+	}
+	if (o.fAttackDurationSeconds > 0)
+	{
 		root["AttackDurationSeconds"] = o.fAttackDurationSeconds;
-	if( o.iKeysoundIndex != -1 )
+	}
+	if (o.iKeysoundIndex != -1)
+	{
 		root["KeysoundIndex"] = o.iKeysoundIndex;
-	if( o.iDuration > 0 )
+	}
+	if (o.iDuration > 0)
+	{
 		root["Duration"] = o.iDuration;
-	if( o.pn != PLAYER_INVALID )
+	}
+	if (o.pn != PLAYER_INVALID)
+	{
 		root["PlayerNumber"] = (int)o.pn;
+	}
 }
 
-static void Serialize( const NoteData &o, Json::Value &root )
+static void Serialize(const NoteData &o, Json::Value &root)
 {
 	root = Json::Value(Json::arrayValue);
-	for(int t=0; t < o.GetNumTracks(); t++ )
+	for (int t = 0; t < o.GetNumTracks(); t++)
 	{
 		NoteData::TrackMap::const_iterator begin, end;
-		o.GetTapNoteRange( t, 0, MAX_NOTE_ROW, begin, end );
+		o.GetTapNoteRange(t, 0, MAX_NOTE_ROW, begin, end);
 		//NoteData::TrackMap tm = o.GetTrack(t);
 		//FOREACHM_CONST( int, TapNote, tm, iter )
-		for( ; begin != end; ++begin )
+		for (; begin != end; ++begin)
 		{
 			int iRow = begin->first;
 			TapNote tn = begin->second;
-			root.resize( root.size()+1 );
-			Json::Value &root2 = root[ root.size()-1 ];
+			root.resize(root.size() + 1);
+			Json::Value &root2 = root[ root.size() - 1 ];
 			root2 = Json::Value(Json::arrayValue);
 			root2.resize(3);
 			root2[(unsigned)0] = NoteRowToBeat(iRow);
 			root2[1] = t;
-			Serialize( tn, root2[2] );
+			Serialize(tn, root2[2]);
 		}
 	}
 }
 
-static void Serialize( const RadarValues &o, Json::Value &root )
+static void Serialize(const RadarValues &o, Json::Value &root)
 {
-	FOREACH_ENUM( RadarCategory, rc )
+	FOREACH_ENUM(RadarCategory, rc)
 	{
 		root[ RadarCategoryToString(rc) ] = o.m_Values.f[rc];
 	}
 }
 
-static void Serialize( const Steps &o, Json::Value &root )
+static void Serialize(const Steps &o, Json::Value &root)
 {
 	root["StepsType"] = StringConversion::ToString(o.m_StepsType);
 
 	o.Decompress();
 
 	NoteData nd;
-	o.GetNoteData( nd );
-	Serialize( nd, root["NoteData"] );
+	o.GetNoteData(nd);
+	Serialize(nd, root["NoteData"]);
 	root["Hash"] = o.GetHash();
 	root["Description"] = o.GetDescription();
 	root["Difficulty"] = DifficultyToString(o.GetDifficulty());
 	root["Meter"] = o.GetMeter();
-	Serialize( o.GetRadarValues( PLAYER_1 ), root["RadarValues"] );
+	Serialize(o.GetRadarValues(PLAYER_1), root["RadarValues"]);
 }
 
 
-bool NotesWriterJson::WriteSong( const RString &sFile, const Song &out, bool bWriteSteps )
+bool NotesWriterJson::WriteSong(const RString &sFile, const Song &out, bool bWriteSteps)
 {
 	Json::Value root;
 	root["SongDir"] = out.GetSongDir();
@@ -140,12 +154,18 @@ bool NotesWriterJson::WriteSong( const RString &sFile, const Song &out, bool bWr
 	root["Offset"] = out.m_SongTiming.m_fBeat0OffsetInSeconds;
 	root["SampleStart"] = out.m_fMusicSampleStartSeconds;
 	root["SampleLength"] = out.m_fMusicSampleLengthSeconds;
-	if( out.m_SelectionDisplay == Song::SHOW_ALWAYS )
+	if (out.m_SelectionDisplay == Song::SHOW_ALWAYS)
+	{
 		root["Selectable"] = "YES";
-	else if( out.m_SelectionDisplay == Song::SHOW_NEVER )
+	}
+	else if (out.m_SelectionDisplay == Song::SHOW_NEVER)
+	{
 		root["Selectable"] = "NO";
+	}
 	else
+	{
 		root["Selectable"] = "YES";
+	}
 
 	root["FirstBeat"] = out.m_fFirstBeat;
 	root["LastBeat"] = out.m_fLastBeat;
@@ -155,58 +175,60 @@ bool NotesWriterJson::WriteSong( const RString &sFile, const Song &out, bool bWr
 	root["MusicLengthSeconds"] = out.m_fMusicLengthSeconds;
 
 	root["DisplayBpmType"] = StringConversion::ToString(out.m_DisplayBPMType);
-	if( out.m_DisplayBPMType == DISPLAY_BPM_SPECIFIED )
+	if (out.m_DisplayBPMType == DISPLAY_BPM_SPECIFIED)
 	{
 		root["SpecifiedBpmMin"] = out.m_fSpecifiedBPMMin;
 		root["SpecifiedBpmMax"] = out.m_fSpecifiedBPMMax;
 	}
 
-	Serialize( out.m_SongTiming, root["TimingData"] );
-	JsonUtil::SerializeVectorObjects( out.m_LyricSegments, Serialize, root["LyricSegments"] );
+	Serialize(out.m_SongTiming, root["TimingData"]);
+	JsonUtil::SerializeVectorObjects(out.m_LyricSegments, Serialize, root["LyricSegments"]);
 
 	{
 		Json::Value &root2 = root["BackgroundChanges"];
-		FOREACH_BackgroundLayer( bl )
+		FOREACH_BackgroundLayer(bl)
 		{
 			Json::Value &root3 = root2[bl];
 			const vector<BackgroundChange> &vBgc = out.GetBackgroundChanges(bl);
-			JsonUtil::SerializeVectorObjects( vBgc, Serialize, root3 );
+			JsonUtil::SerializeVectorObjects(vBgc, Serialize, root3);
 		}
 	}
 
 	{
 		const vector<BackgroundChange> &vBgc = out.GetForegroundChanges();
-		JsonUtil::SerializeVectorObjects( vBgc, Serialize, root["ForegroundChanges"] );
+		JsonUtil::SerializeVectorObjects(vBgc, Serialize, root["ForegroundChanges"]);
 	}
 
-	JsonUtil::SerializeArrayValues( out.m_vsKeysoundFile, root["KeySounds"] );
+	JsonUtil::SerializeArrayValues(out.m_vsKeysoundFile, root["KeySounds"]);
 
-	if( bWriteSteps )
+	if (bWriteSteps)
 	{
 		vector<const Steps*> vpSteps;
-		FOREACH_CONST( Steps*, out.GetAllSteps(), iter )
+		FOREACH_CONST(Steps*, out.GetAllSteps(), iter)
 		{
-			if( (*iter)->IsAutogen() )
+			if ((*iter)->IsAutogen())
+			{
 				continue;
-			vpSteps.push_back( *iter );
+			}
+			vpSteps.push_back(*iter);
 		}
-		JsonUtil::SerializeVectorPointers<Steps>( vpSteps, Serialize, root["Charts"] );
+		JsonUtil::SerializeVectorPointers<Steps>(vpSteps, Serialize, root["Charts"]);
 	}
 
-	return JsonUtil::WriteFile( root, sFile, false );
+	return JsonUtil::WriteFile(root, sFile, false);
 }
 
-bool NotesWriterJson::WriteSteps( const RString &sFile, const Steps &out )
+bool NotesWriterJson::WriteSteps(const RString &sFile, const Steps &out)
 {
 	Json::Value root;
-	Serialize( out, root );
-	return JsonUtil::WriteFile( root, sFile, false );
+	Serialize(out, root);
+	return JsonUtil::WriteFile(root, sFile, false);
 }
 
 /*
  * (c) 2001-2004 Chris Danford, Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -216,7 +238,7 @@ bool NotesWriterJson::WriteSteps( const RString &sFile, const Steps &out )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

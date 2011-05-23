@@ -25,9 +25,9 @@ extern const RString STATS_XML;
 /**
  * @brief The filename where one can edit their personal profile data.
  *
- * Editable data is an INI because the default INI file association on Windows 
- * systems will open the ini file in an editor.  The default association for 
- * XML will open in IE.  Users have a much better chance of discovering how to 
+ * Editable data is an INI because the default INI file association on Windows
+ * systems will open the ini file in an editor.  The default association for
+ * XML will open in IE.  Users have a much better chance of discovering how to
  * edit this data if they don't have to fight against the file associations. */
 extern const RString EDITABLE_INI;
 
@@ -38,8 +38,8 @@ extern const RString EDITABLE_INI;
  * The "don't share" file is something that the user should always keep private.
  * They can safely share STATS_XML with STATS_XML's signature so that others
  * can authenticate the STATS_XML data.  However, others can't copy that data
- * to their own profile for use in the game unless they also have the "don't 
- * share" file.  DontShare contains a piece of information that we can 
+ * to their own profile for use in the game unless they also have the "don't
+ * share" file.  DontShare contains a piece of information that we can
  * construct using STATS_XML but the user can't construct using STATS_XML. */
 extern const RString DONT_SHARE_SIG;
 
@@ -60,8 +60,8 @@ class Song;
 class Steps;
 class Course;
 class Game;
-/** 
- * @brief Player data that persists between sessions. 
+/**
+ * @brief Player data that persists between sessions.
  *
  * This can be stored on a local disk or on a memory card. */
 class Profile
@@ -87,30 +87,32 @@ public:
 		m_iTotalHolds(0), m_iTotalRolls(0), m_iTotalMines(0),
 		m_iTotalHands(0), m_iTotalLifts(0), m_bNewProfile(false),
 		m_UnlockedEntryIDs(), m_sLastPlayedMachineGuid(""),
-		m_LastPlayedDate(),m_iNumSongsPlayedByStyle(),
+		m_LastPlayedDate(), m_iNumSongsPlayedByStyle(),
 		m_iNumTotalSongsPlayed(0), m_UserData(), m_SongHighScores(),
 		m_CourseHighScores(), m_vScreenshots(),
 		m_mapDayToCaloriesBurned()
 	{
 		m_lastSong.Unset();
 		m_lastCourse.Unset();
-		
+
 		m_LastPlayedDate.Init();
-		
-		FOREACH_ENUM( PlayMode, i )
-			m_iNumSongsPlayedByPlayMode[i] = 0;
-		FOREACH_ENUM( Difficulty, i )
-			m_iNumSongsPlayedByDifficulty[i] = 0;
-		for( int i=0; i<MAX_METER+1; i++ )
+
+		FOREACH_ENUM(PlayMode, i)
+		m_iNumSongsPlayedByPlayMode[i] = 0;
+		FOREACH_ENUM(Difficulty, i)
+		m_iNumSongsPlayedByDifficulty[i] = 0;
+		for (int i = 0; i < MAX_METER + 1; i++)
+		{
 			m_iNumSongsPlayedByMeter[i] = 0;
-		
-		ZERO( m_iNumStagesPassedByPlayMode );
-		ZERO( m_iNumStagesPassedByGrade );
+		}
+
+		ZERO(m_iNumStagesPassedByPlayMode);
+		ZERO(m_iNumStagesPassedByGrade);
 		m_UserData.Unset();
-		
-		FOREACH_ENUM( StepsType,st )
-			FOREACH_ENUM( RankingCategory,rc )
-				m_CategoryHighScores[st][rc].Init();
+
+		FOREACH_ENUM(StepsType, st)
+		FOREACH_ENUM(RankingCategory, rc)
+		m_CategoryHighScores[st][rc].Init();
 	}
 
 	// smart accessors
@@ -122,23 +124,23 @@ public:
 	int GetCalculatedWeightPounds() const;	// returns a default value if m_iWeightPounds isn't set
 	float GetCaloriesBurnedToday() const;
 	int GetTotalNumSongsPassed() const;
-	int GetTotalStepsWithTopGrade( StepsType st, Difficulty d, Grade g ) const;
-	int GetTotalTrailsWithTopGrade( StepsType st, CourseDifficulty d, Grade g ) const;
-	float GetSongsPossible( StepsType st, Difficulty dc ) const;
-	float GetCoursesPossible( StepsType st, CourseDifficulty cd ) const;
-	float GetSongsActual( StepsType st, Difficulty dc ) const;
-	float GetCoursesActual( StepsType st, CourseDifficulty cd ) const;
-	float GetSongsPercentComplete( StepsType st, Difficulty dc ) const;
-	float GetCoursesPercentComplete( StepsType st, CourseDifficulty cd ) const;
-	float GetSongsAndCoursesPercentCompleteAllDifficulties( StepsType st ) const;
-	bool GetDefaultModifiers( const Game* pGameType, RString &sModifiersOut ) const;
-	void SetDefaultModifiers( const Game* pGameType, const RString &sModifiers );
-	bool IsCodeUnlocked( RString sUnlockEntryID ) const;
+	int GetTotalStepsWithTopGrade(StepsType st, Difficulty d, Grade g) const;
+	int GetTotalTrailsWithTopGrade(StepsType st, CourseDifficulty d, Grade g) const;
+	float GetSongsPossible(StepsType st, Difficulty dc) const;
+	float GetCoursesPossible(StepsType st, CourseDifficulty cd) const;
+	float GetSongsActual(StepsType st, Difficulty dc) const;
+	float GetCoursesActual(StepsType st, CourseDifficulty cd) const;
+	float GetSongsPercentComplete(StepsType st, Difficulty dc) const;
+	float GetCoursesPercentComplete(StepsType st, CourseDifficulty cd) const;
+	float GetSongsAndCoursesPercentCompleteAllDifficulties(StepsType st) const;
+	bool GetDefaultModifiers(const Game* pGameType, RString &sModifiersOut) const;
+	void SetDefaultModifiers(const Game* pGameType, const RString &sModifiers);
+	bool IsCodeUnlocked(RString sUnlockEntryID) const;
 	Song *GetMostPopularSong() const;
 	Course *GetMostPopularCourse() const;
 
-	void AddStepTotals( int iNumTapsAndHolds, int iNumJumps, int iNumHolds, int iNumRolls, int iNumMines, 
-			   int iNumHands, int iNumLifts, float fCaloriesBurned );
+	void AddStepTotals(int iNumTapsAndHolds, int iNumJumps, int iNumHolds, int iNumRolls, int iNumMines,
+	                   int iNumHands, int iNumLifts, float fCaloriesBurned);
 
 	bool IsMachine() const;
 
@@ -158,7 +160,7 @@ public:
 	static RString MakeGuid();
 
 	RString m_sGuid;
-	map<RString,RString> m_sDefaultModifiers;
+	map<RString, RString> m_sDefaultModifiers;
 	SortOrder m_SortOrder;
 	Difficulty m_LastDifficulty;
 	CourseDifficulty m_LastCourseDifficulty;
@@ -197,12 +199,12 @@ public:
 	/* These stats count twice in the machine profile if two players are playing;
 	 * that's the only approach that makes sense for ByDifficulty and ByMeter. */
 	int m_iNumSongsPlayedByPlayMode[NUM_PlayMode];
-	map<StyleID,int> m_iNumSongsPlayedByStyle;
+	map<StyleID, int> m_iNumSongsPlayedByStyle;
 	int m_iNumSongsPlayedByDifficulty[NUM_Difficulty];
-	int m_iNumSongsPlayedByMeter[MAX_METER+1];
+	int m_iNumSongsPlayedByMeter[MAX_METER + 1];
 	/**
 	 * @brief Count the total number of songs played.
-	 * 
+	 *
 	 * This stat counts once per song, even if two players are active. */
 	int m_iNumTotalSongsPlayed;
 	int m_iNumStagesPassedByPlayMode[NUM_PlayMode];
@@ -217,26 +219,26 @@ public:
 	};
 	struct HighScoresForASong
 	{
-		std::map<StepsID,HighScoresForASteps>	m_StepsHighScores;
+		std::map<StepsID, HighScoresForASteps>	m_StepsHighScores;
 		int GetNumTimesPlayed() const;
 		HighScoresForASong(): m_StepsHighScores() {}
 	};
-	std::map<SongID,HighScoresForASong>	m_SongHighScores;
+	std::map<SongID, HighScoresForASong>	m_SongHighScores;
 
-	void AddStepsHighScore( const Song* pSong, const Steps* pSteps, HighScore hs, int &iIndexOut );
-	const HighScoreList& GetStepsHighScoreList( const Song* pSong, const Steps* pSteps ) const;
-	HighScoreList& GetStepsHighScoreList( const Song* pSong, const Steps* pSteps );
-	int GetStepsNumTimesPlayed( const Song* pSong, const Steps* pSteps ) const;
-	void IncrementStepsPlayCount( const Song* pSong, const Steps* pSteps );
-	void GetGrades( const Song* pSong, StepsType st, int iCounts[NUM_Grade] ) const;
-	int GetSongNumTimesPlayed( const Song* pSong ) const;
-	int GetSongNumTimesPlayed( const SongID& songID ) const;
-	DateTime GetSongLastPlayedDateTime( const Song* pSong ) const;
-	bool HasPassedSteps( const Song* pSong, const Steps* pSteps ) const;
-	bool HasPassedAnyStepsInSong( const Song* pSong ) const;
+	void AddStepsHighScore(const Song* pSong, const Steps* pSteps, HighScore hs, int &iIndexOut);
+	const HighScoreList& GetStepsHighScoreList(const Song* pSong, const Steps* pSteps) const;
+	HighScoreList& GetStepsHighScoreList(const Song* pSong, const Steps* pSteps);
+	int GetStepsNumTimesPlayed(const Song* pSong, const Steps* pSteps) const;
+	void IncrementStepsPlayCount(const Song* pSong, const Steps* pSteps);
+	void GetGrades(const Song* pSong, StepsType st, int iCounts[NUM_Grade]) const;
+	int GetSongNumTimesPlayed(const Song* pSong) const;
+	int GetSongNumTimesPlayed(const SongID& songID) const;
+	DateTime GetSongLastPlayedDateTime(const Song* pSong) const;
+	bool HasPassedSteps(const Song* pSong, const Steps* pSteps) const;
+	bool HasPassedAnyStepsInSong(const Song* pSong) const;
 
 	// Course high scores
-	// struct was a typedef'd array of HighScores, but VC6 freaks out 
+	// struct was a typedef'd array of HighScores, but VC6 freaks out
 	// in processing the templates for map::operator[].
 	struct HighScoresForATrail
 	{
@@ -245,120 +247,123 @@ public:
 	};
 	struct HighScoresForACourse
 	{
-		std::map<TrailID,HighScoresForATrail>	m_TrailHighScores;
+		std::map<TrailID, HighScoresForATrail>	m_TrailHighScores;
 		int GetNumTimesPlayed() const;
 		HighScoresForACourse(): m_TrailHighScores() {}
 	};
-	std::map<CourseID,HighScoresForACourse>	m_CourseHighScores;
+	std::map<CourseID, HighScoresForACourse>	m_CourseHighScores;
 
-	void AddCourseHighScore( const Course* pCourse, const Trail* pTrail, HighScore hs, int &iIndexOut );
-	HighScoreList& GetCourseHighScoreList( const Course* pCourse, const Trail* pTrail );
-	const HighScoreList& GetCourseHighScoreList( const Course* pCourse, const Trail* pTrail ) const;
-	int GetCourseNumTimesPlayed( const Course* pCourse ) const;
-	int GetCourseNumTimesPlayed( const CourseID& courseID ) const;
-	DateTime GetCourseLastPlayedDateTime( const Course* pCourse ) const;
-	void IncrementCoursePlayCount( const Course* pCourse, const Trail* pTrail );
+	void AddCourseHighScore(const Course* pCourse, const Trail* pTrail, HighScore hs, int &iIndexOut);
+	HighScoreList& GetCourseHighScoreList(const Course* pCourse, const Trail* pTrail);
+	const HighScoreList& GetCourseHighScoreList(const Course* pCourse, const Trail* pTrail) const;
+	int GetCourseNumTimesPlayed(const Course* pCourse) const;
+	int GetCourseNumTimesPlayed(const CourseID& courseID) const;
+	DateTime GetCourseLastPlayedDateTime(const Course* pCourse) const;
+	void IncrementCoursePlayCount(const Course* pCourse, const Trail* pTrail);
 
 
 	// Category high scores
 	HighScoreList m_CategoryHighScores[NUM_StepsType][NUM_RankingCategory];
 
-	void AddCategoryHighScore( StepsType st, RankingCategory rc, HighScore hs, int &iIndexOut );
-	HighScoreList& GetCategoryHighScoreList( StepsType st, RankingCategory rc );
-	const HighScoreList& GetCategoryHighScoreList( StepsType st, RankingCategory rc ) const;
-	int GetCategoryNumTimesPlayed( StepsType st ) const;
-	void IncrementCategoryPlayCount( StepsType st, RankingCategory rc );
+	void AddCategoryHighScore(StepsType st, RankingCategory rc, HighScore hs, int &iIndexOut);
+	HighScoreList& GetCategoryHighScoreList(StepsType st, RankingCategory rc);
+	const HighScoreList& GetCategoryHighScoreList(StepsType st, RankingCategory rc) const;
+	int GetCategoryNumTimesPlayed(StepsType st) const;
+	void IncrementCategoryPlayCount(StepsType st, RankingCategory rc);
 
 
 	// Screenshot Data
 	vector<Screenshot> m_vScreenshots;
-	void AddScreenshot( const Screenshot &screenshot );
-	int GetNextScreenshotIndex() { return m_vScreenshots.size(); }
+	void AddScreenshot(const Screenshot &screenshot);
+	int GetNextScreenshotIndex()
+	{
+		return m_vScreenshots.size();
+	}
 
 
 	/**
 	 * @brief The basics for Calorie Data.
 	 *
-	 * Why track calories in a map, and not in a static sized array like 
+	 * Why track calories in a map, and not in a static sized array like
 	 * Bookkeeping?  The machine's clock is not guaranteed to be set correctly.
-	 * If calorie array is in a static sized array, playing on a machine with 
-	 * a mis-set clock could wipe out all your past data.  With this scheme, 
-	 * the worst that could happen is that playing on a mis-set machine will 
+	 * If calorie array is in a static sized array, playing on a machine with
+	 * a mis-set clock could wipe out all your past data.  With this scheme,
+	 * the worst that could happen is that playing on a mis-set machine will
 	 * insert some garbage entries into the map. */
 	struct Calories
 	{
 		Calories(): fCals(0) {}
 		float fCals;
 	};
-	map<DateTime,Calories> m_mapDayToCaloriesBurned;
-	float GetCaloriesBurnedForDay( DateTime day ) const;
+	map<DateTime, Calories> m_mapDayToCaloriesBurned;
+	float GetCaloriesBurnedForDay(DateTime day) const;
 
-/*
-	// RecentSongScores
-	struct HighScoreForASongAndSteps
-	{
-		StepsID stepsID;
-		SongID songID;
-		HighScore hs;
+	/*
+		// RecentSongScores
+		struct HighScoreForASongAndSteps
+		{
+			StepsID stepsID;
+			SongID songID;
+			HighScore hs;
 
-		HighScoreForASongAndSteps() { Unset(); }
-		void Unset() { stepsID.Unset(); songID.Unset(); hs.Unset(); }
+			HighScoreForASongAndSteps() { Unset(); }
+			void Unset() { stepsID.Unset(); songID.Unset(); hs.Unset(); }
 
-		XNode* CreateNode() const;
-	};
+			XNode* CreateNode() const;
+		};
 
-	void SaveStepsRecentScore( const Song* pSong, const Steps* pSteps, HighScore hs );
+		void SaveStepsRecentScore( const Song* pSong, const Steps* pSteps, HighScore hs );
 
-	// RecentCourseScores
-	struct HighScoreForACourseAndTrail
-	{
-		CourseID courseID;
-		TrailID	trailID;
-		HighScore hs;
+		// RecentCourseScores
+		struct HighScoreForACourseAndTrail
+		{
+			CourseID courseID;
+			TrailID	trailID;
+			HighScore hs;
 
-		HighScoreForACourseAndTrail() { Unset(); }
-		void Unset() { courseID.Unset(); hs.Unset(); }
+			HighScoreForACourseAndTrail() { Unset(); }
+			void Unset() { courseID.Unset(); hs.Unset(); }
 
-		XNode* CreateNode() const;
-	};
+			XNode* CreateNode() const;
+		};
 
-	void SaveCourseRecentScore( const Course* pCourse, const Trail* pTrail, HighScore hs );
-*/
+		void SaveCourseRecentScore( const Course* pCourse, const Trail* pTrail, HighScore hs );
+	*/
 	// Init'ing
 	void InitAll()
 	{
-		InitEditableData(); 
-		InitGeneralData(); 
-		InitSongScores(); 
-		InitCourseScores(); 
-		InitCategoryScores(); 
-		InitScreenshotData(); 
-		InitCalorieData(); 
+		InitEditableData();
+		InitGeneralData();
+		InitSongScores();
+		InitCourseScores();
+		InitCategoryScores();
+		InitScreenshotData();
+		InitCalorieData();
 	}
-	void InitEditableData(); 
-	void InitGeneralData(); 
-	void InitSongScores(); 
-	void InitCourseScores(); 
-	void InitCategoryScores(); 
-	void InitScreenshotData(); 
-	void InitCalorieData(); 
+	void InitEditableData();
+	void InitGeneralData();
+	void InitSongScores();
+	void InitCourseScores();
+	void InitCategoryScores();
+	void InitScreenshotData();
+	void InitCalorieData();
 	void ClearStats();
 
 	// Loading and saving
-	ProfileLoadResult LoadAllFromDir( RString sDir, bool bRequireSignature );
-	bool SaveAllToDir( RString sDir, bool bSignData ) const;
+	ProfileLoadResult LoadAllFromDir(RString sDir, bool bRequireSignature);
+	bool SaveAllToDir(RString sDir, bool bSignData) const;
 
-	ProfileLoadResult LoadEditableDataFromDir( RString sDir );
-	ProfileLoadResult LoadStatsXmlFromNode( const XNode* pNode, bool bIgnoreEditable = true );
-	void LoadGeneralDataFromNode( const XNode* pNode );
-	void LoadSongScoresFromNode( const XNode* pNode );
-	void LoadCourseScoresFromNode( const XNode* pNode );
-	void LoadCategoryScoresFromNode( const XNode* pNode );
-	void LoadScreenshotDataFromNode( const XNode* pNode );
-	void LoadCalorieDataFromNode( const XNode* pNode );
+	ProfileLoadResult LoadEditableDataFromDir(RString sDir);
+	ProfileLoadResult LoadStatsXmlFromNode(const XNode* pNode, bool bIgnoreEditable = true);
+	void LoadGeneralDataFromNode(const XNode* pNode);
+	void LoadSongScoresFromNode(const XNode* pNode);
+	void LoadCourseScoresFromNode(const XNode* pNode);
+	void LoadCategoryScoresFromNode(const XNode* pNode);
+	void LoadScreenshotDataFromNode(const XNode* pNode);
+	void LoadCalorieDataFromNode(const XNode* pNode);
 
-	void SaveEditableDataToDir( RString sDir ) const;
-	bool SaveStatsXmlToDir( RString sDir, bool bSignData ) const;
+	void SaveEditableDataToDir(RString sDir) const;
+	bool SaveStatsXmlToDir(RString sDir, bool bSignData) const;
 	XNode* SaveStatsXmlCreateNode() const;
 	XNode* SaveGeneralDataCreateNode() const;
 	XNode* SaveSongScoresCreateNode() const;
@@ -369,19 +374,19 @@ public:
 
 	XNode* SaveCoinDataCreateNode() const;
 
-	void SaveStatsWebPageToDir( RString sDir ) const;
-	void SaveMachinePublicKeyToDir( RString sDir ) const;
+	void SaveStatsWebPageToDir(RString sDir) const;
+	void SaveMachinePublicKeyToDir(RString sDir) const;
 
-	static void MoveBackupToDir( RString sFromDir, RString sToDir );
-	static RString MakeUniqueFileNameNoExtension( RString sDir, RString sFileNameBeginning );
-	static RString MakeFileNameNoExtension( RString sFileNameBeginning, int iIndex );
+	static void MoveBackupToDir(RString sFromDir, RString sToDir);
+	static RString MakeUniqueFileNameNoExtension(RString sDir, RString sFileNameBeginning);
+	static RString MakeFileNameNoExtension(RString sFileNameBeginning, int iIndex);
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
 private:
-	const HighScoresForASong *GetHighScoresForASong( const SongID& songID ) const;
-	const HighScoresForACourse *GetHighScoresForACourse( const CourseID& courseID ) const;
+	const HighScoresForASong *GetHighScoresForASong(const SongID& songID) const;
+	const HighScoresForACourse *GetHighScoresForACourse(const CourseID& courseID) const;
 };
 
 
@@ -392,7 +397,7 @@ private:
  * @author Chris Danford (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -402,7 +407,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

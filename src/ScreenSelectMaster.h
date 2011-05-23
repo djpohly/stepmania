@@ -18,7 +18,7 @@ enum MenuDir
 };
 /** @brief A special foreach loop through the different menu directions. */
 #define FOREACH_MenuDir( md ) FOREACH_ENUM( MenuDir, md )
-const RString& MenuDirToString( MenuDir md );
+const RString& MenuDirToString(MenuDir md);
 
 /** @brief The master Screen for many children Screens. */
 class ScreenSelectMaster : public ScreenSelect
@@ -30,27 +30,33 @@ public:
 	virtual RString GetDefaultChoice();
 	virtual void BeginScreen();
 
-	virtual void MenuLeft( const InputEventPlus &input );
-	virtual void MenuRight( const InputEventPlus &input );
-	virtual void MenuUp( const InputEventPlus &input );
-	virtual void MenuDown( const InputEventPlus &input );
-	virtual void MenuStart( const InputEventPlus &input );
+	virtual void MenuLeft(const InputEventPlus &input);
+	virtual void MenuRight(const InputEventPlus &input);
+	virtual void MenuUp(const InputEventPlus &input);
+	virtual void MenuDown(const InputEventPlus &input);
+	virtual void MenuStart(const InputEventPlus &input);
 	virtual void TweenOnScreen();
 	virtual void TweenOffScreen();
 
-	virtual void HandleScreenMessage( const ScreenMessage SM );
-	virtual bool AllowLateJoin() const { return true; }
+	virtual void HandleScreenMessage(const ScreenMessage SM);
+	virtual bool AllowLateJoin() const
+	{
+		return true;
+	}
 
 	// sm-ssc additions:
-	int GetPlayerSelectionIndex(PlayerNumber pn){ return GetSelectionIndex(pn); }
+	int GetPlayerSelectionIndex(PlayerNumber pn)
+	{
+		return GetSelectionIndex(pn);
+	}
 
 	// Lua
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 protected:
 	enum Page { PAGE_1, PAGE_2, NUM_Page };	// on PAGE_2, cursors are locked together
 	static PlayerNumber GetSharedPlayer();
-	Page GetPage( int iChoiceIndex ) const;
+	Page GetPage(int iChoiceIndex) const;
 	Page GetCurrentPage() const;
 
 	ThemeMetric<bool>	USE_TWO_SCROLLERS;
@@ -81,20 +87,23 @@ protected:
 	ThemeMetric<int>	SCROLLER_SUBDIVISIONS;
 	ThemeMetric<RString>	DEFAULT_CHOICE;
 
-	map<int,int> m_mapCurrentChoiceToNextChoice[NUM_MenuDir];
+	map<int, int> m_mapCurrentChoiceToNextChoice[NUM_MenuDir];
 
-	virtual int GetSelectionIndex( PlayerNumber pn );
+	virtual int GetSelectionIndex(PlayerNumber pn);
 	virtual void UpdateSelectableChoices();
 	bool AnyOptionsArePlayable() const;
 
-	bool Move( PlayerNumber pn, MenuDir dir );
-	bool ChangePage( int iNewChoice );
-	bool ChangeSelection( PlayerNumber pn, MenuDir dir, int iNewChoice );
-	float DoMenuStart( PlayerNumber pn );
-	virtual bool ProcessMenuStart( PlayerNumber pn ) { return true; }
+	bool Move(PlayerNumber pn, MenuDir dir);
+	bool ChangePage(int iNewChoice);
+	bool ChangeSelection(PlayerNumber pn, MenuDir dir, int iNewChoice);
+	float DoMenuStart(PlayerNumber pn);
+	virtual bool ProcessMenuStart(PlayerNumber pn)
+	{
+		return true;
+	}
 
-	float GetCursorX( PlayerNumber pn );
-	float GetCursorY( PlayerNumber pn );
+	float GetCursorX(PlayerNumber pn);
+	float GetCursorY(PlayerNumber pn);
 
 	AutoActor	m_sprExplanation[NUM_Page];
 	AutoActor	m_sprMore[NUM_Page];
@@ -127,7 +136,7 @@ protected:
 /*
  * (c) 2003-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -137,7 +146,7 @@ protected:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

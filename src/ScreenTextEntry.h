@@ -10,12 +10,12 @@
 /** @brief The list of possible keyboard rows. */
 enum KeyboardRow
 {
-	R1, 
-	R2, 
-	R3, 
-	R4, 
-	R5, 
-	R6, 
+	R1,
+	R2,
+	R3,
+	R4,
+	R5,
+	R6,
 	R7,
 	KEYBOARD_ROW_SPECIAL,
 	NUM_KeyboardRow,
@@ -28,49 +28,50 @@ const int KEYS_PER_ROW = 13;
 /** @brief The list of very special keys inside some rows. */
 enum KeyboardRowSpecialKey
 {
-	SPACEBAR=2, /**< The space bar key. */
-	BACKSPACE=5, /**< The backspace key. */
-	CANCEL=8,
-	DONE=11
+	SPACEBAR = 2, /**< The space bar key. */
+	BACKSPACE = 5, /**< The backspace key. */
+	CANCEL = 8,
+	DONE = 11
 };
 
 /** @brief Displays a text entry box over the top of another screen. */
 class ScreenTextEntry : public ScreenWithMenuElements
 {
 public:
-	static void SetTextEntrySettings( 
-		RString sQuestion, 
-		RString sInitialAnswer, 
-		int iMaxInputLength, 
-		bool(*Validate)(const RString &sAnswer,RString &sErrorOut) = NULL, 
-		void(*OnOK)(const RString &sAnswer) = NULL, 
-		void(*OnCancel)() = NULL,
-		bool bPassword = false,
-		bool (*ValidateAppend)(const RString &sAnswerBeforeChar, RString &sAppend) = NULL,
-		RString (*FormatAnswerForDisplay)(const RString &sAnswer) = NULL
-		);
-	static void TextEntry( 
-		ScreenMessage smSendOnPop, 
-		RString sQuestion, 
-		RString sInitialAnswer, 
-		int iMaxInputLength, 
-		bool(*Validate)(const RString &sAnswer,RString &sErrorOut) = NULL, 
-		void(*OnOK)(const RString &sAnswer) = NULL, 
-		void(*OnCancel)() = NULL,
-		bool bPassword = false,
-		bool (*ValidateAppend)(const RString &sAnswerBeforeChar, RString &sAppend) = NULL,
-		RString (*FormatAnswerForDisplay)(const RString &sAnswer) = NULL
-		);
-	static void Password( 
-		ScreenMessage smSendOnPop, 
-		const RString &sQuestion, 
-		void(*OnOK)(const RString &sPassword) = NULL, 
-		void(*OnCancel)() = NULL )
+	static void SetTextEntrySettings(
+	        RString sQuestion,
+	        RString sInitialAnswer,
+	        int iMaxInputLength,
+	        bool(*Validate)(const RString &sAnswer, RString &sErrorOut) = NULL,
+	        void(*OnOK)(const RString &sAnswer) = NULL,
+	        void(*OnCancel)() = NULL,
+	        bool bPassword = false,
+	        bool (*ValidateAppend)(const RString &sAnswerBeforeChar, RString &sAppend) = NULL,
+	        RString(*FormatAnswerForDisplay)(const RString &sAnswer) = NULL
+	);
+	static void TextEntry(
+	        ScreenMessage smSendOnPop,
+	        RString sQuestion,
+	        RString sInitialAnswer,
+	        int iMaxInputLength,
+	        bool(*Validate)(const RString &sAnswer, RString &sErrorOut) = NULL,
+	        void(*OnOK)(const RString &sAnswer) = NULL,
+	        void(*OnCancel)() = NULL,
+	        bool bPassword = false,
+	        bool (*ValidateAppend)(const RString &sAnswerBeforeChar, RString &sAppend) = NULL,
+	        RString(*FormatAnswerForDisplay)(const RString &sAnswer) = NULL
+	);
+	static void Password(
+	        ScreenMessage smSendOnPop,
+	        const RString &sQuestion,
+	        void(*OnOK)(const RString &sPassword) = NULL,
+	        void(*OnCancel)() = NULL)
 	{
-		TextEntry( smSendOnPop, sQuestion, "", 255, NULL, OnOK, OnCancel, true );
+		TextEntry(smSendOnPop, sQuestion, "", 255, NULL, OnOK, OnCancel, true);
 	}
 
-	struct TextEntrySettings {
+	struct TextEntrySettings
+	{
 		TextEntrySettings(): smSendOnPop(), sQuestion(""),
 			sInitialAnswer(""), iMaxInputLength(0),
 			bPassword(false), Validate(), OnOK(), OnCancel(),
@@ -92,33 +93,33 @@ public:
 		// see BitmapText.cpp Attribute::FromStack()  and
 		// OptionRowHandler.cpp LoadInternal() for ideas on how to implement the
 		// main part, and ImportOption() from OptionRowHandler.cpp for functions.
-		void FromStack( lua_State *L );
+		void FromStack(lua_State *L);
 	};
-	void LoadFromTextEntrySettings( const TextEntrySettings &settings );
+	void LoadFromTextEntrySettings(const TextEntrySettings &settings);
 
-	static bool FloatValidate( const RString &sAnswer, RString &sErrorOut );
+	static bool FloatValidate(const RString &sAnswer, RString &sErrorOut);
 
 	virtual void Init();
 	virtual void BeginScreen();
 
-	virtual void Update( float fDelta );
-	virtual void Input( const InputEventPlus &input );
+	virtual void Update(float fDelta);
+	virtual void Input(const InputEventPlus &input);
 
 	static RString s_sLastAnswer;
 	static bool s_bCancelledLast;
 
 	// Lua
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 protected:
-	void TryAppendToAnswer( RString s );
+	void TryAppendToAnswer(RString s);
 	void BackspaceInAnswer();
 	virtual void TextEnteredDirectly() { }
 
-	virtual void End( bool bCancelled );
+	virtual void End(bool bCancelled);
 private:
-	virtual void MenuStart( const InputEventPlus &input );
-	virtual void MenuBack( const InputEventPlus &input );
+	virtual void MenuStart(const InputEventPlus &input);
+	virtual void MenuBack(const InputEventPlus &input);
 
 	void UpdateAnswerText();
 
@@ -145,18 +146,42 @@ public:
 	void BeginScreen();
 
 protected:
-	void MoveX( int iDir );
-	void MoveY( int iDir );
+	void MoveX(int iDir);
+	void MoveY(int iDir);
 	void PositionCursor();
 
 	virtual void TextEnteredDirectly();
 
-	virtual void MenuLeft( const InputEventPlus &input ) { if(input.type==IET_FIRST_PRESS) MoveX(-1); }
-	virtual void MenuRight( const InputEventPlus &input ) { if(input.type==IET_FIRST_PRESS) MoveX(+1); }
-	virtual void MenuUp( const InputEventPlus &input ) { if(input.type==IET_FIRST_PRESS) MoveY(-1); }
-	virtual void MenuDown( const InputEventPlus &input ) { if(input.type==IET_FIRST_PRESS) MoveY(+1); }
+	virtual void MenuLeft(const InputEventPlus &input)
+	{
+		if (input.type == IET_FIRST_PRESS)
+		{
+			MoveX(-1);
+		}
+	}
+	virtual void MenuRight(const InputEventPlus &input)
+	{
+		if (input.type == IET_FIRST_PRESS)
+		{
+			MoveX(+1);
+		}
+	}
+	virtual void MenuUp(const InputEventPlus &input)
+	{
+		if (input.type == IET_FIRST_PRESS)
+		{
+			MoveY(-1);
+		}
+	}
+	virtual void MenuDown(const InputEventPlus &input)
+	{
+		if (input.type == IET_FIRST_PRESS)
+		{
+			MoveY(+1);
+		}
+	}
 
-	virtual void MenuStart( const InputEventPlus &input );
+	virtual void MenuStart(const InputEventPlus &input);
 
 	int			m_iFocusX;
 	KeyboardRow m_iFocusY;
@@ -177,7 +202,7 @@ protected:
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -187,7 +212,7 @@ protected:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

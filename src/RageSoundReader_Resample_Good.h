@@ -12,32 +12,35 @@ class RageSoundReader_Resample_Good: public RageSoundReader_Filter
 {
 public:
 	/* We own source. */
-	RageSoundReader_Resample_Good( RageSoundReader *pSource, int iSampleRate );
-	RageSoundReader_Resample_Good( const RageSoundReader_Resample_Good &cpy );
-	int SetPosition( int iFrame );
-	int Read( float *pBuf, int iFrames );
+	RageSoundReader_Resample_Good(RageSoundReader *pSource, int iSampleRate);
+	RageSoundReader_Resample_Good(const RageSoundReader_Resample_Good &cpy);
+	int SetPosition(int iFrame);
+	int Read(float *pBuf, int iFrames);
 	virtual ~RageSoundReader_Resample_Good();
 	RageSoundReader_Resample_Good *Copy() const;
-	bool SetProperty( const RString &sProperty, float fValue );
+	bool SetProperty(const RString &sProperty, float fValue);
 	int GetNextSourceFrame() const;
 	float GetStreamToSourceRatio() const;
 
 	/**
 	 * @brief Change the rate of a sound without changing the sample rate.
 	 * @param fRatio the ratio for changing. */
-	void SetRate( float fRatio );
+	void SetRate(float fRatio);
 
 	/**
 	 * @brief Retrieve the exact rate.
 	 * @return the exact rate. */
 	float GetRate() const;
 
-	int GetSampleRate() const { return m_iSampleRate; }
+	int GetSampleRate() const
+	{
+		return m_iSampleRate;
+	}
 
 private:
 	void Reset();
 	void ReopenResampler();
-	void GetFactors( int &iDownFactor, int &iUpFactor ) const;
+	void GetFactors(int &iDownFactor, int &iUpFactor) const;
 
 	vector<RageSoundResampler_Polyphase *> m_apResamplers; /* one per channel */
 

@@ -38,24 +38,24 @@ bool RageTextureID::operator<(const RageTextureID &rhs) const
 bool RageTextureID::operator==(const RageTextureID &rhs) const
 {
 #define EQUAL(a) (a==rhs.a)
-	return 
-		EQUAL(filename) &&
-		EQUAL(iMaxSize) &&
-		EQUAL(bMipMaps) &&
-		EQUAL(iAlphaBits) &&
-		EQUAL(iGrayscaleBits) &&
-		EQUAL(iColorDepth) &&
-		EQUAL(bDither) &&
-		EQUAL(bStretch) &&
-		EQUAL(bHotPinkColorKey) &&
-		EQUAL(AdditionalTextureHints);
-		// EQUAL(Policy); // don't do this
+	return
+	        EQUAL(filename) &&
+	        EQUAL(iMaxSize) &&
+	        EQUAL(bMipMaps) &&
+	        EQUAL(iAlphaBits) &&
+	        EQUAL(iGrayscaleBits) &&
+	        EQUAL(iColorDepth) &&
+	        EQUAL(bDither) &&
+	        EQUAL(bStretch) &&
+	        EQUAL(bHotPinkColorKey) &&
+	        EQUAL(AdditionalTextureHints);
+	// EQUAL(Policy); // don't do this
 }
 
-void RageTextureID::SetFilename( const RString &fn )
+void RageTextureID::SetFilename(const RString &fn)
 {
 	filename = fn;
-	CollapsePath( filename );
+	CollapsePath(filename);
 }
 
 /*

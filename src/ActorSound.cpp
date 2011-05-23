@@ -5,18 +5,18 @@
 #include "XmlFile.h"
 #include "RageUtil.h"
 
-REGISTER_ACTOR_CLASS_WITH_NAME( ActorSound, Sound );
+REGISTER_ACTOR_CLASS_WITH_NAME(ActorSound, Sound);
 
-void ActorSound::Load( const RString &sPath )
+void ActorSound::Load(const RString &sPath)
 {
-	m_Sound.Load( sPath, true );
+	m_Sound.Load(sPath, true);
 }
 
 void ActorSound::Play()
 {
 	// This fix makes it possible to stop and pause ActorSounds. (Also,
 	// sometimes stacking sounds is annoying.) -DaisuMaster
-	if( m_Sound.IsPlaying() )
+	if (m_Sound.IsPlaying())
 	{
 		m_Sound.PlayCopy();
 		return;
@@ -24,7 +24,7 @@ void ActorSound::Play()
 	m_Sound.StartPlaying();
 }
 
-void ActorSound::Pause( bool bPause )
+void ActorSound::Pause(bool bPause)
 {
 	m_Sound.Pause(bPause);
 }
@@ -34,53 +34,75 @@ void ActorSound::Stop()
 	m_Sound.Stop();
 }
 
-void ActorSound::LoadFromNode( const XNode* pNode )
+void ActorSound::LoadFromNode(const XNode* pNode)
 {
 	RageSoundLoadParams params;
 	pNode->GetAttrValue("SupportPan", params.m_bSupportPan);
 	pNode->GetAttrValue("SupportRateChanging", params.m_bSupportRateChanging);
 
 	bool bPrecache = true;
-	pNode->GetAttrValue( "Precache", bPrecache );
+	pNode->GetAttrValue("Precache", bPrecache);
 
-	Actor::LoadFromNode( pNode );
+	Actor::LoadFromNode(pNode);
 
 	RString sFile;
-	if( ActorUtil::GetAttrPath(pNode, "File", sFile) )
-		m_Sound.Load( sFile, bPrecache, &params );
+	if (ActorUtil::GetAttrPath(pNode, "File", sFile))
+	{
+		m_Sound.Load(sFile, bPrecache, &params);
+	}
 }
 
 // lua start
 #include "LuaBinding.h"
 
-/** @brief Allow Lua to have access to the ActorSound. */ 
+/** @brief Allow Lua to have access to the ActorSound. */
 class LunaActorSound: public Luna<ActorSound>
 {
 public:
-	static int load( T* p, lua_State *L )			{ p->Load(SArg(1)); return 0; }
-	static int play( T* p, lua_State *L )			{ p->Play(); return 0; }
-	static int pause( T* p, lua_State *L )			{ p->Pause(BArg(1)); return 0; }
-	static int stop( T* p, lua_State *L )			{ p->Stop(); return 0; }
-	static int get( T* p, lua_State *L )			{ p->PushSound( L ); return 1; }
+	static int load(T* p, lua_State *L)
+	{
+		p->Load(SArg(1));
+		return 0;
+	}
+	static int play(T* p, lua_State *L)
+	{
+		p->Play();
+		return 0;
+	}
+	static int pause(T* p, lua_State *L)
+	{
+		p->Pause(BArg(1));
+		return 0;
+	}
+	static int stop(T* p, lua_State *L)
+	{
+		p->Stop();
+		return 0;
+	}
+	static int get(T* p, lua_State *L)
+	{
+		p->PushSound(L);
+		return 1;
+	}
 
 	LunaActorSound()
 	{
-		ADD_METHOD( load );
-		ADD_METHOD( play );
-		ADD_METHOD( pause );
-		ADD_METHOD( stop );
-		ADD_METHOD( get );
+		ADD_METHOD(load);
+		ADD_METHOD(play);
+		ADD_METHOD(pause);
+		ADD_METHOD(stop);
+		ADD_METHOD(get);
 	}
 };
 
-LUA_REGISTER_DERIVED_CLASS( ActorSound, Actor )
+LUA_REGISTER_DERIVED_CLASS(ActorSound, Actor)
 // lua end
 
 
 /*
  * (c) 2005 Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -90,7 +112,7 @@ LUA_REGISTER_DERIVED_CLASS( ActorSound, Actor )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

@@ -8,21 +8,24 @@
 class RageSoundReader_Extend: public RageSoundReader_Filter
 {
 public:
-	RageSoundReader_Extend( RageSoundReader *pSource );
-	virtual int SetPosition( int iFrame );
-	virtual int Read( float *pBuffer, int iFrames );
+	RageSoundReader_Extend(RageSoundReader *pSource);
+	virtual int SetPosition(int iFrame);
+	virtual int Read(float *pBuffer, int iFrames);
 	virtual int GetNextSourceFrame() const;
-	virtual bool SetProperty( const RString &sProperty, float fValue );
+	virtual bool SetProperty(const RString &sProperty, float fValue);
 
-	RageSoundReader_Extend *Copy() const { return new RageSoundReader_Extend(*this); }
+	RageSoundReader_Extend *Copy() const
+	{
+		return new RageSoundReader_Extend(*this);
+	}
 	~RageSoundReader_Extend() { }
 
 private:
 	int GetEndFrame() const;
-	int GetData( float *pBuffer, int iFrames );
+	int GetData(float *pBuffer, int iFrames);
 
 	int m_iPositionFrames;
-	
+
 	enum StopMode { M_LOOP, M_STOP, M_CONTINUE };
 	StopMode m_StopMode;
 	int m_iStartFrames;

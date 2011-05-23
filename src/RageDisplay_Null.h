@@ -7,80 +7,117 @@ class RageDisplay_Null: public RageDisplay
 {
 public:
 	RageDisplay_Null();
-	virtual RString Init( const VideoModeParams &p, bool bAllowUnacceleratedRenderer );
+	virtual RString Init(const VideoModeParams &p, bool bAllowUnacceleratedRenderer);
 
-	virtual RString GetApiDescription() const { return "Null"; }
-	virtual void GetDisplayResolutions( DisplayResolutions &out ) const;
+	virtual RString GetApiDescription() const
+	{
+		return "Null";
+	}
+	virtual void GetDisplayResolutions(DisplayResolutions &out) const;
 	const PixelFormatDesc *GetPixelFormatDesc(PixelFormat pf) const;
 
-	bool BeginFrame() { return true; }
+	bool BeginFrame()
+	{
+		return true;
+	}
 	void EndFrame();
-	VideoModeParams GetActualVideoModeParams() const { return m_Params; }
-	void SetBlendMode( BlendMode mode ) { }
-	bool SupportsTextureFormat( PixelFormat pixfmt, bool realtime=false ) { return true; }
-	bool SupportsPerVertexMatrixScale() { return false; }
-	unsigned CreateTexture( 
-		PixelFormat pixfmt, 
-		RageSurface* img,
-		bool bGenerateMipMaps ) { return 1; }
-	void UpdateTexture( 
-		unsigned iTexHandle, 
-		RageSurface* img,
-		int xoffset, int yoffset, int width, int height 
-		) { }
-	void DeleteTexture( unsigned iTexHandle ) { }
+	VideoModeParams GetActualVideoModeParams() const
+	{
+		return m_Params;
+	}
+	void SetBlendMode(BlendMode mode) { }
+	bool SupportsTextureFormat(PixelFormat pixfmt, bool realtime = false)
+	{
+		return true;
+	}
+	bool SupportsPerVertexMatrixScale()
+	{
+		return false;
+	}
+	unsigned CreateTexture(
+	        PixelFormat pixfmt,
+	        RageSurface* img,
+	        bool bGenerateMipMaps)
+	{
+		return 1;
+	}
+	void UpdateTexture(
+	        unsigned iTexHandle,
+	        RageSurface* img,
+	        int xoffset, int yoffset, int width, int height
+	) { }
+	void DeleteTexture(unsigned iTexHandle) { }
 	void ClearAllTextures() { }
-	int GetNumTextureUnits() { return 1; }
-	void SetTexture( TextureUnit tu, unsigned iTexture ) { }
-	void SetTextureMode( TextureUnit tu, TextureMode tm ) { }
-	void SetTextureWrapping( TextureUnit tu, bool b ) { }
-	int GetMaxTextureSize() const { return 2048; }
-	void SetTextureFiltering( TextureUnit tu, bool b ) { }
-	bool IsZWriteEnabled() const { return false; }
-	bool IsZTestEnabled() const { return false; }
-	void SetZWrite( bool b ) { }
-	void SetZBias( float f ) { }
-	void SetZTestMode( ZTestMode mode ) { }
+	int GetNumTextureUnits()
+	{
+		return 1;
+	}
+	void SetTexture(TextureUnit tu, unsigned iTexture) { }
+	void SetTextureMode(TextureUnit tu, TextureMode tm) { }
+	void SetTextureWrapping(TextureUnit tu, bool b) { }
+	int GetMaxTextureSize() const
+	{
+		return 2048;
+	}
+	void SetTextureFiltering(TextureUnit tu, bool b) { }
+	bool IsZWriteEnabled() const
+	{
+		return false;
+	}
+	bool IsZTestEnabled() const
+	{
+		return false;
+	}
+	void SetZWrite(bool b) { }
+	void SetZBias(float f) { }
+	void SetZTestMode(ZTestMode mode) { }
 	void ClearZBuffer() { }
-	void SetCullMode( CullMode mode ) { }
-	void SetAlphaTest( bool b ) { }
-	void SetMaterial( 
-		const RageColor &emissive,
-		const RageColor &ambient,
-		const RageColor &diffuse,
-		const RageColor &specular,
-		float shininess
-		) { }
-	void SetLighting( bool b ) { }
-	void SetLightOff( int index ) { }
-	void SetLightDirectional( 
-		int index, 
-		const RageColor &ambient, 
-		const RageColor &diffuse, 
-		const RageColor &specular, 
-		const RageVector3 &dir ) { }
+	void SetCullMode(CullMode mode) { }
+	void SetAlphaTest(bool b) { }
+	void SetMaterial(
+	        const RageColor &emissive,
+	        const RageColor &ambient,
+	        const RageColor &diffuse,
+	        const RageColor &specular,
+	        float shininess
+	) { }
+	void SetLighting(bool b) { }
+	void SetLightOff(int index) { }
+	void SetLightDirectional(
+	        int index,
+	        const RageColor &ambient,
+	        const RageColor &diffuse,
+	        const RageColor &specular,
+	        const RageVector3 &dir) { }
 
-	void SetSphereEnvironmentMapping( TextureUnit tu, bool b ) { }
-	void SetCelShaded( int stage ) { }
+	void SetSphereEnvironmentMapping(TextureUnit tu, bool b) { }
+	void SetCelShaded(int stage) { }
 
 	RageCompiledGeometry* CreateCompiledGeometry();
-	void DeleteCompiledGeometry( RageCompiledGeometry* p );
+	void DeleteCompiledGeometry(RageCompiledGeometry* p);
 
 protected:
-	void DrawQuadsInternal( const RageSpriteVertex v[], int iNumVerts ) { }
-	void DrawQuadStripInternal( const RageSpriteVertex v[], int iNumVerts ) { }
-	void DrawFanInternal( const RageSpriteVertex v[], int iNumVerts ) { }
-	void DrawStripInternal( const RageSpriteVertex v[], int iNumVerts ) { }
-	void DrawTrianglesInternal( const RageSpriteVertex v[], int iNumVerts ) { }
-	void DrawCompiledGeometryInternal( const RageCompiledGeometry *p, int iMeshIndex ) { }
-	void DrawLineStripInternal( const RageSpriteVertex v[], int iNumVerts, float LineWidth ) { }
-	void DrawSymmetricQuadStripInternal( const RageSpriteVertex v[], int iNumVerts ) { }
+	void DrawQuadsInternal(const RageSpriteVertex v[], int iNumVerts) { }
+	void DrawQuadStripInternal(const RageSpriteVertex v[], int iNumVerts) { }
+	void DrawFanInternal(const RageSpriteVertex v[], int iNumVerts) { }
+	void DrawStripInternal(const RageSpriteVertex v[], int iNumVerts) { }
+	void DrawTrianglesInternal(const RageSpriteVertex v[], int iNumVerts) { }
+	void DrawCompiledGeometryInternal(const RageCompiledGeometry *p, int iMeshIndex) { }
+	void DrawLineStripInternal(const RageSpriteVertex v[], int iNumVerts, float LineWidth) { }
+	void DrawSymmetricQuadStripInternal(const RageSpriteVertex v[], int iNumVerts) { }
 
 	VideoModeParams m_Params;
-	RString TryVideoMode( const VideoModeParams &p, bool &bNewDeviceOut ) { m_Params = p; return RString(); }
+	RString TryVideoMode(const VideoModeParams &p, bool &bNewDeviceOut)
+	{
+		m_Params = p;
+		return RString();
+	}
 	RageSurface* CreateScreenshot();
-	RageMatrix GetOrthoMatrix( float l, float r, float b, float t, float zn, float zf ); 
-	bool SupportsSurfaceFormat( PixelFormat pixfmt ) { return true; }
+	RageMatrix GetOrthoMatrix(float l, float r, float b, float t, float zn, float zf);
+	bool SupportsSurfaceFormat(PixelFormat pixfmt)
+	{
+		return true;
+	}
 };
 
 #endif

@@ -10,53 +10,62 @@ class Sprite: public Actor
 {
 public:
 	Sprite();
-	Sprite( const Sprite &cpy );
+	Sprite(const Sprite &cpy);
 	virtual ~Sprite();
-	
+
 	virtual void InitState();
 
-	void LoadFromNode( const XNode* pNode );
+	void LoadFromNode(const XNode* pNode);
 	virtual Sprite *Copy() const;
 
 	virtual bool EarlyAbortDraw() const;
 	virtual void DrawPrimitives();
-	virtual void Update( float fDeltaTime );
+	virtual void Update(float fDeltaTime);
 
 	void UpdateAnimationState();	// take m_fSecondsIntoState, and move to a new state
 
 	// Adjust texture properties for song backgrounds.
-	static RageTextureID SongBGTexture( RageTextureID ID );
+	static RageTextureID SongBGTexture(RageTextureID ID);
 
 	// Adjust texture properties for song banners.
-	static RageTextureID SongBannerTexture( RageTextureID ID );
+	static RageTextureID SongBannerTexture(RageTextureID ID);
 
-	virtual void Load( RageTextureID ID );
-	void SetTexture( RageTexture *pTexture );
+	virtual void Load(RageTextureID ID);
+	void SetTexture(RageTexture *pTexture);
 
 	void UnloadTexture();
-	RageTexture* GetTexture() { return m_pTexture; };
+	RageTexture* GetTexture()
+	{
+		return m_pTexture;
+	};
 
-	virtual void EnableAnimation( bool bEnable );
+	virtual void EnableAnimation(bool bEnable);
 
 	virtual int GetNumStates() const;
-	virtual void SetState( int iNewState );
-	int GetState() { return m_iCurState; }
+	virtual void SetState(int iNewState);
+	int GetState()
+	{
+		return m_iCurState;
+	}
 	virtual float GetAnimationLengthSeconds() const;
-	virtual void SetSecondsIntoAnimation( float fSeconds );
+	virtual void SetSecondsIntoAnimation(float fSeconds);
 
 	RString	GetTexturePath() const;
 
-	void SetCustomTextureRect( const RectF &new_texcoord_frect );
-	void SetCustomTextureCoords( float fTexCoords[8] );
-	void SetCustomImageRect( RectF rectImageCoords );	// in image pixel space
-	void SetCustomImageCoords( float fImageCoords[8] );
+	void SetCustomTextureRect(const RectF &new_texcoord_frect);
+	void SetCustomTextureCoords(float fTexCoords[8]);
+	void SetCustomImageRect(RectF rectImageCoords);	// in image pixel space
+	void SetCustomImageCoords(float fImageCoords[8]);
 	const RectF *GetCurrentTextureCoordRect() const;
-	const RectF *GetTextureCoordRectForState( int iState ) const;
+	const RectF *GetTextureCoordRectForState(int iState) const;
 	void StopUsingCustomCoords();
 	void GetActiveTextureCoords(float fTexCoordsOut[8]) const;
-	void StretchTexCoords( float fX, float fY );
-	void AddImageCoords( float fX, float fY ); // in image pixel space
-	void SetEffectMode( EffectMode em ) { m_EffectMode = em; }
+	void StretchTexCoords(float fX, float fY);
+	void AddImageCoords(float fX, float fY);   // in image pixel space
+	void SetEffectMode(EffectMode em)
+	{
+		m_EffectMode = em;
+	}
 
 	void SetTexCoordVelocity(float fVelX, float fVelY);
 	/**
@@ -65,21 +74,21 @@ public:
 	 * It has to fit within and become clipped to the given parameters.
 	 * @param fWidth the new width.
 	 * @param fHeight the new height. */
-	void ScaleToClipped( float fWidth, float fHeight );
-	void CropTo( float fWidth, float fHeight );
+	void ScaleToClipped(float fWidth, float fHeight);
+	void CropTo(float fWidth, float fHeight);
 
 	// Commands
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 	void SetAllStateDelays(float fDelay);
 
 protected:
-	void LoadFromTexture( RageTextureID ID );
+	void LoadFromTexture(RageTextureID ID);
 
 private:
 	void LoadStatesFromTexture();
 
-	void DrawTexture( const TweenState *state );
+	void DrawTexture(const TweenState *state);
 
 	RageTexture* m_pTexture;
 
@@ -121,7 +130,7 @@ private:
  * @author Chris Danford (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -131,7 +140,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

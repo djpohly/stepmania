@@ -12,17 +12,30 @@ class RageFileObjInflate: public RageFileObj
 public:
 	/* By default, pFile will not be freed.  To implement GetFileSize(), the
 	 * container format must store the file size. */
-	RageFileObjInflate( RageFileBasic *pFile, int iUncompressedSize );
-	RageFileObjInflate( const RageFileObjInflate &cpy );
+	RageFileObjInflate(RageFileBasic *pFile, int iUncompressedSize);
+	RageFileObjInflate(const RageFileObjInflate &cpy);
 	~RageFileObjInflate();
-	int ReadInternal( void *pBuffer, size_t iBytes );
-	int WriteInternal( const void *pBuffer, size_t iBytes ) { SetError( "Not implemented" ); return -1; }
-	int SeekInternal( int iOffset );
-	int GetFileSize() const { return m_iUncompressedSize; }
-	int GetFD() { return m_pFile->GetFD(); }
+	int ReadInternal(void *pBuffer, size_t iBytes);
+	int WriteInternal(const void *pBuffer, size_t iBytes)
+	{
+		SetError("Not implemented");
+		return -1;
+	}
+	int SeekInternal(int iOffset);
+	int GetFileSize() const
+	{
+		return m_iUncompressedSize;
+	}
+	int GetFD()
+	{
+		return m_pFile->GetFD();
+	}
 	RageFileObjInflate *Copy() const;
 
-	void DeleteFileWhenFinished() { m_bFileOwned = true; }
+	void DeleteFileWhenFinished()
+	{
+		m_bFileOwned = true;
+	}
 
 private:
 	int m_iUncompressedSize;
@@ -31,7 +44,7 @@ private:
 	bool m_bFileOwned;
 
 	z_stream *m_pInflate;
-	enum { INBUFSIZE = 1024*4 };
+	enum { INBUFSIZE = 1024 * 4 };
 	char decomp_buf[INBUFSIZE], *decomp_buf_ptr;
 	int decomp_buf_avail;
 };
@@ -40,17 +53,27 @@ class RageFileObjDeflate: public RageFileObj
 {
 public:
 	/* By default, pFile will not be freed. */
-	RageFileObjDeflate( RageFileBasic *pOutput );
+	RageFileObjDeflate(RageFileBasic *pOutput);
 	~RageFileObjDeflate();
 
-	int GetFileSize() const { return m_pFile->GetFileSize(); }
-	void DeleteFileWhenFinished() { m_bFileOwned = true; }
+	int GetFileSize() const
+	{
+		return m_pFile->GetFileSize();
+	}
+	void DeleteFileWhenFinished()
+	{
+		m_bFileOwned = true;
+	}
 
 protected:
-	int ReadInternal( void *pBuffer, size_t iBytes ) { SetError( "Not implemented" ); return -1; }
-	int WriteInternal( const void *pBuffer, size_t iBytes );
+	int ReadInternal(void *pBuffer, size_t iBytes)
+	{
+		SetError("Not implemented");
+		return -1;
+	}
+	int WriteInternal(const void *pBuffer, size_t iBytes);
 	int FlushInternal();
-	
+
 	RageFileBasic *m_pFile;
 	z_stream *m_pDeflate;
 	bool m_bFileOwned;
@@ -59,7 +82,7 @@ protected:
 class RageFileObjGzip: public RageFileObjDeflate
 {
 public:
-	RageFileObjGzip( RageFileBasic *pFile );
+	RageFileObjGzip(RageFileBasic *pFile);
 	int Start();
 	int Finish();
 
@@ -67,11 +90,11 @@ private:
 	int m_iDataStartOffset;
 };
 
-RageFileObjInflate *GunzipFile( RageFileBasic *pFile, RString &sError, uint32_t *iCRC32 );
+RageFileObjInflate *GunzipFile(RageFileBasic *pFile, RString &sError, uint32_t *iCRC32);
 
 /* Quick helpers: */
-void GzipString( const RString &sIn, RString &sOut );
-bool GunzipString( const RString &sIn, RString &sOut, RString &sError ); // returns false on CRC, etc. error
+void GzipString(const RString &sIn, RString &sOut);
+bool GunzipString(const RString &sIn, RString &sOut, RString &sError);   // returns false on CRC, etc. error
 
 #endif
 

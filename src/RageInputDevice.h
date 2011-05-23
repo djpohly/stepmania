@@ -52,24 +52,33 @@ enum InputDevice
 };
 /** @brief A special foreach loop for each input device. */
 #define FOREACH_InputDevice( i ) FOREACH_ENUM( InputDevice, i )
-const RString& InputDeviceToString( InputDevice i );
-InputDevice StringToInputDevice( const RString& s );
-inline bool IsJoystick( InputDevice id ) { return DEVICE_JOY1 <= id && id < DEVICE_JOY1+NUM_JOYSTICKS; }
-inline bool IsPump( InputDevice id ) { return DEVICE_PUMP1 <= id && id < DEVICE_PUMP1+NUM_PUMPS; }
-inline bool IsMouse( InputDevice id ) { return id == DEVICE_MOUSE; }
+const RString& InputDeviceToString(InputDevice i);
+InputDevice StringToInputDevice(const RString& s);
+inline bool IsJoystick(InputDevice id)
+{
+	return DEVICE_JOY1 <= id && id < DEVICE_JOY1 + NUM_JOYSTICKS;
+}
+inline bool IsPump(InputDevice id)
+{
+	return DEVICE_PUMP1 <= id && id < DEVICE_PUMP1 + NUM_PUMPS;
+}
+inline bool IsMouse(InputDevice id)
+{
+	return id == DEVICE_MOUSE;
+}
 
 struct InputDeviceInfo
 {
-	InputDeviceInfo( InputDevice id_, RString sDesc_ ):
+	InputDeviceInfo(InputDevice id_, RString sDesc_):
 		id(id_), sDesc(sDesc_) {}
-	
+
 	InputDevice id;
 	RString sDesc;
 
-	bool operator==( const InputDeviceInfo &other ) const
+	bool operator==(const InputDeviceInfo &other) const
 	{
-		return id == other.id && 
-			sDesc == other.sDesc;
+		return id == other.id &&
+		       sDesc == other.sDesc;
 	}
 };
 
@@ -82,13 +91,13 @@ enum InputDeviceState
 	NUM_InputDeviceState,
 	InputDeviceState_Invalid
 };
-const RString& InputDeviceStateToString( InputDeviceState ids );
+const RString& InputDeviceStateToString(InputDeviceState ids);
 
 /* Only raw, unshifted keys go in this table; this doesn't include
  * internationalized keyboards, only keys that we might actually want to test
  * for programmatically. Any other keys are mapped to KEY_OTHER_0 and up. (If we
  * want to support real international input, stick a wchar_t in DeviceInput.)  */
- 
+
 enum DeviceButton
 {
 	KEY_SPACE	= 32,
@@ -101,7 +110,7 @@ enum DeviceButton
 	KEY_SQUOTE	= 39,
 	KEY_LPAREN	= 40,
 	KEY_RPAREN	= 41,
-	KEY_ASTERISK= 42,
+	KEY_ASTERISK = 42,
 	KEY_PLUS	= 43,
 	KEY_COMMA	= 44,
 	KEY_HYPHEN	= 45,
@@ -122,7 +131,7 @@ enum DeviceButton
 	KEY_LANGLE	= 60,
 	KEY_EQUAL	= 61,
 	KEY_RANGLE	= 62,
-	KEY_QUESTION= 63,
+	KEY_QUESTION = 63,
 	KEY_AT		= 64,
 	KEY_CA		= 65,
 	KEY_CB		= 66,
@@ -150,11 +159,11 @@ enum DeviceButton
 	KEY_CX		= 88,
 	KEY_CY		= 89,
 	KEY_CZ		= 90,
-	KEY_LBRACKET= 91,
-	KEY_BACKSLASH= 92,
-	KEY_RBRACKET= 93,
+	KEY_LBRACKET = 91,
+	KEY_BACKSLASH = 92,
+	KEY_RBRACKET = 93,
 	KEY_CARAT	= 94,
-	KEY_UNDERSCORE= 95,
+	KEY_UNDERSCORE = 95,
 	KEY_ACCENT	= 96,
 	KEY_Ca		= 97,
 	KEY_Cb		= 98,
@@ -258,7 +267,7 @@ enum DeviceButton
 
 	KEY_OTHER_0,
 	// ...
-	KEY_LAST_OTHER=511,
+	KEY_LAST_OTHER = 511,
 
 	/* Joystick inputs. We try to have enough input names so any input on a
 	 * reasonable joystick has an obvious mapping, but keep it generic and don't
@@ -272,7 +281,7 @@ enum DeviceButton
 
 	JOY_Z_UP, JOY_Z_DOWN,
 	JOY_ROT_UP, JOY_ROT_DOWN, JOY_ROT_LEFT, JOY_ROT_RIGHT, JOY_ROT_Z_UP, JOY_ROT_Z_DOWN,
-	JOY_HAT_LEFT, JOY_HAT_RIGHT, JOY_HAT_UP, JOY_HAT_DOWN, 
+	JOY_HAT_LEFT, JOY_HAT_RIGHT, JOY_HAT_UP, JOY_HAT_DOWN,
 	JOY_AUX_1, JOY_AUX_2, JOY_AUX_3, JOY_AUX_4,
 
 	// Buttons:
@@ -301,8 +310,8 @@ enum DeviceButton
 	DeviceButton_Invalid
 };
 
-RString DeviceButtonToString( DeviceButton i );
-DeviceButton StringToDeviceButton( const RString& s );
+RString DeviceButtonToString(DeviceButton i);
+DeviceButton StringToDeviceButton(const RString& s);
 
 struct DeviceInput
 {
@@ -326,39 +335,53 @@ public:
 	RageTimer ts;
 
 	DeviceInput(): device(InputDevice_Invalid), button(DeviceButton_Invalid), level(0), z(0), bDown(false), ts(RageZeroTimer) { }
-	DeviceInput( InputDevice d, DeviceButton b, float l=0 ): device(d), button(b), level(l), z(0), bDown(l > 0.5f), ts(RageZeroTimer) { }
-	DeviceInput( InputDevice d, DeviceButton b, float l, const RageTimer &t ):
+	DeviceInput(InputDevice d, DeviceButton b, float l = 0): device(d), button(b), level(l), z(0), bDown(l > 0.5f), ts(RageZeroTimer) { }
+	DeviceInput(InputDevice d, DeviceButton b, float l, const RageTimer &t):
 		device(d), button(b), level(l), z(0), bDown(level > 0.5f), ts(t) { }
-	DeviceInput( InputDevice d, DeviceButton b, const RageTimer &t, int zVal=0 ):
+	DeviceInput(InputDevice d, DeviceButton b, const RageTimer &t, int zVal = 0):
 		device(d), button(b), level(0), z(zVal), bDown(false), ts(t) { }
 
-	bool operator==( const DeviceInput &other ) const
-	{ 
+	bool operator==(const DeviceInput &other) const
+	{
 		/* Return true if we represent the same button on the same device.
 		 * Don't compare level or ts. */
 		return device == other.device  &&  button == other.button;
 	}
-	bool operator!=( const DeviceInput &other ) const
+	bool operator!=(const DeviceInput &other) const
 	{
-		return ! operator==( other );
+		return ! operator==(other);
 	}
-	bool operator<( const DeviceInput &other ) const
-	{ 
+	bool operator<(const DeviceInput &other) const
+	{
 		/* Return true if we represent the same button on the same device.
 		 * Don't compare level or ts. */
-		if( device != other.device )
+		if (device != other.device)
+		{
 			return device < other.device;
+		}
 		return button < other.button;
 	}
 
 	RString ToString() const;
-	bool FromString( const RString &s );
+	bool FromString(const RString &s);
 
-	bool IsValid() const { return device != InputDevice_Invalid; };
-	void MakeInvalid() { device = InputDevice_Invalid; };
+	bool IsValid() const
+	{
+		return device != InputDevice_Invalid;
+	};
+	void MakeInvalid()
+	{
+		device = InputDevice_Invalid;
+	};
 
-	bool IsJoystick() const { return ::IsJoystick(device); }
-	bool IsMouse() const { return ::IsMouse(device); }
+	bool IsJoystick() const
+	{
+		return ::IsJoystick(device);
+	}
+	bool IsMouse() const
+	{
+		return ::IsMouse(device);
+	}
 };
 
 typedef vector<DeviceInput> DeviceInputList;

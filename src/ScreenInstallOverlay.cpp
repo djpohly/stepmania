@@ -32,98 +32,114 @@ struct PlayAfterLaunchInfo
 		bAnyThemeChanged = false;
 	}
 
-	void OverlayWith( const PlayAfterLaunchInfo &other )
+	void OverlayWith(const PlayAfterLaunchInfo &other)
 	{
-		if( !other.sSongDir.empty() ) sSongDir = other.sSongDir;
-		if( !other.sTheme.empty() ) sTheme = other.sTheme;
+		if (!other.sSongDir.empty())
+		{
+			sSongDir = other.sSongDir;
+		}
+		if (!other.sTheme.empty())
+		{
+			sTheme = other.sTheme;
+		}
 		bAnySongChanged |= other.bAnySongChanged;
 		bAnyThemeChanged |= other.bAnyThemeChanged;
 	}
 };
 
-static void Parse( const RString &sDir, PlayAfterLaunchInfo &out )
+static void Parse(const RString &sDir, PlayAfterLaunchInfo &out)
 {
 	vector<RString> vsDirParts;
-	split( sDir, "/", vsDirParts, true );
-	if( vsDirParts.size() == 3 && vsDirParts[0].EqualsNoCase("Songs") )
+	split(sDir, "/", vsDirParts, true);
+	if (vsDirParts.size() == 3 && vsDirParts[0].EqualsNoCase("Songs"))
+	{
 		out.sSongDir = "/" + sDir;
-	else if( vsDirParts.size() == 2 && vsDirParts[0].EqualsNoCase("Themes") )
+	}
+	else if (vsDirParts.size() == 2 && vsDirParts[0].EqualsNoCase("Themes"))
+	{
 		out.sTheme = vsDirParts[1];
+	}
 }
 
 static const RString TEMP_ZIP_MOUNT_POINT = "/@temp-zip/";
 const RString TEMP_OS_MOUNT_POINT = "/@temp-os/";
 
-static void InstallSmzip( const RString &sZipFile, PlayAfterLaunchInfo &out )
+static void InstallSmzip(const RString &sZipFile, PlayAfterLaunchInfo &out)
 {
-	if( !FILEMAN->Mount( "zip", sZipFile, TEMP_ZIP_MOUNT_POINT ) )
-		FAIL_M("Failed to mount " + sZipFile );
+	if (!FILEMAN->Mount("zip", sZipFile, TEMP_ZIP_MOUNT_POINT))
+	{
+		FAIL_M("Failed to mount " + sZipFile);
+	}
 
 	vector<RString> vsFiles;
 	{
 		vector<RString> vsRawFiles;
-		GetDirListingRecursive( TEMP_ZIP_MOUNT_POINT, "*", vsRawFiles);
+		GetDirListingRecursive(TEMP_ZIP_MOUNT_POINT, "*", vsRawFiles);
 
 		vector<RString> vsPrettyFiles;
-		FOREACH_CONST( RString, vsRawFiles, s )
+		FOREACH_CONST(RString, vsRawFiles, s)
 		{
-			if( GetExtension(*s).EqualsNoCase("ctl") )
+			if (GetExtension(*s).EqualsNoCase("ctl"))
+			{
 				continue;
+			}
 
-			vsFiles.push_back( *s);
+			vsFiles.push_back(*s);
 
-			RString s2 = s->Right( s->length() - TEMP_ZIP_MOUNT_POINT.length() );
-			vsPrettyFiles.push_back( s2 );
+			RString s2 = s->Right(s->length() - TEMP_ZIP_MOUNT_POINT.length());
+			vsPrettyFiles.push_back(s2);
 		}
-		sort( vsPrettyFiles.begin(), vsPrettyFiles.end() );
+		sort(vsPrettyFiles.begin(), vsPrettyFiles.end());
 	}
 
 	RString sResult = "Success installing " + sZipFile;
-	FOREACH_CONST( RString, vsFiles, sSrcFile )
+	FOREACH_CONST(RString, vsFiles, sSrcFile)
 	{
 		RString sDestFile = *sSrcFile;
-		sDestFile = sDestFile.Right( sDestFile.length() - TEMP_ZIP_MOUNT_POINT.length() );
+		sDestFile = sDestFile.Right(sDestFile.length() - TEMP_ZIP_MOUNT_POINT.length());
 
 		RString sDir, sThrowAway;
-		splitpath( sDestFile, sDir, sThrowAway, sThrowAway );
+		splitpath(sDestFile, sDir, sThrowAway, sThrowAway);
 
-		Parse( sDir, out );
+		Parse(sDir, out);
 		out.bAnySongChanged = true;
 
-		FILEMAN->CreateDir( sDir );
+		FILEMAN->CreateDir(sDir);
 
-		if( !FileCopy( *sSrcFile, sDestFile ) )
+		if (!FileCopy(*sSrcFile, sDestFile))
 		{
 			sResult = "Error extracting " + sDestFile;
 			break;
 		}
 	}
-	FILEMAN->Unmount( "zip", sZipFile, TEMP_ZIP_MOUNT_POINT );
+	FILEMAN->Unmount("zip", sZipFile, TEMP_ZIP_MOUNT_POINT);
 
-	SCREENMAN->SystemMessage( sResult );
+	SCREENMAN->SystemMessage(sResult);
 }
 
-void InstallSmzipOsArg( const RString &sOsZipFile, PlayAfterLaunchInfo &out )
+void InstallSmzipOsArg(const RString &sOsZipFile, PlayAfterLaunchInfo &out)
 {
-	SCREENMAN->SystemMessage("Installing " + sOsZipFile );
+	SCREENMAN->SystemMessage("Installing " + sOsZipFile);
 
 	RString sOsDir, sFilename, sExt;
-	splitpath( sOsZipFile, sOsDir, sFilename, sExt );
+	splitpath(sOsZipFile, sOsDir, sFilename, sExt);
 
-	if( !FILEMAN->Mount( "dir", sOsDir, TEMP_OS_MOUNT_POINT ) )
-		FAIL_M("Failed to mount " + sOsDir );
-	InstallSmzip( TEMP_OS_MOUNT_POINT + sFilename + sExt, out );
+	if (!FILEMAN->Mount("dir", sOsDir, TEMP_OS_MOUNT_POINT))
+	{
+		FAIL_M("Failed to mount " + sOsDir);
+	}
+	InstallSmzip(TEMP_OS_MOUNT_POINT + sFilename + sExt, out);
 
-	FILEMAN->Unmount( "dir", sOsDir, TEMP_OS_MOUNT_POINT );
+	FILEMAN->Unmount("dir", sOsDir, TEMP_OS_MOUNT_POINT);
 }
 
 struct FileCopyResult
 {
-	FileCopyResult( RString _sFile, RString _sComment ) : sFile(_sFile), sComment(_sComment) {}
+	FileCopyResult(RString _sFile, RString _sComment) : sFile(_sFile), sComment(_sComment) {}
 	RString sFile, sComment;
 };
 
-Preference<RString> g_sCookie( "Cookie", "" );
+Preference<RString> g_sCookie("Cookie", "");
 
 class DownloadTask
 {
@@ -141,7 +157,7 @@ public:
 	{
 		//SCREENMAN->SystemMessage( "Downloading control file." );
 		m_pTransfer = new FileTransfer();
-		m_pTransfer->StartDownload( sControlFileUri, "" );
+		m_pTransfer->StartDownload(sControlFileUri, "");
 		m_DownloadState = control;
 	}
 	~DownloadTask()
@@ -150,110 +166,118 @@ public:
 	}
 	RString GetStatus()
 	{
-		if( m_pTransfer == NULL )
-			return "";
-		else
-			return m_pTransfer->GetStatus();
-	}
-	bool UpdateAndIsFinished( float fDeltaSeconds, PlayAfterLaunchInfo &playAfterLaunchInfo )
-	{
-		m_pTransfer->Update( fDeltaSeconds );
-		switch( m_DownloadState )
+		if (m_pTransfer == NULL)
 		{
-		case control:
-			if( m_pTransfer->IsFinished() )
-			{
-				SCREENMAN->SystemMessage( "Downloading required .smzip" );
-
-				RString sResponse = m_pTransfer->GetResponse();
-				SAFE_DELETE( m_pTransfer );
-
-				Json::Value root;
-				RString sError;
-				if( !JsonUtil::LoadFromString(root, sResponse, sError) )
+			return "";
+		}
+		else
+		{
+			return m_pTransfer->GetStatus();
+		}
+	}
+	bool UpdateAndIsFinished(float fDeltaSeconds, PlayAfterLaunchInfo &playAfterLaunchInfo)
+	{
+		m_pTransfer->Update(fDeltaSeconds);
+		switch (m_DownloadState)
+		{
+			case control:
+				if (m_pTransfer->IsFinished())
 				{
-					SCREENMAN->SystemMessage( sError );
-					return true;
-				}
+					SCREENMAN->SystemMessage("Downloading required .smzip");
 
-				// Parse the JSON response, make a list of all packages need to be downloaded.
-				{
-					if( root["Cookie"].isString() )
-						g_sCookie.Set( root["Cookie"].asString() );
-					Json::Value require = root["Require"];
-					if( require.isArray() )
+					RString sResponse = m_pTransfer->GetResponse();
+					SAFE_DELETE(m_pTransfer);
+
+					Json::Value root;
+					RString sError;
+					if (!JsonUtil::LoadFromString(root, sResponse, sError))
 					{
-						for( unsigned i=0; i<require.size(); i++)
-						{
-							Json::Value iter = require[i];
-							if( iter["Dir"].isString() )
-							{
-								RString sDir = iter["Dir"].asString();
-								Parse( sDir, m_playAfterLaunchInfo );
-								if( DoesFileExist( sDir ) )
-									continue;
-							}
+						SCREENMAN->SystemMessage(sError);
+						return true;
+					}
 
-							RString sUri;
-							if( iter["Uri"].isString() )
+					// Parse the JSON response, make a list of all packages need to be downloaded.
+					{
+						if (root["Cookie"].isString())
+						{
+							g_sCookie.Set(root["Cookie"].asString());
+						}
+						Json::Value require = root["Require"];
+						if (require.isArray())
+						{
+							for (unsigned i = 0; i < require.size(); i++)
 							{
-								sUri = iter["Uri"].asString();
-								m_vsQueuedPackageUrls.push_back( sUri );
+								Json::Value iter = require[i];
+								if (iter["Dir"].isString())
+								{
+									RString sDir = iter["Dir"].asString();
+									Parse(sDir, m_playAfterLaunchInfo);
+									if (DoesFileExist(sDir))
+									{
+										continue;
+									}
+								}
+
+								RString sUri;
+								if (iter["Uri"].isString())
+								{
+									sUri = iter["Uri"].asString();
+									m_vsQueuedPackageUrls.push_back(sUri);
+								}
 							}
 						}
 					}
-				}
 
-				/*
-				{
-					// TODO: Validate that this zip contains files for this version of StepMania
+					/*
+					{
+						// TODO: Validate that this zip contains files for this version of StepMania
 
-					bool bFileExists = DoesFileExist( SpecialFiles::PACKAGES_DIR + sFilename + sExt );
-					if( FileCopy( TEMP_MOUNT_POINT + sFilename + sExt, SpecialFiles::PACKAGES_DIR + sFilename + sExt ) )
-						vSucceeded.push_back( FileCopyResult(*s,bFileExists ? "overwrote existing file" : "") );
-					else
-						vFailed.push_back( FileCopyResult(*s,ssprintf("error copying file to '%s'",sOsDir.c_str())) );
+						bool bFileExists = DoesFileExist( SpecialFiles::PACKAGES_DIR + sFilename + sExt );
+						if( FileCopy( TEMP_MOUNT_POINT + sFilename + sExt, SpecialFiles::PACKAGES_DIR + sFilename + sExt ) )
+							vSucceeded.push_back( FileCopyResult(*s,bFileExists ? "overwrote existing file" : "") );
+						else
+							vFailed.push_back( FileCopyResult(*s,ssprintf("error copying file to '%s'",sOsDir.c_str())) );
 
+					}
+					*/
+					m_DownloadState = packages;
+					if (!m_vsQueuedPackageUrls.empty())
+					{
+						RString sUrl = m_vsQueuedPackageUrls.back();
+						m_vsQueuedPackageUrls.pop_back();
+						m_sCurrentPackageTempFile = MakeTempFileName(sUrl);
+						ASSERT(m_pTransfer == NULL);
+						m_pTransfer = new FileTransfer();
+						m_pTransfer->StartDownload(sUrl, m_sCurrentPackageTempFile);
+					}
 				}
-				*/
-				m_DownloadState = packages;
-				if( !m_vsQueuedPackageUrls.empty() )
-				{
-					RString sUrl = m_vsQueuedPackageUrls.back();
-					m_vsQueuedPackageUrls.pop_back();
-					m_sCurrentPackageTempFile = MakeTempFileName(sUrl);
-					ASSERT(m_pTransfer == NULL);
-					m_pTransfer = new FileTransfer();
-					m_pTransfer->StartDownload( sUrl, m_sCurrentPackageTempFile );
-				}
-			}
-			break;
-		case packages:
+				break;
+			case packages:
 			{
-				if( m_pTransfer->IsFinished() )
+				if (m_pTransfer->IsFinished())
 				{
-					SAFE_DELETE( m_pTransfer );
-					InstallSmzip( m_sCurrentPackageTempFile, m_playAfterLaunchInfo );
-					FILEMAN->Remove( m_sCurrentPackageTempFile );	// Harmless if this fails because download didn't finish
+					SAFE_DELETE(m_pTransfer);
+					InstallSmzip(m_sCurrentPackageTempFile, m_playAfterLaunchInfo);
+					FILEMAN->Remove(m_sCurrentPackageTempFile);	// Harmless if this fails because download didn't finish
 				}
-				if( !m_vsQueuedPackageUrls.empty() )
+				if (!m_vsQueuedPackageUrls.empty())
 				{
 					RString sUrl = m_vsQueuedPackageUrls.back();
 					m_vsQueuedPackageUrls.pop_back();
 					m_sCurrentPackageTempFile = MakeTempFileName(sUrl);
 					ASSERT(m_pTransfer == NULL);
 					m_pTransfer = new FileTransfer();
-					m_pTransfer->StartDownload( sUrl, m_sCurrentPackageTempFile );
+					m_pTransfer->StartDownload(sUrl, m_sCurrentPackageTempFile);
 				}
 			}
 			break;
 		}
-		bool bFinished = m_DownloadState == packages  &&  
-			m_vsQueuedPackageUrls.empty() && 
-			m_pTransfer == NULL;
-		if( bFinished )
+		bool bFinished = m_DownloadState == packages  &&
+		                 m_vsQueuedPackageUrls.empty() &&
+		                 m_pTransfer == NULL;
+		if (bFinished)
 		{
-			Message msg( "DownloadFinished" );
+			Message msg("DownloadFinished");
 			MESSAGEMAN->Broadcast(msg);
 
 			playAfterLaunchInfo = m_playAfterLaunchInfo;
@@ -264,7 +288,7 @@ public:
 			return false;
 		}
 	}
-	static RString MakeTempFileName( RString s )
+	static RString MakeTempFileName(RString s)
 	{
 		return SpecialFiles::CACHE_DIR + "Downloads/" + Basename(s);
 	}
@@ -275,7 +299,7 @@ static bool IsStepManiaProtocol(const RString &arg)
 {
 	// for now, only load from the StepMania domain until the security implications of this feature are better understood.
 	//return BeginsWith(arg,"stepmania://beta.stepmania.com/");
-	return BeginsWith(arg,"stepmania://");
+	return BeginsWith(arg, "stepmania://");
 }
 
 static bool IsPackageFile(const RString &arg)
@@ -284,21 +308,25 @@ static bool IsPackageFile(const RString &arg)
 	return ext.EqualsNoCase("smzip") || ext.EqualsNoCase("zip");
 }
 
-PlayAfterLaunchInfo DoInstalls( CommandLineActions::CommandLineArgs args )
+PlayAfterLaunchInfo DoInstalls(CommandLineActions::CommandLineArgs args)
 {
 	PlayAfterLaunchInfo ret;
-	for( int i = 0; i<(int)args.argv.size(); i++ )
+	for (int i = 0; i < (int)args.argv.size(); i++)
 	{
 		RString s = args.argv[i];
-		if( IsStepManiaProtocol(s) )
-			g_pDownloadTasks.push_back( new DownloadTask(s) );
-		else if( IsPackageFile(s) )
+		if (IsStepManiaProtocol(s))
+		{
+			g_pDownloadTasks.push_back(new DownloadTask(s));
+		}
+		else if (IsPackageFile(s))
+		{
 			InstallSmzipOsArg(s, ret);
+		}
 	}
 	return ret;
 }
 
-REGISTER_SCREEN_CLASS( ScreenInstallOverlay );
+REGISTER_SCREEN_CLASS(ScreenInstallOverlay);
 
 ScreenInstallOverlay::~ScreenInstallOverlay()
 {
@@ -307,13 +335,13 @@ void ScreenInstallOverlay::Init()
 {
 	Screen::Init();
 
-	m_textStatus.LoadFromFont( THEME->GetPathF("ScreenInstallOverlay", "status") );
+	m_textStatus.LoadFromFont(THEME->GetPathF("ScreenInstallOverlay", "status"));
 	m_textStatus.SetName("Status");
-	ActorUtil::LoadAllCommandsAndSetXY(m_textStatus,"ScreenInstallOverlay");
-	this->AddChild( &m_textStatus );
+	ActorUtil::LoadAllCommandsAndSetXY(m_textStatus, "ScreenInstallOverlay");
+	this->AddChild(&m_textStatus);
 }
 
-bool ScreenInstallOverlay::OverlayInput( const InputEventPlus &input )
+bool ScreenInstallOverlay::OverlayInput(const InputEventPlus &input)
 {
 	/*
 	if( input.DeviceI.button == g_buttonLogin && input.type == IET_FIRST_PRESS )
@@ -326,58 +354,62 @@ bool ScreenInstallOverlay::OverlayInput( const InputEventPlus &input )
 	return false;
 }
 
-void ScreenInstallOverlay::Update( float fDeltaTime )
+void ScreenInstallOverlay::Update(float fDeltaTime)
 {
 	Screen::Update(fDeltaTime);
 	PlayAfterLaunchInfo playAfterLaunchInfo;
-	while( CommandLineActions::ToProcess.size() > 0 )
+	while (CommandLineActions::ToProcess.size() > 0)
 	{
 		CommandLineActions::CommandLineArgs args = CommandLineActions::ToProcess.back();
 		CommandLineActions::ToProcess.pop_back();
- 		PlayAfterLaunchInfo pali2 = DoInstalls( args );
-		playAfterLaunchInfo.OverlayWith( pali2 );
+		PlayAfterLaunchInfo pali2 = DoInstalls(args);
+		playAfterLaunchInfo.OverlayWith(pali2);
 	}
 
-	for(int i=g_pDownloadTasks.size()-1; i>=0; --i)
+	for (int i = g_pDownloadTasks.size() - 1; i >= 0; --i)
 	{
 		DownloadTask *p = g_pDownloadTasks[i];
 		PlayAfterLaunchInfo pali;
-		if( p->UpdateAndIsFinished( fDeltaTime, pali) )
+		if (p->UpdateAndIsFinished(fDeltaTime, pali))
 		{
 			playAfterLaunchInfo.OverlayWith(pali);
 			SAFE_DELETE(p);
-			g_pDownloadTasks.erase( g_pDownloadTasks.begin()+i );
+			g_pDownloadTasks.erase(g_pDownloadTasks.begin() + i);
 		}
 	}
 
 	{
 		vector<RString> vsMessages;
-		FOREACH_CONST( DownloadTask*, g_pDownloadTasks, pDT )
+		FOREACH_CONST(DownloadTask*, g_pDownloadTasks, pDT)
 		{
-			vsMessages.push_back( (*pDT)->GetStatus() );
+			vsMessages.push_back((*pDT)->GetStatus());
 		}
-		m_textStatus.SetText( join("\n", vsMessages) );
+		m_textStatus.SetText(join("\n", vsMessages));
 	}
 
-	if( playAfterLaunchInfo.bAnySongChanged )
-		SONGMAN->Reload( false, NULL );
+	if (playAfterLaunchInfo.bAnySongChanged)
+	{
+		SONGMAN->Reload(false, NULL);
+	}
 
-	if( !playAfterLaunchInfo.sSongDir.empty() )
+	if (!playAfterLaunchInfo.sSongDir.empty())
 	{
 		Song* pSong = NULL;
 		GAMESTATE->Reset();
 		RString sInitialScreen;
-		if( playAfterLaunchInfo.sSongDir.length() > 0 )
-			pSong = SONGMAN->GetSongFromDir( playAfterLaunchInfo.sSongDir );
-		if( pSong )
+		if (playAfterLaunchInfo.sSongDir.length() > 0)
+		{
+			pSong = SONGMAN->GetSongFromDir(playAfterLaunchInfo.sSongDir);
+		}
+		if (pSong)
 		{
 			vector<const Style*> vpStyle;
-			GAMEMAN->GetStylesForGame( GAMESTATE->m_pCurGame, vpStyle, false );
-			GAMESTATE->m_PlayMode.Set( PLAY_MODE_REGULAR );
+			GAMEMAN->GetStylesForGame(GAMESTATE->m_pCurGame, vpStyle, false);
+			GAMESTATE->m_PlayMode.Set(PLAY_MODE_REGULAR);
 			GAMESTATE->m_bSideIsJoined[0] = true;
 			GAMESTATE->m_MasterPlayerNumber = PLAYER_1;
-			GAMESTATE->m_pCurStyle.Set( vpStyle[0] );
-			GAMESTATE->m_pCurSong.Set( pSong );
+			GAMESTATE->m_pCurStyle.Set(vpStyle[0]);
+			GAMESTATE->m_pCurSong.Set(pSong);
 			GAMESTATE->m_pPreferredSong = pSong;
 			sInitialScreen = StepMania::GetSelectMusicScreen();
 		}
@@ -387,15 +419,17 @@ void ScreenInstallOverlay::Update( float fDeltaTime )
 		}
 
 		Screen *curScreen = SCREENMAN->GetTopScreen();
-		if(curScreen->GetScreenType() == game_menu || curScreen->GetScreenType() == attract)
-			SCREENMAN->SetNewScreen( sInitialScreen );
+		if (curScreen->GetScreenType() == game_menu || curScreen->GetScreenType() == attract)
+		{
+			SCREENMAN->SetNewScreen(sInitialScreen);
+		}
 	}
 }
 
 /*
  * (c) 2001-2005 Chris Danford, Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -405,7 +439,7 @@ void ScreenInstallOverlay::Update( float fDeltaTime )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

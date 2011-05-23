@@ -5,7 +5,8 @@
 
 #include "GameInput.h"
 
-enum Code {
+enum Code
+{
 	Code_PrevSteps1,
 	Code_PrevSteps2,
 	Code_NextSteps1,
@@ -52,19 +53,19 @@ enum Code {
 class CodeDetector
 {
 public:
-	static void RefreshCacheItems( RString sClass="" );	// call this before checking codes, but call infrequently
-	static bool EnteredPrevSteps( GameController controller );
-	static bool EnteredNextSteps( GameController controller );
-	static bool EnteredNextSort( GameController controller );
-	static bool EnteredModeMenu( GameController controller );
-	static bool DetectAndAdjustMusicOptions( GameController controller );
-	static bool EnteredCode( GameController controller, Code code );
-	static bool EnteredPrevGroup( GameController controller );
-	static bool EnteredNextGroup( GameController controller );
-	static bool EnteredCloseFolder( GameController controller );
+	static void RefreshCacheItems(RString sClass = "");	// call this before checking codes, but call infrequently
+	static bool EnteredPrevSteps(GameController controller);
+	static bool EnteredNextSteps(GameController controller);
+	static bool EnteredNextSort(GameController controller);
+	static bool EnteredModeMenu(GameController controller);
+	static bool DetectAndAdjustMusicOptions(GameController controller);
+	static bool EnteredCode(GameController controller, Code code);
+	static bool EnteredPrevGroup(GameController controller);
+	static bool EnteredNextGroup(GameController controller);
+	static bool EnteredCloseFolder(GameController controller);
 
 	// todo: move to PlayerOptions.h -aj
-	void ChangeScrollSpeed( GameController controller, bool bIncrement );
+	void ChangeScrollSpeed(GameController controller, bool bIncrement);
 };
 
 #endif
@@ -72,7 +73,7 @@ public:
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -82,7 +83,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

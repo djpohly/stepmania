@@ -10,16 +10,19 @@ class ThreadedFileWorker;
 class RageFileDriverTimeout: public RageFileDriver
 {
 public:
-	RageFileDriverTimeout( const RString &path );
+	RageFileDriverTimeout(const RString &path);
 	virtual ~RageFileDriverTimeout();
 
-	RageFileBasic *Open( const RString &path, int mode, int &err );
-	void FlushDirCache( const RString &sPath );
-	bool Move( const RString &sOldPath, const RString &sNewPath );
-	bool Remove( const RString &sPath );
+	RageFileBasic *Open(const RString &path, int mode, int &err);
+	void FlushDirCache(const RString &sPath);
+	bool Move(const RString &sOldPath, const RString &sNewPath);
+	bool Remove(const RString &sPath);
 
-	static void SetTimeout( float fSeconds );
-	static void ResetTimeout() { SetTimeout( -1 ); }
+	static void SetTimeout(float fSeconds);
+	static void ResetTimeout()
+	{
+		SetTimeout(-1);
+	}
 
 private:
 	RageFileDriver *m_pChild;

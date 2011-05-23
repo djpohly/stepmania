@@ -10,7 +10,7 @@
  * TODO: Look into a more flexible system without a fixed number of grades. -Wolfman2000
  */
 enum Grade
-{ 
+{
 	Grade_Tier01,	/**< Usually an AAAA */
 	Grade_Tier02,	/**< Usually an AAA */
 	Grade_Tier03,	/**< Usually an AA */
@@ -32,7 +32,7 @@ enum Grade
 	Grade_Tier19,
 	Grade_Tier20,
 	Grade_Failed,	/**< Usually an E */
-	NUM_Grade, 
+	NUM_Grade,
 	Grade_Invalid,
 };
 /** @brief Have an alternative for if there is no data for grading. */
@@ -46,15 +46,18 @@ enum Grade
  * @param g the grade to convert.
  * @return the string reprsentation.
  */
-static inline RString GradeToString( Grade g )
+static inline RString GradeToString(Grade g)
 {
-	ASSERT_M( (g >= 0 && g<NUM_Grade) || g == Grade_NoData, ssprintf("grade = %d",g) );
+	ASSERT_M((g >= 0 && g < NUM_Grade) || g == Grade_NoData, ssprintf("grade = %d", g));
 
-	switch( g )
+	switch (g)
 	{
-	case Grade_NoData:	return "NoData";
-	case Grade_Failed:	return "Failed";
-	default:		return ssprintf("Tier%02d",g+1);
+		case Grade_NoData:
+			return "NoData";
+		case Grade_Failed:
+			return "Failed";
+		default:
+			return ssprintf("Tier%02d", g + 1);
 	}
 }
 
@@ -66,22 +69,22 @@ static inline RString GradeToString( Grade g )
  * This is only referenced in ScreenEvaluation at the moment.
  * @param g the current Grade.
  * @return the old styled grade string. */
-RString GradeToOldString( Grade g );
-RString GradeToLocalizedString( Grade g );
+RString GradeToOldString(Grade g);
+RString GradeToLocalizedString(Grade g);
 /**
  * @brief Convert the given RString into a proper Grade.
  * @param s the string to convert.
  * @return the expected Grade.
  */
-Grade StringToGrade( const RString &s );
-LuaDeclareType( Grade );
+Grade StringToGrade(const RString &s);
+LuaDeclareType(Grade);
 extern ThemeMetric<int> NUM_GRADE_TIERS_USED;
 #define NUM_POSSIBLE_GRADES	(NUM_GRADE_TIERS_USED+1)
 /**
  * @brief Step through the enumerator one at a time to get the next Grade.
  * @param g the current Grade.
  * @return the next Grade. */
-Grade GetNextPossibleGrade( Grade g );
+Grade GetNextPossibleGrade(Grade g);
 /** @brief Loop through each possible Grade. */
 #define FOREACH_PossibleGrade( g ) \
 for( Grade g = (Grade)(0); g != Grade_Invalid; g = GetNextPossibleGrade(g) )
@@ -93,7 +96,7 @@ for( Grade g = (Grade)(0); g != Grade_Invalid; g = GetNextPossibleGrade(g) )
  * @author Chris Danford (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -103,7 +106,7 @@ for( Grade g = (Grade)(0); g != Grade_Invalid; g = GetNextPossibleGrade(g) )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

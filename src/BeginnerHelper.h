@@ -16,18 +16,21 @@ public:
 	BeginnerHelper();
 	~BeginnerHelper();
 
-	bool Init( int iDancePadType );
-	bool IsInitialized() { return m_bInitialized; }
+	bool Init(int iDancePadType);
+	bool IsInitialized()
+	{
+		return m_bInitialized;
+	}
 	static bool CanUse();
-	void AddPlayer( PlayerNumber pn, const NoteData &nd );
-	void ShowStepCircle( PlayerNumber pn, int CSTEP );
+	void AddPlayer(PlayerNumber pn, const NoteData &nd);
+	void ShowStepCircle(PlayerNumber pn, int CSTEP);
 	bool m_bShowBackground;
 
-	void Update( float fDeltaTime );
+	void Update(float fDeltaTime);
 	virtual void DrawPrimitives();
 
 protected:
-	void Step( PlayerNumber pn, int CSTEP );
+	void Step(PlayerNumber pn, int CSTEP);
 
 	NoteData m_NoteData[NUM_PLAYERS];
 	bool m_bPlayerEnabled[NUM_PLAYERS];
@@ -50,7 +53,7 @@ protected:
  * @author Kevin Slaughter, Thad Ward (c) 2003
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -60,7 +63,7 @@ protected:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

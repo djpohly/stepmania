@@ -11,20 +11,32 @@ struct madlib_t;
 class RageSoundReader_MP3: public RageSoundReader_FileReader
 {
 public:
-	OpenResult Open( RageFileBasic *pFile );
+	OpenResult Open(RageFileBasic *pFile);
 	void Close();
-	int GetLength() const { return GetLengthConst(false); }
-	int GetLength_Fast() const { return GetLengthConst(true); }
-	int SetPosition( int iSample );
-	int Read( float *pBuf, int iFrames );
-	unsigned GetNumChannels() const { return Channels; }
-	int GetSampleRate() const { return SampleRate; }
+	int GetLength() const
+	{
+		return GetLengthConst(false);
+	}
+	int GetLength_Fast() const
+	{
+		return GetLengthConst(true);
+	}
+	int SetPosition(int iSample);
+	int Read(float *pBuf, int iFrames);
+	unsigned GetNumChannels() const
+	{
+		return Channels;
+	}
+	int GetSampleRate() const
+	{
+		return SampleRate;
+	}
 	int GetNextSourceFrame() const;
-	bool SetProperty( const RString &sProperty, float fValue );
+	bool SetProperty(const RString &sProperty, float fValue);
 
 	RageSoundReader_MP3();
 	~RageSoundReader_MP3();
-	RageSoundReader_MP3( const RageSoundReader_MP3 & ); /* not defined; don't use */
+	RageSoundReader_MP3(const RageSoundReader_MP3 &);   /* not defined; don't use */
 	RageSoundReader_MP3 *Copy() const;
 
 private:
@@ -36,18 +48,18 @@ private:
 
 
 	bool MADLIB_rewind();
-	int SetPosition_toc( int iSample, bool Xing );
-	int SetPosition_hard( int iSample );
-	int SetPosition_estimate( int iSample );
+	int SetPosition_toc(int iSample, bool Xing);
+	int SetPosition_hard(int iSample);
+	int SetPosition_estimate(int iSample);
 
 	int fill_buffer();
-	int do_mad_frame_decode( bool headers_only=false );
+	int do_mad_frame_decode(bool headers_only = false);
 	int resync();
 	void synth_output();
-	int seek_stream_to_byte( int byte );
+	int seek_stream_to_byte(int byte);
 	bool handle_first_frame();
-	int GetLengthInternal( bool fast );
-	int GetLengthConst( bool fast ) const;
+	int GetLengthInternal(bool fast);
+	int GetLengthConst(bool fast) const;
 };
 
 #endif

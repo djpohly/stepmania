@@ -22,35 +22,35 @@ enum SMALoadingStates
 /** @brief Reads a Song from a .SMA file. */
 namespace SMALoader
 {
-	void LoadFromSMATokens( RString sStepsType,
-			       RString sDescription,
-			       RString sDifficulty,
-			       RString sMeter,
-			       RString sRadarValues,
-			       RString sNoteData,
-			       Steps &out );
-	
-	bool LoadFromDir( const RString &sPath, Song &out );
-	void TidyUpData( Song &song, bool bFromCache );
-	
-	bool LoadFromSMAFile( const RString &sPath, Song &out );
-	void GetApplicableFiles( const RString &sPath, vector<RString> &out );
-	
-	bool LoadEditFromFile( RString sEditFilePath, ProfileSlot slot, bool bAddStepsToSong );
-	bool LoadEditFromBuffer( const RString &sBuffer, const RString &sEditFilePath, ProfileSlot slot );
-	bool LoadEditFromMsd( const MsdFile &msd, const RString &sEditFilePath, ProfileSlot slot, bool bAddStepsToSong );
-	bool LoadFromBGChangesString( BackgroundChange &change, const RString &sBGChangeExpression );
-	
-	void ProcessBeatsPerMeasure( TimingData &out, const RString sParam );
-	bool ProcessBPMs( TimingData &out, const int iRowsPerBeat, const RString sParam );
-	void ProcessStops( TimingData &out, const int iRowsPerBeat, const RString sParam );
-	void ProcessDelays( TimingData &out, const int iRowsPerBeat, const RString sParam );
-	void ProcessTickcounts( TimingData &out, const int iRowsPerBeat, const RString sParam );
-	void ProcessMultipliers( TimingData &out, const int iRowsPerBeat, const RString sParam );
-	void ProcessSpeeds( TimingData &out, const int iRowsPerBeat, const RString sParam );
-	void ProcessFakes( TimingData &out, const int iRowsPerBeat, const RString sParam );
-	
-	float RowToBeat( RString sLine, const int iRowsPerBeat );
+	void LoadFromSMATokens(RString sStepsType,
+	                       RString sDescription,
+	                       RString sDifficulty,
+	                       RString sMeter,
+	                       RString sRadarValues,
+	                       RString sNoteData,
+	                       Steps &out);
+
+	bool LoadFromDir(const RString &sPath, Song &out);
+	void TidyUpData(Song &song, bool bFromCache);
+
+	bool LoadFromSMAFile(const RString &sPath, Song &out);
+	void GetApplicableFiles(const RString &sPath, vector<RString> &out);
+
+	bool LoadEditFromFile(RString sEditFilePath, ProfileSlot slot, bool bAddStepsToSong);
+	bool LoadEditFromBuffer(const RString &sBuffer, const RString &sEditFilePath, ProfileSlot slot);
+	bool LoadEditFromMsd(const MsdFile &msd, const RString &sEditFilePath, ProfileSlot slot, bool bAddStepsToSong);
+	bool LoadFromBGChangesString(BackgroundChange &change, const RString &sBGChangeExpression);
+
+	void ProcessBeatsPerMeasure(TimingData &out, const RString sParam);
+	bool ProcessBPMs(TimingData &out, const int iRowsPerBeat, const RString sParam);
+	void ProcessStops(TimingData &out, const int iRowsPerBeat, const RString sParam);
+	void ProcessDelays(TimingData &out, const int iRowsPerBeat, const RString sParam);
+	void ProcessTickcounts(TimingData &out, const int iRowsPerBeat, const RString sParam);
+	void ProcessMultipliers(TimingData &out, const int iRowsPerBeat, const RString sParam);
+	void ProcessSpeeds(TimingData &out, const int iRowsPerBeat, const RString sParam);
+	void ProcessFakes(TimingData &out, const int iRowsPerBeat, const RString sParam);
+
+	float RowToBeat(RString sLine, const int iRowsPerBeat);
 };
 
 #endif
@@ -60,7 +60,7 @@ namespace SMALoader
  * @author Aldo Fregoso, Jason Felds (c) 2009-2011
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -70,7 +70,7 @@ namespace SMALoader
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

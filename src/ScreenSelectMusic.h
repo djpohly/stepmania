@@ -23,7 +23,7 @@ enum SelectionState
 	SelectionState_Finalized,
 	NUM_SelectionState,
 };
-const RString& SelectionStateToString( SelectionState ss );
+const RString& SelectionStateToString(SelectionState ss);
 
 class ScreenSelectMusic : public ScreenWithMenuElements
 {
@@ -32,38 +32,53 @@ public:
 	virtual void Init();
 	virtual void BeginScreen();
 
-	virtual void Update( float fDeltaTime );
-	virtual void Input( const InputEventPlus &input );
-	virtual void HandleMessage( const Message &msg );
-	virtual void HandleScreenMessage( const ScreenMessage SM );
-	virtual bool AllowLateJoin() const { return true; }
+	virtual void Update(float fDeltaTime);
+	virtual void Input(const InputEventPlus &input);
+	virtual void HandleMessage(const Message &msg);
+	virtual void HandleScreenMessage(const ScreenMessage SM);
+	virtual bool AllowLateJoin() const
+	{
+		return true;
+	}
 
-	virtual void MenuStart( const InputEventPlus &input );
-	virtual void MenuBack( const InputEventPlus &input );
+	virtual void MenuStart(const InputEventPlus &input);
+	virtual void MenuBack(const InputEventPlus &input);
 
 	// ScreenWithMenuElements override: never play music here; we do it ourself.
 	virtual void StartPlayingMusic() { }
 
-	bool GetGoToOptions() const { return m_bGoToOptions; }
-	MusicWheel *GetMusicWheel() { return &m_MusicWheel; }
+	bool GetGoToOptions() const
+	{
+		return m_bGoToOptions;
+	}
+	MusicWheel *GetMusicWheel()
+	{
+		return &m_MusicWheel;
+	}
 
-	void OpenOptionsList( PlayerNumber pn );
+	void OpenOptionsList(PlayerNumber pn);
 
 	// Lua
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 protected:
-	virtual bool GenericTweenOn() const { return true; }
-	virtual bool GenericTweenOff() const { return true; }
-	void UpdateSelectButton( PlayerNumber pn, bool bBeingPressed );
+	virtual bool GenericTweenOn() const
+	{
+		return true;
+	}
+	virtual bool GenericTweenOff() const
+	{
+		return true;
+	}
+	void UpdateSelectButton(PlayerNumber pn, bool bBeingPressed);
 
-	void ChangeSteps( PlayerNumber pn, int dir );
-	void AfterStepsOrTrailChange( const vector<PlayerNumber> &vpns );
+	void ChangeSteps(PlayerNumber pn, int dir);
+	void AfterStepsOrTrailChange(const vector<PlayerNumber> &vpns);
 	void SwitchToPreferredDifficulty();
 	void AfterMusicChange();
 
-	void CheckBackgroundRequests( bool bForce );	
-	bool DetectCodes( const InputEventPlus &input );
+	void CheckBackgroundRequests(bool bForce);
+	bool DetectCodes(const InputEventPlus &input);
 
 	vector<Steps*>		m_vpSteps;
 	vector<Trail*>		m_vpTrails;
@@ -95,17 +110,23 @@ protected:
 	ThemeMetric<bool>		CHANGE_GROUPS_WITH_GAME_BUTTONS;
 	ThemeMetric<RString>	NULL_SCORE_STRING;
 
-	bool CanChangeSong() const { return m_SelectionState == SelectionState_SelectingSong; }
-	bool CanChangeSteps() const { return TWO_PART_SELECTION ? m_SelectionState == SelectionState_SelectingSteps : m_SelectionState == SelectionState_SelectingSong; }
+	bool CanChangeSong() const
+	{
+		return m_SelectionState == SelectionState_SelectingSong;
+	}
+	bool CanChangeSteps() const
+	{
+		return TWO_PART_SELECTION ? m_SelectionState == SelectionState_SelectingSteps : m_SelectionState == SelectionState_SelectingSong;
+	}
 	SelectionState GetNextSelectionState() const
 	{
-		switch( m_SelectionState )
+		switch (m_SelectionState)
 		{
-		case SelectionState_SelectingSong:
-			return TWO_PART_SELECTION ? SelectionState_SelectingSteps : SelectionState_Finalized;
-		case SelectionState_SelectingSteps:
-			return SelectionState_Finalized;
-		DEFAULT_FAIL( m_SelectionState );
+			case SelectionState_SelectingSong:
+				return TWO_PART_SELECTION ? SelectionState_SelectingSteps : SelectionState_Finalized;
+			case SelectionState_SelectingSteps:
+				return SelectionState_Finalized;
+				DEFAULT_FAIL(m_SelectionState);
 		}
 	}
 
@@ -156,7 +177,7 @@ protected:
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -166,7 +187,7 @@ protected:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

@@ -7,9 +7,9 @@
 
 class LoadingWindow;
 
-const int NETPROTOCOLVERSION=3;
-const int NETMAXBUFFERSIZE=1020; //1024 - 4 bytes for EzSockets
-const int NETNUMTAPSCORES=8;
+const int NETPROTOCOLVERSION = 3;
+const int NETMAXBUFFERSIZE = 1020; //1024 - 4 bytes for EzSockets
+const int NETNUMTAPSCORES = 8;
 
 // [SMLClientCommands name]
 enum NSCommand
@@ -66,7 +66,7 @@ struct EndOfGame_PlayerData
 
 enum NSScoreBoardColumn
 {
-	NSSB_NAMES=0,
+	NSSB_NAMES = 0,
 	NSSB_COMBO,
 	NSSB_GRADE,
 	NUM_NSScoreBoardColumn,
@@ -90,7 +90,7 @@ public:
 	unsigned char Data[NETMAXBUFFERSIZE];	//Data
 	int Position;				//Other info (Used for following functions)
 	int size;					//When sending these pacs, Position should
-								//be used; NOT size.
+	//be used; NOT size.
 
 	//Commands used to operate on NetPackets
 	uint8_t Read1();
@@ -98,34 +98,34 @@ public:
 	uint32_t Read4();
 	RString ReadNT();
 
-	void Write1( uint8_t Data );
-	void Write2( uint16_t Data );
-	void Write4( uint32_t Data );
-	void WriteNT( const RString& Data );
+	void Write1(uint8_t Data);
+	void Write2(uint16_t Data);
+	void Write4(uint32_t Data);
+	void WriteNT(const RString& Data);
 
 	void ClearPacket();
 };
 /** @brief Uses ezsockets for primitive song syncing and score reporting. */
-class NetworkSyncManager 
+class NetworkSyncManager
 {
 public:
-	NetworkSyncManager( LoadingWindow *ld = NULL );
+	NetworkSyncManager(LoadingWindow *ld = NULL);
 	~NetworkSyncManager();
 
-    // If "useSMserver" then send score to server
-	void ReportScore( int playerID, int step, int score, int combo, float offset );	
+	// If "useSMserver" then send score to server
+	void ReportScore(int playerID, int step, int score, int combo, float offset);
 	void ReportSongOver();
 	void ReportStyle(); // Report style, players, and names
-	void ReportNSSOnOff( int i );	// Report song selection screen on/off
-	void StartRequest( short position );	// Request a start; Block until granted.
+	void ReportNSSOnOff(int i);	// Report song selection screen on/off
+	void StartRequest(short position);	// Request a start; Block until granted.
 	RString GetServerName();
 
 	// SMOnline stuff
-	void SendSMOnline( );
+	void SendSMOnline();
 
-	bool Connect( const RString& addy, unsigned short port );
+	bool Connect(const RString& addy, unsigned short port);
 
-	void PostStartUp( const RString& ServerIP );
+	void PostStartUp(const RString& ServerIP);
 
 	void CloseConnection();
 
@@ -133,7 +133,7 @@ public:
 
 	int m_playerLife[NUM_PLAYERS];	// Life (used for sending to server)
 
-	void Update( float fDeltaTime );
+	void Update(float fDeltaTime);
 
 	bool useSMserver;
 	bool isSMOnline;
@@ -147,7 +147,7 @@ public:
 	// Used for ScreenNetEvaluation
 	vector<EndOfGame_PlayerData> m_EvalPlayerData;
 
-	// Used together: 
+	// Used together:
 	bool ChangedScoreboard(int Column);	// Returns true if scoreboard changed since function was last called.
 	RString m_Scoreboard[NUM_NSScoreBoardColumn];
 
@@ -173,9 +173,9 @@ public:
 
 	int GetSMOnlineSalt();
 
-	RString MD5Hex( const RString &sInput );
+	RString MD5Hex(const RString &sInput);
 
-	void GetListOfLANServers( vector<NetServerInfo>& AllServers );
+	void GetListOfLANServers(vector<NetServerInfo>& AllServers);
 private:
 #if !defined(WITHOUT_NETWORKING)
 
@@ -187,14 +187,14 @@ private:
 	int m_step;
 	int m_score;
 	int m_combo;
-    
+
 	int m_startupStatus;	// Used to see if attempt was successful or not.
 	int m_iSalt;
 
 	bool m_scoreboardchange[NUM_NSScoreBoardColumn];
 
 	RString m_ServerName;
- 
+
 	EzSockets *NetPlayerClient;
 	EzSockets *BroadcastReception;
 
@@ -207,13 +207,13 @@ private:
 };
 
 extern NetworkSyncManager *NSMAN;
- 
+
 #endif
- 
+
 /*
  * (c) 2003-2004 Charles Lohr, Joshua Allen
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -223,7 +223,7 @@ extern NetworkSyncManager *NSMAN;
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

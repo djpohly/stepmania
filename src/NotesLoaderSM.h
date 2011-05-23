@@ -18,31 +18,31 @@ const float FAST_BPM_WARP = 9999999.f;
 /** @brief Reads a Song from an .SM file. */
 namespace SMLoader
 {
-	void LoadFromSMTokens( RString sStepsType, RString sDescription, RString sDifficulty,
-			      RString sMeter, RString sRadarValues, RString sNoteData, Steps &out );
-	
-	bool LoadFromDir( const RString &sPath, Song &out );
-	void TidyUpData( Song &song, bool bFromCache );
+	void LoadFromSMTokens(RString sStepsType, RString sDescription, RString sDifficulty,
+	                      RString sMeter, RString sRadarValues, RString sNoteData, Steps &out);
 
-	bool LoadFromSMFile( const RString &sPath, Song &out, bool bFromCache = false );
-	void GetApplicableFiles( const RString &sPath, vector<RString> &out );
-	bool LoadTimingFromFile( const RString &fn, TimingData &out );
-	void LoadTimingFromSMFile( const MsdFile &msd, TimingData &out );
-	bool LoadEditFromFile( RString sEditFilePath, ProfileSlot slot, bool bAddStepsToSong );
-	bool LoadEditFromBuffer( const RString &sBuffer, const RString &sEditFilePath, ProfileSlot slot );
-	bool LoadEditFromMsd( const MsdFile &msd, const RString &sEditFilePath, ProfileSlot slot, bool bAddStepsToSong );
-	bool LoadFromBGChangesString( BackgroundChange &change, const RString &sBGChangeExpression );
-	
-	
-	bool ProcessBPMs( TimingData &, const RString );
-	void ProcessStops( TimingData &, const RString );
-	void ProcessDelays( TimingData &, const RString );
-	void ProcessTimeSignatures( TimingData &, const RString );
-	void ProcessTickcounts( TimingData &, const RString );
-	void ProcessBGChanges( Song &out, const RString &sValueName, 
-			      const RString &sPath, const RString &sParam );
-	void ProcessAttacks( Song &out, MsdFile::value_t sParams );
-	void ProcessInstrumentTracks( Song &out, const RString &sParam );
+	bool LoadFromDir(const RString &sPath, Song &out);
+	void TidyUpData(Song &song, bool bFromCache);
+
+	bool LoadFromSMFile(const RString &sPath, Song &out, bool bFromCache = false);
+	void GetApplicableFiles(const RString &sPath, vector<RString> &out);
+	bool LoadTimingFromFile(const RString &fn, TimingData &out);
+	void LoadTimingFromSMFile(const MsdFile &msd, TimingData &out);
+	bool LoadEditFromFile(RString sEditFilePath, ProfileSlot slot, bool bAddStepsToSong);
+	bool LoadEditFromBuffer(const RString &sBuffer, const RString &sEditFilePath, ProfileSlot slot);
+	bool LoadEditFromMsd(const MsdFile &msd, const RString &sEditFilePath, ProfileSlot slot, bool bAddStepsToSong);
+	bool LoadFromBGChangesString(BackgroundChange &change, const RString &sBGChangeExpression);
+
+
+	bool ProcessBPMs(TimingData &, const RString);
+	void ProcessStops(TimingData &, const RString);
+	void ProcessDelays(TimingData &, const RString);
+	void ProcessTimeSignatures(TimingData &, const RString);
+	void ProcessTickcounts(TimingData &, const RString);
+	void ProcessBGChanges(Song &out, const RString &sValueName,
+	                      const RString &sPath, const RString &sParam);
+	void ProcessAttacks(Song &out, MsdFile::value_t sParams);
+	void ProcessInstrumentTracks(Song &out, const RString &sParam);
 }
 
 #endif
@@ -52,7 +52,7 @@ namespace SMLoader
  * @author Chris Danford, Glenn Maynard (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -62,7 +62,7 @@ namespace SMLoader
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

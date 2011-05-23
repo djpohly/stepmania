@@ -7,21 +7,21 @@
 #include "Song.h"
 #include "StatsManager.h"
 
-REGISTER_SCREEN_CLASS( ScreenGameplayShared );
+REGISTER_SCREEN_CLASS(ScreenGameplayShared);
 
-void ScreenGameplayShared::FillPlayerInfo( vector<PlayerInfo> &vPlayerInfoOut )
+void ScreenGameplayShared::FillPlayerInfo(vector<PlayerInfo> &vPlayerInfoOut)
 {
 	const PlayerNumber master = GAMESTATE->m_MasterPlayerNumber;
-	const PlayerNumber other = (master == PLAYER_1? PLAYER_2:PLAYER_1);
+	const PlayerNumber other = (master == PLAYER_1 ? PLAYER_2 : PLAYER_1);
 
 	/* The master player is where all of the real work takes place.  The other player exists
 	 * only so we have a place to split stats out into at the end. */
-	vPlayerInfoOut.resize( 2 );
-	vPlayerInfoOut[0].Load( master, MultiPlayer_Invalid, true, Difficulty_Invalid );
-	vPlayerInfoOut[1].Load( other, MultiPlayer_Invalid, false, Difficulty_Invalid );
+	vPlayerInfoOut.resize(2);
+	vPlayerInfoOut[0].Load(master, MultiPlayer_Invalid, true, Difficulty_Invalid);
+	vPlayerInfoOut[1].Load(other, MultiPlayer_Invalid, false, Difficulty_Invalid);
 }
 
-PlayerInfo &ScreenGameplayShared::GetPlayerInfoForInput( const InputEventPlus& iep )
+PlayerInfo &ScreenGameplayShared::GetPlayerInfoForInput(const InputEventPlus& iep)
 {
 	return m_vPlayerInfo[GAMESTATE->m_MasterPlayerNumber];
 }
@@ -29,7 +29,7 @@ PlayerInfo &ScreenGameplayShared::GetPlayerInfoForInput( const InputEventPlus& i
 /*
  * (c) 2006 Steve Checkoway
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -39,7 +39,7 @@ PlayerInfo &ScreenGameplayShared::GetPlayerInfoForInput( const InputEventPlus& i
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

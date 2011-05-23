@@ -10,16 +10,22 @@ public:
 	~RageSoundMixBuffer();
 
 	/* Mix the given buffer of samples. */
-	void write( const float *pBuf, unsigned iSize, int iSourceStride = 1, int iDestStride = 1 );
+	void write(const float *pBuf, unsigned iSize, int iSourceStride = 1, int iDestStride = 1);
 
 	/* Extend the buffer as if write() was called with a buffer of silence. */
-	void Extend( unsigned iSamples );
+	void Extend(unsigned iSamples);
 
-	void read( int16_t *pBuf );
-	void read( float *pBuf );
-	float *read() { return m_pMixbuf; }
-	unsigned size() const { return m_iBufUsed; }
-	void SetWriteOffset( int iOffset );
+	void read(int16_t *pBuf);
+	void read(float *pBuf);
+	float *read()
+	{
+		return m_pMixbuf;
+	}
+	unsigned size() const
+	{
+		return m_iBufUsed;
+	}
+	void SetWriteOffset(int iOffset);
 
 private:
 	float *m_pMixbuf;

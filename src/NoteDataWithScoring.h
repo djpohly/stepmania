@@ -18,12 +18,12 @@ namespace NoteDataWithScoring
 	 * @param in the entire Notedata.
 	 * @param iRow the row to check.
 	 * @return true if it has been completley judged, or false otherwise. */
-	bool IsRowCompletelyJudged( const NoteData &in, unsigned iRow );
-	TapNoteScore MinTapNoteScore( const NoteData &in, unsigned iRow );
-	const TapNote &LastTapNoteWithResult( const NoteData &in, unsigned iRow );
+	bool IsRowCompletelyJudged(const NoteData &in, unsigned iRow);
+	TapNoteScore MinTapNoteScore(const NoteData &in, unsigned iRow);
+	const TapNote &LastTapNoteWithResult(const NoteData &in, unsigned iRow);
 
-	void GetActualRadarValues( const NoteData &in, const PlayerStageStats &pss, 
-				  float fSongSeconds, RadarValues& out );
+	void GetActualRadarValues(const NoteData &in, const PlayerStageStats &pss,
+	                          float fSongSeconds, RadarValues& out);
 };
 
 #endif
@@ -33,7 +33,7 @@ namespace NoteDataWithScoring
  * @author Chris Danford, Glenn Maynard (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -43,7 +43,7 @@ namespace NoteDataWithScoring
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

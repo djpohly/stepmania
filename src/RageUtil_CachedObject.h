@@ -5,7 +5,7 @@
 
 template<typename T>
 class CachedObjectPointer;
-/** @brief Utilities for working with the 
+/** @brief Utilities for working with the
  <a class="el" href="class_cachedobject.html">CachedObjects</a>. */
 namespace CachedObjectHelpers
 {
@@ -24,24 +24,29 @@ public:
 		ClearCacheNegative();
 	}
 
-	CachedObject( const CachedObject &cpy ): m_pObject(NULL)
+	CachedObject(const CachedObject &cpy): m_pObject(NULL)
 	{
 		ClearCacheNegative();
 	}
 
 	~CachedObject()
 	{
-		if( m_pObject != NULL )
-			ClearCacheSpecific( m_pObject );
+		if (m_pObject != NULL)
+		{
+			ClearCacheSpecific(m_pObject);
+		}
 	}
 
-	CachedObject &operator=( const CachedObject &rhs ) { return *this; }
+	CachedObject &operator=(const CachedObject &rhs)
+	{
+		return *this;
+	}
 
 	/* Clear all cached entries for this type. */
 	static void ClearCacheAll()
 	{
 		CachedObjectHelpers::Lock();
-		for( typename set<ObjectPointer *>::iterator p = m_spObjectPointers.begin(); p != m_spObjectPointers.end(); ++p )
+		for (typename set<ObjectPointer *>::iterator p = m_spObjectPointers.begin(); p != m_spObjectPointers.end(); ++p)
 		{
 			(*p)->m_pCache = NULL;
 			(*p)->m_bCacheIsSet = false;
@@ -50,12 +55,12 @@ public:
 	}
 
 	/* Clear all cached entries pointing to a specific object. */
-	static void ClearCacheSpecific( const T *pObject )
+	static void ClearCacheSpecific(const T *pObject)
 	{
 		CachedObjectHelpers::Lock();
-		for( typename set<ObjectPointer *>::iterator p = m_spObjectPointers.begin(); p != m_spObjectPointers.end(); ++p )
+		for (typename set<ObjectPointer *>::iterator p = m_spObjectPointers.begin(); p != m_spObjectPointers.end(); ++p)
 		{
-			if( (*p)->m_pCache == pObject )
+			if ((*p)->m_pCache == pObject)
 			{
 				(*p)->m_pCache = NULL;
 				(*p)->m_bCacheIsSet = false;
@@ -68,10 +73,12 @@ public:
 	static void ClearCacheNegative()
 	{
 		CachedObjectHelpers::Lock();
-		for( typename set<ObjectPointer *>::iterator p = m_spObjectPointers.begin(); p != m_spObjectPointers.end(); ++p )
+		for (typename set<ObjectPointer *>::iterator p = m_spObjectPointers.begin(); p != m_spObjectPointers.end(); ++p)
 		{
-			if( (*p)->m_pCache == NULL )
+			if ((*p)->m_pCache == NULL)
+			{
 				(*p)->m_bCacheIsSet = false;
+			}
 		}
 		CachedObjectHelpers::Unlock();
 	}
@@ -80,16 +87,16 @@ private:
 	typedef CachedObjectPointer<T> ObjectPointer;
 	friend class CachedObjectPointer<T>;
 
-	static void Register( ObjectPointer *p )
+	static void Register(ObjectPointer *p)
 	{
-		m_spObjectPointers.insert( p );
+		m_spObjectPointers.insert(p);
 	}
 
-	static void Unregister( ObjectPointer *p )
+	static void Unregister(ObjectPointer *p)
 	{
-		typename set<ObjectPointer *>::iterator it = m_spObjectPointers.find( p );
-		ASSERT( it != m_spObjectPointers.end() );
-		m_spObjectPointers.erase( it );
+		typename set<ObjectPointer *>::iterator it = m_spObjectPointers.find(p);
+		ASSERT(it != m_spObjectPointers.end());
+		m_spObjectPointers.erase(it);
 	}
 
 	/* This points to the actual T this object is contained in.  This is set
@@ -111,26 +118,26 @@ public:
 
 	CachedObjectPointer() : m_pCache(NULL), m_bCacheIsSet(false)
 	{
-		Object::Register( this );
+		Object::Register(this);
 	}
 
-	CachedObjectPointer( const CachedObjectPointer &cpy ):
+	CachedObjectPointer(const CachedObjectPointer &cpy):
 		m_pCache(cpy.m_pCache), m_bCacheIsSet(cpy.m_bCacheIsSet)
 	{
 		CachedObjectHelpers::Lock();
-		Object::Register( this );
+		Object::Register(this);
 		CachedObjectHelpers::Unlock();
 	}
 
 	~CachedObjectPointer()
 	{
-		Object::Unregister( this );
+		Object::Unregister(this);
 	}
 
-	bool Get( T **pRet ) const
+	bool Get(T **pRet) const
 	{
 		CachedObjectHelpers::Lock();
-		if( !m_bCacheIsSet )
+		if (!m_bCacheIsSet)
 		{
 			CachedObjectHelpers::Unlock();
 			return false;
@@ -140,13 +147,15 @@ public:
 		return true;
 	}
 
-	void Set( T *p )
+	void Set(T *p)
 	{
 		CachedObjectHelpers::Lock();
 		m_pCache = p;
 		m_bCacheIsSet = true;
-		if( p != NULL )
+		if (p != NULL)
+		{
 			p->m_CachedObject.m_pObject = p;
+		}
 		CachedObjectHelpers::Unlock();
 	}
 
@@ -170,7 +179,7 @@ private:
 /*
  * (c) 2007 Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -180,7 +189,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

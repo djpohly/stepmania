@@ -10,61 +10,136 @@ struct lua_State;
 class RageTexture
 {
 public:
-	RageTexture( RageTextureID file );
+	RageTexture(RageTextureID file);
 	virtual ~RageTexture() = 0;
-	virtual void Update( float fDeltaTime ) {}
+	virtual void Update(float fDeltaTime) {}
 	virtual void Reload() {}
 	virtual void Invalidate() { }	/* only called by RageTextureManager::InvalidateTextures */
 	virtual unsigned GetTexHandle() const = 0;	// accessed by RageDisplay
 
 	// movie texture/animated texture stuff
-	virtual void SetPosition( float fSeconds ) {} // seek
-	virtual void DecodeSeconds( float fSeconds ) {} // decode
-	virtual void SetPlaybackRate( float fRate ) {}
-	virtual bool IsAMovie() const { return false; }
+	virtual void SetPosition(float fSeconds) {}   // seek
+	virtual void DecodeSeconds(float fSeconds) {}   // decode
+	virtual void SetPlaybackRate(float fRate) {}
+	virtual bool IsAMovie() const
+	{
+		return false;
+	}
 	virtual void SetLooping(bool looping) { }
 
-	int GetSourceWidth() const	{return m_iSourceWidth;}
-	int GetSourceHeight() const {return m_iSourceHeight;}
-	int GetTextureWidth() const {return m_iTextureWidth;}
-	int GetTextureHeight() const{return m_iTextureHeight;}
-	int GetImageWidth() const	{return m_iImageWidth;}
-	int GetImageHeight() const	{return m_iImageHeight;}
+	int GetSourceWidth() const
+	{
+		return m_iSourceWidth;
+	}
+	int GetSourceHeight() const
+	{
+		return m_iSourceHeight;
+	}
+	int GetTextureWidth() const
+	{
+		return m_iTextureWidth;
+	}
+	int GetTextureHeight() const
+	{
+		return m_iTextureHeight;
+	}
+	int GetImageWidth() const
+	{
+		return m_iImageWidth;
+	}
+	int GetImageHeight() const
+	{
+		return m_iImageHeight;
+	}
 
-	int GetFramesWide() const	{return m_iFramesWide;}
-	int GetFramesHigh() const	{return m_iFramesHigh;}
+	int GetFramesWide() const
+	{
+		return m_iFramesWide;
+	}
+	int GetFramesHigh() const
+	{
+		return m_iFramesHigh;
+	}
 
-	int GetSourceFrameWidth() const		{return GetSourceWidth()	/	GetFramesWide();}
-	int GetSourceFrameHeight() const	{return GetSourceHeight()	/	GetFramesHigh();}
-	int GetTextureFrameWidth() const	{return GetTextureWidth()	/	GetFramesWide();}
-	int GetTextureFrameHeight() const	{return GetTextureHeight()	/	GetFramesHigh();}
-	int GetImageFrameWidth() const		{return GetImageWidth()		/	GetFramesWide();}
-	int GetImageFrameHeight() const		{return GetImageHeight()	/	GetFramesHigh();}
+	int GetSourceFrameWidth() const
+	{
+		return GetSourceWidth()	/	GetFramesWide();
+	}
+	int GetSourceFrameHeight() const
+	{
+		return GetSourceHeight()	/	GetFramesHigh();
+	}
+	int GetTextureFrameWidth() const
+	{
+		return GetTextureWidth()	/	GetFramesWide();
+	}
+	int GetTextureFrameHeight() const
+	{
+		return GetTextureHeight()	/	GetFramesHigh();
+	}
+	int GetImageFrameWidth() const
+	{
+		return GetImageWidth()		/	GetFramesWide();
+	}
+	int GetImageFrameHeight() const
+	{
+		return GetImageHeight()	/	GetFramesHigh();
+	}
 
 	// Use these to convert between the different coordinate systems:
-	float GetSourceToImageCoordsRatioX() const { return float(GetImageWidth()) / GetSourceWidth(); }
-	float GetImageToTexCoordsRatioX() const { return 1.0f / GetTextureWidth(); }
-	float GetSourceToTexCoordsRatioX() const { return GetSourceToImageCoordsRatioX() * GetImageToTexCoordsRatioX(); }
-	float GetSourceToImageCoordsRatioY() const { return float(GetImageHeight()) / GetSourceHeight(); }
-	float GetImageToTexCoordsRatioY() const { return 1.0f / GetTextureHeight(); }
-	float GetSourceToTexCoordsRatioY() const { return GetSourceToImageCoordsRatioY() * GetImageToTexCoordsRatioY(); }
+	float GetSourceToImageCoordsRatioX() const
+	{
+		return float(GetImageWidth()) / GetSourceWidth();
+	}
+	float GetImageToTexCoordsRatioX() const
+	{
+		return 1.0f / GetTextureWidth();
+	}
+	float GetSourceToTexCoordsRatioX() const
+	{
+		return GetSourceToImageCoordsRatioX() * GetImageToTexCoordsRatioX();
+	}
+	float GetSourceToImageCoordsRatioY() const
+	{
+		return float(GetImageHeight()) / GetSourceHeight();
+	}
+	float GetImageToTexCoordsRatioY() const
+	{
+		return 1.0f / GetTextureHeight();
+	}
+	float GetSourceToTexCoordsRatioY() const
+	{
+		return GetSourceToImageCoordsRatioY() * GetImageToTexCoordsRatioY();
+	}
 
-	const RectF *GetTextureCoordRect( int frameNo ) const;
-	int   GetNumFrames() const { return m_iFramesWide*m_iFramesHigh; }
+	const RectF *GetTextureCoordRect(int frameNo) const;
+	int   GetNumFrames() const
+	{
+		return m_iFramesWide * m_iFramesHigh;
+	}
 
 	// Used by RageTextureManager. Order is important; see RageTextureManager.cpp.
-	const RageTextureID::TexPolicy &GetPolicy() const { return m_ID.Policy; }
-	RageTextureID::TexPolicy &GetPolicy() { return m_ID.Policy; }
+	const RageTextureID::TexPolicy &GetPolicy() const
+	{
+		return m_ID.Policy;
+	}
+	RageTextureID::TexPolicy &GetPolicy()
+	{
+		return m_ID.Policy;
+	}
 	int		m_iRefCount;
 	bool	m_bWasUsed;
 
 	// The ID that we were asked to load:
-	const RageTextureID &GetID() const { return m_ID; }
+	const RageTextureID &GetID() const
+	{
+		return m_ID;
+	}
 
-	static void GetFrameDimensionsFromFileName( RString sPath, int* puFramesWide, int* puFramesHigh );
+	static void GetFrameDimensionsFromFileName(RString sPath, int* puFramesWide, int* puFramesHigh);
 
 	// Lua
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 private:
 	/* We might change settings when loading (due to hints, hardware

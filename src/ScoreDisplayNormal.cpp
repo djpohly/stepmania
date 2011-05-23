@@ -11,78 +11,78 @@
 
 ScoreDisplayNormal::ScoreDisplayNormal()
 {
-	LOG->Trace( "ScoreDisplayNormal::ScoreDisplayNormal()" );
+	LOG->Trace("ScoreDisplayNormal::ScoreDisplayNormal()");
 
 	RString sType = "ScoreDisplayNormal";
 
-	m_sprFrame.Load( THEME->GetPathG(sType,"Frame") );
-	m_sprFrame->SetName( "Frame" );
-	ActorUtil::LoadAllCommandsAndSetXY( m_sprFrame, sType );
-	this->AddChild( m_sprFrame );
+	m_sprFrame.Load(THEME->GetPathG(sType, "Frame"));
+	m_sprFrame->SetName("Frame");
+	ActorUtil::LoadAllCommandsAndSetXY(m_sprFrame, sType);
+	this->AddChild(m_sprFrame);
 
 	// init the text
-	m_text.LoadFromFont( THEME->GetPathF("ScoreDisplayNormal","Text") );
-	m_text.Load( "RollingNumbers" );
-	m_text.SetName( "Text" );
+	m_text.LoadFromFont(THEME->GetPathF("ScoreDisplayNormal", "Text"));
+	m_text.Load("RollingNumbers");
+	m_text.SetName("Text");
 	m_text.UpdateText();
-	ActorUtil::LoadAllCommandsAndSetXY( m_text, sType );
-	this->AddChild( &m_text );
+	ActorUtil::LoadAllCommandsAndSetXY(m_text, sType);
+	this->AddChild(&m_text);
 }
 
-void ScoreDisplayNormal::Init( const PlayerState* pPlayerState, const PlayerStageStats* pPlayerStageStats ) 
+void ScoreDisplayNormal::Init(const PlayerState* pPlayerState, const PlayerStageStats* pPlayerStageStats)
 {
-	ScoreDisplay::Init( pPlayerState, pPlayerStageStats );
+	ScoreDisplay::Init(pPlayerState, pPlayerStageStats);
 
 	PlayerState* pPlayerState_ = const_cast<PlayerState*>(pPlayerState);
 	PlayerStageStats* pPlayerStageStats_ = const_cast<PlayerStageStats*>(pPlayerStageStats);
 
 	Message msg("Load");
-	msg.SetParam( "PlayerState", LuaReference::CreateFromPush(*pPlayerState_) );
-	msg.SetParam( "PlayerStageStats", LuaReference::CreateFromPush(*pPlayerStageStats_) );
-	this->HandleMessage( msg );
+	msg.SetParam("PlayerState", LuaReference::CreateFromPush(*pPlayerState_));
+	msg.SetParam("PlayerStageStats", LuaReference::CreateFromPush(*pPlayerStageStats_));
+	this->HandleMessage(msg);
 }
 
-void ScoreDisplayNormal::SetScore( int iNewScore ) 
+void ScoreDisplayNormal::SetScore(int iNewScore)
 {
 	float fScore = (float)iNewScore;
 
 	// TODO: Remove use of PlayerNumber.
 	PlayerNumber pn = m_pPlayerState->m_PlayerNumber;
 
-	// Play some games to display the correct score -- the actual internal 
-	// score does not change at all but the displayed one can (ie: displayed 
+	// Play some games to display the correct score -- the actual internal
+	// score does not change at all but the displayed one can (ie: displayed
 	// score for subtractive is MaxScore - score).
 
 	int iMaxScore = STATSMAN->m_CurStageStats.m_player[pn].m_iMaxScore;
 	int iCurMaxScore = STATSMAN->m_CurStageStats.m_player[pn].m_iCurMaxScore;
 
-	switch( m_pPlayerState->m_PlayerOptions.GetCurrent().m_ScoreDisplay )
+	switch (m_pPlayerState->m_PlayerOptions.GetCurrent().m_ScoreDisplay)
 	{
-	case PlayerOptions::SCORING_ADD:
-		// nothing to do
-		break;
-	case PlayerOptions::SCORING_SUBTRACT:
-		fScore = iMaxScore - ( iCurMaxScore - fScore );
-		break;
-	case PlayerOptions::SCORING_AVERAGE:
-		if( iCurMaxScore == 0 ) // don't divide by zero fats
-		{
-			fScore = 0;
-		}
-		else
-		{
-			float fScoreRatio = fScore / (float)iCurMaxScore;
-			fScore = fScoreRatio * iMaxScore;
-		}
+		case PlayerOptions::SCORING_ADD:
+			// nothing to do
+			break;
+		case PlayerOptions::SCORING_SUBTRACT:
+			fScore = iMaxScore - (iCurMaxScore - fScore);
+			break;
+		case PlayerOptions::SCORING_AVERAGE:
+			if (iCurMaxScore == 0)  // don't divide by zero fats
+			{
+				fScore = 0;
+			}
+			else
+			{
+				float fScoreRatio = fScore / (float)iCurMaxScore;
+				fScore = fScoreRatio * iMaxScore;
+			}
 	}
 
-	m_text.SetTargetNumber( fScore );
+	m_text.SetTargetNumber(fScore);
 }
 
 /*
  * (c) 2001-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -92,7 +92,7 @@ void ScoreDisplayNormal::SetScore( int iNewScore )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

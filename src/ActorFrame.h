@@ -8,96 +8,148 @@ class ActorFrame : public Actor
 {
 public:
 	ActorFrame();
-	ActorFrame( const ActorFrame &cpy );
+	ActorFrame(const ActorFrame &cpy);
 	virtual ~ActorFrame();
 
 	/** @brief Set up the initial state. */
 	virtual void InitState();
-	void LoadFromNode( const XNode* pNode );
+	void LoadFromNode(const XNode* pNode);
 	virtual ActorFrame *Copy() const;
 
 	/**
 	 * @brief Add a new child to the ActorFrame.
 	 * @param pActor the new Actor to add. */
-	virtual void AddChild( Actor *pActor );
+	virtual void AddChild(Actor *pActor);
 	/**
 	 * @brief Remove the specified child from the ActorFrame.
 	 * @param pActor the Actor to remove. */
-	virtual void RemoveChild( Actor *pActor );
-	void TransferChildren( ActorFrame *pTo );
-	Actor* GetChild( const RString &sName );
-	vector<Actor*> GetChildren() { return m_SubActors; }
-	int GetNumChildren() const { return m_SubActors.size(); }
+	virtual void RemoveChild(Actor *pActor);
+	void TransferChildren(ActorFrame *pTo);
+	Actor* GetChild(const RString &sName);
+	vector<Actor*> GetChildren()
+	{
+		return m_SubActors;
+	}
+	int GetNumChildren() const
+	{
+		return m_SubActors.size();
+	}
 
 	/** @brief Remove all of the children from the frame. */
 	void RemoveAllChildren();
-	/** 
+	/**
 	 * @brief Move a particular actor to the tail.
 	 * @param pActor the actor to go to the tail.
 	 */
-	void MoveToTail( Actor* pActor );
+	void MoveToTail(Actor* pActor);
 	/**
 	 * @brief Move a particular actor to the head.
 	 * @param pActor the actor to go to the head.
 	 */
-	void MoveToHead( Actor* pActor );
+	void MoveToHead(Actor* pActor);
 	void SortByDrawOrder();
-	void SetDrawByZPosition( bool b );
+	void SetDrawByZPosition(bool b);
 
-	void SetDrawFunction( const LuaReference &DrawFunction ) { m_DrawFunction = DrawFunction; }
-	void SetUpdateFunction( const LuaReference &UpdateFunction ) { m_UpdateFunction = UpdateFunction; }
+	void SetDrawFunction(const LuaReference &DrawFunction)
+	{
+		m_DrawFunction = DrawFunction;
+	}
+	void SetUpdateFunction(const LuaReference &UpdateFunction)
+	{
+		m_UpdateFunction = UpdateFunction;
+	}
 
-	LuaReference GetDrawFunction() const { return m_DrawFunction; }
-	virtual bool AutoLoadChildren() const { return false; } // derived classes override to automatically LoadChildrenFromNode
-	void DeleteChildrenWhenDone( bool bDelete=true ) { m_bDeleteChildren = bDelete; }
+	LuaReference GetDrawFunction() const
+	{
+		return m_DrawFunction;
+	}
+	virtual bool AutoLoadChildren() const
+	{
+		return false;        // derived classes override to automatically LoadChildrenFromNode
+	}
+	void DeleteChildrenWhenDone(bool bDelete = true)
+	{
+		m_bDeleteChildren = bDelete;
+	}
 	void DeleteAllChildren();
 
 	// Commands
-	virtual void PushSelf( lua_State *L );
-	void PushChildrenTable( lua_State *L );
-	void PlayCommandOnChildren( const RString &sCommandName, const LuaReference *pParamTable = NULL );
-	void PlayCommandOnLeaves( const RString &sCommandName, const LuaReference *pParamTable = NULL );
+	virtual void PushSelf(lua_State *L);
+	void PushChildrenTable(lua_State *L);
+	void PlayCommandOnChildren(const RString &sCommandName, const LuaReference *pParamTable = NULL);
+	void PlayCommandOnLeaves(const RString &sCommandName, const LuaReference *pParamTable = NULL);
 
-	virtual void RunCommandsRecursively( const LuaReference& cmds, const LuaReference *pParamTable = NULL );
-	virtual void RunCommandsOnChildren( const LuaReference& cmds, const LuaReference *pParamTable = NULL ); /* but not on self */
-	void RunCommandsOnChildren( const apActorCommands& cmds, const LuaReference *pParamTable = NULL ) { this->RunCommandsOnChildren( *cmds, pParamTable ); }	// convenience
-	virtual void RunCommandsOnLeaves( const LuaReference& cmds, const LuaReference *pParamTable = NULL ); /* but not on self */
+	virtual void RunCommandsRecursively(const LuaReference& cmds, const LuaReference *pParamTable = NULL);
+	virtual void RunCommandsOnChildren(const LuaReference& cmds, const LuaReference *pParamTable = NULL);   /* but not on self */
+	void RunCommandsOnChildren(const apActorCommands& cmds, const LuaReference *pParamTable = NULL)
+	{
+		this->RunCommandsOnChildren(*cmds, pParamTable);        // convenience
+	}
+	virtual void RunCommandsOnLeaves(const LuaReference& cmds, const LuaReference *pParamTable = NULL);   /* but not on self */
 
-	virtual void UpdateInternal( float fDeltaTime );
+	virtual void UpdateInternal(float fDeltaTime);
 	virtual void BeginDraw();
 	virtual void DrawPrimitives();
 	virtual void EndDraw();
 
 	// propagated commands
-	virtual void SetDiffuse( RageColor c );
-	virtual void SetDiffuseAlpha( float f );
-	virtual void SetBaseAlpha( float f );
-	virtual void SetZTestMode( ZTestMode mode );
-	virtual void SetZWrite( bool b );
+	virtual void SetDiffuse(RageColor c);
+	virtual void SetDiffuseAlpha(float f);
+	virtual void SetBaseAlpha(float f);
+	virtual void SetZTestMode(ZTestMode mode);
+	virtual void SetZWrite(bool b);
 	virtual void FinishTweening();
-	virtual void HurryTweening( float factor );
+	virtual void HurryTweening(float factor);
 
-	void SetUpdateRate( float fUpdateRate ) { m_fUpdateRate = fUpdateRate; }
-	void SetFOV( float fFOV ) { m_fFOV = fFOV; }
-	void SetVanishPoint( float fX, float fY) { m_fVanishX = fX; m_fVanishY = fY; }
+	void SetUpdateRate(float fUpdateRate)
+	{
+		m_fUpdateRate = fUpdateRate;
+	}
+	void SetFOV(float fFOV)
+	{
+		m_fFOV = fFOV;
+	}
+	void SetVanishPoint(float fX, float fY)
+	{
+		m_fVanishX = fX;
+		m_fVanishY = fY;
+	}
 
-	void SetCustomLighting( bool bCustomLighting ) { m_bOverrideLighting = bCustomLighting; }
-	void SetAmbientLightColor( RageColor c ) { m_ambientColor = c; }
-	void SetDiffuseLightColor( RageColor c ) { m_diffuseColor = c; }
-	void SetSpecularLightColor( RageColor c ) { m_specularColor = c; }
-	void SetLightDirection( RageVector3 vec ) { m_lightDirection = vec; }
+	void SetCustomLighting(bool bCustomLighting)
+	{
+		m_bOverrideLighting = bCustomLighting;
+	}
+	void SetAmbientLightColor(RageColor c)
+	{
+		m_ambientColor = c;
+	}
+	void SetDiffuseLightColor(RageColor c)
+	{
+		m_diffuseColor = c;
+	}
+	void SetSpecularLightColor(RageColor c)
+	{
+		m_specularColor = c;
+	}
+	void SetLightDirection(RageVector3 vec)
+	{
+		m_lightDirection = vec;
+	}
 
-	virtual void SetPropagateCommands( bool b );
+	virtual void SetPropagateCommands(bool b);
 
 	/** @brief Amount of time until all tweens (and all children's tweens) have stopped: */
 	virtual float GetTweenTimeLeft() const;
 
-	virtual void HandleMessage( const Message &msg );
-	virtual void RunCommands( const LuaReference& cmds, const LuaReference *pParamTable = NULL );
-	void RunCommands( const apActorCommands& cmds, const LuaReference *pParamTable = NULL ) { this->RunCommands( *cmds, pParamTable ); }	// convenience
+	virtual void HandleMessage(const Message &msg);
+	virtual void RunCommands(const LuaReference& cmds, const LuaReference *pParamTable = NULL);
+	void RunCommands(const apActorCommands& cmds, const LuaReference *pParamTable = NULL)
+	{
+		this->RunCommands(*cmds, pParamTable);        // convenience
+	}
 
 protected:
-	void LoadChildrenFromNode( const XNode* pNode );
+	void LoadChildrenFromNode(const XNode* pNode);
 
 	/** @brief The children Actors used by the ActorFrame. */
 	vector<Actor*>	m_SubActors;
@@ -129,8 +181,14 @@ protected:
 class ActorFrameAutoDeleteChildren : public ActorFrame
 {
 public:
-	ActorFrameAutoDeleteChildren() { DeleteChildrenWhenDone(true); }
-	virtual bool AutoLoadChildren() const { return true; }
+	ActorFrameAutoDeleteChildren()
+	{
+		DeleteChildrenWhenDone(true);
+	}
+	virtual bool AutoLoadChildren() const
+	{
+		return true;
+	}
 	virtual ActorFrameAutoDeleteChildren *Copy() const;
 };
 
@@ -141,7 +199,7 @@ public:
  * @author Chris Danford (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -151,7 +209,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

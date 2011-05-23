@@ -11,47 +11,83 @@ class ActorScroller : public ActorFrame
 public:
 	ActorScroller();
 
-	void SetTransformFromReference( const LuaReference &ref );
-	void SetTransformFromExpression( const RString &sTransformFunction );
-	void SetTransformFromWidth( float fItemWidth );
-	void SetTransformFromHeight( float fItemHeight );
+	void SetTransformFromReference(const LuaReference &ref);
+	void SetTransformFromExpression(const RString &sTransformFunction);
+	void SetTransformFromWidth(float fItemWidth);
+	void SetTransformFromHeight(float fItemHeight);
 
 	void Load2();
 
-	void EnableMask( float fWidth, float fHeight );
+	void EnableMask(float fWidth, float fHeight);
 	void DisableMask();
 
-	virtual void UpdateInternal( float fDelta );
+	virtual void UpdateInternal(float fDelta);
 	virtual void DrawPrimitives();	// handles drawing and doesn't call ActorFrame::DrawPrimitives
 
 	void PositionItems();
 
-	void LoadFromNode( const XNode *pNode );
+	void LoadFromNode(const XNode *pNode);
 	virtual ActorScroller *Copy() const;
 
-	void SetLoop( bool bLoop )						{ m_bLoop = bLoop; }
-	void SetNumItemsToDraw( float fNumItemsToDraw )		{ m_fNumItemsToDraw = fNumItemsToDraw; }
-	void SetDestinationItem( float fItemIndex )			{ m_fDestinationItem = fItemIndex; }
-	void SetCurrentAndDestinationItem( float fItemIndex )	{ m_fCurrentItem = m_fDestinationItem = fItemIndex; }
-	float GetCurrentItem() const					{ return m_fCurrentItem; }
-	float GetDestinationItem() const				{ return m_fDestinationItem; }
+	void SetLoop(bool bLoop)
+	{
+		m_bLoop = bLoop;
+	}
+	void SetNumItemsToDraw(float fNumItemsToDraw)
+	{
+		m_fNumItemsToDraw = fNumItemsToDraw;
+	}
+	void SetDestinationItem(float fItemIndex)
+	{
+		m_fDestinationItem = fItemIndex;
+	}
+	void SetCurrentAndDestinationItem(float fItemIndex)
+	{
+		m_fCurrentItem = m_fDestinationItem = fItemIndex;
+	}
+	float GetCurrentItem() const
+	{
+		return m_fCurrentItem;
+	}
+	float GetDestinationItem() const
+	{
+		return m_fDestinationItem;
+	}
 	void ScrollThroughAllItems();
-	void ScrollWithPadding( float fItemPaddingStart, float fItemPaddingEnd );
-	void SetPauseCountdownSeconds( float fSecs )	{ m_fPauseCountdownSeconds = fSecs; }
-	void SetFastCatchup( bool bOn )				{ m_bFastCatchup = bOn; }
-	void SetSecondsPerItem( float fSeconds )		{ m_fSecondsPerItem = fSeconds; }
-	void SetSecondsPauseBetweenItems( float fSeconds )		{ m_fSecondsPauseBetweenItems = fSeconds; }
-	void SetNumSubdivisions( int iNumSubdivisions )		{ m_exprTransformFunction.SetNumSubdivisions( iNumSubdivisions ); }
+	void ScrollWithPadding(float fItemPaddingStart, float fItemPaddingEnd);
+	void SetPauseCountdownSeconds(float fSecs)
+	{
+		m_fPauseCountdownSeconds = fSecs;
+	}
+	void SetFastCatchup(bool bOn)
+	{
+		m_bFastCatchup = bOn;
+	}
+	void SetSecondsPerItem(float fSeconds)
+	{
+		m_fSecondsPerItem = fSeconds;
+	}
+	void SetSecondsPauseBetweenItems(float fSeconds)
+	{
+		m_fSecondsPauseBetweenItems = fSeconds;
+	}
+	void SetNumSubdivisions(int iNumSubdivisions)
+	{
+		m_exprTransformFunction.SetNumSubdivisions(iNumSubdivisions);
+	}
 	float GetSecondsForCompleteScrollThrough() const;
 	float GetSecondsToDestination() const;
-	int GetNumItems() const						{ return m_iNumItems; }
+	int GetNumItems() const
+	{
+		return m_iNumItems;
+	}
 
 	// Commands
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
 protected:
-	void PositionItemsAndDrawPrimitives( bool bDrawPrimitives );
-	virtual void ShiftSubActors( int iDist );
+	void PositionItemsAndDrawPrimitives(bool bDrawPrimitives);
+	virtual void ShiftSubActors(int iDist);
 
 	int		m_iNumItems;
 	/**
@@ -72,8 +108,8 @@ protected:
 	float	m_fSecondsPauseBetweenItems;
 	float	m_fNumItemsToDraw;
 	int		m_iFirstSubActorIndex;
-	bool	m_bLoop; 
-	bool	m_bFastCatchup; 
+	bool	m_bLoop;
+	bool	m_bFastCatchup;
 	bool	m_bFunctionDependsOnPositionOffset;
 	bool	m_bFunctionDependsOnItemIndex;
 	float	m_fPauseCountdownSeconds;
@@ -88,8 +124,14 @@ protected:
 class ActorScrollerAutoDeleteChildren : public ActorScroller
 {
 public:
-	ActorScrollerAutoDeleteChildren() { DeleteChildrenWhenDone(true); }
-	virtual bool AutoLoadChildren() const { return true; }
+	ActorScrollerAutoDeleteChildren()
+	{
+		DeleteChildrenWhenDone(true);
+	}
+	virtual bool AutoLoadChildren() const
+	{
+		return true;
+	}
 	virtual ActorScrollerAutoDeleteChildren *Copy() const;
 };
 
@@ -100,7 +142,7 @@ public:
  * @author Chris Danford (c) 2003-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -110,7 +152,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

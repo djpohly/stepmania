@@ -3,14 +3,14 @@
 #include "GameState.h"
 #include "ScreenManager.h"
 
-REGISTER_SCREEN_CLASS( ScreenProfileSave );
+REGISTER_SCREEN_CLASS(ScreenProfileSave);
 
 void ScreenProfileSave::BeginScreen()
 {
 	ScreenWithMenuElements::BeginScreen();
 }
 
-void ScreenProfileSave::Input( const InputEventPlus &input )
+void ScreenProfileSave::Input(const InputEventPlus &input)
 {
 }
 
@@ -19,43 +19,43 @@ void ScreenProfileSave::Continue()
 	GAMESTATE->SavePlayerProfiles();
 	SCREENMAN->ZeroNextUpdate();
 
-	StartTransitioningScreen( SM_GoToNextScreen );
+	StartTransitioningScreen(SM_GoToNextScreen);
 }
 
 // lua start
 #include "LuaBinding.h"
 
-/** @brief Allow Lua to have access to the ScreenProfileSave. */ 
+/** @brief Allow Lua to have access to the ScreenProfileSave. */
 class LunaScreenProfileSave: public Luna<ScreenProfileSave>
 {
 public:
-	static int Continue( T* p, lua_State *L )
+	static int Continue(T* p, lua_State *L)
 	{
 		LUA->YieldLua();
 		p->Continue();
 		LUA->UnyieldLua();
 		return 0;
 	}
-	static int HaveProfileToSave( T* p, lua_State *L )
+	static int HaveProfileToSave(T* p, lua_State *L)
 	{
-		LuaHelpers::Push( L, GAMESTATE->HaveProfileToSave() );
+		LuaHelpers::Push(L, GAMESTATE->HaveProfileToSave());
 		return 1;
 	}
-	
+
 	LunaScreenProfileSave()
 	{
-  		ADD_METHOD( Continue );
-  		ADD_METHOD( HaveProfileToSave );
+		ADD_METHOD(Continue);
+		ADD_METHOD(HaveProfileToSave);
 	}
 };
 
-LUA_REGISTER_DERIVED_CLASS( ScreenProfileSave, ScreenWithMenuElements )
+LUA_REGISTER_DERIVED_CLASS(ScreenProfileSave, ScreenWithMenuElements)
 // lua end
 
 /*
  * (c) 2007 Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -65,7 +65,7 @@ LUA_REGISTER_DERIVED_CLASS( ScreenProfileSave, ScreenWithMenuElements )
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

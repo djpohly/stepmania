@@ -22,7 +22,7 @@ const static float STEPFILE_VERSION_NUMBER = 0.7f;
 /** @brief How many edits for this song can each profile have? */
 const int MAX_EDITS_PER_SONG_PER_PROFILE	= 5;
 /** @brief How many edits for this song can be available? */
-const int MAX_EDITS_PER_SONG			= 5*NUM_ProfileSlot;
+const int MAX_EDITS_PER_SONG			= 5 * NUM_ProfileSlot;
 
 extern const int FILE_CACHE_VERSION;
 
@@ -56,8 +56,8 @@ enum InstrumentTrack
 	NUM_InstrumentTrack,
 	InstrumentTrack_Invalid
 };
-const RString& InstrumentTrackToString( InstrumentTrack it );
-InstrumentTrack StringToInstrumentTrack( const RString& s );
+const RString& InstrumentTrackToString(InstrumentTrack it);
+InstrumentTrack StringToInstrumentTrack(const RString& s);
 
 /** @brief The collection of lyrics for the Song. */
 struct LyricSegment
@@ -72,12 +72,18 @@ class Song
 {
 	RString m_sSongDir;
 public:
-	void SetSongDir( const RString sDir ) { m_sSongDir = sDir; }
-	RString GetSongDir() { return m_sSongDir; }
+	void SetSongDir(const RString sDir)
+	{
+		m_sSongDir = sDir;
+	}
+	RString GetSongDir()
+	{
+		return m_sSongDir;
+	}
 
 	/** @brief When should this song be displayed in the music wheel? */
 	enum SelectionDisplay
-	{ 
+	{
 		SHOW_ALWAYS,	/**< always show on the wheel. */
 		SHOW_NEVER	/**< never show on the wheel (unless song hiding is turned off). */
 	} /** @brief When should this song be displayed in the music wheel? */ m_SelectionDisplay;
@@ -86,19 +92,19 @@ public:
 	~Song();
 	void Reset();
 	void DetachSteps();
-	
+
 	/**
 	 * @brief Load a song from the chosen directory.
 	 *
 	 * This assumes that there is no song present right now.
 	 * @param sDir the song directory from which to load. */
-	bool LoadFromSongDir( RString sDir );
+	bool LoadFromSongDir(RString sDir);
 	// This one takes the effort to reuse Steps pointers as best as it can
-	bool ReloadFromSongDir( RString sDir );
+	bool ReloadFromSongDir(RString sDir);
 
 	/** @brief Call this after loading a song to clean up invalid data. */
 	void TidyUpData();
-	
+
 	/**
 	 * @brief Get the new radar values, and determine the last beat at the same time.
 	 *
@@ -115,10 +121,10 @@ public:
 	 * @param sPath the path where we're saving the file.
 	 * @param bSavingCache a flag to determine if we're saving cache data.
 	 */
-	bool SaveToSSCFile( RString sPath, bool bSavingCache );
+	bool SaveToSSCFile(RString sPath, bool bSavingCache);
 	/** @brief Save to the SSC and SM files no matter what. */
 	void Save();
-	/** 
+	/**
 	  * @brief Save the current Song to a cache file using the preferred format.
 	  * @return its success or failure. */
 	bool SaveToCacheFile();
@@ -126,7 +132,7 @@ public:
 	 * @brief Save the current Song to a SM file.
 	 * @return its success or failure. */
 	bool SaveToSMFile();
-	/** 
+	/**
 	 * @brief Save the current Song to a DWI file if possible.
 	 * @return its success or failure. */
 	bool SaveToDWIFile();
@@ -140,16 +146,19 @@ public:
 	 * @param ntTo the StepsType we're making.
 	 * @param ntFrom the StepsType we're generating from.
 	 */
-	void AutoGen( StepsType ntTo, StepsType ntFrom );
+	void AutoGen(StepsType ntTo, StepsType ntFrom);
 	void RemoveAutoGenNotes();
 
 	// Directory this song data came from:
-	const RString &GetSongDir() const { return m_sSongDir; }
+	const RString &GetSongDir() const
+	{
+		return m_sSongDir;
+	}
 
 	/**
 	 * @brief Filename associated with this file.
 	 *
-	 * This will always have a .SSC extension. If we loaded a .SSC, 
+	 * This will always have a .SSC extension. If we loaded a .SSC,
 	 * this will point to it, but if we loaded any other type,
 	 * this will point to a generated .SSC filename. */
 	RString m_sSongFileName;
@@ -167,9 +176,9 @@ public:
 	bool	m_bEnabled;
 
 	/** @brief The title of the Song. */
-	RString	m_sMainTitle; 
+	RString	m_sMainTitle;
 	/** @brief The subtitle of the Song, if it exists. */
-	RString m_sSubTitle; 
+	RString m_sSubTitle;
 	/** @brief The artist of the Song, if it exists. */
 	RString m_sArtist;
 	/** @brief The transliterated title of the Song, if it exists. */
@@ -190,22 +199,22 @@ public:
 	 * @brief Retrieve the transliterated title, or the main title if there is no translit.
 	 * @return the proper title. */
 	RString GetTranslitMainTitle() const
-	{ 
-		return m_sMainTitleTranslit.size()? m_sMainTitleTranslit: m_sMainTitle; 
+	{
+		return m_sMainTitleTranslit.size() ? m_sMainTitleTranslit : m_sMainTitle;
 	}
 	/**
 	 * @brief Retrieve the transliterated subtitle, or the main subtitle if there is no translit.
 	 * @return the proper subtitle. */
-	RString GetTranslitSubTitle() const 
-	{ 
-		return m_sSubTitleTranslit.size()? m_sSubTitleTranslit: m_sSubTitle;
+	RString GetTranslitSubTitle() const
+	{
+		return m_sSubTitleTranslit.size() ? m_sSubTitleTranslit : m_sSubTitle;
 	}
 	/**
 	 * @brief Retrieve the transliterated artist, or the main artist if there is no translit.
 	 * @return the proper artist. */
-	RString GetTranslitArtist() const 
-	{ 
-		return m_sArtistTranslit.size()? m_sArtistTranslit:m_sArtist; 
+	RString GetTranslitArtist() const
+	{
+		return m_sArtistTranslit.size() ? m_sArtistTranslit : m_sArtist;
 	}
 
 	// "title subtitle"
@@ -251,7 +260,7 @@ public:
 	vector<RString>	m_sAttackString;
 
 	RString GetMusicPath() const;
-	RString GetInstrumentTrackPath( InstrumentTrack it ) const;
+	RString GetInstrumentTrackPath(InstrumentTrack it) const;
 	RString GetBannerPath() const;
 	//RString GetJacketPath() const;
 	//RString GetCDImagePath() const;
@@ -264,7 +273,7 @@ public:
 	bool m_bHasMusic, m_bHasBanner, m_bHasBackground;
 
 	bool HasMusic() const;
-	bool HasInstrumentTrack( InstrumentTrack it ) const;
+	bool HasInstrumentTrack(InstrumentTrack it) const;
 	/**
 	 * @brief Does this song have a banner?
 	 * @return true if it does, false otherwise. */
@@ -309,8 +318,8 @@ private:
 	 * This must be sorted before gameplay. */
 	AutoPtrCopyOnWrite<VBackgroundChange>	m_ForegroundChanges;
 public:
-	const vector<BackgroundChange>	&GetBackgroundChanges( BackgroundLayer bl ) const;
-	vector<BackgroundChange>	&GetBackgroundChanges( BackgroundLayer bl );
+	const vector<BackgroundChange>	&GetBackgroundChanges(BackgroundLayer bl) const;
+	vector<BackgroundChange>	&GetBackgroundChanges(BackgroundLayer bl);
 	const vector<BackgroundChange>	&GetForegroundChanges() const;
 	vector<BackgroundChange>	&GetForegroundChanges();
 
@@ -320,24 +329,24 @@ public:
 	 * This must be sorted before gameplay. */
 	vector<LyricSegment>			m_LyricSegments;
 
-/* [splittiming]
-	void AddBPMSegment( const BPMSegment &seg ) { m_Timing.AddBPMSegment( seg ); }
-	void AddStopSegment( const StopSegment &seg ) { m_Timing.AddStopSegment( seg ); }
-	void AddWarpSegment( const WarpSegment &seg ) { m_Timing.AddWarpSegment( seg ); }
-*/
-	void AddBackgroundChange( BackgroundLayer blLayer, BackgroundChange seg );
-	void AddForegroundChange( BackgroundChange seg );
-	void AddLyricSegment( LyricSegment seg );
+	/* [splittiming]
+		void AddBPMSegment( const BPMSegment &seg ) { m_Timing.AddBPMSegment( seg ); }
+		void AddStopSegment( const StopSegment &seg ) { m_Timing.AddStopSegment( seg ); }
+		void AddWarpSegment( const WarpSegment &seg ) { m_Timing.AddWarpSegment( seg ); }
+	*/
+	void AddBackgroundChange(BackgroundLayer blLayer, BackgroundChange seg);
+	void AddForegroundChange(BackgroundChange seg);
+	void AddLyricSegment(LyricSegment seg);
 
-	void GetDisplayBpms( DisplayBpms &AddTo ) const;
-	const BackgroundChange &GetBackgroundAtBeat( BackgroundLayer iLayer, float fBeat ) const;
+	void GetDisplayBpms(DisplayBpms &AddTo) const;
+	const BackgroundChange &GetBackgroundAtBeat(BackgroundLayer iLayer, float fBeat) const;
 
-/* [splittiming]
-	float GetBPMAtBeat( float fBeat ) const { return m_Timing.GetBPMAtBeat( fBeat ); }
-	void SetBPMAtBeat( float fBeat, float fBPM ) { m_Timing.SetBPMAtBeat( fBeat, fBPM ); }
-	BPMSegment& GetBPMSegmentAtBeat( float fBeat ) { return m_Timing.GetBPMSegmentAtBeat( fBeat ); }
-*/
-	
+	/* [splittiming]
+		float GetBPMAtBeat( float fBeat ) const { return m_Timing.GetBPMAtBeat( fBeat ); }
+		void SetBPMAtBeat( float fBeat, float fBPM ) { m_Timing.SetBPMAtBeat( fBeat, fBPM ); }
+		BPMSegment& GetBPMSegmentAtBeat( float fBeat ) { return m_Timing.GetBPMSegmentAtBeat( fBeat ); }
+	*/
+
 	Steps *CreateSteps();
 	void InitSteps(Steps *pSteps);
 
@@ -346,15 +355,15 @@ public:
 	 * @param fElapsedTime the amount of time since the Song started.
 	 * @return the appropriate beat. */
 	/* [splittiming]
-	float SongGetBeatFromElapsedTime( float fElapsedTime ) const 
+	float SongGetBeatFromElapsedTime( float fElapsedTime ) const
 	{
 		return m_SongTiming.GetBeatFromElapsedTime( fElapsedTime );
 	}
-	float StepsGetBeatFromElapsedTime( float fElapsedTime, const Steps &steps ) const 
+	float StepsGetBeatFromElapsedTime( float fElapsedTime, const Steps &steps ) const
 	{
 		return steps.m_Timing.GetBeatFromElapsedTime( fElapsedTime );
 	}
-	
+
 	float SongGetElapsedTimeFromBeat( float fBeat ) const
 	{
 		return m_SongTiming.GetElapsedTimeFromBeat( fBeat );
@@ -364,31 +373,43 @@ public:
 		return steps.m_Timing.GetElapsedTimeFromBeat( fBeat );
 	}
 	*/
-	
+
 	/* [splittiming]
-	float GetBeatFromElapsedTime( float fElapsedTime ) const 
-	{ 
+	float GetBeatFromElapsedTime( float fElapsedTime ) const
+	{
 		return m_Timing.GetBeatFromElapsedTime( fElapsedTime );
 	}
 	float GetElapsedTimeFromBeat( float fBeat ) const { return m_Timing.GetElapsedTimeFromBeat( fBeat ); }
 	*/
-	
+
 	bool HasSignificantBpmChangesOrStops() const;
 	float GetStepsSeconds() const;
 	bool IsLong() const;
 	bool IsMarathon() const;
 
-	bool SongCompleteForStyle( const Style *st ) const;
-	bool HasStepsType( StepsType st ) const;
-	bool HasStepsTypeAndDifficulty( StepsType st, Difficulty dc ) const;
-	const vector<Steps*>& GetAllSteps() const { return m_vpSteps; }
-	const vector<Steps*>& GetStepsByStepsType( StepsType st ) const { return m_vpStepsByType[st]; }
-	bool IsEasy( StepsType st ) const;
+	bool SongCompleteForStyle(const Style *st) const;
+	bool HasStepsType(StepsType st) const;
+	bool HasStepsTypeAndDifficulty(StepsType st, Difficulty dc) const;
+	const vector<Steps*>& GetAllSteps() const
+	{
+		return m_vpSteps;
+	}
+	const vector<Steps*>& GetStepsByStepsType(StepsType st) const
+	{
+		return m_vpStepsByType[st];
+	}
+	bool IsEasy(StepsType st) const;
 	bool IsTutorial() const;
-	bool HasEdits( StepsType st ) const;
+	bool HasEdits(StepsType st) const;
 
-	void SetEnabled( bool b ) { m_bEnabled = b; }
-	bool GetEnabled() const { return m_bEnabled; }
+	void SetEnabled(bool b)
+	{
+		m_bEnabled = b;
+	}
+	bool GetEnabled() const
+	{
+		return m_bEnabled;
+	}
 	/**
 	 * @brief Determine if the song should be shown on the MusicWheel normally.
 	 *
@@ -403,19 +424,22 @@ public:
 	 *
 	 * We are responsible for deleting the memory pointed to by pSteps!
 	 * @param pSteps the new steps. */
-	void AddSteps( Steps* pSteps );
-	void DeleteSteps( const Steps* pSteps, bool bReAutoGen = true );
+	void AddSteps(Steps* pSteps);
+	void DeleteSteps(const Steps* pSteps, bool bReAutoGen = true);
 
-	void FreeAllLoadedFromProfile( ProfileSlot slot = ProfileSlot_Invalid, const set<Steps*> *setInUse = NULL );
-	bool WasLoadedFromProfile() const { return m_LoadedFromProfile != ProfileSlot_Invalid; }
-	void GetStepsLoadedFromProfile( ProfileSlot slot, vector<Steps*> &vpStepsOut ) const;
-	int GetNumStepsLoadedFromProfile( ProfileSlot slot ) const;
-	bool IsEditAlreadyLoaded( Steps* pSteps ) const;
+	void FreeAllLoadedFromProfile(ProfileSlot slot = ProfileSlot_Invalid, const set<Steps*> *setInUse = NULL);
+	bool WasLoadedFromProfile() const
+	{
+		return m_LoadedFromProfile != ProfileSlot_Invalid;
+	}
+	void GetStepsLoadedFromProfile(ProfileSlot slot, vector<Steps*> &vpStepsOut) const;
+	int GetNumStepsLoadedFromProfile(ProfileSlot slot) const;
+	bool IsEditAlreadyLoaded(Steps* pSteps) const;
 
 	/**
 	 * @brief An array of keysound file names (e.g. "beep.wav").
 	 *
-	 * The index in this array corresponds to the index in TapNote.  If you 
+	 * The index in this array corresponds to the index in TapNote.  If you
 	 * change the index in here, you must change all NoteData too.
 	 * Any note that doesn't have a value in the range of this array
 	 * means "this note doesn't have a keysound". */
@@ -424,7 +448,7 @@ public:
 	CachedObject<Song> m_CachedObject;
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 
 private:
 	/** @brief the Steps that belong to this Song. */
@@ -440,7 +464,7 @@ private:
  * @author Chris Danford, Glenn Maynard (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -450,7 +474,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

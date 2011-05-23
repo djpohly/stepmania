@@ -32,8 +32,10 @@ vector<CommandLineActions::CommandLineArgs> CommandLineActions::ToProcess;
 static void Nsis()
 {
 	RageFile out;
-	if(!out.Open("nsis_strings_temp.inc", RageFile::WRITE))
+	if (!out.Open("nsis_strings_temp.inc", RageFile::WRITE))
+	{
 		RageException::Throw("Error opening file for write.");
+	}
 
 	vector<RString> vs;
 	GetDirListing(INSTALLER_LANGUAGES_DIR + "*.ini", vs, false, false);
@@ -47,8 +49,10 @@ static void Nsis()
 		sLangNameUpper.MakeUpper();
 
 		IniFile ini;
-		if(!ini.ReadFile(INSTALLER_LANGUAGES_DIR + *s))
+		if (!ini.ReadFile(INSTALLER_LANGUAGES_DIR + *s))
+		{
 			RageException::Throw("Error opening file for read.");
+		}
 		FOREACH_CONST_Child(&ini, child)
 		{
 			FOREACH_CONST_Attr(child, attr)
@@ -91,54 +95,58 @@ extern const char *const version_time;
  * regardless of any preferences (tested by shakesoda on Mac). -aj */
 static void Version()
 {
-	#if defined(WIN32)
-		RString sProductID = ssprintf("%s", PRODUCT_ID_VER);
-		RString sVersion = "(sm-ssc was built without HAVE_VERSION_INFO)";
-		#if defined(HAVE_VERSION_INFO)
-			sVersion = ssprintf("build %lu\nCompile Date: %s @ %s", version_num, version_date, version_time);
-		#endif // HAVE_VERSION_INFO
+#if defined(WIN32)
+	RString sProductID = ssprintf("%s", PRODUCT_ID_VER);
+	RString sVersion = "(sm-ssc was built without HAVE_VERSION_INFO)";
+#if defined(HAVE_VERSION_INFO)
+	sVersion = ssprintf("build %lu\nCompile Date: %s @ %s", version_num, version_date, version_time);
+#endif // HAVE_VERSION_INFO
 
-		AllocConsole();
-		freopen("CONOUT$","wb", stdout);
-		freopen("CONOUT$","wb", stderr);
+	AllocConsole();
+	freopen("CONOUT$", "wb", stdout);
+	freopen("CONOUT$", "wb", stderr);
 
-		fprintf(stdout, "Version Information:\n%s %s\n", sProductID.c_str(), sVersion.c_str());
-		fprintf(stdout, "Press any key to exit.");
-		_getch();
-	#endif // WIN32
+	fprintf(stdout, "Version Information:\n%s %s\n", sProductID.c_str(), sVersion.c_str());
+	fprintf(stdout, "Press any key to exit.");
+	_getch();
+#endif // WIN32
 }
 
 void CommandLineActions::Handle(LoadingWindow* pLW)
 {
 	CommandLineArgs args;
-	for(int i=0; i<g_argc; ++i)
+	for (int i = 0; i < g_argc; ++i)
+	{
 		args.argv.push_back(g_argv[i]);
+	}
 	ToProcess.push_back(args);
 
 	bool bExitAfter = false;
-	if( GetCommandlineArgument("ExportNsisStrings") )
+	if (GetCommandlineArgument("ExportNsisStrings"))
 	{
 		Nsis();
 		bExitAfter = true;
 	}
-	if( GetCommandlineArgument("ExportLuaInformation") )
+	if (GetCommandlineArgument("ExportLuaInformation"))
 	{
 		LuaInformation();
 		bExitAfter = true;
 	}
-	if( GetCommandlineArgument("version") )
+	if (GetCommandlineArgument("version"))
 	{
 		Version();
 		bExitAfter = true;
 	}
-	if( bExitAfter )
+	if (bExitAfter)
+	{
 		exit(0);
+	}
 }
 
 /*
  * (c) 2006 Chris Danford, Steve Checkoway
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -148,7 +156,7 @@ void CommandLineActions::Handle(LoadingWindow* pLW)
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

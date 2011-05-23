@@ -20,51 +20,63 @@ public:
 	virtual Model *Copy() const;
 
 	void	Clear();
-	void	Load( const RString &sFile );
+	void	Load(const RString &sFile);
 
-	void	LoadPieces( const RString &sMeshesPath, const RString &sMaterialsPath, const RString &sBomesPath );
-	void	LoadMilkshapeAscii( const RString &sFile );
-	void 	LoadMaterialsFromMilkshapeAscii( const RString &sPath );
-	bool	LoadMilkshapeAsciiBones( const RString &sAniName, const RString &sPath );
+	void	LoadPieces(const RString &sMeshesPath, const RString &sMaterialsPath, const RString &sBomesPath);
+	void	LoadMilkshapeAscii(const RString &sFile);
+	void 	LoadMaterialsFromMilkshapeAscii(const RString &sPath);
+	bool	LoadMilkshapeAsciiBones(const RString &sAniName, const RString &sPath);
 
-	void LoadFromNode( const XNode* pNode );
+	void LoadFromNode(const XNode* pNode);
 
-	void	PlayAnimation( const RString &sAniName, float fPlayRate = 1 );
-	void	SetRate( float fRate ) { m_fCurAnimationRate = fRate; }
-	void	SetLoop( bool b ) { m_bLoop = b; }
-	void	SetPosition( float fSeconds );
+	void	PlayAnimation(const RString &sAniName, float fPlayRate = 1);
+	void	SetRate(float fRate)
+	{
+		m_fCurAnimationRate = fRate;
+	}
+	void	SetLoop(bool b)
+	{
+		m_bLoop = b;
+	}
+	void	SetPosition(float fSeconds);
 
-	virtual void	Update( float fDelta );
+	virtual void	Update(float fDelta);
 	virtual bool	EarlyAbortDraw() const;
 	virtual void	DrawPrimitives();
 
 	void	DrawCelShaded();
-	void	SetCelShading( bool bShading ) { m_bDrawCelShaded = bShading; }
+	void	SetCelShading(bool bShading)
+	{
+		m_bDrawCelShaded = bShading;
+	}
 
 	virtual int GetNumStates() const;
-	virtual void SetState( int iNewState );
+	virtual void SetState(int iNewState);
 	virtual float GetAnimationLengthSeconds() const;
-	virtual void SetSecondsIntoAnimation( float fSeconds );
+	virtual void SetSecondsIntoAnimation(float fSeconds);
 
-	RString		GetDefaultAnimation() const { return m_sDefaultAnimation; };
-	void		SetDefaultAnimation( RString sAnimation, float fPlayRate = 1 );
+	RString		GetDefaultAnimation() const
+	{
+		return m_sDefaultAnimation;
+	};
+	void		SetDefaultAnimation(RString sAnimation, float fPlayRate = 1);
 
 	bool	MaterialsNeedNormals() const;
 
 	// Lua
-	virtual void PushSelf( lua_State *L );
+	virtual void PushSelf(lua_State *L);
 
 private:
 	RageModelGeometry		*m_pGeometry;
 
 	vector<msMaterial>		m_Materials;
-	map<RString,msAnimation>	m_mapNameToAnimation;
+	map<RString, msAnimation>	m_mapNameToAnimation;
 	const msAnimation*		m_pCurAnimation;
 
-	static void SetBones( const msAnimation* pAnimation, float fFrame, vector<myBone_t> &vpBones );
+	static void SetBones(const msAnimation* pAnimation, float fFrame, vector<myBone_t> &vpBones);
 	vector<myBone_t>	m_vpBones;
 
-	// If any vertex has a bone weight, then then render from m_pTempGeometry.  
+	// If any vertex has a bone weight, then then render from m_pTempGeometry.
 	// Otherwise, render directly from m_pGeometry.
 	RageCompiledGeometry*		m_pTempGeometry;
 	void UpdateTempGeometry();
@@ -74,8 +86,8 @@ private:
 	 * a complete copy. */
 	vector<msMesh>	m_vTempMeshes;
 
-	void DrawMesh( int i ) const;
-	void AdvanceFrame( float fDeltaTime );
+	void DrawMesh(int i) const;
+	void AdvanceFrame(float fDeltaTime);
 
 	float			m_fCurFrame;
 	RString			m_sDefaultAnimation;
@@ -83,7 +95,7 @@ private:
 	float			m_fCurAnimationRate;
 	bool			m_bLoop;
 	bool			m_bDrawCelShaded; // for Lua models
-	
+
 	Model& operator=(const Model& rhs);
 };
 
@@ -92,7 +104,7 @@ private:
 /*
  * (c) 2003-2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -102,7 +114,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

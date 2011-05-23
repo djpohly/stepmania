@@ -5,21 +5,24 @@ class ILocalizedStringImpl
 {
 public:
 	virtual ~ILocalizedStringImpl() { }
-	virtual void Load( const RString& sGroup, const RString& sName ) = 0;
+	virtual void Load(const RString& sGroup, const RString& sName) = 0;
 	virtual const RString &GetLocalized() const = 0;
 };
 /** @brief Get a String based on the user's natural language. */
 class LocalizedString
 {
 public:
-	LocalizedString( const RString& sGroup = "", const RString& sName = "" );
+	LocalizedString(const RString& sGroup = "", const RString& sName = "");
 	~LocalizedString();
-	void Load( const RString& sGroup, const RString& sName );
-	operator const RString &() const { return GetValue(); }
+	void Load(const RString& sGroup, const RString& sName);
+	operator const RString &() const
+	{
+		return GetValue();
+	}
 	const RString &GetValue() const;
 
 	typedef ILocalizedStringImpl *(*MakeLocalizer)();
-	static void RegisterLocalizer( MakeLocalizer pFunc );
+	static void RegisterLocalizer(MakeLocalizer pFunc);
 
 private:
 	void CreateImpl();

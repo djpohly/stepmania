@@ -6,13 +6,13 @@
 #include "RageSound.h"
 
 enum SetTimeSelection
-{ 
-	year, 
-	month, 
-	day, 
-	hour, 
-	minute, 
-	second, 
+{
+	year,
+	month,
+	day,
+	hour,
+	minute,
+	second,
 	NUM_SetTimeSelection,
 	SetTimeSelection_Invalid
 };
@@ -22,22 +22,22 @@ class ScreenSetTime : public ScreenWithMenuElements
 public:
 	virtual void Init();
 
-	virtual void Update( float fDelta );
-	virtual void Input( const InputEventPlus &input );
+	virtual void Update(float fDelta);
+	virtual void Input(const InputEventPlus &input);
 
-	virtual void MenuUp( const InputEventPlus &input );
-	virtual void MenuDown( const InputEventPlus &input );
-	virtual void MenuLeft( const InputEventPlus &input );
-	virtual void MenuRight( const InputEventPlus &input );
-	virtual void MenuStart( const InputEventPlus &input );
-	virtual void MenuSelect( const InputEventPlus &input );
-	virtual void MenuBack( const InputEventPlus &input );
+	virtual void MenuUp(const InputEventPlus &input);
+	virtual void MenuDown(const InputEventPlus &input);
+	virtual void MenuLeft(const InputEventPlus &input);
+	virtual void MenuRight(const InputEventPlus &input);
+	virtual void MenuStart(const InputEventPlus &input);
+	virtual void MenuSelect(const InputEventPlus &input);
+	virtual void MenuBack(const InputEventPlus &input);
 
 private:
 	SetTimeSelection m_Selection;
 	time_t m_TimeOffset;
-	void ChangeSelection( int iDirection );
-	void ChangeValue( int iDirection );
+	void ChangeSelection(int iDirection);
+	void ChangeValue(int iDirection);
 
 	RageSound	m_soundChangeValue;
 	RageSound	m_soundChangeSelection;
@@ -51,7 +51,7 @@ private:
 /*
  * (c) 2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -61,7 +61,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

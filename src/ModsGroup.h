@@ -12,7 +12,7 @@ enum ModsLevel
 	NUM_ModsLevel,
 	ModsLevel_Invalid
 };
-LuaDeclareType( ModsLevel );
+LuaDeclareType(ModsLevel);
 
 #define MODS_GROUP_ASSIGN( group, level, member, val )		(group).Assign( (level), member, (val) )
 #define MODS_GROUP_ASSIGN_N( group, level, member, n, val )	(group).Assign_n( (level), member, (n), (val) )
@@ -35,70 +35,105 @@ class ModsGroup
 public:
 	void Init()
 	{
-		Call( ModsLevel_Preferred, &T::Init );
+		Call(ModsLevel_Preferred, &T::Init);
 	}
 
-	void Update( float fDelta )
+	void Update(float fDelta)
 	{
 		// Don't let the mod approach speed be affected by Tab.
 		// TODO: Find a more elegant way of handling this.
 		fDelta = m_Timer.GetDeltaTime();
-		m_Current.Approach( m_[ModsLevel_Song], fDelta );
+		m_Current.Approach(m_[ModsLevel_Song], fDelta);
 	}
 
 	template<typename U>
-	inline void Assign( ModsLevel level, U T::*member, const U &val )
+	inline void Assign(ModsLevel level, U T::*member, const U &val)
 	{
-		if( level != ModsLevel_Song )
+		if (level != ModsLevel_Song)
+		{
 			m_Current.*member = val;
-		for( ; level < NUM_ModsLevel; enum_add(level, 1) )
+		}
+		for (; level < NUM_ModsLevel; enum_add(level, 1))
+		{
 			m_[level].*member = val;
+		}
 	}
 
 	template<typename U, int n>
-	inline void Assign_n( ModsLevel level, U (T::*member)[n], size_t index, const U &val )
+	inline void Assign_n(ModsLevel level, U(T::*member)[n], size_t index, const U &val)
 	{
-		DEBUG_ASSERT( index < n );
-		if( level != ModsLevel_Song )
+		DEBUG_ASSERT(index < n);
+		if (level != ModsLevel_Song)
+		{
 			(m_Current.*member)[index] = val;
-		for( ; level < NUM_ModsLevel; enum_add(level, 1) )
+		}
+		for (; level < NUM_ModsLevel; enum_add(level, 1))
+		{
 			(m_[level].*member)[index] = val;
+		}
 	}
 
-	void Assign( ModsLevel level, const T &val )
+	void Assign(ModsLevel level, const T &val)
 	{
-		if( level != ModsLevel_Song )
+		if (level != ModsLevel_Song)
+		{
 			m_Current = val;
-		for( ; level < NUM_ModsLevel; enum_add(level, 1) )
+		}
+		for (; level < NUM_ModsLevel; enum_add(level, 1))
+		{
 			m_[level] = val;
+		}
 	}
 
-	void Call( ModsLevel level, void (T::*fun)() )
+	void Call(ModsLevel level, void (T::*fun)())
 	{
-		if( level != ModsLevel_Song )
+		if (level != ModsLevel_Song)
+		{
 			(m_Current.*fun)();
-		for( ; level < NUM_ModsLevel; enum_add(level, 1) )
+		}
+		for (; level < NUM_ModsLevel; enum_add(level, 1))
+		{
 			(m_[level].*fun)();
+		}
 	}
 
-	void FromString( ModsLevel level, const RString &str )
+	void FromString(ModsLevel level, const RString &str)
 	{
-		if( level != ModsLevel_Song )
-			m_Current.FromString( str );
-		for( ; level < NUM_ModsLevel; enum_add(level, 1) )
-			m_[level].FromString( str );
+		if (level != ModsLevel_Song)
+		{
+			m_Current.FromString(str);
+		}
+		for (; level < NUM_ModsLevel; enum_add(level, 1))
+		{
+			m_[level].FromString(str);
+		}
 	}
 
-	void SetCurrentToLevel( ModsLevel level )
+	void SetCurrentToLevel(ModsLevel level)
 	{
 		m_Current = m_[level];
 	}
 
-	const T &Get( ModsLevel l ) const { return m_[l]; }
-	const T &GetPreferred() const	{ return m_[ModsLevel_Preferred]; }
-	const T &GetStage() const	{ return m_[ModsLevel_Stage]; }
-	const T &GetSong() const	{ return m_[ModsLevel_Song]; }
-	const T &GetCurrent() const	{ return m_Current; }
+	const T &Get(ModsLevel l) const
+	{
+		return m_[l];
+	}
+	const T &GetPreferred() const
+	{
+		return m_[ModsLevel_Preferred];
+	}
+	const T &GetStage() const
+	{
+		return m_[ModsLevel_Stage];
+	}
+	const T &GetSong() const
+	{
+		return m_[ModsLevel_Song];
+	}
+	const T &GetCurrent() const
+	{
+		return m_Current;
+	}
 };
 
 #endif
@@ -106,7 +141,7 @@ public:
 /*
  * (c) 2006 Chris Danford, Steve Checkoway
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -116,7 +151,7 @@ public:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

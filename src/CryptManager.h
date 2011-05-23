@@ -13,26 +13,26 @@ public:
 	~CryptManager();
 
 	static void GenerateGlobalKeys();
-	static void GenerateRSAKey( unsigned int keyLength, RString &sPrivKey, RString &sPubKey );
-	static void GenerateRSAKeyToFile( unsigned int keyLength, RString privFilename, RString pubFilename );
-	static void SignFileToFile( RString sPath, RString sSignatureFile = "" );
-	static bool Sign( RString sPath, RString &sSignatureOut, RString sPrivateKey );
-	static bool VerifyFileWithFile( RString sPath, RString sSignatureFile = "" );
-	static bool VerifyFileWithFile( RString sPath, RString sSignatureFile, RString sPublicKeyFile );
-	static bool Verify( RageFileBasic &file, RString sSignature, RString sPublicKey );
+	static void GenerateRSAKey(unsigned int keyLength, RString &sPrivKey, RString &sPubKey);
+	static void GenerateRSAKeyToFile(unsigned int keyLength, RString privFilename, RString pubFilename);
+	static void SignFileToFile(RString sPath, RString sSignatureFile = "");
+	static bool Sign(RString sPath, RString &sSignatureOut, RString sPrivateKey);
+	static bool VerifyFileWithFile(RString sPath, RString sSignatureFile = "");
+	static bool VerifyFileWithFile(RString sPath, RString sSignatureFile, RString sPublicKeyFile);
+	static bool Verify(RageFileBasic &file, RString sSignature, RString sPublicKey);
 
-	static void GetRandomBytes( void *pData, int iBytes );
+	static void GetRandomBytes(void *pData, int iBytes);
 	static RString GenerateRandomUUID();
 
-	static RString GetMD5ForFile( RString fn );		// in binary
-	static RString GetMD5ForString( RString sData );	// in binary
-	static RString GetSHA1ForString( RString sData );	// in binary
-	static RString GetSHA1ForFile( RString fn );		// in binary
+	static RString GetMD5ForFile(RString fn);		// in binary
+	static RString GetMD5ForString(RString sData);	// in binary
+	static RString GetSHA1ForString(RString sData);	// in binary
+	static RString GetSHA1ForFile(RString fn);		// in binary
 
 	static RString GetPublicKeyFileName();
 
 	// Lua
-	void PushSelf( lua_State *L );
+	void PushSelf(lua_State *L);
 };
 
 extern CryptManager*	CRYPTMAN;	// global and accessable from anywhere in our program
@@ -42,7 +42,7 @@ extern CryptManager*	CRYPTMAN;	// global and accessable from anywhere in our pro
 /*
  * (c) 2004 Chris Danford
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -52,7 +52,7 @@ extern CryptManager*	CRYPTMAN;	// global and accessable from anywhere in our pro
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

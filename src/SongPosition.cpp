@@ -1,15 +1,19 @@
 #include "global.h"
 #include "SongPosition.h"
 
-static Preference<float> g_fVisualDelaySeconds( "VisualDelaySeconds", 0.0f );
+static Preference<float> g_fVisualDelaySeconds("VisualDelaySeconds", 0.0f);
 
-void SongPosition::UpdateSongPosition( float fPositionSeconds, const TimingData &timing, const RageTimer &timestamp )
+void SongPosition::UpdateSongPosition(float fPositionSeconds, const TimingData &timing, const RageTimer &timestamp)
 {
 
-	if( !timestamp.IsZero() )
+	if (!timestamp.IsZero())
+	{
 		m_LastBeatUpdate = timestamp;
+	}
 	else
+	{
 		m_LastBeatUpdate.Touch();
+	}
 
 	// xxx testing: only do this on monotune survivor
 	/*
@@ -17,16 +21,16 @@ void SongPosition::UpdateSongPosition( float fPositionSeconds, const TimingData 
 		LOG->Trace( ssprintf("[GameState::UpdateSongPosition] cur BPS = %f, fPositionSeconds = %f",m_fCurBPS,fPositionSeconds) );
 	*/
 
-	timing.GetBeatAndBPSFromElapsedTime( fPositionSeconds, m_fSongBeat, m_fCurBPS, m_bFreeze, m_bDelay, m_iWarpBeginRow, m_fWarpDestination );
-	
+	timing.GetBeatAndBPSFromElapsedTime(fPositionSeconds, m_fSongBeat, m_fCurBPS, m_bFreeze, m_bDelay, m_iWarpBeginRow, m_fWarpDestination);
+
 	// "Crash reason : -243478.890625 -48695.773438"
-	ASSERT_M( m_fSongBeat > -2000, ssprintf("Song beat %f at %f seconds is less than -2000!", m_fSongBeat, fPositionSeconds) );
+	ASSERT_M(m_fSongBeat > -2000, ssprintf("Song beat %f at %f seconds is less than -2000!", m_fSongBeat, fPositionSeconds));
 
 	m_fMusicSeconds = fPositionSeconds;
 
-	m_fLightSongBeat = timing.GetBeatFromElapsedTime( fPositionSeconds + g_fLightsAheadSeconds );
+	m_fLightSongBeat = timing.GetBeatFromElapsedTime(fPositionSeconds + g_fLightsAheadSeconds);
 
-	m_fSongBeatNoOffset = timing.GetBeatFromElapsedTimeNoOffset( fPositionSeconds );
+	m_fSongBeatNoOffset = timing.GetBeatFromElapsedTimeNoOffset(fPositionSeconds);
 
 	/*
 	// xxx testing: only do this on monotune survivor
@@ -46,12 +50,12 @@ void SongPosition::UpdateSongPosition( float fPositionSeconds, const TimingData 
 		}
 	}
 	*/
-	
+
 	m_fMusicSecondsVisible = fPositionSeconds - g_fVisualDelaySeconds.Get();
 	float fThrowAway, fThrowAway2;
 	bool bThrowAway;
 	int iThrowAway;
-	timing.GetBeatAndBPSFromElapsedTime( m_fMusicSecondsVisible, m_fSongBeatVisible, fThrowAway, bThrowAway, bThrowAway, iThrowAway, fThrowAway2 );
+	timing.GetBeatAndBPSFromElapsedTime(m_fMusicSecondsVisible, m_fSongBeatVisible, fThrowAway, bThrowAway, bThrowAway, iThrowAway, fThrowAway2);
 
 }
 
@@ -79,39 +83,39 @@ void SongPosition::Reset()
 class LunaSongPosition: public Luna<SongPosition>
 {
 public:
-	DEFINE_METHOD( GetMusicSecondsVisible, m_fMusicSecondsVisible );
-	DEFINE_METHOD( GetSongBeatVisible, m_fSongBeatVisible );
-	DEFINE_METHOD( GetMusicSeconds, m_fMusicSeconds );
-	DEFINE_METHOD( GetSongBeat, m_fSongBeat );
-	DEFINE_METHOD( GetSongBeatNoOffset, m_fSongBeatNoOffset );
-	DEFINE_METHOD( GetCurBPS, m_fCurBPS );
-	DEFINE_METHOD( GetFreeze, m_bFreeze );
-	DEFINE_METHOD( GetDelay, m_bDelay );
-	DEFINE_METHOD( GetWarpBeginRow, m_iWarpBeginRow );
-	DEFINE_METHOD( GetWarpDestination, m_fWarpDestination );
+	DEFINE_METHOD(GetMusicSecondsVisible, m_fMusicSecondsVisible);
+	DEFINE_METHOD(GetSongBeatVisible, m_fSongBeatVisible);
+	DEFINE_METHOD(GetMusicSeconds, m_fMusicSeconds);
+	DEFINE_METHOD(GetSongBeat, m_fSongBeat);
+	DEFINE_METHOD(GetSongBeatNoOffset, m_fSongBeatNoOffset);
+	DEFINE_METHOD(GetCurBPS, m_fCurBPS);
+	DEFINE_METHOD(GetFreeze, m_bFreeze);
+	DEFINE_METHOD(GetDelay, m_bDelay);
+	DEFINE_METHOD(GetWarpBeginRow, m_iWarpBeginRow);
+	DEFINE_METHOD(GetWarpDestination, m_fWarpDestination);
 
 	LunaSongPosition()
 	{
-		ADD_METHOD( GetMusicSecondsVisible );
-		ADD_METHOD( GetSongBeatVisible );
-		ADD_METHOD( GetMusicSeconds );
-		ADD_METHOD( GetSongBeat );
-		ADD_METHOD( GetSongBeatNoOffset );
-		ADD_METHOD( GetCurBPS );
-		ADD_METHOD( GetFreeze );
-		ADD_METHOD( GetDelay );
-		ADD_METHOD( GetWarpBeginRow );
-		ADD_METHOD( GetWarpDestination );
+		ADD_METHOD(GetMusicSecondsVisible);
+		ADD_METHOD(GetSongBeatVisible);
+		ADD_METHOD(GetMusicSeconds);
+		ADD_METHOD(GetSongBeat);
+		ADD_METHOD(GetSongBeatNoOffset);
+		ADD_METHOD(GetCurBPS);
+		ADD_METHOD(GetFreeze);
+		ADD_METHOD(GetDelay);
+		ADD_METHOD(GetWarpBeginRow);
+		ADD_METHOD(GetWarpDestination);
 	}
 };
 
-LUA_REGISTER_CLASS( SongPosition );
+LUA_REGISTER_CLASS(SongPosition);
 /**
  * @file
  * @author Thai Pangsakulyanont (c) 2011
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -121,7 +125,7 @@ LUA_REGISTER_CLASS( SongPosition );
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

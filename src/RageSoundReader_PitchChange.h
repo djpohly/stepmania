@@ -10,16 +10,25 @@ class RageSoundReader_Resample_Good;
 class RageSoundReader_PitchChange: public RageSoundReader_Filter
 {
 public:
-	RageSoundReader_PitchChange( RageSoundReader *pSource );
-	RageSoundReader_PitchChange( const RageSoundReader_PitchChange &cpy );
+	RageSoundReader_PitchChange(RageSoundReader *pSource);
+	RageSoundReader_PitchChange(const RageSoundReader_PitchChange &cpy);
 
-	virtual int Read( float *pBuf, int iFrames );
-	virtual bool SetProperty( const RString &sProperty, float fValue );
+	virtual int Read(float *pBuf, int iFrames);
+	virtual bool SetProperty(const RString &sProperty, float fValue);
 
-	void SetSpeedRatio( float fRatio ) { m_fSpeedRatio = fRatio; }
-	void SetPitchRatio( float fRatio ) { m_fPitchRatio = fRatio; }
+	void SetSpeedRatio(float fRatio)
+	{
+		m_fSpeedRatio = fRatio;
+	}
+	void SetPitchRatio(float fRatio)
+	{
+		m_fPitchRatio = fRatio;
+	}
 
-	virtual RageSoundReader_PitchChange *Copy() const { return new RageSoundReader_PitchChange(*this); }
+	virtual RageSoundReader_PitchChange *Copy() const
+	{
+		return new RageSoundReader_PitchChange(*this);
+	}
 
 private:
 	RageSoundReader_SpeedChange *m_pSpeedChange; // freed by RageSoundReader_Filter

@@ -11,12 +11,12 @@ class Steps;
 class Song;
 struct RadarValues;
 
-AutoScreenMessage( SM_PlayToasty );
+AutoScreenMessage(SM_PlayToasty);
 
 /** @brief The default ScoreKeeper implementation. */
 class ScoreKeeperNormal: public ScoreKeeper
 {
-	void AddScoreInternal( TapNoteScore score );
+	void AddScoreInternal(TapNoteScore score);
 
 	int	m_iScoreRemainder;
 	int	m_iMaxPossiblePoints;
@@ -45,9 +45,9 @@ class ScoreKeeperNormal: public ScoreKeeper
 
 	vector<Steps*>	m_apSteps;
 
-	virtual void AddTapScore( TapNoteScore tns );
-	virtual void AddHoldScore( HoldNoteScore hns );
-	virtual void AddTapRowScore( TapNoteScore tns, const NoteData &nd, int iRow );
+	virtual void AddTapScore(TapNoteScore tns);
+	virtual void AddHoldScore(HoldNoteScore hns);
+	virtual void AddTapRowScore(TapNoteScore tns, const NoteData &nd, int iRow);
 
 	/* Configuration: */
 	/* Score after each tap will be rounded to the nearest m_iRoundTo; 1 to do nothing. */
@@ -55,44 +55,44 @@ class ScoreKeeperNormal: public ScoreKeeper
 	int		m_ComboBonusFactor[NUM_TapNoteScore];
 
 public:
-	ScoreKeeperNormal( PlayerState *pPlayerState, PlayerStageStats *pPlayerStageStats );
+	ScoreKeeperNormal(PlayerState *pPlayerState, PlayerStageStats *pPlayerStageStats);
 
 	void Load(
-		const vector<Song*>& apSongs,
-		const vector<Steps*>& apSteps,
-		const vector<AttackArray> &asModifiers );
+	        const vector<Song*>& apSongs,
+	        const vector<Steps*>& apSteps,
+	        const vector<AttackArray> &asModifiers);
 
 	// before a song plays (called multiple times if course)
-	void OnNextSong( int iSongInCourseIndex, const Steps* pSteps, const NoteData* pNoteData );
+	void OnNextSong(int iSongInCourseIndex, const Steps* pSteps, const NoteData* pNoteData);
 
-	void HandleTapScore( const TapNote &tn );
-	void HandleTapRowScore( const NoteData &nd, int iRow );
-	void HandleHoldScore( const TapNote &tn );
-	void HandleHoldActiveSeconds( float fMusicSecondsHeld ) {};
-	void HandleHoldCheckpointScore( const NoteData &nd, int iRow, int iNumHoldsHeldThisRow, int iNumHoldsMissedThisRow );
+	void HandleTapScore(const TapNote &tn);
+	void HandleTapRowScore(const NoteData &nd, int iRow);
+	void HandleHoldScore(const TapNote &tn);
+	void HandleHoldActiveSeconds(float fMusicSecondsHeld) {};
+	void HandleHoldCheckpointScore(const NoteData &nd, int iRow, int iNumHoldsHeldThisRow, int iNumHoldsMissedThisRow);
 	void HandleTapScoreNone();
 
-	// This must be calculated using only cached radar values so that we can 
+	// This must be calculated using only cached radar values so that we can
 	// do it quickly.
-	static int GetPossibleDancePoints( const RadarValues& fRadars );
-	static int GetPossibleDancePoints( const RadarValues& fOriginalRadars, const RadarValues& fPostRadars );
-	static int GetPossibleGradePoints( const RadarValues& fRadars );
-	static int GetPossibleGradePoints( const RadarValues& fOriginalRadars, const RadarValues& fPostRadars );
+	static int GetPossibleDancePoints(const RadarValues& fRadars);
+	static int GetPossibleDancePoints(const RadarValues& fOriginalRadars, const RadarValues& fPostRadars);
+	static int GetPossibleGradePoints(const RadarValues& fRadars);
+	static int GetPossibleGradePoints(const RadarValues& fOriginalRadars, const RadarValues& fPostRadars);
 
-	int TapNoteScoreToDancePoints( TapNoteScore tns ) const;
-	int HoldNoteScoreToDancePoints( HoldNoteScore hns ) const;
-	int TapNoteScoreToGradePoints( TapNoteScore tns ) const;
-	int HoldNoteScoreToGradePoints( HoldNoteScore hns ) const;
-	static int TapNoteScoreToDancePoints( TapNoteScore tns, bool bBeginner );
-	static int HoldNoteScoreToDancePoints( HoldNoteScore hns, bool bBeginner );
-	static int TapNoteScoreToGradePoints( TapNoteScore tns, bool bBeginner );
-	static int HoldNoteScoreToGradePoints( HoldNoteScore hns, bool bBeginner );
+	int TapNoteScoreToDancePoints(TapNoteScore tns) const;
+	int HoldNoteScoreToDancePoints(HoldNoteScore hns) const;
+	int TapNoteScoreToGradePoints(TapNoteScore tns) const;
+	int HoldNoteScoreToGradePoints(HoldNoteScore hns) const;
+	static int TapNoteScoreToDancePoints(TapNoteScore tns, bool bBeginner);
+	static int HoldNoteScoreToDancePoints(HoldNoteScore hns, bool bBeginner);
+	static int TapNoteScoreToGradePoints(TapNoteScore tns, bool bBeginner);
+	static int HoldNoteScoreToGradePoints(HoldNoteScore hns, bool bBeginner);
 
 private:
-	void HandleTapNoteScoreInternal( TapNoteScore tns, TapNoteScore maximum );
-	void HandleComboInternal( int iNumHitContinueCombo, int iNumHitMaintainCombo, int iNumBreakCombo, int iRow = -1 );
-	void HandleRowComboInternal( TapNoteScore tns, int iNumTapsInRow, int iRow = -1 );
-	void GetRowCounts( const NoteData &nd, int iRow, int &iNumHitContinueCombo, int &iNumHitMaintainCombo, int &iNumBreakCombo );
+	void HandleTapNoteScoreInternal(TapNoteScore tns, TapNoteScore maximum);
+	void HandleComboInternal(int iNumHitContinueCombo, int iNumHitMaintainCombo, int iNumBreakCombo, int iRow = -1);
+	void HandleRowComboInternal(TapNoteScore tns, int iNumTapsInRow, int iRow = -1);
+	void GetRowCounts(const NoteData &nd, int iRow, int &iNumHitContinueCombo, int &iNumHitMaintainCombo, int &iNumBreakCombo);
 
 };
 
@@ -101,7 +101,7 @@ private:
 /*
  * (c) 2001-2004 Chris Danford, Glenn Maynard
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -111,7 +111,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF

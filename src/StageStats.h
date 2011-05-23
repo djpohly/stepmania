@@ -7,7 +7,7 @@ class Song;
 class Style;
 struct lua_State;
 
-/** 
+/**
  * @brief Contains statistics for one stage of play.
  *
  * This is either one song, or a whole course. */
@@ -20,19 +20,19 @@ public:
 	/**
 	 * @brief Ensure that the Player is valid.
 	 * @param pn the PlayerNumber to check. */
-	void AssertValid( PlayerNumber pn ) const;
-	
+	void AssertValid(PlayerNumber pn) const;
+
 	/**
 	 * @brief Ensure that the Player is valid.
 	 * @param mp the Multiplayer to check. */
-	void AssertValid( MultiPlayer mp ) const;
+	void AssertValid(MultiPlayer mp) const;
 
-	void AddStats( const StageStats& other );		// accumulate
+	void AddStats(const StageStats& other);		// accumulate
 
 	bool OnePassed() const;
 	bool AllFailed() const;
 
-	int		GetAverageMeter( PlayerNumber pn ) const;
+	int		GetAverageMeter(PlayerNumber pn) const;
 
 	Stage		m_Stage;
 	int		m_iStageIndex;
@@ -48,7 +48,7 @@ public:
 	/** @brief Did the PLayer use Autoplay at any point during gameplay? */
 	bool	m_bUsedAutoplay;
 
-	// TODO: These are updated in ScreenGameplay::Update based on fDelta.  
+	// TODO: These are updated in ScreenGameplay::Update based on fDelta.
 	// They should be made more accurate.
 	/**
 	 * @brief How many seconds were there before gameplay ended?
@@ -69,17 +69,17 @@ public:
 	PlayerStageStats m_player[NUM_PLAYERS];
 	PlayerStageStats m_multiPlayer[NUM_MultiPlayer];
 
-	void FinalizeScores( bool bSummary );
+	void FinalizeScores(bool bSummary);
 	/**
 	 * @brief Determine if the PlayerNumber has a high score.
 	 * @param pn the PlayerNumber in question.
 	 * @return true if the PlayerNumber has a high score, false otherwise. */
-	bool PlayerHasHighScore( PlayerNumber pn ) const;
+	bool PlayerHasHighScore(PlayerNumber pn) const;
 	int GetMinimumMissCombo() const;
 
 	// Lua
-	void PushSelf( lua_State *L );
-	
+	void PushSelf(lua_State *L);
+
 private:
 	// TODO: Implement the copy and assignment operators on our own.
 };
@@ -91,7 +91,7 @@ private:
  * @author Chris Danford, Glenn Maynard (c) 2001-2004
  * @section LICENSE
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -101,7 +101,7 @@ private:
  * copyright notice(s) and this permission notice appear in all copies of
  * the Software and that both the above copyright notice(s) and this
  * permission notice appear in supporting documentation.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF
