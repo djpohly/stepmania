@@ -23,6 +23,8 @@
 
 /* Begin PBXBuildFile section */
 		1215D7A208C6559A00B87D8B /* ScreenGameplayNormal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1215D7A008C6559A00B87D8B /* ScreenGameplayNormal.cpp */; };
+		2B17AB2B139809E8001AE57D /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 2B17AB29139809E8001AE57D /* sqlite3.c */; };
+		2B17AB2C139809E8001AE57D /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B17AB2A139809E8001AE57D /* sqlite3.h */; };
 		2B30D6821315EA7E00044B68 /* MouseDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B30D6801315EA7E00044B68 /* MouseDevice.cpp */; };
 		2B30D6831315EA7E00044B68 /* MouseDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B30D6811315EA7E00044B68 /* MouseDevice.h */; };
 		2B43509513949F37006FA051 /* TimingSegments.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B43509313949F37006FA051 /* TimingSegments.h */; };
@@ -1802,6 +1804,8 @@
 		1215D7A108C6559A00B87D8B /* ScreenGameplayNormal.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; name = ScreenGameplayNormal.h; path = ../src/ScreenGameplayNormal.h; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		2B17AB29139809E8001AE57D /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sqlite3.c; path = ../extern/sqlite/sqlite3.c; sourceTree = SOURCE_ROOT; };
+		2B17AB2A139809E8001AE57D /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = ../extern/sqlite/sqlite3.h; sourceTree = SOURCE_ROOT; };
 		2B30D6801315EA7E00044B68 /* MouseDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseDevice.cpp; sourceTree = "<group>"; };
 		2B30D6811315EA7E00044B68 /* MouseDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MouseDevice.h; sourceTree = "<group>"; };
 		2B43509313949F37006FA051 /* TimingSegments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimingSegments.h; path = ../src/TimingSegments.h; sourceTree = SOURCE_ROOT; };
@@ -3254,6 +3258,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		2B17AB28139809B9001AE57D /* sqlite */ = {
+			isa = PBXGroup;
+			children = (
+				2B17AB29139809E8001AE57D /* sqlite3.c */,
+				2B17AB2A139809E8001AE57D /* sqlite3.h */,
+			);
+			name = sqlite;
+			sourceTree = "<group>";
+		};
 		2B766980132FF62B00586512 /* NoteParsing */ = {
 			isa = PBXGroup;
 			children = (
@@ -3330,6 +3343,7 @@
 				AAE781870AC7E46E00AEFC64 /* lua-5.1 */,
 				AAA070B20CE7B3AD005A3060 /* mad-0.15.1b */,
 				AA8B6C7804AFD82B00D02EE9 /* pcre */,
+				2B17AB28139809B9001AE57D /* sqlite */,
 			);
 			name = extern;
 			sourceTree = "<group>";
@@ -5072,6 +5086,7 @@
 				2B9C2E8E137A138B004C92F3 /* NotesLoaderJson.h in Headers */,
 				2B9C2E90137A138B004C92F3 /* NotesWriterJson.h in Headers */,
 				2B43509513949F37006FA051 /* TimingSegments.h in Headers */,
+				2B17AB2C139809E8001AE57D /* sqlite3.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6336,6 +6351,7 @@
 				2BC6133913773C8E00CC8BBD /* pngwtran.c in Sources */,
 				2BC6133A13773C8E00CC8BBD /* pngwutil.c in Sources */,
 				2B43509613949F37006FA051 /* TimingSegments.cpp in Sources */,
+				2B17AB2B139809E8001AE57D /* sqlite3.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
