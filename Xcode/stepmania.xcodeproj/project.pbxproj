@@ -61,6 +61,7 @@
 		2B30D6831315EA7E00044B68 /* MouseDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B30D6811315EA7E00044B68 /* MouseDevice.h */; };
 		2B3AF5A613A874360056E3C8 /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B3AF59A13A872DB0056E3C8 /* sqlite3.h */; };
 		2B3AF5A713A8743E0056E3C8 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 2B3AF59913A872DB0056E3C8 /* sqlite3.c */; };
+		2B3AF62213A887C00056E3C8 /* libsqlite-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B3AF59213A872AA0056E3C8 /* libsqlite-sm5.a */; };
 		2B43509513949F37006FA051 /* TimingSegments.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B43509313949F37006FA051 /* TimingSegments.h */; };
 		2B43509613949F37006FA051 /* TimingSegments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B43509413949F37006FA051 /* TimingSegments.cpp */; };
 		2B76698B132FF71500586512 /* NotesLoaderSMA.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B766989132FF71500586512 /* NotesLoaderSMA.h */; };
@@ -3149,6 +3150,7 @@
 				2B17AB9F13981271001AE57D /* libpng-1.5.1-sm5.a in Frameworks */,
 				2B17ABCF139815E0001AE57D /* libglew-sm5.a in Frameworks */,
 				2B17ABFC139817D5001AE57D /* libpcre-sm5.a in Frameworks */,
+				2B3AF62213A887C00056E3C8 /* libsqlite-sm5.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7938,6 +7940,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -7965,6 +7968,7 @@
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				INSTALL_PATH = /usr/local/lib;
+				OBJROOT = "$(SRCROOT)/build";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -7973,6 +7977,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "sqlite-sm5";
+				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Native;
 		};
@@ -7980,6 +7985,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -8007,6 +8013,7 @@
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				INSTALL_PATH = /usr/local/lib;
+				OBJROOT = "$(SRCROOT)/build";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -8015,6 +8022,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "sqlite-sm5";
+				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = PerformanceDebug;
 		};
@@ -8022,6 +8030,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -8049,6 +8058,7 @@
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				INSTALL_PATH = /usr/local/lib;
+				OBJROOT = "$(SRCROOT)/build";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -8057,6 +8067,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "sqlite-sm5";
+				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Universal;
 		};
@@ -8064,6 +8075,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -8094,6 +8106,7 @@
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				INSTALL_PATH = /usr/local/lib;
+				OBJROOT = "$(SRCROOT)/build";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -8102,6 +8115,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "sqlite-sm5";
+				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Debug;
 		};
@@ -8144,6 +8158,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
+					"$(SCRROOT)/../extern/sqlite",
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/../src/ffmpeg/include",
 					"$(SRCROOT)/../src/vorbis",
@@ -8854,6 +8869,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
+					"$(SCRROOT)/../extern/sqlite",
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/../src/ffmpeg/include",
 					"$(SRCROOT)/../src/vorbis",
@@ -9099,6 +9115,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
+					"$(SCRROOT)/../extern/sqlite",
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/../src/ffmpeg/include",
 					"$(SRCROOT)/../src/vorbis",
@@ -9228,6 +9245,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
+					"$(SCRROOT)/../extern/sqlite",
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/../src/ffmpeg/include",
 					"$(SRCROOT)/../src/vorbis",
