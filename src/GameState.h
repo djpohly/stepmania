@@ -16,6 +16,7 @@
 #include <map>
 #include <deque>
 #include <set>
+#include "sqlite3.h"
 
 class Character;
 class Course;
@@ -41,6 +42,8 @@ class GameState
 	PlayerNumber	masterPlayerNumber;
 	/** @brief The TimingData that is used for processing certain functions. */
 	TimingData * processedTiming;
+	/** @brief The cache database file that is used all over. */
+	sqlite3 * cacheDB;
 public:
 	/** @brief Set up the GameState with initial values. */
 	GameState();
@@ -48,6 +51,12 @@ public:
 	/** @brief Reset the GameState back to initial values. */
 	void Reset();
 	void ResetPlayer( PlayerNumber pn );
+	
+	/** 
+	 * @brief Retrieve the SQLite database.
+	 * @return the SQLite database. */
+	sqlite3 * GetDatabase() const { return this->cacheDB; }
+	
 	void ApplyCmdline(); // called by Reset
 	void ApplyGameCommand( const RString &sCommand, PlayerNumber pn=PLAYER_INVALID );
 	/** @brief Start the game when the first player joins in. */
