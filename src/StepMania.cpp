@@ -7,6 +7,7 @@
 #include "RageTextureManager.h"
 #include "RageSoundManager.h"
 #include "GameSoundManager.h"
+#include "RageFile.h"
 #include "RageInput.h"
 #include "RageTimer.h"
 #include "RageMath.h"
@@ -1016,7 +1017,12 @@ int main(int argc, char* argv[])
 	GAMESTATE	= new GameState;
 	
 	sqlite3 *db = GAMESTATE->GetDatabase();
-	int rc = sqlite3_open(SpecialFiles::DATABASE_NAME.c_str(),
+	RageFile tmp;
+	tmp.Open(SpecialFiles::DATABASE_NAME, RageFile::READ);
+	RString realPath = tmp.GetRealPath();
+	tmp.Close();
+	
+	int rc = sqlite3_open(realPath.c_str(),
 			      &db);
 	if (rc > 0)
 	{
@@ -1079,7 +1085,7 @@ int main(int argc, char* argv[])
 	LIGHTSMAN	= new LightsManager;
 	INPUTFILTER	= new InputFilter;
 	INPUTMAPPER	= new InputMapper;
-
+	
 	pLoadingWindow->SetText("Loading game type...");
 	StepMania::ChangeCurrentGame( GAMESTATE->GetCurrentGame() );
 
