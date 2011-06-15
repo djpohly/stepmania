@@ -14,6 +14,7 @@
 #include "global.h"
 #include "Steps.h"
 #include "StepsUtil.h"
+#include "GameState.h"
 #include "Song.h"
 #include "RageUtil.h"
 #include "RageLog.h"
@@ -31,7 +32,9 @@ Steps::Steps(): m_StepsType(StepsType_Invalid),
 	m_sNoteDataCompressed(""), m_sFilename(""), m_bSavedToDisk(false), 
 	m_LoadedFromProfile(ProfileSlot_Invalid), m_iHash(0),
 	m_sDescription(""), m_sChartStyle(""), 
-	m_Difficulty(Difficulty_Invalid), m_iMeter(0), m_sCredit("") {}
+	m_Difficulty(Difficulty_Invalid), m_iMeter(0),
+	m_bAreCachedRadarValuesJustLoaded(false),
+	m_sCredit("") {}
 
 Steps::~Steps()
 {
@@ -171,6 +174,12 @@ void Steps::CalculateRadarValues( float fMusicLengthSeconds )
 	if( parent != NULL )
 		return;
 
+	if( m_bAreCachedRadarValuesJustLoaded )
+	{
+		m_bAreCachedRadarValuesJustLoaded = false;
+		return;
+	}
+
 	// Do write radar values, and leave it up to the reading app whether they want to trust
 	// the cached values without recalculating them.
 	/*
@@ -185,6 +194,7 @@ void Steps::CalculateRadarValues( float fMusicLengthSeconds )
 	FOREACH_PlayerNumber( pn )
 		m_CachedRadarValues[pn].Zero();
 
+	GAMESTATE->SetProcessedTimingData(&this->m_Timing);
 	if( tempNoteData.IsComposite() )
 	{
 		vector<NoteData> vParts;
@@ -198,6 +208,7 @@ void Steps::CalculateRadarValues( float fMusicLengthSeconds )
 		NoteDataUtil::CalculateRadarValues( tempNoteData, fMusicLengthSeconds, m_CachedRadarValues[0] );
 		fill_n( m_CachedRadarValues + 1, NUM_PLAYERS-1, m_CachedRadarValues[0] );
 	}
+	GAMESTATE->SetProcessedTimingData(NULL);
 }
 
 void Steps::Decompress() const
@@ -232,11 +243,13 @@ void Steps::Decompress() const
 	{
 		// We have data on disk and not in memory. Load it.
 		Song s;
-		bool bLoadedFromSSC = SSCLoader::LoadFromSSCFile(m_sFilename, s, true);
+		SSCLoader loaderSSC;
+		bool bLoadedFromSSC = loaderSSC.LoadFromSimfile(m_sFilename, s, true);
 		if( !bLoadedFromSSC )
 		{
 			// try reading from .sm instead
-			if( !SMLoader::LoadFromSMFile(m_sFilename, s, true) )
+			SMLoader loaderSM;
+			if( !loaderSM.LoadFromSimfile(m_sFilename, s, true) )
 			{
 				LOG->Warn( "Couldn't load \"%s\"", m_sFilename.c_str() );
 				return;
@@ -389,9 +402,9 @@ void Steps::SetChartStyle( RString sChartStyle )
 
 bool Steps::MakeValidEditDescription( RString &sPreferredDescription )
 {
-	if( int(sPreferredDescription.size()) > MAX_EDIT_STEPS_DESCRIPTION_LENGTH )
+	if( int(sPreferredDescription.size()) > MAX_STEPS_DESCRIPTION_LENGTH )
 	{
-		sPreferredDescription = sPreferredDescription.Left( MAX_EDIT_STEPS_DESCRIPTION_LENGTH );
+		sPreferredDescription = sPreferredDescription.Left( MAX_STEPS_DESCRIPTION_LENGTH );
 		return true;
 	}
 	return false;
@@ -422,6 +435,7 @@ void Steps::SetCachedRadarValues( const RadarValues v[NUM_PLAYERS] )
 {
 	DeAutogen();
 	copy( v, v + NUM_PLAYERS, m_CachedRadarValues );
+	m_bAreCachedRadarValuesJustLoaded = true;
 }
 
 bool Steps::UsesSplitTiming() const

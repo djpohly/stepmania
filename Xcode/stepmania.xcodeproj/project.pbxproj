@@ -23,8 +23,6 @@
 
 /* Begin PBXBuildFile section */
 		1215D7A208C6559A00B87D8B /* ScreenGameplayNormal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1215D7A008C6559A00B87D8B /* ScreenGameplayNormal.cpp */; };
-		2B17AB3813980CC9001AE57D /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 2B17AB29139809E8001AE57D /* sqlite3.c */; };
-		2B17AB3913980CC9001AE57D /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B17AB2A139809E8001AE57D /* sqlite3.h */; };
 		2B17AB7713980FF6001AE57D /* png.c in Sources */ = {isa = PBXBuildFile; fileRef = 2BC6130D13773C8E00CC8BBD /* png.c */; };
 		2B17AB7813980FF6001AE57D /* png.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BC6130E13773C8E00CC8BBD /* png.h */; };
 		2B17AB7913980FF6001AE57D /* pngconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BC6130F13773C8E00CC8BBD /* pngconf.h */; };
@@ -47,9 +45,9 @@
 		2B17AB8A13980FF6001AE57D /* pngwrite.c in Sources */ = {isa = PBXBuildFile; fileRef = 2BC6132113773C8E00CC8BBD /* pngwrite.c */; };
 		2B17AB8B13980FF6001AE57D /* pngwtran.c in Sources */ = {isa = PBXBuildFile; fileRef = 2BC6132213773C8E00CC8BBD /* pngwtran.c */; };
 		2B17AB8C13980FF6001AE57D /* pngwutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 2BC6132313773C8E00CC8BBD /* pngwutil.c */; };
-		2B17AB9F13981271001AE57D /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B17AB7213980FDF001AE57D /* libpng.a */; };
+		2B17AB9F13981271001AE57D /* libpng-1.5.1-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B17AB7213980FDF001AE57D /* libpng-1.5.1-sm5.a */; };
 		2B17ABC51398153F001AE57D /* glew.c in Sources */ = {isa = PBXBuildFile; fileRef = EE879BAA132E06C50078FDDC /* glew.c */; };
-		2B17ABCF139815E0001AE57D /* libglew.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B17ABC013981521001AE57D /* libglew.a */; };
+		2B17ABCF139815E0001AE57D /* libglew-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B17ABC013981521001AE57D /* libglew-sm5.a */; };
 		2B17ABE51398179E001AE57D /* chartables.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6C7904AFD87300D02EE9 /* chartables.c */; };
 		2B17ABE61398179E001AE57D /* get.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6C7A04AFD87300D02EE9 /* get.c */; };
 		2B17ABE71398179E001AE57D /* internal.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8B6C7B04AFD87300D02EE9 /* internal.h */; };
@@ -57,11 +55,12 @@
 		2B17ABE91398179E001AE57D /* pcre.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6C7D04AFD87300D02EE9 /* pcre.c */; };
 		2B17ABEA1398179E001AE57D /* pcre.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8B6C7E04AFD87300D02EE9 /* pcre.h */; };
 		2B17ABEB1398179E001AE57D /* study.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6C7F04AFD87300D02EE9 /* study.c */; };
-		2B17ABFC139817D5001AE57D /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B17ABE013981756001AE57D /* libpcre.a */; };
-		2B17ABFD139817D6001AE57D /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B17ABE013981756001AE57D /* libpcre.a */; };
-		2B17AC1213981AAF001AE57D /* libsqlite3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B17AB3313980CB2001AE57D /* libsqlite3.a */; };
+		2B17ABFC139817D5001AE57D /* libpcre-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B17ABE013981756001AE57D /* libpcre-sm5.a */; };
+		2B17ABFD139817D6001AE57D /* libpcre-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B17ABE013981756001AE57D /* libpcre-sm5.a */; };
 		2B30D6821315EA7E00044B68 /* MouseDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B30D6801315EA7E00044B68 /* MouseDevice.cpp */; };
 		2B30D6831315EA7E00044B68 /* MouseDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B30D6811315EA7E00044B68 /* MouseDevice.h */; };
+		2B3AF5A613A874360056E3C8 /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B3AF59A13A872DB0056E3C8 /* sqlite3.h */; };
+		2B3AF5A713A8743E0056E3C8 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 2B3AF59913A872DB0056E3C8 /* sqlite3.c */; };
 		2B43509513949F37006FA051 /* TimingSegments.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B43509313949F37006FA051 /* TimingSegments.h */; };
 		2B43509613949F37006FA051 /* TimingSegments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B43509413949F37006FA051 /* TimingSegments.cpp */; };
 		2B76698B132FF71500586512 /* NotesLoaderSMA.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B766989132FF71500586512 /* NotesLoaderSMA.h */; };
@@ -1145,8 +1144,8 @@
 		AA77E76508B64B9A00FA24CA /* ScreenOptionsManageCourses.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA77E75B08B64B9A00FA24CA /* ScreenOptionsManageCourses.cpp */; };
 		AA77E76708B64B9A00FA24CA /* ScreenOptionsManageProfiles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA77E75D08B64B9A00FA24CA /* ScreenOptionsManageProfiles.cpp */; };
 		AA77E8B108B6ABD500FA24CA /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA77E8A108B6ABD500FA24CA /* vecLib.framework */; };
-		AA7A2BAF0AE09CEC0054C5BA /* liblua-5.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE7817E0AC7E37B00AEFC64 /* liblua-5.1.a */; };
-		AA7A2BB00AE09CF10054C5BA /* liblua-5.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE7817E0AC7E37B00AEFC64 /* liblua-5.1.a */; };
+		AA7A2BAF0AE09CEC0054C5BA /* liblua-5.1-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE7817E0AC7E37B00AEFC64 /* liblua-5.1-sm5.a */; };
+		AA7A2BB00AE09CF10054C5BA /* liblua-5.1-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE7817E0AC7E37B00AEFC64 /* liblua-5.1-sm5.a */; };
 		AA7ADC27072CAB7F00C50A7F /* RageSoundReader_Chain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7ADC23072CAB7F00C50A7F /* RageSoundReader_Chain.cpp */; };
 		AA7ADC29072CAB7F00C50A7F /* RageSoundUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7ADC25072CAB7F00C50A7F /* RageSoundUtil.cpp */; };
 		AA7C8AFC0B6744F700FD9940 /* bn_error.c in Sources */ = {isa = PBXBuildFile; fileRef = AA7C8A800B6744F600FD9940 /* bn_error.c */; };
@@ -1427,10 +1426,10 @@
 		AA7C8CF00B67467D00FD9940 /* sober128.c in Sources */ = {isa = PBXBuildFile; fileRef = AA7C8C520B67467D00FD9940 /* sober128.c */; };
 		AA7C8CF20B67467D00FD9940 /* sprng.c in Sources */ = {isa = PBXBuildFile; fileRef = AA7C8C540B67467D00FD9940 /* sprng.c */; };
 		AA7C8CF30B67467D00FD9940 /* yarrow.c in Sources */ = {isa = PBXBuildFile; fileRef = AA7C8C550B67467D00FD9940 /* yarrow.c */; };
-		AA7C8D1F0B6748E300FD9940 /* libtommath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA7C895F0B67444700FD9940 /* libtommath.a */; };
-		AA7C8D200B6748E400FD9940 /* libtomcrypt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA7C8B8B0B67460600FD9940 /* libtomcrypt.a */; };
-		AA7C8D430B674F4E00FD9940 /* libtommath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA7C895F0B67444700FD9940 /* libtommath.a */; };
-		AA7C8D440B674F4F00FD9940 /* libtomcrypt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA7C8B8B0B67460600FD9940 /* libtomcrypt.a */; };
+		AA7C8D1F0B6748E300FD9940 /* libtommath-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA7C895F0B67444700FD9940 /* libtommath-sm5.a */; };
+		AA7C8D200B6748E400FD9940 /* libtomcrypt-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA7C8B8B0B67460600FD9940 /* libtomcrypt-sm5.a */; };
+		AA7C8D430B674F4E00FD9940 /* libtommath-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA7C895F0B67444700FD9940 /* libtommath-sm5.a */; };
+		AA7C8D440B674F4F00FD9940 /* libtomcrypt-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA7C8B8B0B67460600FD9940 /* libtomcrypt-sm5.a */; };
 		AA7C8DAE0B68CB2200FD9940 /* GameplayAssist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7C8DAC0B68CB2200FD9940 /* GameplayAssist.cpp */; };
 		AA7C8DAF0B68CB2200FD9940 /* GameplayAssist.h in Headers */ = {isa = PBXBuildFile; fileRef = AA7C8DAD0B68CB2200FD9940 /* GameplayAssist.h */; };
 		AA7C8DB00B68CB2200FD9940 /* GameplayAssist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7C8DAC0B68CB2200FD9940 /* GameplayAssist.cpp */; };
@@ -1527,7 +1526,7 @@
 		AAA071940CE7B50B005A3060 /* decoder.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA070C00CE7B3AD005A3060 /* decoder.c */; };
 		AAA071950CE7B50C005A3060 /* bit.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA070B50CE7B3AD005A3060 /* bit.h */; };
 		AAA071960CE7B50D005A3060 /* bit.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA070B40CE7B3AD005A3060 /* bit.c */; };
-		AAA071B40CE7C9C9005A3060 /* libmad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAA070A90CE7B0DF005A3060 /* libmad.a */; };
+		AAA071B40CE7C9C9005A3060 /* libmad-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAA070A90CE7B0DF005A3060 /* libmad-sm5.a */; };
 		AAA372D40909934500141131 /* MovieTexture_Generic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA372D00909934500141131 /* MovieTexture_Generic.cpp */; };
 		AAA372D60909934500141131 /* MovieTexture_Theora.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA372D20909934500141131 /* MovieTexture_Theora.cpp */; };
 		AAA6BFEC0644AB3700AFBBC8 /* ScreenWithMenuElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA6BFEA0644AB3700AFBBC8 /* ScreenWithMenuElements.cpp */; };
@@ -1615,8 +1614,8 @@
 		AAE7804B060814AC0034E65F /* NetworkSyncManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAE78049060814AC0034E65F /* NetworkSyncManager.cpp */; };
 		AAE7808706081A000034E65F /* ezsockets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAE7808506081A000034E65F /* ezsockets.cpp */; };
 		AAE7812D0608249E0034E65F /* ActiveAttackList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAE7812B0608249E0034E65F /* ActiveAttackList.cpp */; };
-		AAE782030AC7E64D00AEFC64 /* liblua-5.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE7817E0AC7E37B00AEFC64 /* liblua-5.1.a */; };
-		AAE782040AC7E65200AEFC64 /* liblua-5.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE7817E0AC7E37B00AEFC64 /* liblua-5.1.a */; };
+		AAE782030AC7E64D00AEFC64 /* liblua-5.1-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE7817E0AC7E37B00AEFC64 /* liblua-5.1-sm5.a */; };
+		AAE782040AC7E65200AEFC64 /* liblua-5.1-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE7817E0AC7E37B00AEFC64 /* liblua-5.1-sm5.a */; };
 		AAEBC6CC07A20AFE00793F0E /* RageSurface_Save_JPEG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAEBC6C607A20AFE00793F0E /* RageSurface_Save_JPEG.cpp */; };
 		AAEBC6CE07A20AFE00793F0E /* RageSurfaceUtils_Dither.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAEBC6C807A20AFE00793F0E /* RageSurfaceUtils_Dither.cpp */; };
 		AAEBC6D007A20AFE00793F0E /* RageSurfaceUtils_Zoom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAEBC6CA07A20AFE00793F0E /* RageSurfaceUtils_Zoom.cpp */; };
@@ -1664,6 +1663,8 @@
 		AAFF41A40F5BD4AD00FFDB67 /* ScreenOptionsExportPackage.h in Headers */ = {isa = PBXBuildFile; fileRef = AAFF41A20F5BD4AD00FFDB67 /* ScreenOptionsExportPackage.h */; };
 		AAFF41A50F5BD4AD00FFDB67 /* ScreenOptionsExportPackage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAFF41A10F5BD4AD00FFDB67 /* ScreenOptionsExportPackage.cpp */; };
 		AAFF41A60F5BD4AD00FFDB67 /* ScreenOptionsExportPackage.h in Headers */ = {isa = PBXBuildFile; fileRef = AAFF41A20F5BD4AD00FFDB67 /* ScreenOptionsExportPackage.h */; };
+		B71A60C0139B41DB00183A27 /* InGameLoadingWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B71A60BE139B41DB00183A27 /* InGameLoadingWindow.cpp */; };
+		B71A60C1139B41DB00183A27 /* InGameLoadingWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = B71A60BF139B41DB00183A27 /* InGameLoadingWindow.h */; };
 		B75CE3B5137963350076A82D /* SongPosition.h in Headers */ = {isa = PBXBuildFile; fileRef = B75CE3B3137963350076A82D /* SongPosition.h */; };
 		B75CE3B6137963350076A82D /* SongPosition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75CE3B4137963350076A82D /* SongPosition.cpp */; };
 		EE2153A910A75BEE0074B01B /* NotesLoaderPMS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE2153A710A75BEE0074B01B /* NotesLoaderPMS.cpp */; };
@@ -1686,13 +1687,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		2B17AB3A13980CE0001AE57D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2B17AB3213980CB2001AE57D;
-			remoteInfo = sqlite3;
-		};
 		2B17AB8D13981009001AE57D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -1713,6 +1707,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 2B17ABDF13981756001AE57D;
 			remoteInfo = pcre;
+		};
+		2B3AF59713A872BA0056E3C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B3AF59113A872AA0056E3C8 /* sqlite */;
+			remoteInfo = sqlite;
 		};
 		AA30C61907F5E2EF0066F398 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1834,14 +1835,14 @@
 		1215D7A108C6559A00B87D8B /* ScreenGameplayNormal.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; name = ScreenGameplayNormal.h; path = ../src/ScreenGameplayNormal.h; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		2B17AB29139809E8001AE57D /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sqlite3.c; path = ../extern/sqlite/sqlite3.c; sourceTree = SOURCE_ROOT; };
-		2B17AB2A139809E8001AE57D /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = ../extern/sqlite/sqlite3.h; sourceTree = SOURCE_ROOT; };
-		2B17AB3313980CB2001AE57D /* libsqlite3.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsqlite3.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		2B17AB7213980FDF001AE57D /* libpng.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libpng.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		2B17ABC013981521001AE57D /* libglew.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libglew.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		2B17ABE013981756001AE57D /* libpcre.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libpcre.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B17AB7213980FDF001AE57D /* libpng-1.5.1-sm5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpng-1.5.1-sm5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B17ABC013981521001AE57D /* libglew-sm5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libglew-sm5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B17ABE013981756001AE57D /* libpcre-sm5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpcre-sm5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B30D6801315EA7E00044B68 /* MouseDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseDevice.cpp; sourceTree = "<group>"; };
 		2B30D6811315EA7E00044B68 /* MouseDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MouseDevice.h; sourceTree = "<group>"; };
+		2B3AF59213A872AA0056E3C8 /* libsqlite.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsqlite.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B3AF59913A872DB0056E3C8 /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sqlite3.c; path = ../extern/sqlite/sqlite3.c; sourceTree = SOURCE_ROOT; };
+		2B3AF59A13A872DB0056E3C8 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = ../extern/sqlite/sqlite3.h; sourceTree = SOURCE_ROOT; };
 		2B43509313949F37006FA051 /* TimingSegments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimingSegments.h; path = ../src/TimingSegments.h; sourceTree = SOURCE_ROOT; };
 		2B43509413949F37006FA051 /* TimingSegments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TimingSegments.cpp; path = ../src/TimingSegments.cpp; sourceTree = SOURCE_ROOT; };
 		2B766989132FF71500586512 /* NotesLoaderSMA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotesLoaderSMA.h; path = ../src/NotesLoaderSMA.h; sourceTree = SOURCE_ROOT; };
@@ -2434,7 +2435,7 @@
 		AA7ADC24072CAB7F00C50A7F /* RageSoundReader_Chain.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; name = RageSoundReader_Chain.h; path = ../src/RageSoundReader_Chain.h; sourceTree = "<group>"; };
 		AA7ADC25072CAB7F00C50A7F /* RageSoundUtil.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; name = RageSoundUtil.cpp; path = ../src/RageSoundUtil.cpp; sourceTree = "<group>"; };
 		AA7ADC26072CAB7F00C50A7F /* RageSoundUtil.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; name = RageSoundUtil.h; path = ../src/RageSoundUtil.h; sourceTree = "<group>"; };
-		AA7C895F0B67444700FD9940 /* libtommath.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libtommath.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA7C895F0B67444700FD9940 /* libtommath-sm5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libtommath-sm5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA7C8A800B6744F600FD9940 /* bn_error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bn_error.c; sourceTree = "<group>"; };
 		AA7C8A810B6744F600FD9940 /* bn_fast_mp_invmod.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bn_fast_mp_invmod.c; sourceTree = "<group>"; };
 		AA7C8A820B6744F600FD9940 /* bn_fast_mp_montgomery_reduce.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bn_fast_mp_montgomery_reduce.c; sourceTree = "<group>"; };
@@ -2557,7 +2558,7 @@
 		AA7C8AF90B6744F700FD9940 /* tommath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tommath.h; sourceTree = "<group>"; };
 		AA7C8AFA0B6744F700FD9940 /* tommath_class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tommath_class.h; sourceTree = "<group>"; };
 		AA7C8AFB0B6744F700FD9940 /* tommath_superclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tommath_superclass.h; sourceTree = "<group>"; };
-		AA7C8B8B0B67460600FD9940 /* libtomcrypt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libtomcrypt.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA7C8B8B0B67460600FD9940 /* libtomcrypt-sm5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libtomcrypt-sm5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA7C8B950B67467C00FD9940 /* aes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aes.c; sourceTree = "<group>"; };
 		AA7C8B960B67467C00FD9940 /* aes_tab.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aes_tab.c; sourceTree = "<group>"; };
 		AA7C8B990B67467C00FD9940 /* hash_memory.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hash_memory.c; sourceTree = "<group>"; };
@@ -2787,7 +2788,7 @@
 		AA9EC2F0055F5126007E5098 /* RageTextureID.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; name = RageTextureID.cpp; path = ../src/RageTextureID.cpp; sourceTree = "<group>"; };
 		AA9EC2F1055F5126007E5098 /* RageTextureID.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; name = RageTextureID.h; path = ../src/RageTextureID.h; sourceTree = "<group>"; };
 		AAA0704D0CE5082D005A3060 /* libffmpeg_link.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libffmpeg_link.a; sourceTree = "<group>"; };
-		AAA070A90CE7B0DF005A3060 /* libmad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmad.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAA070A90CE7B0DF005A3060 /* libmad-sm5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libmad-sm5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAA070B40CE7B3AD005A3060 /* bit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bit.c; sourceTree = "<group>"; };
 		AAA070B50CE7B3AD005A3060 /* bit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bit.h; sourceTree = "<group>"; };
 		AAA070C00CE7B3AD005A3060 /* decoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = decoder.c; sourceTree = "<group>"; };
@@ -2984,7 +2985,7 @@
 		AAE7808606081A000034E65F /* ezsockets.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; name = ezsockets.h; path = ../src/ezsockets.h; sourceTree = "<group>"; };
 		AAE7812B0608249E0034E65F /* ActiveAttackList.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; name = ActiveAttackList.cpp; path = ../src/ActiveAttackList.cpp; sourceTree = "<group>"; };
 		AAE7812C0608249E0034E65F /* ActiveAttackList.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; name = ActiveAttackList.h; path = ../src/ActiveAttackList.h; sourceTree = "<group>"; };
-		AAE7817E0AC7E37B00AEFC64 /* liblua-5.1.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblua-5.1.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAE7817E0AC7E37B00AEFC64 /* liblua-5.1-sm5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblua-5.1-sm5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAEBC6C607A20AFE00793F0E /* RageSurface_Save_JPEG.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; name = RageSurface_Save_JPEG.cpp; path = ../src/RageSurface_Save_JPEG.cpp; sourceTree = "<group>"; };
 		AAEBC6C707A20AFE00793F0E /* RageSurface_Save_JPEG.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; name = RageSurface_Save_JPEG.h; path = ../src/RageSurface_Save_JPEG.h; sourceTree = "<group>"; };
 		AAEBC6C807A20AFE00793F0E /* RageSurfaceUtils_Dither.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; name = RageSurfaceUtils_Dither.cpp; path = ../src/RageSurfaceUtils_Dither.cpp; sourceTree = "<group>"; };
@@ -3069,6 +3070,8 @@
 		AAFF55220549F43A00D02EE9 /* ComboGraph.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; name = ComboGraph.h; path = ../src/ComboGraph.h; sourceTree = "<group>"; };
 		AAFF5541054E736D00D02EE9 /* Attack.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; name = Attack.cpp; path = ../src/Attack.cpp; sourceTree = "<group>"; };
 		AAFF5542054E736D00D02EE9 /* Attack.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; name = Attack.h; path = ../src/Attack.h; sourceTree = "<group>"; };
+		B71A60BE139B41DB00183A27 /* InGameLoadingWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InGameLoadingWindow.cpp; path = ../src/InGameLoadingWindow.cpp; sourceTree = "<group>"; };
+		B71A60BF139B41DB00183A27 /* InGameLoadingWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InGameLoadingWindow.h; path = ../src/InGameLoadingWindow.h; sourceTree = "<group>"; };
 		B75CE3B3137963350076A82D /* SongPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SongPosition.h; path = ../src/SongPosition.h; sourceTree = SOURCE_ROOT; };
 		B75CE3B4137963350076A82D /* SongPosition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SongPosition.cpp; path = ../src/SongPosition.cpp; sourceTree = SOURCE_ROOT; };
 		EE2153A710A75BEE0074B01B /* NotesLoaderPMS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NotesLoaderPMS.cpp; path = ../src/NotesLoaderPMS.cpp; sourceTree = SOURCE_ROOT; };
@@ -3091,13 +3094,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		2B17AB3113980CB2001AE57D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		2B17AB7013980FDF001AE57D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -3113,6 +3109,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		2B17ABDE13981756001AE57D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B3AF59013A872AA0056E3C8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3137,16 +3140,15 @@
 				AA21E47B0A9826CD00684CEA /* libogg_link.a in Frameworks */,
 				AA21E47D0A9826CD00684CEA /* libtheora_link.a in Frameworks */,
 				AA21E47E0A9826CD00684CEA /* libvorbis_link.a in Frameworks */,
-				AAE782030AC7E64D00AEFC64 /* liblua-5.1.a in Frameworks */,
-				AA7C8D200B6748E400FD9940 /* libtomcrypt.a in Frameworks */,
-				AA7C8D1F0B6748E300FD9940 /* libtommath.a in Frameworks */,
+				AAE782030AC7E64D00AEFC64 /* liblua-5.1-sm5.a in Frameworks */,
+				AA7C8D200B6748E400FD9940 /* libtomcrypt-sm5.a in Frameworks */,
+				AA7C8D1F0B6748E300FD9940 /* libtommath-sm5.a in Frameworks */,
 				AA059E2C0B8F0C67006F8139 /* libz_link.a in Frameworks */,
 				AAA0704E0CE5082E005A3060 /* libffmpeg_link.a in Frameworks */,
-				AAA071B40CE7C9C9005A3060 /* libmad.a in Frameworks */,
-				2B17AB9F13981271001AE57D /* libpng.a in Frameworks */,
-				2B17ABCF139815E0001AE57D /* libglew.a in Frameworks */,
-				2B17ABFC139817D5001AE57D /* libpcre.a in Frameworks */,
-				2B17AC1213981AAF001AE57D /* libsqlite3.a in Frameworks */,
+				AAA071B40CE7C9C9005A3060 /* libmad-sm5.a in Frameworks */,
+				2B17AB9F13981271001AE57D /* libpng-1.5.1-sm5.a in Frameworks */,
+				2B17ABCF139815E0001AE57D /* libglew-sm5.a in Frameworks */,
+				2B17ABFC139817D5001AE57D /* libpcre-sm5.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3168,12 +3170,12 @@
 				AA21E4810A9826CD00684CEA /* libogg_link.a in Frameworks */,
 				AA21E4830A9826CD00684CEA /* libtheora_link.a in Frameworks */,
 				AA21E4840A9826CD00684CEA /* libvorbis_link.a in Frameworks */,
-				AAE782040AC7E65200AEFC64 /* liblua-5.1.a in Frameworks */,
-				AA7C8D440B674F4F00FD9940 /* libtomcrypt.a in Frameworks */,
-				AA7C8D430B674F4E00FD9940 /* libtommath.a in Frameworks */,
+				AAE782040AC7E65200AEFC64 /* liblua-5.1-sm5.a in Frameworks */,
+				AA7C8D440B674F4F00FD9940 /* libtomcrypt-sm5.a in Frameworks */,
+				AA7C8D430B674F4E00FD9940 /* libtommath-sm5.a in Frameworks */,
 				AA059E2B0B8F0C67006F8139 /* libz_link.a in Frameworks */,
 				AAA0704F0CE5082E005A3060 /* libffmpeg_link.a in Frameworks */,
-				2B17ABFD139817D6001AE57D /* libpcre.a in Frameworks */,
+				2B17ABFD139817D6001AE57D /* libpcre-sm5.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3181,7 +3183,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA7A2BAF0AE09CEC0054C5BA /* liblua-5.1.a in Frameworks */,
+				AA7A2BAF0AE09CEC0054C5BA /* liblua-5.1-sm5.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3189,7 +3191,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA7A2BB00AE09CF10054C5BA /* liblua-5.1.a in Frameworks */,
+				AA7A2BB00AE09CF10054C5BA /* liblua-5.1-sm5.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3256,16 +3258,16 @@
 			children = (
 				AA29CE580558741A00961A51 /* sm-ssc.app */,
 				AA40D52B09A08D660068C0D5 /* sm-ssc.app */,
-				AAE7817E0AC7E37B00AEFC64 /* liblua-5.1.a */,
+				AAE7817E0AC7E37B00AEFC64 /* liblua-5.1-sm5.a */,
 				AA7A2B940AE09B520054C5BA /* lua */,
 				AA7A2BAB0AE09CD50054C5BA /* luac */,
-				AA7C895F0B67444700FD9940 /* libtommath.a */,
-				AA7C8B8B0B67460600FD9940 /* libtomcrypt.a */,
-				AAA070A90CE7B0DF005A3060 /* libmad.a */,
-				2B17AB3313980CB2001AE57D /* libsqlite3.a */,
-				2B17AB7213980FDF001AE57D /* libpng.a */,
-				2B17ABC013981521001AE57D /* libglew.a */,
-				2B17ABE013981756001AE57D /* libpcre.a */,
+				AA7C895F0B67444700FD9940 /* libtommath-sm5.a */,
+				AA7C8B8B0B67460600FD9940 /* libtomcrypt-sm5.a */,
+				AAA070A90CE7B0DF005A3060 /* libmad-sm5.a */,
+				2B17AB7213980FDF001AE57D /* libpng-1.5.1-sm5.a */,
+				2B17ABC013981521001AE57D /* libglew-sm5.a */,
+				2B17ABE013981756001AE57D /* libpcre-sm5.a */,
+				2B3AF59213A872AA0056E3C8 /* libsqlite.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3329,11 +3331,11 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		2B17AB28139809B9001AE57D /* sqlite */ = {
+		2B3AF58A13A872810056E3C8 /* sqlite */ = {
 			isa = PBXGroup;
 			children = (
-				2B17AB29139809E8001AE57D /* sqlite3.c */,
-				2B17AB2A139809E8001AE57D /* sqlite3.h */,
+				2B3AF59913A872DB0056E3C8 /* sqlite3.c */,
+				2B3AF59A13A872DB0056E3C8 /* sqlite3.h */,
 			);
 			name = sqlite;
 			sourceTree = "<group>";
@@ -3414,7 +3416,7 @@
 				AAE781870AC7E46E00AEFC64 /* lua-5.1 */,
 				AAA070B20CE7B3AD005A3060 /* mad-0.15.1b */,
 				AA8B6C7804AFD82B00D02EE9 /* pcre */,
-				2B17AB28139809B9001AE57D /* sqlite */,
+				2B3AF58A13A872810056E3C8 /* sqlite */,
 			);
 			name = extern;
 			sourceTree = "<group>";
@@ -4126,6 +4128,8 @@
 				AA6EFE9104770E7C005F316C /* GrooveRadar.h */,
 				AA6EFE9404770E7C005F316C /* HelpDisplay.cpp */,
 				AA6EFE9504770E7C005F316C /* HelpDisplay.h */,
+				B71A60BE139B41DB00183A27 /* InGameLoadingWindow.cpp */,
+				B71A60BF139B41DB00183A27 /* InGameLoadingWindow.h */,
 				AA729C460599B54D00779F33 /* MemoryCardDisplay.cpp */,
 				AA729C470599B54D00779F33 /* MemoryCardDisplay.h */,
 				AA6EFE9A04770E7C005F316C /* MenuTimer.cpp */,
@@ -5124,14 +5128,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		2B17AB2F13980CB2001AE57D /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2B17AB3913980CC9001AE57D /* sqlite3.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		2B17AB6E13980FDF001AE57D /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -5162,6 +5158,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2B3AF58E13A872AA0056E3C8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B3AF5A613A874360056E3C8 /* sqlite3.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AA29CC270558741A00961A51 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -5188,6 +5192,7 @@
 				2B9C2E8E137A138B004C92F3 /* NotesLoaderJson.h in Headers */,
 				2B9C2E90137A138B004C92F3 /* NotesWriterJson.h in Headers */,
 				2B43509513949F37006FA051 /* TimingSegments.h in Headers */,
+				B71A60C1139B41DB00183A27 /* InGameLoadingWindow.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5699,23 +5704,6 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		2B17AB3213980CB2001AE57D /* sqlite3 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2B17AB3E13980D49001AE57D /* Build configuration list for PBXNativeTarget "sqlite3" */;
-			buildPhases = (
-				2B17AB2F13980CB2001AE57D /* Headers */,
-				2B17AB3013980CB2001AE57D /* Sources */,
-				2B17AB3113980CB2001AE57D /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = sqlite3;
-			productName = sqlite3;
-			productReference = 2B17AB3313980CB2001AE57D /* libsqlite3.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		2B17AB7113980FDF001AE57D /* png */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2B17AB8F13981052001AE57D /* Build configuration list for PBXNativeTarget "png" */;
@@ -5730,7 +5718,7 @@
 			);
 			name = png;
 			productName = png;
-			productReference = 2B17AB7213980FDF001AE57D /* libpng.a */;
+			productReference = 2B17AB7213980FDF001AE57D /* libpng-1.5.1-sm5.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		2B17ABBF13981521001AE57D /* glew */ = {
@@ -5747,7 +5735,7 @@
 			);
 			name = glew;
 			productName = glew;
-			productReference = 2B17ABC013981521001AE57D /* libglew.a */;
+			productReference = 2B17ABC013981521001AE57D /* libglew-sm5.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		2B17ABDF13981756001AE57D /* pcre */ = {
@@ -5764,7 +5752,24 @@
 			);
 			name = pcre;
 			productName = pcre;
-			productReference = 2B17ABE013981756001AE57D /* libpcre.a */;
+			productReference = 2B17ABE013981756001AE57D /* libpcre-sm5.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		2B3AF59113A872AA0056E3C8 /* sqlite */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B3AF59F13A872DB0056E3C8 /* Build configuration list for PBXNativeTarget "sqlite" */;
+			buildPhases = (
+				2B3AF58E13A872AA0056E3C8 /* Headers */,
+				2B3AF58F13A872AA0056E3C8 /* Sources */,
+				2B3AF59013A872AA0056E3C8 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = sqlite;
+			productName = sqlite;
+			productReference = 2B3AF59213A872AA0056E3C8 /* libsqlite.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		AA29CC240558741A00961A51 /* stepmania */ = {
@@ -5784,11 +5789,11 @@
 			dependencies = (
 				AAE781FE0AC7E61900AEFC64 /* PBXTargetDependency */,
 				2B17ABD1139815EB001AE57D /* PBXTargetDependency */,
+				2B3AF59813A872BA0056E3C8 /* PBXTargetDependency */,
 				AA7C8D180B6748B800FD9940 /* PBXTargetDependency */,
 				AA7C8D160B6748B800FD9940 /* PBXTargetDependency */,
 				2B17AB8E13981009001AE57D /* PBXTargetDependency */,
 				AAA071AA0CE7B879005A3060 /* PBXTargetDependency */,
-				2B17AB3B13980CE0001AE57D /* PBXTargetDependency */,
 				2B17ABFF139817DF001AE57D /* PBXTargetDependency */,
 				AA30C61A07F5E2EF0066F398 /* PBXTargetDependency */,
 			);
@@ -5873,7 +5878,7 @@
 			);
 			name = tommath;
 			productName = tommath;
-			productReference = AA7C895F0B67444700FD9940 /* libtommath.a */;
+			productReference = AA7C895F0B67444700FD9940 /* libtommath-sm5.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		AA7C8B8A0B67460600FD9940 /* tomcrypt */ = {
@@ -5890,7 +5895,7 @@
 			);
 			name = tomcrypt;
 			productName = tomcrypt;
-			productReference = AA7C8B8B0B67460600FD9940 /* libtomcrypt.a */;
+			productReference = AA7C8B8B0B67460600FD9940 /* libtomcrypt-sm5.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		AAA070A80CE7B0DF005A3060 /* mad */ = {
@@ -5907,7 +5912,7 @@
 			);
 			name = mad;
 			productName = mad;
-			productReference = AAA070A90CE7B0DF005A3060 /* libmad.a */;
+			productReference = AAA070A90CE7B0DF005A3060 /* libmad-sm5.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		AAE7817D0AC7E37B00AEFC64 /* lua-5.1 */ = {
@@ -5924,7 +5929,7 @@
 			);
 			name = "lua-5.1";
 			productName = "lua-5.1";
-			productReference = AAE7817E0AC7E37B00AEFC64 /* liblua-5.1.a */;
+			productReference = AAE7817E0AC7E37B00AEFC64 /* liblua-5.1-sm5.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -5962,10 +5967,10 @@
 				AA7C895E0B67444700FD9940 /* tommath */,
 				AA7C8B8A0B67460600FD9940 /* tomcrypt */,
 				AAA070A80CE7B0DF005A3060 /* mad */,
-				2B17AB3213980CB2001AE57D /* sqlite3 */,
 				2B17AB7113980FDF001AE57D /* png */,
 				2B17ABBF13981521001AE57D /* glew */,
 				2B17ABDF13981756001AE57D /* pcre */,
+				2B3AF59113A872AA0056E3C8 /* sqlite */,
 			);
 		};
 /* End PBXProject section */
@@ -6095,14 +6100,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		2B17AB3013980CB2001AE57D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2B17AB3813980CC9001AE57D /* sqlite3.c in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		2B17AB6F13980FDF001AE57D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6142,6 +6139,14 @@
 				2B17ABE81398179E001AE57D /* maketables.c in Sources */,
 				2B17ABE91398179E001AE57D /* pcre.c in Sources */,
 				2B17ABEB1398179E001AE57D /* study.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B3AF58F13A872AA0056E3C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B3AF5A713A8743E0056E3C8 /* sqlite3.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6556,6 +6561,7 @@
 				2BD06FF2137242680018CB9F /* json_value.cpp in Sources */,
 				2BD06FF4137242680018CB9F /* json_writer.cpp in Sources */,
 				2B43509613949F37006FA051 /* TimingSegments.cpp in Sources */,
+				B71A60C0139B41DB00183A27 /* InGameLoadingWindow.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7303,11 +7309,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		2B17AB3B13980CE0001AE57D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2B17AB3213980CB2001AE57D /* sqlite3 */;
-			targetProxy = 2B17AB3A13980CE0001AE57D /* PBXContainerItemProxy */;
-		};
 		2B17AB8E13981009001AE57D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2B17AB7113980FDF001AE57D /* png */;
@@ -7322,6 +7323,11 @@
 			isa = PBXTargetDependency;
 			target = 2B17ABDF13981756001AE57D /* pcre */;
 			targetProxy = 2B17ABFE139817DF001AE57D /* PBXContainerItemProxy */;
+		};
+		2B3AF59813A872BA0056E3C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2B3AF59113A872AA0056E3C8 /* sqlite */;
+			targetProxy = 2B3AF59713A872BA0056E3C8 /* PBXContainerItemProxy */;
 		};
 		AA30C61A07F5E2EF0066F398 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7407,169 +7413,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		2B17AB3413980CB3001AE57D /* Native */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
-				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
-				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = NO;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
-				GCC_WARN_ABOUT_POINTER_SIGNEDNESS = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = NO;
-				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = NO;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
-				GCC_WARN_MISSING_PARENTHESES = NO;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = NO;
-				GCC_WARN_PROTOTYPE_CONVERSION = NO;
-				GCC_WARN_SHADOW = NO;
-				GCC_WARN_SIGN_COMPARE = NO;
-				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
-				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				GCC_WARN_UNINITIALIZED_AUTOS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				GCC_WARN_UNUSED_FUNCTION = NO;
-				GCC_WARN_UNUSED_LABEL = NO;
-				GCC_WARN_UNUSED_VALUE = NO;
-				GCC_WARN_UNUSED_VARIABLE = NO;
-				INSTALL_PATH = /usr/local/lib;
-				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = sqlite3;
-				USER_HEADER_SEARCH_PATHS = "";
-			};
-			name = Native;
-		};
-		2B17AB3513980CB3001AE57D /* PerformanceDebug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
-				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
-				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = NO;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
-				GCC_WARN_ABOUT_POINTER_SIGNEDNESS = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = NO;
-				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = NO;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
-				GCC_WARN_MISSING_PARENTHESES = NO;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = NO;
-				GCC_WARN_PROTOTYPE_CONVERSION = NO;
-				GCC_WARN_SHADOW = NO;
-				GCC_WARN_SIGN_COMPARE = NO;
-				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
-				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				GCC_WARN_UNINITIALIZED_AUTOS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				GCC_WARN_UNUSED_FUNCTION = NO;
-				GCC_WARN_UNUSED_LABEL = NO;
-				GCC_WARN_UNUSED_VALUE = NO;
-				GCC_WARN_UNUSED_VARIABLE = NO;
-				INSTALL_PATH = /usr/local/lib;
-				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = sqlite3;
-				USER_HEADER_SEARCH_PATHS = "";
-			};
-			name = PerformanceDebug;
-		};
-		2B17AB3613980CB3001AE57D /* Universal */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
-				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
-				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = NO;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
-				GCC_WARN_ABOUT_POINTER_SIGNEDNESS = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = NO;
-				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = NO;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
-				GCC_WARN_MISSING_PARENTHESES = NO;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = NO;
-				GCC_WARN_PROTOTYPE_CONVERSION = NO;
-				GCC_WARN_SHADOW = NO;
-				GCC_WARN_SIGN_COMPARE = NO;
-				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
-				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				GCC_WARN_UNINITIALIZED_AUTOS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				GCC_WARN_UNUSED_FUNCTION = NO;
-				GCC_WARN_UNUSED_LABEL = NO;
-				GCC_WARN_UNUSED_VALUE = NO;
-				GCC_WARN_UNUSED_VARIABLE = NO;
-				INSTALL_PATH = /usr/local/lib;
-				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = sqlite3;
-				USER_HEADER_SEARCH_PATHS = "";
-			};
-			name = Universal;
-		};
-		2B17AB3713980CB3001AE57D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
-				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
-				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = NO;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
-				GCC_WARN_ABOUT_POINTER_SIGNEDNESS = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = NO;
-				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = NO;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
-				GCC_WARN_MISSING_PARENTHESES = NO;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = NO;
-				GCC_WARN_PROTOTYPE_CONVERSION = NO;
-				GCC_WARN_SHADOW = NO;
-				GCC_WARN_SIGN_COMPARE = NO;
-				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
-				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				GCC_WARN_UNINITIALIZED_AUTOS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				GCC_WARN_UNUSED_FUNCTION = NO;
-				GCC_WARN_UNUSED_LABEL = NO;
-				GCC_WARN_UNUSED_VALUE = NO;
-				GCC_WARN_UNUSED_VARIABLE = NO;
-				INSTALL_PATH = /usr/local/lib;
-				OTHER_LDFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = sqlite3;
-				USER_HEADER_SEARCH_PATHS = "";
-			};
-			name = Debug;
-		};
 		2B17AB7313980FE0001AE57D /* Native */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7579,6 +7422,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
@@ -7608,7 +7452,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = png;
+				PRODUCT_NAME = "png-1.5.1-sm5";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Native;
@@ -7622,6 +7466,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
@@ -7651,7 +7496,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = png;
+				PRODUCT_NAME = "png-1.5.1-sm5";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = PerformanceDebug;
@@ -7665,6 +7510,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
@@ -7694,7 +7540,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = png;
+				PRODUCT_NAME = "png-1.5.1-sm5";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Universal;
@@ -7711,6 +7557,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
@@ -7740,7 +7587,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = png;
+				PRODUCT_NAME = "png-1.5.1-sm5";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
@@ -7754,6 +7601,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
@@ -7782,7 +7630,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = glew;
+				PRODUCT_NAME = "glew-sm5";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Native;
@@ -7796,6 +7644,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
@@ -7824,7 +7673,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = glew;
+				PRODUCT_NAME = "glew-sm5";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = PerformanceDebug;
@@ -7838,6 +7687,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
@@ -7866,7 +7716,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = glew;
+				PRODUCT_NAME = "glew-sm5";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Universal;
@@ -7883,6 +7733,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
@@ -7911,7 +7762,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = glew;
+				PRODUCT_NAME = "glew-sm5";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
@@ -7925,6 +7776,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = "";
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
@@ -7952,7 +7804,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = pcre;
+				PRODUCT_NAME = "pcre-sm5";
 			};
 			name = Native;
 		};
@@ -7965,6 +7817,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = "";
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
@@ -7992,7 +7845,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = pcre;
+				PRODUCT_NAME = "pcre-sm5";
 			};
 			name = PerformanceDebug;
 		};
@@ -8005,6 +7858,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = "";
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
@@ -8032,7 +7886,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = pcre;
+				PRODUCT_NAME = "pcre-sm5";
 			};
 			name = Universal;
 		};
@@ -8048,6 +7902,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = "";
 				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
@@ -8075,7 +7930,178 @@
 				INSTALL_PATH = /usr/local/lib;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = pcre;
+				PRODUCT_NAME = "pcre-sm5";
+			};
+			name = Debug;
+		};
+		2B3AF59313A872AB0056E3C8 /* Native */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = NO;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_POINTER_SIGNEDNESS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = NO;
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
+				GCC_WARN_MISSING_PARENTHESES = NO;
+				GCC_WARN_PROTOTYPE_CONVERSION = NO;
+				GCC_WARN_SHADOW = NO;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_VALUE = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = sqlite;
+			};
+			name = Native;
+		};
+		2B3AF59413A872AB0056E3C8 /* PerformanceDebug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = NO;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_POINTER_SIGNEDNESS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = NO;
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
+				GCC_WARN_MISSING_PARENTHESES = NO;
+				GCC_WARN_PROTOTYPE_CONVERSION = NO;
+				GCC_WARN_SHADOW = NO;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_VALUE = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = sqlite;
+			};
+			name = PerformanceDebug;
+		};
+		2B3AF59513A872AB0056E3C8 /* Universal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = NO;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_POINTER_SIGNEDNESS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = NO;
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
+				GCC_WARN_MISSING_PARENTHESES = NO;
+				GCC_WARN_PROTOTYPE_CONVERSION = NO;
+				GCC_WARN_SHADOW = NO;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_VALUE = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = sqlite;
+			};
+			name = Universal;
+		};
+		2B3AF59613A872AB0056E3C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = NO;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_POINTER_SIGNEDNESS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = NO;
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
+				GCC_WARN_MISSING_PARENTHESES = NO;
+				GCC_WARN_PROTOTYPE_CONVERSION = NO;
+				GCC_WARN_SHADOW = NO;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_VALUE = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = sqlite;
 			};
 			name = Debug;
 		};
@@ -8116,6 +8142,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../src/archutils/Darwin/StepMania.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/../src/ffmpeg/include",
@@ -8138,7 +8165,6 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"-finline-limit=300",
 					"-fconstant-cfstrings",
-					"-fsingle-precision-constant",
 					"-fno-exceptions",
 					"-falign-loops=16",
 				);
@@ -8173,7 +8199,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_STRICT_ALIASING = YES;
 				GCC_UNROLL_LOOPS = YES;
-				GCC_VERSION = 4.0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -8227,6 +8253,7 @@
 					NO_MP3_SUPPORT,
 					WITHOUT_NETWORKING,
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/Frameworks/ffmpeg.framework/Headers",
@@ -8275,6 +8302,7 @@
 					NO_MP3_SUPPORT,
 					WITHOUT_NETWORKING,
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/Frameworks/ffmpeg.framework/Headers",
@@ -8325,6 +8353,7 @@
 					WITHOUT_NETWORKING,
 					"$(value)",
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/Frameworks/ffmpeg.framework/Headers",
@@ -8368,6 +8397,7 @@
 					LUA_USE_MACOSX,
 					"$(value)",
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/build/$(CONFIGURATION)";
 				OBJROOT = "$(SRCROOT)/build";
@@ -8386,6 +8416,7 @@
 					LUA_USE_MACOSX,
 					"$(value)",
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/build/$(CONFIGURATION)";
 				OBJROOT = "$(SRCROOT)/build";
@@ -8404,6 +8435,7 @@
 					LUA_USE_MACOSX,
 					"$(value)",
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/build/$(CONFIGURATION)";
 				OBJROOT = "$(SRCROOT)/build";
@@ -8419,6 +8451,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = LUA_USE_MACOSX;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/build/$(CONFIGURATION)";
 				OBJROOT = "$(SRCROOT)/build";
@@ -8434,6 +8467,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = LUA_USE_MACOSX;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/build/$(CONFIGURATION)";
 				OBJROOT = "$(SRCROOT)/build";
@@ -8449,6 +8483,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = LUA_USE_MACOSX;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/build/$(CONFIGURATION)";
 				OBJROOT = "$(SRCROOT)/build";
@@ -8488,11 +8523,12 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_MODEL_TUNING = G5;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
 				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				INSTALL_PATH = /usr/local/lib;
-				PRODUCT_NAME = tommath;
+				PRODUCT_NAME = "tommath-sm5";
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Native;
@@ -8503,11 +8539,12 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_MODEL_TUNING = G5;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
 				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				INSTALL_PATH = /usr/local/lib;
-				PRODUCT_NAME = tommath;
+				PRODUCT_NAME = "tommath-sm5";
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Universal;
@@ -8520,11 +8557,12 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
 				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				INSTALL_PATH = /usr/local/lib;
-				PRODUCT_NAME = tommath;
+				PRODUCT_NAME = "tommath-sm5";
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Debug;
@@ -8537,11 +8575,12 @@
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
 				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				INSTALL_PATH = /usr/local/lib;
 				KEEP_PRIVATE_EXTERNS = YES;
-				PRODUCT_NAME = tomcrypt;
+				PRODUCT_NAME = "tomcrypt-sm5";
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Native;
@@ -8554,11 +8593,12 @@
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
 				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				INSTALL_PATH = /usr/local/lib;
 				KEEP_PRIVATE_EXTERNS = YES;
-				PRODUCT_NAME = tomcrypt;
+				PRODUCT_NAME = "tomcrypt-sm5";
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Universal;
@@ -8571,11 +8611,16 @@
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					LTC_NO_ROLC,
+					"DEBUG=1",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
 				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				INSTALL_PATH = /usr/local/lib;
 				KEEP_PRIVATE_EXTERNS = YES;
-				PRODUCT_NAME = tomcrypt;
+				PRODUCT_NAME = "tomcrypt-sm5";
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Debug;
@@ -8601,6 +8646,7 @@
 					"SIZEOF_LONG=4",
 					"$(FPM)",
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = NO;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -8612,7 +8658,7 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../src/mad-0.15.1b";
 				INSTALL_PATH = /usr/local/lib;
 				PREBINDING = NO;
-				PRODUCT_NAME = mad;
+				PRODUCT_NAME = "mad-sm5";
 			};
 			name = Native;
 		};
@@ -8637,6 +8683,7 @@
 					"SIZEOF_LONG=4",
 					"$(FPM)",
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = NO;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -8648,7 +8695,7 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../src/mad-0.15.1b";
 				INSTALL_PATH = /usr/local/lib;
 				PREBINDING = NO;
-				PRODUCT_NAME = mad;
+				PRODUCT_NAME = "mad-sm5";
 			};
 			name = PerformanceDebug;
 		};
@@ -8673,6 +8720,7 @@
 					"SIZEOF_LONG=4",
 					"$(FPM)",
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = NO;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -8684,7 +8732,7 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../src/mad-0.15.1b";
 				INSTALL_PATH = /usr/local/lib;
 				PREBINDING = NO;
-				PRODUCT_NAME = mad;
+				PRODUCT_NAME = "mad-sm5";
 			};
 			name = Universal;
 		};
@@ -8712,6 +8760,7 @@
 					"SIZEOF_LONG=4",
 					"$(FPM)",
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = NO;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -8723,7 +8772,7 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../src/mad-0.15.1b";
 				INSTALL_PATH = /usr/local/lib;
 				PREBINDING = NO;
-				PRODUCT_NAME = mad;
+				PRODUCT_NAME = "mad-sm5";
 			};
 			name = Debug;
 		};
@@ -8750,7 +8799,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_STRICT_ALIASING = YES;
 				GCC_UNROLL_LOOPS = YES;
-				GCC_VERSION = 4.0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -8803,6 +8852,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../src/archutils/Darwin/StepMania.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/../src/ffmpeg/include",
@@ -8825,7 +8875,6 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"-finline-limit=300",
 					"-fconstant-cfstrings",
-					"-fsingle-precision-constant",
 					"-fno-exceptions",
 					"-falign-loops=16",
 				);
@@ -8877,6 +8926,7 @@
 					NO_MP3_SUPPORT,
 					WITHOUT_NETWORKING,
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/Frameworks/ffmpeg.framework/Headers",
@@ -8922,6 +8972,7 @@
 					"$(value)",
 					LUA_USE_MACOSX,
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
@@ -8930,7 +8981,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OBJROOT = "$(SRCROOT)/build";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
-				PRODUCT_NAME = "lua-5.1";
+				PRODUCT_NAME = "lua-5.1-sm5";
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = PerformanceDebug;
@@ -8945,6 +8996,7 @@
 					LUA_USE_MACOSX,
 					"$(value)",
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/build/$(CONFIGURATION)";
 				OBJROOT = "$(SRCROOT)/build";
@@ -8960,6 +9012,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = LUA_USE_MACOSX;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/build/$(CONFIGURATION)";
 				OBJROOT = "$(SRCROOT)/build";
@@ -8981,11 +9034,12 @@
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_MODEL_TUNING = G5;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
 				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				INSTALL_PATH = /usr/local/lib;
-				PRODUCT_NAME = tommath;
+				PRODUCT_NAME = "tommath-sm5";
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = PerformanceDebug;
@@ -8998,11 +9052,12 @@
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
 				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				INSTALL_PATH = /usr/local/lib;
 				KEEP_PRIVATE_EXTERNS = YES;
-				PRODUCT_NAME = tomcrypt;
+				PRODUCT_NAME = "tomcrypt-sm5";
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = PerformanceDebug;
@@ -9042,6 +9097,7 @@
 				GCC_ENABLE_SSE3_EXTENSIONS = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../src/archutils/Darwin/StepMania.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/../src/ffmpeg/include",
@@ -9064,7 +9120,6 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"-finline-limit=300",
 					"-fconstant-cfstrings",
-					"-fsingle-precision-constant",
 					"-fno-exceptions",
 					"-falign-loops=16",
 				);
@@ -9097,7 +9152,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_STRICT_ALIASING = YES;
 				GCC_UNROLL_LOOPS = YES;
-				GCC_VERSION = 4.0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -9171,6 +9226,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../src/archutils/Darwin/StepMania.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/../src/ffmpeg/include",
@@ -9193,7 +9249,6 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"-finline-limit=300",
 					"-fconstant-cfstrings",
-					"-fsingle-precision-constant",
 					"-fno-exceptions",
 					"-falign-loops=16",
 				);
@@ -9227,7 +9282,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_STRICT_ALIASING = YES;
 				GCC_UNROLL_LOOPS = YES;
-				GCC_VERSION = 4.0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -9278,6 +9333,7 @@
 					"$(value)",
 					LUA_USE_MACOSX,
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
@@ -9286,7 +9342,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OBJROOT = "$(SRCROOT)/build";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
-				PRODUCT_NAME = "lua-5.1";
+				PRODUCT_NAME = "lua-5.1-sm5";
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Native;
@@ -9303,6 +9359,7 @@
 					"$(value)",
 					LUA_USE_MACOSX,
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
@@ -9311,7 +9368,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OBJROOT = "$(SRCROOT)/build";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
-				PRODUCT_NAME = "lua-5.1";
+				PRODUCT_NAME = "lua-5.1-sm5";
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Universal;
@@ -9328,6 +9385,7 @@
 					"$(value)",
 					LUA_USE_MACOSX,
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
@@ -9336,7 +9394,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OBJROOT = "$(SRCROOT)/build";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
-				PRODUCT_NAME = "lua-5.1";
+				PRODUCT_NAME = "lua-5.1-sm5";
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Debug;
@@ -9344,17 +9402,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2B17AB3E13980D49001AE57D /* Build configuration list for PBXNativeTarget "sqlite3" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2B17AB3413980CB3001AE57D /* Native */,
-				2B17AB3513980CB3001AE57D /* PerformanceDebug */,
-				2B17AB3613980CB3001AE57D /* Universal */,
-				2B17AB3713980CB3001AE57D /* Debug */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Native;
-		};
 		2B17AB8F13981052001AE57D /* Build configuration list for PBXNativeTarget "png" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -9384,6 +9431,17 @@
 				2B17ABE213981757001AE57D /* PerformanceDebug */,
 				2B17ABE313981757001AE57D /* Universal */,
 				2B17ABE413981757001AE57D /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Native;
+		};
+		2B3AF59F13A872DB0056E3C8 /* Build configuration list for PBXNativeTarget "sqlite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B3AF59313A872AB0056E3C8 /* Native */,
+				2B3AF59413A872AB0056E3C8 /* PerformanceDebug */,
+				2B3AF59513A872AB0056E3C8 /* Universal */,
+				2B3AF59613A872AB0056E3C8 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Native;

@@ -174,6 +174,9 @@ void ScreenDebugOverlay::Init()
 		g_Mappings.holdForSlow = DeviceInput(DEVICE_KEYBOARD, KEY_ACCENT);
 		g_Mappings.holdForFast = DeviceInput(DEVICE_KEYBOARD, KEY_TAB);
 
+		/* TODO: Find a better way of indicating which option is which here.
+		 * Maybe we should take a page from ScreenEdit's menus and make
+		 * RowDefs()? */
 
 		int i=0;
 		g_Mappings.gameplayButton[i++]	= DeviceInput(DEVICE_KEYBOARD, KEY_F8);
@@ -193,8 +196,8 @@ void ScreenDebugOverlay::Init()
 		g_Mappings.debugButton[i++] = DeviceInput(DEVICE_KEYBOARD, KEY_Cq);
 		g_Mappings.debugButton[i++] = DeviceInput(DEVICE_KEYBOARD, KEY_Cw);
 		g_Mappings.debugButton[i++] = DeviceInput(DEVICE_KEYBOARD, KEY_Ce);
-		g_Mappings.debugButton[i++] = DeviceInput(DEVICE_KEYBOARD, KEY_Cr);
 		g_Mappings.debugButton[i++] = DeviceInput(DEVICE_KEYBOARD, KEY_Ct);
+		g_Mappings.debugButton[i++] = DeviceInput(DEVICE_KEYBOARD, KEY_Cr);
 		g_Mappings.debugButton[i++] = DeviceInput(DEVICE_KEYBOARD, KEY_Cy);
 		g_Mappings.debugButton[i++] = DeviceInput(DEVICE_KEYBOARD, KEY_Cu);
 		g_Mappings.debugButton[i++] = DeviceInput(DEVICE_KEYBOARD, KEY_Ci);
@@ -595,8 +598,8 @@ class DebugLineAutoplay : public IDebugLine
 	virtual bool IsEnabled() { return GamePreferences::m_AutoPlay.Get() != PC_HUMAN; }
 	virtual void DoAndLog( RString &sMessageOut )
 	{
-		ASSERT( GAMESTATE->m_MasterPlayerNumber != PLAYER_INVALID );
-		PlayerController pc = GAMESTATE->m_pPlayerState[GAMESTATE->m_MasterPlayerNumber]->m_PlayerController;
+		ASSERT( GAMESTATE->GetMasterPlayerNumber() != PLAYER_INVALID );
+		PlayerController pc = GAMESTATE->m_pPlayerState[GAMESTATE->GetMasterPlayerNumber()]->m_PlayerController;
 		bool bHoldingShift = 
 			INPUTFILTER->IsBeingPressed( DeviceInput(DEVICE_KEYBOARD, KEY_LSHIFT) ) || 
 			INPUTFILTER->IsBeingPressed( DeviceInput(DEVICE_KEYBOARD, KEY_RSHIFT) );
@@ -636,7 +639,7 @@ class DebugLineAssist : public IDebugLine
 	virtual bool IsEnabled() { return GAMESTATE->m_SongOptions.GetSong().m_bAssistClap || GAMESTATE->m_SongOptions.GetSong().m_bAssistMetronome; }
 	virtual void DoAndLog( RString &sMessageOut )
 	{
-		ASSERT( GAMESTATE->m_MasterPlayerNumber != PLAYER_INVALID );
+		ASSERT( GAMESTATE->GetMasterPlayerNumber() != PLAYER_INVALID );
 		bool bHoldingShift = INPUTFILTER->IsBeingPressed( DeviceInput(DEVICE_KEYBOARD, KEY_LSHIFT) );
 		bool b;
 		if( bHoldingShift )

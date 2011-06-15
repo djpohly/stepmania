@@ -20,6 +20,9 @@
 #include "Course.h"
 #include "NoteData.h"
 
+float FindFirstDisplayedBeat( const PlayerState* pPlayerState, int iDrawDistanceAfterTargetsPixels );
+float FindLastDisplayedBeat( const PlayerState* pPlayerState, int iDrawDistanceBeforeTargetsPixels );
+
 static ThemeMetric<bool> SHOW_BOARD( "NoteField", "ShowBoard" );
 static ThemeMetric<bool> SHOW_BEAT_BARS( "NoteField", "ShowBeatBars" );
 static ThemeMetric<float> FADE_BEFORE_TARGETS_PERCENT( "NoteField", "FadeBeforeTargetsPercent" );
@@ -303,7 +306,7 @@ void NoteField::Update( float fDeltaTime )
 	// TODO: Remove use of PlayerNumber.
 
 	PlayerNumber pn = m_pPlayerState->m_PlayerNumber;
-	if( pn == GAMESTATE->m_MasterPlayerNumber )
+	if( pn == GAMESTATE->GetMasterPlayerNumber() )
 		NoteDisplay::Update( fDeltaTime );
 }
 
@@ -832,7 +835,7 @@ void NoteField::DrawPrimitives()
 	//LOG->Trace( "start = %f.1, end = %f.1", fFirstBeatToDraw-fSongBeat, fLastBeatToDraw-fSongBeat );
 	//LOG->Trace( "Drawing elements %d through %d", iFirstRowToDraw, iLastRowToDraw );
 
-#define IS_ON_SCREEN( fBeat )  IsOnScreen( fBeat, 0, iDrawDistanceAfterTargetsPixels, iDrawDistanceBeforeTargetsPixels )
+#define IS_ON_SCREEN( fBeat )  ( fFirstBeatToDraw <= (fBeat) && (fBeat) <= fLastBeatToDraw && IsOnScreen( fBeat, 0, iDrawDistanceAfterTargetsPixels, iDrawDistanceBeforeTargetsPixels ) )
 
 	// Draw board
 	if( SHOW_BOARD )
@@ -1257,9 +1260,27 @@ void NoteField::DrawPrimitives()
 			{
 				for( int c2=0; c2<m_pNoteData->GetNumTracks(); c2++ )
 				{
-					if( m_pNoteData->GetTapNote(c2, q).type == TapNote::hold_head)
+					const TapNote &tmp = m_pNoteData->GetTapNote(c2, q);
+					if(tmp.type == TapNote::hold_head &&
+					   tmp.subType == TapNote::hold_head_hold)
 					{
 						bHoldNoteBeginsOnThisBeat = true;
+						break;
+					}
+				}
+			}
+			
+			// do the same for a roll.
+			bool bRollNoteBeginsOnThisBeat = false;
+			if (m_pCurDisplay->display[c].DrawRollHeadForTapsOnSameRow() )
+			{
+				for( int c2=0; c2<m_pNoteData->GetNumTracks(); c2++ )
+				{
+					const TapNote &tmp = m_pNoteData->GetTapNote(c2, q);
+					if(tmp.type == TapNote::hold_head &&
+					   tmp.subType == TapNote::hold_head_roll)
+					{
+						bRollNoteBeginsOnThisBeat = true;
 						break;
 					}
 				}
@@ -1273,7 +1294,8 @@ void NoteField::DrawPrimitives()
 			bool bIsHopoPossible = (tn.bHopoPossible);
 			bool bUseAdditionColoring = bIsAddition || bIsHopoPossible;
 			NoteDisplayCols *displayCols = tn.pn == PLAYER_INVALID ? m_pCurDisplay : m_pDisplays[tn.pn];
-			displayCols->display[c].DrawTap( tn, c, NoteRowToVisibleBeat(m_pPlayerState, q), bHoldNoteBeginsOnThisBeat, 
+			displayCols->display[c].DrawTap(tn, c, NoteRowToVisibleBeat(m_pPlayerState, q),
+							bHoldNoteBeginsOnThisBeat, bRollNoteBeginsOnThisBeat,
 					bUseAdditionColoring, bIsInSelectionRange ? fSelectedRangeGlow : m_fPercentFadeToFail, 
 					m_fYReverseOffsetPixels, iDrawDistanceAfterTargetsPixels, iDrawDistanceBeforeTargetsPixels, 
 					FADE_BEFORE_TARGETS_PERCENT );

@@ -760,7 +760,7 @@ RString SongUtil::MakeUniqueEditDescription( const Song *pSong, StepsType st, co
 	{
 		// make name "My Edit" -> "My Edit2"
 		RString sNum = ssprintf("%d", i+1);
-		sTemp = sPreferredDescription.Left( MAX_EDIT_STEPS_DESCRIPTION_LENGTH - sNum.size() ) + sNum;
+		sTemp = sPreferredDescription.Left( MAX_STEPS_DESCRIPTION_LENGTH - sNum.size() ) + sNum;
 
 		if( IsEditDescriptionUnique(pSong, st, sTemp, NULL) )
 			return sTemp;
@@ -871,13 +871,15 @@ void SongUtil::GetAllSongGenres( vector<RString> &vsOut )
 	}
 }
 
-void SongUtil::FilterSongs( const SongCriteria &sc, const vector<Song*> &in, vector<Song*> &out )
+void SongUtil::FilterSongs( const SongCriteria &sc, const vector<Song*> &in,
+			   vector<Song*> &out, bool doCareAboutGame )
 {
 	out.reserve( in.size() );
 	FOREACH_CONST( Song*, in, s )
 	{
-		if( sc.Matches( *s ) )
+		if( sc.Matches( *s ) && (!doCareAboutGame || IsSongPlayable(*s) ) )
 		{
+			
 			out.push_back( *s );
 		}
 	}
@@ -927,7 +929,9 @@ void SongUtil::GetPlayableStepsTypes( const Song *pSong, set<StepsType> &vOut )
 		iNumPlayers = max( iNumPlayers, 1 );
 
 		const Style *pStyle = GAMEMAN->GetFirstCompatibleStyle( GAMESTATE->m_pCurGame, iNumPlayers, *st );
-		bool bEnoughStages = GAMESTATE->IsAnExtraStage() || GAMESTATE->GetSmallestNumStagesLeftForAnyHumanPlayer() >= GAMESTATE->GetNumStagesForSongAndStyleType(pSong, pStyle->m_StyleType);
+		bool bEnoughStages = GAMESTATE->IsAnExtraStage() || 
+			GAMESTATE->GetSmallestNumStagesLeftForAnyHumanPlayer() >= 
+			GAMESTATE->GetNumStagesForSongAndStyleType(pSong, pStyle->m_StyleType);
 
 		if( bShowThisStepsType && bEnoughStages )
 			vOut.insert( *st );
@@ -959,6 +963,21 @@ bool SongUtil::IsStepsPlayable( Song *pSong, Steps *pSteps )
 	vector<Steps*> vpSteps;
 	GetPlayableSteps( pSong, vpSteps );
 	return find( vpSteps.begin(), vpSteps.end(), pSteps ) != vpSteps.end();
+}
+
+bool SongUtil::IsSongPlayable( Song *s )
+{
+	const vector<Steps*> & steps = s->GetAllSteps();
+	// I'm sure there is a foreach loop, but I don't
+	FOREACH( Steps*, const_cast<vector<Steps*>&>(steps), step )
+	{
+		if (IsStepsPlayable(s, *step))
+		{
+			return true;
+		}
+	}
+	
+	return false;
 }
 
 bool SongUtil::GetStepsTypeAndDifficultyFromSortOrder( SortOrder so, StepsType &stOut, Difficulty &dcOut )
@@ -1078,6 +1097,14 @@ bool SongID::IsValid() const
 
 namespace
 {
+	int GetPlayableSteps( lua_State *L )
+	{
+		const Song *pSong = Luna<Song>::check( L, 1, true );
+		vector<Steps*> vSteps;
+		SongUtil::GetPlayableSteps(pSong,vSteps);
+		LuaHelpers::CreateTableFromArray<Steps*>( vSteps, L );
+		return 1;
+	}
 	int IsStepsTypePlayable( lua_State *L )
 	{
 		Song *pSong = Luna<Song>::check( L, 1, true );
@@ -1097,6 +1124,7 @@ namespace
 
 	const luaL_Reg SongUtilTable[] =
 	{
+		LIST_METHOD( GetPlayableSteps ),
 		LIST_METHOD( IsStepsTypePlayable ),
 		LIST_METHOD( IsStepsPlayable ),
 		{ NULL, NULL }

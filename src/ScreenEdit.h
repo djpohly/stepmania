@@ -62,8 +62,10 @@ enum EditButton
 
 	EDIT_BUTTON_SCROLL_UP_LINE,
 	EDIT_BUTTON_SCROLL_UP_PAGE,
+	EDIT_BUTTON_SCROLL_UP_TS,
 	EDIT_BUTTON_SCROLL_DOWN_LINE,
 	EDIT_BUTTON_SCROLL_DOWN_PAGE,
+	EDIT_BUTTON_SCROLL_DOWN_TS,
 	EDIT_BUTTON_SCROLL_NEXT_MEASURE,
 	EDIT_BUTTON_SCROLL_PREV_MEASURE,
 	EDIT_BUTTON_SCROLL_HOME,
@@ -87,6 +89,7 @@ enum EditButton
 
 	EDIT_BUTTON_OPEN_EDIT_MENU,
 	EDIT_BUTTON_OPEN_TIMING_MENU,
+	EDIT_BUTTON_OPEN_ALTER_MENU,
 	EDIT_BUTTON_OPEN_AREA_MENU,
 	EDIT_BUTTON_OPEN_BGCHANGE_LAYER1_MENU,
 	EDIT_BUTTON_OPEN_BGCHANGE_LAYER2_MENU,
@@ -209,7 +212,12 @@ public:
 	virtual void PushSelf( lua_State *L );
 
 protected:
-	virtual ScreenType GetScreenType() const { return m_EditState==STATE_PLAYING ? gameplay : ScreenWithMenuElements::GetScreenType(); }
+	virtual ScreenType GetScreenType() const
+	{ 
+		return m_EditState==STATE_PLAYING ? 
+		gameplay : 
+		ScreenWithMenuElements::GetScreenType();
+	}
 
 	void TransitionEditState( EditState em );
 	void ScrollTo( float fDestinationBeat );
@@ -268,7 +276,8 @@ protected:
 	BitmapText		m_textPlayRecordHelp;
 
 	// keep track of where we are and what we're doing
-	float			m_fTrailingBeat; // this approaches GAMESTATE->m_fSongBeat, which is the actual beat
+	float			m_fTrailingBeat;
+	// the above approaches GAMESTATE->m_fSongBeat, which is the actual beat
 	/**
 	 * @brief The location we were at when shift was pressed.
 	 *
@@ -365,12 +374,10 @@ public:
 	void HandleMainMenuChoice( MainMenuChoice c ) { const vector<int> v; HandleMainMenuChoice( c, v ); }
 	MainMenuChoice m_CurrentAction;
 
-	enum AreaMenuChoice
+	enum AlterMenuChoice
 	{
 		cut,
 		copy,
-		paste_at_current_beat,
-		paste_at_begin_marker,
 		clear,
 		quantize,
 		turn,
@@ -379,17 +386,42 @@ public:
 		tempo,
 		play,
 		record,
+		preview_designation,
+		convert_to_pause,
+		convert_to_delay,
+		convert_to_warp,
+		convert_to_fake,
+		NUM_ALTER_MENU_CHOICES
+		
+	};
+	
+	enum AreaMenuChoice
+	{
+		paste_at_current_beat,
+		paste_at_begin_marker,
 		insert_and_shift,
 		delete_and_shift,
 		shift_pauses_forward,
 		shift_pauses_backward,
-		convert_to_pause,
 		convert_pause_to_beat,
 		undo,
+		clear_clipboard,
 		NUM_AREA_MENU_CHOICES
 	};
+	void HandleAlterMenuChoice(AlterMenuChoice c,
+				   const vector<int> &iAnswers,
+				   bool bAllowUndo = true);
+	void HandleAlterMenuChoice(AlterMenuChoice c,
+				   bool bAllowUndo = true)
+	{
+		const vector<int> v; HandleAlterMenuChoice(c, v, bAllowUndo);
+	}
+	
 	void HandleAreaMenuChoice( AreaMenuChoice c, const vector<int> &iAnswers, bool bAllowUndo = true );
-	void HandleAreaMenuChoice( AreaMenuChoice c, bool bAllowUndo = true ) { const vector<int> v; HandleAreaMenuChoice( c, v, bAllowUndo ); }
+	void HandleAreaMenuChoice( AreaMenuChoice c, bool bAllowUndo = true )
+	{ 
+		const vector<int> v; HandleAreaMenuChoice( c, v, bAllowUndo );
+	}
 	/** @brief How should the selected notes be transformed? */
 	enum TurnType
 	{
@@ -511,7 +543,8 @@ public:
 		NUM_TIMING_DATA_INFORMATION_CHOICES
 	};
 	
-	void HandleTimingDataInformationChoice ( TimingDataInformationChoice c, const vector<int> &iAnswers );
+	void HandleTimingDataInformationChoice (TimingDataInformationChoice c, 
+						const vector<int> &iAnswers );
 
 	enum BGChangeChoice
 	{
@@ -581,7 +614,9 @@ public:
 	MapEditButtonToMenuButton m_RecordPausedMappingsMenuButton;
 
 	void MakeFilteredMenuDef( const MenuDef* pDef, MenuDef &menu );
-	void EditMiniMenu( const MenuDef* pDef, ScreenMessage SM_SendOnOK = SM_None, ScreenMessage SM_SendOnCancel = SM_None );
+	void EditMiniMenu(const MenuDef* pDef, 
+			  ScreenMessage SM_SendOnOK = SM_None, 
+			  ScreenMessage SM_SendOnCancel = SM_None );
 private:
 	/**
 	 * @brief Retrieve the appropriate TimingData based on GAMESTATE.

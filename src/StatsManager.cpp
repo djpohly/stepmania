@@ -16,6 +16,8 @@
 
 StatsManager*	STATSMAN = NULL;	// global object accessable from anywhere in the program
 
+void AddPlayerStatsToProfile( Profile *pProfile, const StageStats &ss, PlayerNumber pn );
+XNode* MakeRecentScoreNode( const StageStats &ss, Trail *pTrail, const PlayerStageStats &pss, MultiPlayer mp );
 
 StatsManager::StatsManager()
 {
@@ -275,7 +277,7 @@ void StatsManager::CommitStatsToProfiles( const StageStats *pSS )
 			{
 				if( pSS->m_multiPlayer[mp].m_HighScore.IsEmpty() )
 					continue;
-				recent->AppendChild( MakeRecentScoreNode( *pSS, GAMESTATE->m_pCurTrail[GAMESTATE->m_MasterPlayerNumber], pSS->m_multiPlayer[mp], mp ) );
+				recent->AppendChild( MakeRecentScoreNode( *pSS, GAMESTATE->m_pCurTrail[GAMESTATE->GetMasterPlayerNumber()], pSS->m_multiPlayer[mp], mp ) );
 			}
 		}
 

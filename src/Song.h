@@ -16,13 +16,16 @@ class StepsID;
 struct lua_State;
 struct BackgroundChange;
 
+void FixupPath( RString &path, const RString &sSongPath );
+RString GetSongAssetPath( RString sPath, const RString &sSongPath );
+
 /** @brief The version of the .ssc file format. */
 const static float STEPFILE_VERSION_NUMBER = 0.7f;
 
 /** @brief How many edits for this song can each profile have? */
-const int MAX_EDITS_PER_SONG_PER_PROFILE	= 5;
+const int MAX_EDITS_PER_SONG_PER_PROFILE = 15;
 /** @brief How many edits for this song can be available? */
-const int MAX_EDITS_PER_SONG			= 5*NUM_ProfileSlot;
+const int MAX_EDITS_PER_SONG = MAX_EDITS_PER_SONG_PER_PROFILE * NUM_ProfileSlot;
 
 extern const int FILE_CACHE_VERSION;
 
@@ -97,13 +100,13 @@ public:
 	bool ReloadFromSongDir( RString sDir );
 
 	/** @brief Call this after loading a song to clean up invalid data. */
-	void TidyUpData();
+	void TidyUpData( bool bFromCache = false );
 	
 	/**
 	 * @brief Get the new radar values, and determine the last beat at the same time.
 	 *
 	 * This is called by TidyUpData, after saving the Song. */
-	void ReCalculateRadarValuesAndLastBeat();
+	void ReCalculateRadarValuesAndLastBeat( bool bFromCache = false );
 	/**
 	 * @brief Translate any titles that aren't in english.
 	 *
@@ -286,9 +289,6 @@ public:
 
 	/** @brief The Song's TimingData. */
 	TimingData m_SongTiming;
-
-	/** @brief The initial offset of a song. */
-	float	m_fBeat0OffsetInSeconds;
 
 	typedef vector<BackgroundChange> 	VBackgroundChange;
 private:

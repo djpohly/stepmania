@@ -12,6 +12,9 @@
 #include "CommonMetrics.h"
 #include <float.h>
 
+void NextFloat( float fValues[], int size );
+void NextBool( bool bValues[], int size );
+
 ThemeMetric<float> RANDOM_SPEED_CHANCE		( "PlayerOptions", "RandomSpeedChance" );
 ThemeMetric<float> RANDOM_REVERSE_CHANCE	( "PlayerOptions", "RandomReverseChance" );
 ThemeMetric<float> RANDOM_DARK_CHANCE		( "PlayerOptions", "RandomDarkChance" );
@@ -45,7 +48,6 @@ void PlayerOptions::Init()
 	ZERO( m_bTransforms );
 	m_bMuteOnError = false;
 	m_FailType = FAIL_IMMEDIATE;
-	m_ScoreDisplay = SCORING_ADD;
 	m_sNoteSkin = "";
 }
 
@@ -85,7 +87,6 @@ void PlayerOptions::Approach( const PlayerOptions& other, float fDeltaSeconds )
 	for( int i=0; i<NUM_TRANSFORMS; i++ )
 		DO_COPY( m_bTransforms[i] );
 	DO_COPY( m_bMuteOnError );
-	DO_COPY( m_ScoreDisplay );
 	DO_COPY( m_FailType );
 	DO_COPY( m_sNoteSkin );
 #undef APPROACH
@@ -265,7 +266,7 @@ void PlayerOptions::FromString( const RString &sMultipleMods )
 	{
 		if (!FromOneModString( *s, sThrowAway ))
 		{
-			LOG->Trace( "Attempted to load a non-existing mod %s for the Player. Ignoring.", (*s).c_str() );
+			LOG->Trace( "Attempted to load a non-existing mod \'%s\' for the Player. Ignoring.", (*s).c_str() );
 		}
 	}
 }
@@ -300,8 +301,8 @@ bool PlayerOptions::FromOneModString( const RString &sOneMod, RString &sErrorOut
 			 * they meant "*123". */
 			if( s->Right(1) == "*" )
 			{
-				/* XXX We know what they want, is there any reason not to handle it? */
-				/* Yes.  We should be strict in handling the format. -Chris */
+				// XXX: We know what they want, is there any reason not to handle it?
+				// Yes. We should be strict in handling the format. -Chris
 				sErrorOut = ssprintf("Invalid player options \"%s\"; did you mean '*%d'?", s->c_str(), StringToInt(*s) );
 				return false;
 			}
@@ -439,9 +440,6 @@ bool PlayerOptions::FromOneModString( const RString &sOneMod, RString &sErrorOut
 		GAMESTATE->GetDefaultPlayerOptions( po );
 		m_FailType = po.m_FailType;
 	}
-	else if( sBit == "addscore" )				m_ScoreDisplay = SCORING_ADD;
-	else if( sBit == "subtractscore" )			m_ScoreDisplay = SCORING_SUBTRACT;
-	else if( sBit == "averagescore" )			m_ScoreDisplay = SCORING_AVERAGE;
 	else if( sBit == "muteonerror" )			m_bMuteOnError = on;
 	else if( sBit == "random" )				ChooseRandomModifiers();
 	// deprecated mods/left in for compatibility
@@ -653,7 +651,6 @@ bool PlayerOptions::operator==( const PlayerOptions &other ) const
 	COMPARE(m_fScrollSpeed);
 	COMPARE(m_fScrollBPM);
 	COMPARE(m_fRandomSpeed);
-	COMPARE(m_ScoreDisplay);
 	COMPARE(m_FailType);
 	COMPARE(m_bMuteOnError);
 	COMPARE(m_fDark);
@@ -798,7 +795,6 @@ RString PlayerOptions::GetSavedPrefsString() const
 	SAVE( m_bTransforms[TRANSFORM_NOSTRETCH] );
 	SAVE( m_bTransforms[TRANSFORM_NOLIFTS] );
 	SAVE( m_bTransforms[TRANSFORM_NOFAKES] );
-	SAVE( m_ScoreDisplay );
 	SAVE( m_bMuteOnError );
 	SAVE( m_sNoteSkin );
 #undef SAVE

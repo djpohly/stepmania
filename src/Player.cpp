@@ -42,6 +42,9 @@
 #include "LocalizedString.h"
 #include "AdjustSync.h"
 
+RString ATTACK_DISPLAY_X_NAME( size_t p, size_t both_sides );
+void TimingWindowSecondsInit( size_t /*TimingWindow*/ i, RString &sNameOut, float &defaultValueOut );
+
 /**
  * @brief Helper class to ensure that each row is only judged once without taking too much memory.
  */
@@ -1323,14 +1326,9 @@ void Player::UpdateHoldNotes( int iSongRow, float fDeltaTime, vector<TrackRowTap
 		// Possibly fixed.
 		if( tn.iKeysoundIndex >= 0 && tn.iKeysoundIndex < (int) m_vKeysounds.size() )
 		{
-			if( tn.subType == TapNote::hold_head_roll )
-			{
-				m_vKeysounds[tn.iKeysoundIndex].SetProperty ("Volume", max(0.0, min(1.0, fLifeFraction * 2.0)));
-			}
-			else
-			{
-				m_vKeysounds[tn.iKeysoundIndex].SetProperty ("Volume", max(0.0, min(1.0, fLifeFraction * 10.0 - 8.5)));				
-			}
+			float factor = (tn.subType == TapNote::hold_head_roll ? 2 : 10.0f - 8.5f);
+			factor *= fLifeFraction;
+			m_vKeysounds[tn.iKeysoundIndex].SetProperty ("Volume", max(0.0f, min(1.0f, factor)));
 		}
 	}
 
@@ -1375,7 +1373,7 @@ void Player::DrawPrimitives()
 
 	// May have both players in doubles (for battle play); only draw primary player.
 	if( GAMESTATE->GetCurrentStyle()->m_StyleType == StyleType_OnePlayerTwoSides  &&
-		pn != GAMESTATE->m_MasterPlayerNumber )
+		pn != GAMESTATE->GetMasterPlayerNumber() )
 		return;
 
 	// Draw these below everything else.
@@ -1538,7 +1536,7 @@ int Player::GetClosestNoteDirectional( int col, int iStartRow, int iEndRow, bool
 		// Is this the row we want?
 		do {
 			const TapNote &tn = begin->second;
-			if( m_Timing->IsWarpAtRow( begin->first ) || m_Timing->IsFakeAtRow( begin->first ) )
+			if (!m_Timing->IsJudgableAtRow( begin->first ))
 				break;
 			if( tn.type == TapNote::empty )
 				break;
@@ -1594,7 +1592,7 @@ int Player::GetClosestNonEmptyRowDirectional( int iStartRow, int iEndRow, bool b
 				++iter;
 				continue;
 			}
-			if( m_Timing->IsWarpAtRow( iter.Row() ) || m_Timing->IsFakeAtRow( iter.Row() ) )
+			if (!m_Timing->IsJudgableAtRow(iter.Row()))
 			{
 				++iter;
 				continue;
@@ -2118,7 +2116,7 @@ void Player::StepStrumHopo( int col, int row, const RageTimer &tm, bool bHeld, b
 				// Stepped too close to mine?
 				if( !bRelease && ( REQUIRE_STEP_ON_MINES == !bHeld ) && 
 				   fSecondsFromExact <= GetWindowSeconds(TW_Mine) &&
-				   !m_Timing->IsWarpAtRow(iSongRow) && !m_Timing->IsFakeAtRow(iSongRow))
+				   m_Timing->IsJudgableAtRow(iSongRow))
 					score = TNS_HitMine;
 				break;
 
@@ -2616,7 +2614,7 @@ void Player::UpdateTapNotesMissedOlderThan( float fMissIfOlderThanSeconds )
 			continue;
 
 		// Ignore all notes in WarpSegments or FakeSegments.
-		if( m_Timing->IsWarpAtRow( iter.Row() ) || m_Timing->IsFakeAtRow( iter.Row() ) )
+		if (!m_Timing->IsJudgableAtRow(iter.Row()))
 			continue;
 
 		if( tn.type == TapNote::mine )
@@ -2651,7 +2649,7 @@ void Player::UpdateJudgedRows()
 			int iRow = iter.Row();
 
 			// Do not judge arrows in WarpSegments or FakeSegments
-			if( m_Timing->IsWarpAtRow(iRow) || m_Timing->IsFakeAtRow(iRow) )
+			if (!m_Timing->IsJudgableAtRow(iRow))
 				continue;
 
 			if( iLastSeenRow != iRow )
@@ -2852,7 +2850,8 @@ void Player::CrossedRows( int iLastRowCrossed, const RageTimer &now )
 			// check to see if there's a note at the crossed row
 			if( m_pPlayerState->m_PlayerController != PC_HUMAN )
 			{
-				if( tn.type != TapNote::empty && tn.type != TapNote::fake && tn.result.tns == TNS_None )
+				if(tn.type != TapNote::empty && tn.type != TapNote::fake && tn.result.tns == TNS_None
+				   && this->m_Timing->IsJudgableAtRow(iRow) )
 				{
 					Step( iTrack, iRow, now, false, false );
 					if( m_pPlayerState->m_PlayerController == PC_AUTOPLAY )
@@ -2866,8 +2865,10 @@ void Player::CrossedRows( int iLastRowCrossed, const RageTimer &now )
 	}
 
 
-	// Update hold checkpoints
-	if( HOLD_CHECKPOINTS )
+	/* Update hold checkpoints
+	 *
+	 * TODO: Move this to a separate function. */
+	if( HOLD_CHECKPOINTS && m_pPlayerState->m_PlayerController != PC_AUTOPLAY )
 	{
 		int iCheckpointFrequencyRows = ROWS_PER_BEAT/2;
 		if( CHECKPOINTS_USE_TICKCOUNTS )
@@ -2878,7 +2879,7 @@ void Player::CrossedRows( int iLastRowCrossed, const RageTimer &now )
 		}
 		else if( CHECKPOINTS_USE_TIME_SIGNATURES )
 		{
-			TimeSignatureSegment tSignature = m_Timing->GetTimeSignatureSegmentAtBeat( NoteRowToBeat( iLastRowCrossed ) );
+			TimeSignatureSegment & tSignature = m_Timing->GetTimeSignatureSegmentAtRow( iLastRowCrossed );
 
 			// Most songs are in 4/4 time. The frequency for checking tick counts should reflect that.
 			iCheckpointFrequencyRows = ROWS_PER_BEAT * tSignature.GetDen() / (tSignature.GetNum() * 4);
@@ -2921,8 +2922,11 @@ void Player::CrossedRows( int iLastRowCrossed, const RageTimer &now )
 					bool bHoldOverlapsRow = iFirstCheckpointOfHold <= r  &&   r <= iLastCheckpointOfHold;
 					if( !bHoldOverlapsRow )
 						continue;
+					
+					
 
 					viColsWithHold.push_back( iTrack );
+					
 					if( tn.HoldResult.fLife > 0 )
 					{
 						++iNumHoldsHeldThisRow;
@@ -2934,11 +2938,15 @@ void Player::CrossedRows( int iLastRowCrossed, const RageTimer &now )
 						++tn.HoldResult.iCheckpointsMissed;
 					}
 				}
+				GAMESTATE->SetProcessedTimingData(this->m_Timing);
 
 				// TODO: Find a better way of handling hold checkpoints with other taps.
 				if( !viColsWithHold.empty() && ( CHECKPOINTS_TAPS_SEPARATE_JUDGMENT || m_NoteData.GetNumTapNotesInRow( iLastRowCrossed ) == 0 ) )
 				{
-					HandleHoldCheckpoint( r, iNumHoldsHeldThisRow, iNumHoldsMissedThisRow, viColsWithHold );
+					HandleHoldCheckpoint(r, 
+							     iNumHoldsHeldThisRow, 
+							     iNumHoldsMissedThisRow, 
+							     viColsWithHold );
 				}
 			}
 		}
@@ -2990,7 +2998,7 @@ void Player::HandleTapRowScore( unsigned row )
 #endif
 
 	// Do not score rows in WarpSegments or FakeSegments
-	if( m_Timing->IsWarpAtRow( row ) || m_Timing->IsFakeAtRow( row ) )
+	if (!m_Timing->IsJudgableAtRow(row))
 		return;
 
 	if( GAMESTATE->m_bDemonstrationOrJukebox )
@@ -3086,7 +3094,10 @@ void Player::HandleTapRowScore( unsigned row )
 	ChangeLife( scoreOfLastTap );
 }
 
-void Player::HandleHoldCheckpoint( int iRow, int iNumHoldsHeldThisRow, int iNumHoldsMissedThisRow, const vector<int> &viColsWithHold )
+void Player::HandleHoldCheckpoint(int iRow, 
+				  int iNumHoldsHeldThisRow, 
+				  int iNumHoldsMissedThisRow, 
+				  const vector<int> &viColsWithHold )
 {
 	bool bNoCheating = true;
 #ifdef DEBUG
@@ -3094,7 +3105,7 @@ void Player::HandleHoldCheckpoint( int iRow, int iNumHoldsHeldThisRow, int iNumH
 #endif
 
 	// WarpSegments and FakeSegments aren't judged in any way.
-	if( m_Timing->IsWarpAtRow( iRow ) || m_Timing->IsFakeAtRow( iRow ) )
+	if (!m_Timing->IsJudgableAtRow(iRow))
 		return;
 
 	// don't accumulate combo if AutoPlay is on.
@@ -3105,9 +3116,15 @@ void Player::HandleHoldCheckpoint( int iRow, int iNumHoldsHeldThisRow, int iNumH
 	const int iOldMissCombo = m_pPlayerStageStats ? m_pPlayerStageStats->m_iCurMissCombo : 0;
 
 	if( m_pPrimaryScoreKeeper )
-		m_pPrimaryScoreKeeper->HandleHoldCheckpointScore( m_NoteData, iRow, iNumHoldsHeldThisRow, iNumHoldsMissedThisRow );
+		m_pPrimaryScoreKeeper->HandleHoldCheckpointScore(m_NoteData, 
+								 iRow, 
+								 iNumHoldsHeldThisRow, 
+								 iNumHoldsMissedThisRow );
 	if( m_pSecondaryScoreKeeper )
-		m_pSecondaryScoreKeeper->HandleHoldCheckpointScore( m_NoteData, iRow, iNumHoldsHeldThisRow, iNumHoldsMissedThisRow );
+		m_pSecondaryScoreKeeper->HandleHoldCheckpointScore(m_NoteData, 
+								   iRow, 
+								   iNumHoldsHeldThisRow, 
+								   iNumHoldsMissedThisRow );
 
 	if( iNumHoldsMissedThisRow == 0 )
 	{
@@ -3116,7 +3133,8 @@ void Player::HandleHoldCheckpoint( int iRow, int iNumHoldsHeldThisRow, int iNumH
 		{
 			FOREACH_CONST( int, viColsWithHold, i )
 			{
-				bool bBright = m_pPlayerStageStats && m_pPlayerStageStats->m_iCurCombo>(int)BRIGHT_GHOST_COMBO_THRESHOLD;
+				bool bBright = m_pPlayerStageStats 
+					&& m_pPlayerStageStats->m_iCurCombo>(int)BRIGHT_GHOST_COMBO_THRESHOLD;
 				if( m_pNoteField )
 					m_pNoteField->DidHoldNote( *i, HNS_Held, bBright );
 			}
@@ -3285,12 +3303,14 @@ void Player::SetCombo( int iCombo, int iMisses )
 	if( GAMESTATE->IsCourseMode() )
 	{
 		int iSongIndexStartColoring = GAMESTATE->m_pCurCourse->GetEstimatedNumStages();
-		iSongIndexStartColoring = static_cast<int>(floor(iSongIndexStartColoring*PERCENT_UNTIL_COLOR_COMBO));
+		iSongIndexStartColoring = 
+			static_cast<int>(floor(iSongIndexStartColoring*PERCENT_UNTIL_COLOR_COMBO));
 		bPastBeginning = GAMESTATE->GetCourseSongIndex() >= iSongIndexStartColoring;
 	}
 	else
 	{
-		bPastBeginning = m_pPlayerState->m_Position.m_fMusicSeconds > GAMESTATE->m_pCurSong->m_fMusicLengthSeconds * PERCENT_UNTIL_COLOR_COMBO;
+		bPastBeginning = m_pPlayerState->m_Position.m_fMusicSeconds 
+			> GAMESTATE->m_pCurSong->m_fMusicLengthSeconds * PERCENT_UNTIL_COLOR_COMBO;
 	}
 
 	if( m_bSendJudgmentAndComboMessages )
@@ -3332,13 +3352,29 @@ RString Player::ApplyRandomAttack()
 class LunaPlayer: public Luna<Player>
 {
 public:
-	static int SetActorWithJudgmentPosition( T* p, lua_State *L )	{ Actor *pActor = Luna<Actor>::check(L, 1); p->SetActorWithJudgmentPosition(pActor); return 0; }
-	static int SetActorWithComboPosition( T* p, lua_State *L )	{ Actor *pActor = Luna<Actor>::check(L, 1); p->SetActorWithComboPosition(pActor); return 0; }
-
+	static int SetActorWithJudgmentPosition( T* p, lua_State *L )
+	{ 
+		Actor *pActor = Luna<Actor>::check(L, 1); 
+		p->SetActorWithJudgmentPosition(pActor); 
+		return 0;
+	}
+	static int SetActorWithComboPosition( T* p, lua_State *L )
+	{ 
+		Actor *pActor = Luna<Actor>::check(L, 1); 
+		p->SetActorWithComboPosition(pActor); 
+		return 0; 
+	}
+	static int GetPlayerTimingData( T* p, lua_State *L )
+	{
+		p->GetPlayerTimingData().PushSelf(L);
+		return 1;
+	}
+	
 	LunaPlayer()
 	{
 		ADD_METHOD( SetActorWithJudgmentPosition );
 		ADD_METHOD( SetActorWithComboPosition );
+		ADD_METHOD( GetPlayerTimingData );
 	}
 };
 

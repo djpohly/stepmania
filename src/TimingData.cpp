@@ -821,10 +821,10 @@ void TimingData::GetBeatAndBPSFromElapsedTimeNoOffset( float fElapsedTime, float
 	
 	int iLastRow = 0;
 	float fLastTime = -m_fBeat0OffsetInSeconds;
-	float fBPS = GetBPMAtRow(0) / 60.0;
+	float fBPS = GetBPMAtRow(0) / 60.0f;
 	
 	float bIsWarping = false;
-	float fWarpDestination = 0.0;
+	float fWarpDestination = 0;
 	
 	for( ;; )
 	{
@@ -923,10 +923,10 @@ float TimingData::GetElapsedTimeFromBeatNoOffset( float fBeat ) const
 	
 	int iLastRow = 0;
 	float fLastTime = -m_fBeat0OffsetInSeconds;
-	float fBPS = GetBPMAtRow(0) / 60.0;
+	float fBPS = GetBPMAtRow(0) / 60.0f;
 	
 	float bIsWarping = false;
-	float fWarpDestination = 0.0;
+	float fWarpDestination = 0;
 	
 	for( ;; )
 	{
@@ -1003,14 +1003,19 @@ float TimingData::GetElapsedTimeFromBeatNoOffset( float fBeat ) const
 
 float TimingData::GetDisplayedBeat( float fBeat ) const
 {
-	unsigned index = GetScrollSegmentIndexAtBeat(fBeat);
-	const ScrollSegment &s = m_ScrollSegments[index];
-	float fOutBeat = ( fBeat - s.GetBeat() ) * s.GetRatio();
-	for( unsigned i = 0; i < index; i ++ )
+	vector<ScrollSegment>::const_iterator it = m_ScrollSegments.begin(), end = m_ScrollSegments.end();
+	float fOutBeat = 0;
+	for( ; it != end; it++ )
 	{
-		const ScrollSegment &future = m_ScrollSegments[i+1];
-		const ScrollSegment &current = m_ScrollSegments[i];
-		fOutBeat += ( future.GetBeat() - current.GetBeat() ) * current.GetRatio();
+		if( it+1 == end || fBeat <= (it+1)->GetBeat() )
+		{
+			fOutBeat += ( fBeat - (it)->GetBeat() ) * (it)->GetRatio();
+			break;
+		}
+		else
+		{
+			fOutBeat += ( (it+1)->GetBeat() - (it)->GetBeat() ) * (it)->GetRatio();
+		}
 	}
 	return fOutBeat;
 }
@@ -1503,7 +1508,7 @@ float TimingData::GetDisplayedSpeedPercent( float fSongBeat, float fMusicSeconds
 	
 	if( ( index == 0 && m_SpeedSegments[0].GetLength() > 0.0 ) && fCurTime < fStartTime )
 	{
-		return 1.0;
+		return 1.0f;
 	}
 	else if( fEndTime >= fCurTime && ( index > 0 || m_SpeedSegments[0].GetLength() > 0.0 ) )
 	{
@@ -1741,7 +1746,7 @@ public:
 		LuaHelpers::CreateTableFromArray(fBPMs, L);
 		return 1;
 	}
-	static int HasNegativeBPMs( T* p, lua_State *L )		{ lua_pushboolean(L, p->m_bHasNegativeBpms); return 1; }
+	static int HasNegativeBPMs( T* p, lua_State *L )		{ lua_pushboolean(L, p->HasWarps()); return 1; }
 	// formerly in Song.cpp in sm-ssc private beta 1.x:
 	static int GetBPMAtBeat( T* p, lua_State *L )		{ lua_pushnumber(L, p->GetBPMAtBeat(FArg(1))); return 1; }
 	static int GetBeatFromElapsedTime( T* p, lua_State *L )	{ lua_pushnumber(L, p->GetBeatFromElapsedTime(FArg(1))); return 1; }

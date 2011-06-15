@@ -776,7 +776,7 @@ void ScreenGameplay::InitSongQueues()
 		ASSERT( pCourse );
 
 		m_apSongsQueue.clear();
-		PlayerNumber pnMaster = GAMESTATE->m_MasterPlayerNumber;
+		PlayerNumber pnMaster = GAMESTATE->GetMasterPlayerNumber();
 		Trail *pTrail = GAMESTATE->m_pCurTrail[pnMaster];
 		ASSERT( pTrail );
 		FOREACH_CONST( TrailEntry, pTrail->m_vEntries, e )
@@ -1227,7 +1227,7 @@ void ScreenGameplay::LoadNextSong()
 	FOREACH_EnabledPlayerInfo( m_vPlayerInfo, pi )
 	{
 		RageSoundReader *pPlayerSound = m_AutoKeysounds.GetPlayerSound(pi->m_pn);
-		if( pPlayerSound == NULL && pi->m_pn == GAMESTATE->m_MasterPlayerNumber )
+		if( pPlayerSound == NULL && pi->m_pn == GAMESTATE->GetMasterPlayerNumber() )
 			pPlayerSound = m_AutoKeysounds.GetSharedSound();
 		pi->m_SoundEffectControl.SetSoundReader( pPlayerSound );
 	}
@@ -1393,7 +1393,7 @@ void ScreenGameplay::PlayTicks()
 	/* TODO: Allow all players to have ticks. Not as simple as it looks.
 	 * If a loop takes place, it could make one player's ticks come later
 	 * than intended. Any help here would be appreciated. -Wolfman2000 */
-	Player &player = *m_vPlayerInfo[0].m_pPlayer;
+	Player &player = *m_vPlayerInfo[GAMESTATE->GetMasterPlayerNumber()].m_pPlayer;
 	const NoteData &nd = player.GetNoteData();
 	m_GameplayAssist.PlayTicks( nd, player.GetPlayerState() );
 }
@@ -1681,6 +1681,7 @@ void ScreenGameplay::Update( float fDeltaTime )
 		{
 			m_pSoundMusic->StopPlaying();
 			SCREENMAN->PostMessageToTopScreen( SM_NotesEnded, 0 );
+			// todo: stop lyrics (m_LyricDisplay) from animating -aj
 		}
 
 		// Update living players' alive time
@@ -2293,12 +2294,14 @@ void ScreenGameplay::SaveStats()
 		RadarValues rv;
 		PlayerStageStats &pss = *pi->GetPlayerStageStats();
 		const NoteData &nd = pi->m_pPlayer->GetNoteData();
+		PlayerNumber pn = pi->m_pn;
 
+		GAMESTATE->SetProcessedTimingData(&GAMESTATE->m_pCurSteps[pn]->m_Timing);
 		NoteDataUtil::CalculateRadarValues( nd, fMusicLen, rv );
 		pss.m_radarPossible += rv;
-
 		NoteDataWithScoring::GetActualRadarValues( nd, pss, fMusicLen, rv );
 		pss.m_radarActual += rv;
+		GAMESTATE->SetProcessedTimingData(NULL);
 	}
 }
 
