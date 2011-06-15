@@ -35,6 +35,8 @@ namespace SpecialFiles
 	extern const RString COURSES_DIR;
 	/** @brief The default noteskins directory. */
 	extern const RString NOTESKINS_DIR;
+	/** @brief The filename containing the cache database. */
+	extern const RString DATABASE_NAME;
 }
 
 #endif

@@ -106,7 +106,7 @@ static Preference<Premium> g_Premium( "Premium", Premium_Off );
 Preference<bool> GameState::m_bAutoJoin( "AutoJoin", false );
 
 GameState::GameState() :
-	processedTiming( NULL ),
+	processedTiming( NULL ),	cacheDB(NULL),
 	m_pCurGame(				Message_CurrentGameChanged ),
 	m_pCurStyle(			Message_CurrentStyleChanged ),
 	m_PlayMode(				Message_PlayModeChanged ),

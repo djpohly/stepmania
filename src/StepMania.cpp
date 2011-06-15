@@ -1014,6 +1014,14 @@ int main(int argc, char* argv[])
 	// Create game objects
 
 	GAMESTATE	= new GameState;
+	
+	sqlite3 *db = GAMESTATE->GetDatabase();
+	int rc = sqlite3_open(SpecialFiles::DATABASE_NAME.c_str(),
+			      &db);
+	if (rc > 0)
+	{
+		LOG->Warn("Problem opening database!");
+	}
 
 	// This requires PREFSMAN, for PREFSMAN->m_bShowLoadingWindow.
 	pLoadingWindow = LoadingWindow::Create();
