@@ -30,6 +30,11 @@
 #include "Inventory.h"
 #include "Course.h"
 #include "NoteDataUtil.h"
+#include "NotesLoaderSSC.h" // For loading NoteData at the start.
+#include "NotesLoaderDWI.h"
+#include "NotesLoaderKSF.h"
+#include "NotesLoaderSMA.h"
+#include "NotesLoaderSM.h"
 #include "UnlockManager.h"
 #include "LightsManager.h"
 #include "ProfileManager.h"
@@ -393,6 +398,26 @@ void ScreenGameplay::Init()
 	/* Called once per stage (single song or single course). */
 	GAMESTATE->BeginStage();
 
+	FOREACH_EnabledPlayer(p)
+	{
+		Steps *curSteps = GAMESTATE->m_pCurSteps[p];
+		if (curSteps->IsNoteDataEmpty())
+		{
+			// Replace the line below with the Steps' cache file.
+			RString cacheFile = GAMESTATE->m_pCurSong->GetCacheFilePath();
+			SSCLoader cacheLoader;
+			if (cacheLoader.LoadNoteDataFromSimfile(cacheFile, *curSteps))
+			{
+				LOG->Trace("Notes should be loaded for player %d", p);
+			}
+			else 
+			{
+				LOG->Trace("Error loading notes for player %d", p);
+			}
+
+		}
+	}
+	
 	if(!GAMESTATE->IsCourseMode() && !GAMESTATE->m_bDemonstrationOrJukebox)
 	{
 		// fill in difficulty of CPU players with that of the first human player
