@@ -19,7 +19,7 @@ const RString SpecialFiles::SONGS_DIR = "Songs/";
 const RString SpecialFiles::COURSES_DIR	= "Courses/";
 const RString SpecialFiles::NOTESKINS_DIR = "NoteSkins/";
 /** @brief The name of the database we will be using. */
-const RString SpecialFiles::DATABASE_NAME = SpecialFiles::CACHE_DIR + "cache.sqlite";
+const RString SpecialFiles::DATABASE_NAME = "cache.sqlite";
 
 
 /*

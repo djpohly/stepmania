@@ -1016,13 +1016,13 @@ int main(int argc, char* argv[])
 
 	GAMESTATE	= new GameState;
 	
-	sqlite3 *db = GAMESTATE->GetDatabase();
-	RageFile tmp;
-	tmp.Open(SpecialFiles::DATABASE_NAME, RageFile::READ);
-	RString realPath = tmp.GetRealPath();
-	tmp.Close();
+	RString path = FILEMAN->ResolvePath(SpecialFiles::CACHE_DIR)
+		+ SpecialFiles::DATABASE_NAME;
 	
-	int rc = sqlite3_open(realPath.c_str(),
+	sqlite3 *db = GAMESTATE->GetDatabase();
+	
+	
+	int rc = sqlite3_open(path.c_str(),
 			      &db);
 	if (rc > 0)
 	{
