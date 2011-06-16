@@ -101,6 +101,11 @@ public:
 	 */
 	static void MountUserFilesystems( const RString &sDirOfExecutable );
 
+	/**
+	 * @brief Retrieve the absolute path for the cache.
+	 * @return the absolute cache path. */
+	static RString GetCacheDir();
+	
 	/*
 	 * Platform-specific code calls this to indicate focus changes.
 	 */

@@ -303,6 +303,12 @@ void ArchHooks::MountUserFilesystems( const RString &sDirOfExecutable )
 	// XXX: Fix me.
 }
 
+RString ArchHooks::GetCacheDir()
+{
+	RString sUserDataPath = ssprintf( "%s/.%s", szHome? szHome:".", sProductId.c_str() );
+	return sUserDataPath + "/Cache";
+}
+
 /*
  * (c) 2003-2004 Glenn Maynard
  * All rights reserved.

@@ -1016,11 +1016,8 @@ int main(int argc, char* argv[])
 
 	GAMESTATE	= new GameState;
 	
-	RString path = FILEMAN->ResolvePath(SpecialFiles::CACHE_DIR)
-		+ SpecialFiles::DATABASE_NAME;
-	
+	RString path = HOOKS->GetCacheDir() + "/" + SpecialFiles::DATABASE_NAME;
 	sqlite3 *db = GAMESTATE->GetDatabase();
-	
 	
 	int rc = sqlite3_open(path.c_str(),
 			      &db);

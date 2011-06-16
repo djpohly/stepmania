@@ -432,6 +432,13 @@ void ArchHooks::MountUserFilesystems( const RString &sDirOfExecutable )
 	// XXX: Fix me.
 }
 
+RString ArchHooks::GetCacheDir()
+{
+	char dir[PATH_MAX];
+	PathForFolderType(dir, kCachedDataFolderType);
+	return ssprintf("%s/" PRODUCT_ID, dir);
+}
+
 static inline int GetIntValue( CFTypeRef r )
 {
 	int ret;

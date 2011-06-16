@@ -74,6 +74,12 @@ void ArchHooks::MountUserFilesystems( const RString &sDirOfExecutable )
 	FILEMAN->Mount( "dir", sAppDataDir + "/Packages", "/" + SpecialFiles::USER_PACKAGES_DIR );
 }
 
+RString ArchHooks::GetCacheDir()
+{
+	RString sCommonAppDataDir = SpecialDirs::GetCommonAppDataDir() + PRODUCT_ID;
+	return sCommonAppDataDir + "/Cache";
+}
+
 static RString LangIdToString( LANGID l )
 {
 	switch( PRIMARYLANGID(l) )
