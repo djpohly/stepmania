@@ -155,6 +155,7 @@ bool SMALoader::LoadFromSimfile( const RString &sPath, Song &out, bool bFromCach
 	}
 	
 	out.m_SongTiming.m_sFile = sPath; // songs still have their fallback timing.
+	out.m_sSongFileName = sPath;
 	
 	int state = SMA_GETTING_SONG_INFO;
 	Steps* pNewNotes = NULL;
@@ -454,7 +455,7 @@ bool SMALoader::LoadFromSimfile( const RString &sPath, Song &out, bool bFromCach
 					 sParams[5], 
 					 sParams[6],
 					 *pNewNotes );
-			
+			pNewNotes->SetFilename(sPath);
 			out.AddSteps( pNewNotes );
 		}
 		else if( sValueName=="TIMESIGNATURES" || sValueName=="LEADTRACK"  )
