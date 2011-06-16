@@ -36,10 +36,7 @@ bool NotesLoader::LoadFromDir( const RString &sPath, Song &out, set<RString> &Bl
 	loaderSSC.GetApplicableFiles( sPath, list );
 	if( !list.empty() )
 	{
-		if( !loaderSSC.LoadFromDir( sPath, out ) )
-			return false;
-		loaderSSC.TidyUpData( out, false );
-		return true;
+		return loaderSSC.LoadFromDir( sPath, out );
 	}
 	SMALoader loaderSMA;
 	loaderSMA.GetApplicableFiles( sPath, list );
