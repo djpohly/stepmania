@@ -56,6 +56,11 @@ unsigned Steps::GetHash() const
 	return m_iHash;
 }
 
+bool Steps::IsNoteDataEmpty() const
+{
+	return this->m_sNoteDataCompressed.empty();
+}
+
 void Steps::SetNoteData( const NoteData& noteDataNew )
 {
 	ASSERT( noteDataNew.GetNumTracks() == GAMEMAN->GetStepsTypeInfo(m_StepsType).iNumTracks );
