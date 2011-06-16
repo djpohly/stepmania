@@ -464,27 +464,35 @@ bool SSCLoader::LoadFromSimfile( const RString &sPath, Song &out, bool bFromCach
 
 				else if( sValueName=="RADARVALUES" )
 				{
-					vector<RString> saValues;
-					split( sParams[1], ",", saValues, true );
-					
-					int categories = NUM_RadarCategory;
-					if( out.m_fVersion < VERSION_RADAR_FAKE )
-						categories -= 1;
-					
-					if( saValues.size() == (unsigned)categories * NUM_PLAYERS )
+					if (bFromCache)
 					{
-						RadarValues v[NUM_PLAYERS];
-						FOREACH_PlayerNumber( pn )
+						vector<RString> saValues;
+						split( sParams[1], ",", saValues, true );
+						
+						int categories = NUM_RadarCategory;
+						if( out.m_fVersion < VERSION_RADAR_FAKE )
+							categories -= 1;
+						
+						if( saValues.size() == (unsigned)categories * NUM_PLAYERS )
 						{
-							// Can't use the foreach anymore due to flexible radar lines.
-							for( RadarCategory rc = (RadarCategory)0; rc < categories; 
-							    enum_add<RadarCategory>( rc, +1 ) )
+							RadarValues v[NUM_PLAYERS];
+							FOREACH_PlayerNumber( pn )
 							{
-								v[pn][rc] = StringToFloat( saValues[pn*categories + rc] );
+								// Can't use the foreach anymore due to flexible radar lines.
+								for( RadarCategory rc = (RadarCategory)0; rc < categories; 
+								    enum_add<RadarCategory>( rc, +1 ) )
+								{
+									v[pn][rc] = StringToFloat( saValues[pn*categories + rc] );
+								}
 							}
+							pNewNotes->SetCachedRadarValues( v );
 						}
-						pNewNotes->SetCachedRadarValues( v );
 					}
+					else 
+					{
+						// just recalc at time.
+					}
+
 				}
 
 				else if( sValueName=="CREDIT" )
