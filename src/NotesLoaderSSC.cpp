@@ -578,7 +578,11 @@ bool SSCLoader::LoadFromSimfile( const RString &sPath, Song &out, bool bFromCach
 				}
 				else if( sValueName=="STEPFILENAME" )
 				{
+					state = GETTING_SONG_INFO;
+					if( bHasOwnTiming )
+						pNewNotes->m_Timing = stepsTiming;
 					pNewNotes->SetFilename(sParams[1]);
+					out.AddSteps( pNewNotes );
 				}
 				break;
 			}
