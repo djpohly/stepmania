@@ -756,6 +756,7 @@ void Song::ReCalculateRadarValuesAndLastBeat( bool bFromCache )
 
 		// Must initialize before the gotos.
 		NoteData tempNoteData;
+		pSteps->GetNoteData( tempNoteData );
 		
 		// calculate lastBeat
 
@@ -774,9 +775,6 @@ void Song::ReCalculateRadarValuesAndLastBeat( bool bFromCache )
 		if( pSteps->m_StepsType == StepsType_lights_cabinet )
 			continue; // no need to wipe this.
 
-		
-		pSteps->GetNoteData( tempNoteData );
-
 		/* Many songs have stray, empty song patterns. Ignore them, so they
 		 * don't force the first beat of the whole song to 0. */
 		if( tempNoteData.GetLastRow() != 0 )
@@ -785,7 +783,9 @@ void Song::ReCalculateRadarValuesAndLastBeat( bool bFromCache )
 			fLastBeat  = max( fLastBeat,  m_SongTiming.GetBeatFromElapsedTime(pSteps->m_Timing.GetElapsedTimeFromBeat(tempNoteData.GetLastBeat())) );
 		}
 	wipe_notedata:
-		pSteps->SetNoteData(NoteData());
+		NoteData dummy;
+		dummy.SetNumTracks(tempNoteData.GetNumTracks());
+		pSteps->SetNoteData(dummy);
 	}
 
 	m_fFirstBeat = fFirstBeat;
