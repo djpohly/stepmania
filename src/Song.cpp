@@ -41,7 +41,7 @@
  * @brief The internal version of the cache for StepMania.
  *
  * Increment this value to invalidate the current cache. */
-const int FILE_CACHE_VERSION = 180;
+const int FILE_CACHE_VERSION = 181;
 
 /** @brief How long does a song sample last by default? */
 const float DEFAULT_MUSIC_SAMPLE_LENGTH = 12.f;
@@ -723,64 +723,6 @@ void Song::TidyUpData( bool bFromCache )
 	 * for edits). We should be able to use difficulty names as unique
 	 * identifiers for steps. */
 	SongUtil::AdjustDuplicateSteps( this );
-
-	{
-		/* Generated filename; this doesn't always point to a loadable file,
-		 * but instead points to the file we should write changed files to,
-		 * and will always be a .SSC.
-		 *
-		 * This is a little tricky. We can't always use the song title directly,
-		 * since it might contain characters we can't store in filenames. Two
-		 * easy options: we could manually filter out invalid characters, or we
-		 * could use the name of the directory, which is always a valid filename
-		 * and should always be the same as the song. The former might not catch
-		 * everything--filename restrictions are platform-specific; we might even
-		 * be on an 8.3 filesystem, so let's do the latter.
-		 *
-		 * We can't rely on searching for other data filenames; it works for DWIs,
-		 * but not KSFs and BMSs.
-		 *
-		 * So, let's do this (by priority):
-		 * 1. If there's a .SSC file, use that filename. No reason to use anything
-		 *    else; it's the filename in use.
-		 * 2. If there's an .SM, use it with a changed extension.
-		 * 3. If there's a .DWI, use it with a changed extension.
-		 * 4. Otherwise, use the name of the directory, since it's definitely a valid
-		 *    filename, and should always be the title of the song (unlike KSFs). */
-		m_sSongFileName = m_sSongDir;
-		vector<RString> asFileNames;
-		do
-		{
-			GetDirListing( m_sSongDir+"*.ssc", asFileNames );
-			if( !asFileNames.empty() )
-			{
-				m_sSongFileName += asFileNames[0];
-				break;
-			}
-			
-			GetDirListing( m_sSongDir+"*.sma", asFileNames );
-			if (!asFileNames.empty() )
-			{
-				m_sSongFileName += SetExtension( asFileNames[0], "ssc" );
-				break;
-			}
-			
-			GetDirListing( m_sSongDir+"*.sm", asFileNames );
-			if( !asFileNames.empty() )
-			{
-				m_sSongFileName += SetExtension( asFileNames[0], "ssc" );
-				break;
-			}
-			
-			GetDirListing( m_sSongDir+"*.dwi", asFileNames );
-			if( !asFileNames.empty() ) {
-				m_sSongFileName += SetExtension( asFileNames[0], "ssc" );
-				break;
-			}
-			m_sSongFileName += Basename(m_sSongDir);
-			m_sSongFileName += ".ssc";
-		} while(0);
-	}
 }
 
 void Song::TranslateTitles()
@@ -812,33 +754,38 @@ void Song::ReCalculateRadarValuesAndLastBeat( bool bFromCache )
 
 		pSteps->CalculateRadarValues( m_fMusicLengthSeconds );
 
+		// Must initialize before the gotos.
+		NoteData tempNoteData;
+		
 		// calculate lastBeat
 
 		// If it's autogen, then first/last beat will come from the parent.
 		if( pSteps->IsAutogen() )
-			continue;
+			goto wipe_notedata;
 
 		/* Don't calculate with edits unless the song only contains an edit
 		 * chart, like those in Mungyodance 3. Otherwise, edits installed on
 		 * the machine could extend the length of the song. */
 		if( pSteps->IsAnEdit() && m_vpSteps.size() > 1 )
-			continue;
+			goto wipe_notedata;
 
 		// Don't set first/last beat based on lights.  They often start very 
 		// early and end very late.
 		if( pSteps->m_StepsType == StepsType_lights_cabinet )
-			continue;
+			continue; // no need to wipe this.
 
-		NoteData tempNoteData;
+		
 		pSteps->GetNoteData( tempNoteData );
 
 		/* Many songs have stray, empty song patterns. Ignore them, so they
 		 * don't force the first beat of the whole song to 0. */
-		if( tempNoteData.GetLastRow() == 0 )
-			continue;
-
-		fFirstBeat = min( fFirstBeat, m_SongTiming.GetBeatFromElapsedTime(pSteps->m_Timing.GetElapsedTimeFromBeat(tempNoteData.GetFirstBeat())) );
-		fLastBeat  = max( fLastBeat,  m_SongTiming.GetBeatFromElapsedTime(pSteps->m_Timing.GetElapsedTimeFromBeat(tempNoteData.GetLastBeat())) );
+		if( tempNoteData.GetLastRow() != 0 )
+		{
+			fFirstBeat = min( fFirstBeat, m_SongTiming.GetBeatFromElapsedTime(pSteps->m_Timing.GetElapsedTimeFromBeat(tempNoteData.GetFirstBeat())) );
+			fLastBeat  = max( fLastBeat,  m_SongTiming.GetBeatFromElapsedTime(pSteps->m_Timing.GetElapsedTimeFromBeat(tempNoteData.GetLastBeat())) );
+		}
+	wipe_notedata:
+		pSteps->SetNoteData(NoteData());
 	}
 
 	m_fFirstBeat = fFirstBeat;

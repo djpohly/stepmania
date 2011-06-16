@@ -67,7 +67,6 @@ void Steps::SetNoteData( const NoteData& noteDataNew )
 	
 	m_sNoteDataCompressed = RString();
 	m_iHash = 0;
-	m_sFilename = RString(); // We can no longer read from the file because it has changed in memory.
 }
 
 void Steps::GetNoteData( NoteData& noteDataOut ) const
@@ -99,7 +98,6 @@ void Steps::SetSMNoteData( const RString &notes_comp_ )
 
 	m_sNoteDataCompressed = notes_comp_;
 	m_iHash = 0;
-	m_sFilename = RString(); // We can no longer read from the file because it has changed in memory.
 }
 
 /* XXX: this function should pull data from m_sFilename, like Decompress() */

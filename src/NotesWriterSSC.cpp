@@ -324,15 +324,21 @@ static RString GetSSCNoteData( const Song &song, const Steps &in, bool bSavingCa
 	lines.push_back( "#ATTACKS:;" );
 	lines.push_back( ssprintf( "#OFFSET:%.6f;", in.m_Timing.m_fBeat0OffsetInSeconds ) );
 	
-	RString sNoteData;
-	in.GetSMNoteData( sNoteData );
+	if (bSavingCache)
+	{
+		lines.push_back(ssprintf("#STEPFILENAME:%s;", in.GetFilename().c_str()));
+	}
+	else
+	{
+		RString sNoteData;
+		in.GetSMNoteData( sNoteData );
 
-	lines.push_back( song.m_vsKeysoundFile.empty() ? "#NOTES:" : "#NOTES2:" );
+		lines.push_back( song.m_vsKeysoundFile.empty() ? "#NOTES:" : "#NOTES2:" );
 
-	TrimLeft(sNoteData);
-	split( sNoteData, "\n", lines, true );
-	lines.push_back( ";" );
-
+		TrimLeft(sNoteData);
+		split( sNoteData, "\n", lines, true );
+		lines.push_back( ";" );
+	}
 	return JoinLineList( lines );
 }
 

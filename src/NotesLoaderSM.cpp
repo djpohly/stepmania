@@ -710,6 +710,7 @@ bool SMLoader::LoadFromSimfile( const RString &sPath, Song &out, bool bFromCache
 	}
 
 	out.m_SongTiming.m_sFile = sPath;
+	out.m_sSongFileName = sPath;
 
 	for( unsigned i=0; i<msd.GetNumValues(); i++ )
 	{
@@ -828,6 +829,7 @@ bool SMLoader::LoadFromSimfile( const RString &sPath, Song &out, bool bFromCache
 		{
 			if( bFromCache )
 				out.m_sSongFileName = sParams[1];
+
 		}
 		else if( sValueName=="HASMUSIC" )
 		{
@@ -934,6 +936,7 @@ bool SMLoader::LoadFromSimfile( const RString &sPath, Song &out, bool bFromCache
 				sParams[6],
 				*pNewNotes );
 
+			pNewNotes->SetFilename(sPath);
 			out.AddSteps( pNewNotes );
 		}
 		// XXX: Does anyone know what LEADTRACK is for? -Wolfman2000

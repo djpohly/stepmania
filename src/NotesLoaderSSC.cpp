@@ -158,6 +158,7 @@ bool SSCLoader::LoadFromSimfile( const RString &sPath, Song &out, bool bFromCach
 	}
 
 	out.m_SongTiming.m_sFile = sPath; // songs still have their fallback timing.
+	out.m_sSongFileName = sPath;
 
 	int state = GETTING_SONG_INFO;
 	const unsigned values = msd.GetNumValues();
@@ -498,6 +499,7 @@ bool SSCLoader::LoadFromSimfile( const RString &sPath, Song &out, bool bFromCach
 						pNewNotes->m_Timing = stepsTiming;
 					pNewNotes->SetSMNoteData( sParams[1] );
 					pNewNotes->TidyUpData();
+					pNewNotes->SetFilename(sPath);
 					out.AddSteps( pNewNotes );
 				}
 				
@@ -565,6 +567,10 @@ bool SSCLoader::LoadFromSimfile( const RString &sPath, Song &out, bool bFromCach
 				else if( sValueName=="OFFSET" )
 				{
 					stepsTiming.m_fBeat0OffsetInSeconds = StringToFloat( sParams[1] );
+				}
+				else if( sValueName=="STEPFILENAME" )
+				{
+					pNewNotes->SetFilename(sParams[1]);
 				}
 				break;
 			}
