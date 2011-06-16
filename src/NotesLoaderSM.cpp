@@ -95,23 +95,6 @@ void SMLoader::LoadFromTokens(
 	}
 
 	out.SetMeter( StringToInt(sMeter) );
-	vector<RString> saValues;
-	split( sRadarValues, ",", saValues, true );
-	int categories = NUM_RadarCategory - 1; // Fakes aren't counted in the radar values.
-	if( saValues.size() == (unsigned)categories * NUM_PLAYERS )
-	{
-		RadarValues v[NUM_PLAYERS];
-		FOREACH_PlayerNumber( pn )
-		{
-			// Can't use the foreach anymore due to flexible radar lines.
-			for( RadarCategory rc = (RadarCategory)0; rc < categories; 
-			    enum_add<RadarCategory>( rc, 1 ) )
-			{
-				v[pn][rc] = StringToFloat( saValues[pn*categories + rc] );
-			}
-		}
-		out.SetCachedRadarValues( v );
-	}
 
 	out.SetSMNoteData( sNoteData );
 
