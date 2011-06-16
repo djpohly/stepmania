@@ -145,6 +145,84 @@ void SSCLoader::ProcessScrolls( TimingData &out, const RString sParam )
 	}
 }
 
+bool SSCLoader::LoadNoteDataFromSimfile( const RString & cachePath, Steps &out )
+{
+	LOG->Trace( "Loading notes from %s", cachePath.c_str() );
+	
+	MsdFile msd;
+	if (!msd.ReadFile(cachePath, true))
+	{
+		LOG->UserLog("Unable to load any notes from",
+			     cachePath,
+			     "for this reason: %s",
+			     msd.GetError().c_str());
+		return false;
+	}
+	
+	bool tryingSteps = false;
+	
+	const unsigned values = msd.GetNumValues();
+	
+	for (unsigned i = 0; i < values; i++)
+	{
+		const MsdFile::value_t &params = msd.GetValue(i);
+		RString valueName = params[0];
+		valueName.MakeUpper();
+		
+		if (tryingSteps)
+		{
+			if( valueName=="STEPSTYPE" )
+			{
+				if (out.m_StepsType != GAMEMAN->StringToStepsType(params[1]))
+					tryingSteps = false;
+			}
+			
+			else if( valueName=="DESCRIPTION" )
+			{
+				if (out.GetDescription() != params[1])
+					tryingSteps = false;
+			}
+			
+			else if( valueName=="DIFFICULTY" )
+			{
+				if (out.GetDifficulty() != StringToDifficulty(params[1]))
+					tryingSteps = false;
+			}
+			
+			else if( valueName=="METER" )
+			{
+				if (out.GetMeter() != StringToInt(params[1]))
+					tryingSteps = false;
+			}
+			
+			else if( valueName=="CREDIT" )
+			{
+				if (out.GetCredit() != params[1])
+					tryingSteps = false;
+			}
+			
+			else if( valueName=="NOTES" || valueName=="NOTES2" )
+			{
+				out.SetSMNoteData(params[1]);
+				out.TidyUpData();
+				return true;
+			}
+		}
+		else
+		{
+			if(valueName == "NOTEDATA")
+			{
+				tryingSteps = true;
+			}
+		}
+	}
+	
+	LOG->UserLog("The specific steps for",
+		     DifficultyToString(out.GetDifficulty()).c_str(),
+		     "were not found in %s: sorry.",
+		     cachePath.c_str());
+	return false;
+}
 
 bool SSCLoader::LoadFromSimfile( const RString &sPath, Song &out, bool bFromCache )
 {

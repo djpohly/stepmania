@@ -61,6 +61,12 @@ struct SSCLoader : public SMLoader
 	 */
 	bool LoadEditFromMsd( const MsdFile &msd, const RString &sEditFilePath, ProfileSlot slot, bool bAddStepsToSong );
 	
+	/**
+	 * @brief Retrieve the specific NoteData from the file.
+	 * @param cachePath the path to the cache file.
+	 * @param out the Steps to receive just the particular notedata.
+	 * @return true if successful, false otherwise. */
+	bool LoadNoteDataFromSimfile( const RString &cachePath, Steps &out );
 	
 	void ProcessWarps( TimingData &, const RString, const float );
 	void ProcessLabels( TimingData &, const RString );
