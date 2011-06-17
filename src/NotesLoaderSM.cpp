@@ -621,9 +621,8 @@ bool SMLoader::LoadFromBGChangesString( BackgroundChange &change, const RString 
 	return aBGChangeValues.size() >= 2;
 }
 
-bool SMLoader::LoadNotedataFromSimfile( const RString &path, Steps &out )
+bool SMLoader::LoadNoteDataFromSimfile( const RString &path, Steps &out )
 {
-	// stub: do this later.
 	MsdFile msd;
 	if( !msd.ReadFile( path, true ) )  // unescape
 	{
@@ -674,7 +673,7 @@ bool SMLoader::LoadNotedataFromSimfile( const RString &path, Steps &out )
 			RString noteData = sParams[6];
 			Trim( noteData );
 			out.SetSMNoteData( noteData );
-			
+			out.TidyUpData();
 			return true;
 		}
 	}

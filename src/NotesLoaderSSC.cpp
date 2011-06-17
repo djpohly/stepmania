@@ -216,11 +216,6 @@ bool SSCLoader::LoadNoteDataFromSimfile( const RString & cachePath, Steps &out )
 			}
 		}
 	}
-	
-	LOG->UserLog("The specific steps for",
-		     DifficultyToString(out.GetDifficulty()).c_str(),
-		     "were not found in %s: sorry.",
-		     cachePath.c_str());
 	return false;
 }
 

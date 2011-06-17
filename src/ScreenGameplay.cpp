@@ -398,29 +398,54 @@ void ScreenGameplay::Init()
 	/* Called once per stage (single song or single course). */
 	GAMESTATE->BeginStage();
 
-	FOREACH_EnabledPlayer(p)
+	int player = 1;
+	FOREACH_EnabledPlayerInfo( m_vPlayerInfo, pi )
 	{
-		Steps *curSteps = GAMESTATE->m_pCurSteps[p];
-		if (curSteps->IsNoteDataEmpty())
+		unsigned int count = pi->m_vpStepsQueue.size();
+		
+		for (unsigned int i = 0; i < count; i++)
 		{
-			// Replace the line below with the Steps' cache file.
-			RString cacheFile = GAMESTATE->m_pCurSong->GetCacheFilePath();
-			SSCLoader cacheLoader;
-			if (cacheLoader.LoadNoteDataFromSimfile(cacheFile, *curSteps))
+			Steps *curSteps = pi->m_vpStepsQueue[i];
+			if (curSteps->IsNoteDataEmpty())
 			{
-				LOG->Trace("Notes should be loaded for player %d", p);
+				// Replace the line below with the Steps' cache file.
+				RString stepFile = curSteps->GetFilename();
+				RString extension = GetExtension(stepFile);
+				bool success = false;
+				if (extension.empty() || extension == "ssc") // remember cache files.
+				{
+					SSCLoader loader;
+					success = loader.LoadNoteDataFromSimfile(stepFile, *curSteps);
+				}
+				else if (extension == "sm")
+				{
+					SMLoader loader;
+					success = loader.LoadNoteDataFromSimfile(stepFile, *curSteps);
+				}
+				else if (extension == "sma")
+				{
+					SMALoader loader;
+					success = loader.LoadNoteDataFromSimfile(stepFile, *curSteps);
+				}
+				
+				
+				if (success)
+				{
+					LOG->Trace("Notes should be loaded for player %d", player);
+				}
+				else 
+				{
+					LOG->Trace("Error loading notes for player %d", player);
+				}
 			}
-			else 
-			{
-				LOG->Trace("Error loading notes for player %d", p);
-			}
-
 		}
+		player++;
 	}
 	
 	if(!GAMESTATE->IsCourseMode() && !GAMESTATE->m_bDemonstrationOrJukebox)
 	{
 		// fill in difficulty of CPU players with that of the first human player
+		// this should not need to worry about step content.
 		FOREACH_PotentialCpuPlayer(p)
 			GAMESTATE->m_pCurSteps[p].Set( GAMESTATE->m_pCurSteps[ GAMESTATE->GetFirstHumanPlayer() ] );
 
@@ -938,6 +963,7 @@ void ScreenGameplay::SetupSong( int iSongIndex )
 		pi->GetPlayerState()->m_fLastDrawnBeat = -100;
 
 		Steps *pSteps = pi->m_vpStepsQueue[iSongIndex];
+		
  		GAMESTATE->m_pCurSteps[ pi->GetStepsAndTrailIndex() ].Set( pSteps );
 
 		/* Load new NoteData into Player. Do this before 

@@ -66,7 +66,7 @@ struct SSCLoader : public SMLoader
 	 * @param cachePath the path to the cache file.
 	 * @param out the Steps to receive just the particular notedata.
 	 * @return true if successful, false otherwise. */
-	bool LoadNoteDataFromSimfile( const RString &cachePath, Steps &out );
+	virtual bool LoadNoteDataFromSimfile( const RString &cachePath, Steps &out );
 	
 	void ProcessWarps( TimingData &, const RString, const float );
 	void ProcessLabels( TimingData &, const RString );
