@@ -448,13 +448,13 @@ bool DWILoader::LoadFromDir( const RString &sPath_, Song &out, set<RString> &Bla
 {
 	vector<RString> aFileNames;
 	GetApplicableFiles( sPath_, aFileNames );
-	
+
 	if( aFileNames.size() > 1 )
 	{
 		LOG->UserLog( "Song", sPath_, "has more than one DWI file. There should be only one!" );
 		return false;
 	}
-	
+
 	/* We should have exactly one; if we had none, we shouldn't have been called to begin with. */
 	ASSERT( aFileNames.size() == 1 );
 	const RString sPath = sPath_ + aFileNames[0];
@@ -467,6 +467,8 @@ bool DWILoader::LoadFromDir( const RString &sPath_, Song &out, set<RString> &Bla
 		LOG->UserLog( "Song file", sPath, "couldn't be opened: %s", msd.GetError().c_str() );
 		return false;
 	}
+
+	out.m_sSongFileName = sPath;
 
 	for( unsigned i=0; i<msd.GetNumValues(); i++ )
 	{
@@ -627,7 +629,10 @@ bool DWILoader::LoadFromDir( const RString &sPath_, Song &out, set<RString> &Bla
 				sPath
 				);
 			if( pNewNotes->m_StepsType != StepsType_Invalid )
+			{
+				pNewNotes->SetFilename( sPath );
 				out.AddSteps( pNewNotes );
+			}
 			else
 				delete pNewNotes;
 		}
