@@ -40,6 +40,7 @@ public:
 
 	void Compress() const;
 	void Decompress() const;
+	void Decompress();
 	/** 
 	 * @brief Determine if these steps were created by the autogenerator.
 	 * @return true if they were, false otherwise.

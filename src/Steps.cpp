@@ -240,6 +240,11 @@ void Steps::CalculateRadarValues( float fMusicLengthSeconds )
 
 void Steps::Decompress() const
 {
+	const_cast<Steps *>(this)->Decompress();
+}
+
+void Steps::Decompress()
+{
 	if( m_bNoteDataIsFilled )
 		return;	// already decompressed
 
@@ -268,38 +273,14 @@ void Steps::Decompress() const
 
 	if( !m_sFilename.empty() && m_sNoteDataCompressed.empty() )
 	{
-		// We have data on disk and not in memory. Load it.
-		Song s;
-		SSCLoader loaderSSC;
-		bool bLoadedFromSSC = loaderSSC.LoadFromSimfile(m_sFilename, s, true);
-		if( !bLoadedFromSSC )
+		// We have NoteData on disk and not in memory. Load it.
+		if (!this->GetNoteDataFromSimfile())
 		{
-			// try reading from .sm instead
-			SMLoader loaderSM;
-			if( !loaderSM.LoadFromSimfile(m_sFilename, s, true) )
-			{
-				LOG->Warn( "Couldn't load \"%s\"", m_sFilename.c_str() );
-				return;
-			}
-		}
-
-		/* Find the steps. */
-		StepsID ID;
-		ID.FromSteps( this );
-
-		/* We're using a StepsID to search in a different copy of a Song than
-		 * the one it was created with.  Clear the cache before doing this,
-		 * or search results will come from cache and point to the original
-		 * copy. */
-		CachedObject<Steps>::ClearCacheAll();
-		Steps *pSteps = ID.ToSteps( &s, true );
-		if( pSteps == NULL )
-		{
-			LOG->Warn( "Couldn't find %s in \"%s\"", ID.ToString().c_str(), m_sFilename.c_str() );
+			LOG->Warn("Couldn't load \"%s\"", m_sFilename.c_str());
 			return;
 		}
 
-		pSteps->GetSMNoteData( m_sNoteDataCompressed );
+		this->GetSMNoteData( m_sNoteDataCompressed );
 	}
 
 	if( m_sNoteDataCompressed.empty() )
