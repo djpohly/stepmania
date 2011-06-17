@@ -94,6 +94,11 @@ syntax: regexp
 .*\#.*\#$
 glob:Cache/Banners/AdditionalSongs_Airspace Preview_Derailed_Derailed bn.png
 
+Portable.ini
+Cache\
+Logs\
+Save\
+
 syntax: regexp
 Songs/.+/
 glob:*.ilk
