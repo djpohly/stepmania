@@ -116,6 +116,11 @@ public:
 	void GetSMNoteData( RString &notes_comp_out ) const;
 	
 	/**
+	 * @brief Retrieve the NoteData from the original source.
+	 * @return true if successful, false for failure. */
+	bool GetNoteDataFromSimfile();
+	
+	/**
 	 * @brief Determine if we are missing any note data.
 	 *
 	 * This takes advantage of the fact that we usually compress our data.

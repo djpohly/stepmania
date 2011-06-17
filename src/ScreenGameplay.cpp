@@ -30,11 +30,6 @@
 #include "Inventory.h"
 #include "Course.h"
 #include "NoteDataUtil.h"
-#include "NotesLoaderSSC.h" // For loading NoteData at the start.
-#include "NotesLoaderDWI.h"
-#include "NotesLoaderKSF.h"
-#include "NotesLoaderSMA.h"
-#include "NotesLoaderSM.h"
 #include "UnlockManager.h"
 #include "LightsManager.h"
 #include "ProfileManager.h"
@@ -408,28 +403,7 @@ void ScreenGameplay::Init()
 			Steps *curSteps = pi->m_vpStepsQueue[i];
 			if (curSteps->IsNoteDataEmpty())
 			{
-				// Replace the line below with the Steps' cache file.
-				RString stepFile = curSteps->GetFilename();
-				RString extension = GetExtension(stepFile);
-				bool success = false;
-				if (extension.empty() || extension == "ssc") // remember cache files.
-				{
-					SSCLoader loader;
-					success = loader.LoadNoteDataFromSimfile(stepFile, *curSteps);
-				}
-				else if (extension == "sm")
-				{
-					SMLoader loader;
-					success = loader.LoadNoteDataFromSimfile(stepFile, *curSteps);
-				}
-				else if (extension == "sma")
-				{
-					SMALoader loader;
-					success = loader.LoadNoteDataFromSimfile(stepFile, *curSteps);
-				}
-				
-				
-				if (success)
+				if (curSteps->GetNoteDataFromSimfile())
 				{
 					LOG->Trace("Notes should be loaded for player %d", player);
 				}

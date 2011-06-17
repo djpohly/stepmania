@@ -24,6 +24,7 @@
 #include "NoteDataUtil.h"
 #include "NotesLoaderSSC.h"
 #include "NotesLoaderSM.h"
+#include "NotesLoaderSMA.h"
 
 #include <algorithm>
 
@@ -59,6 +60,29 @@ unsigned Steps::GetHash() const
 bool Steps::IsNoteDataEmpty() const
 {
 	return this->m_sNoteDataCompressed.empty();
+}
+
+bool Steps::GetNoteDataFromSimfile()
+{
+	// Replace the line below with the Steps' cache file.
+	RString stepFile = this->GetFilename();
+	RString extension = GetExtension(stepFile);
+	if (extension.empty() || extension == "ssc") // remember cache files.
+	{
+		SSCLoader loader;
+		return loader.LoadNoteDataFromSimfile(stepFile, *this);
+	}
+	else if (extension == "sm")
+	{
+		SMLoader loader;
+		return loader.LoadNoteDataFromSimfile(stepFile, *this);
+	}
+	else if (extension == "sma")
+	{
+		SMALoader loader;
+		return loader.LoadNoteDataFromSimfile(stepFile, *this);
+	}
+	return false;
 }
 
 void Steps::SetNoteData( const NoteData& noteDataNew )
