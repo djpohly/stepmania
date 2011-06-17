@@ -26,6 +26,7 @@
 #include "NotesLoaderSM.h"
 #include "NotesLoaderSMA.h"
 #include "NotesLoaderDWI.h"
+#include "NotesLoaderKSF.h"
 
 #include <algorithm>
 
@@ -86,6 +87,10 @@ bool Steps::GetNoteDataFromSimfile()
 	else if (extension == "dwi")
 	{
 		return DWILoader::LoadNoteDataFromSimfile(stepFile, *this);
+	}
+	else if (extension == "ksf")
+	{
+		return KSFLoader::LoadNoteDataFromSimfile(stepFile, *this);
 	}
 	return false;
 }

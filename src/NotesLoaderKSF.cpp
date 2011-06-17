@@ -80,7 +80,7 @@ static bool HandlePipeChars( TimingData &timing, const RString sNoteRow,
 	return false;
 }
 
-static bool LoadFromKSFFile( const RString &sPath, Steps &out, const Song &song, bool bKIUCompliant )
+static bool LoadFromKSFFile( const RString &sPath, Steps &out, bool bKIUCompliant )
 {
 	LOG->Trace( "Steps::LoadFromKSFFile( '%s' )", sPath.c_str() );
 
@@ -252,28 +252,43 @@ static bool LoadFromKSFFile( const RString &sPath, Steps &out, const Song &song,
 			out.SetDifficulty( Difficulty_Edit );
 			if( !out.GetMeter() ) out.SetMeter( 25 );
 		}
-		else if( sFName.find("wild") != string::npos || sFName.find("wd") != string::npos || sFName.find("crazy+") != string::npos || sFName.find("cz+") != string::npos || sFName.find("hardcore") != string::npos )
+		else if(sFName.find("wild") != string::npos || 
+			sFName.find("wd") != string::npos || 
+			sFName.find("crazy+") != string::npos || 
+			sFName.find("cz+") != string::npos || 
+			sFName.find("hardcore") != string::npos )
 		{
 			out.SetDifficulty( Difficulty_Challenge );
 			if( !out.GetMeter() ) out.SetMeter( 20 );
 		}
-		else if( sFName.find("crazy") != string::npos || sFName.find("cz") != string::npos || sFName.find("nightmare") != string::npos || sFName.find("nm") != string::npos || sFName.find("crazydouble") != string::npos )
+		else if(sFName.find("crazy") != string::npos || 
+			sFName.find("cz") != string::npos || 
+			sFName.find("nightmare") != string::npos || 
+			sFName.find("nm") != string::npos || 
+			sFName.find("crazydouble") != string::npos )
 		{
 			out.SetDifficulty( Difficulty_Hard );
 			if( !out.GetMeter() ) out.SetMeter( 14 ); // Set the meters to the Pump scale, not DDR.
 		}
-		else if( sFName.find("hard") != string::npos || sFName.find("hd") != string::npos || sFName.find("freestyle") != string::npos || sFName.find("fs") != string::npos || sFName.find("double") != string::npos )
+		else if(sFName.find("hard") != string::npos || 
+			sFName.find("hd") != string::npos || 
+			sFName.find("freestyle") != string::npos || 
+			sFName.find("fs") != string::npos || 
+			sFName.find("double") != string::npos )
 		{
 			out.SetDifficulty( Difficulty_Medium );
 			if( !out.GetMeter() ) out.SetMeter( 8 );
 		}
-		else if( sFName.find("easy") != string::npos || sFName.find("ez") != string::npos || sFName.find("normal") != string::npos )
+		else if(sFName.find("easy") != string::npos || 
+			sFName.find("ez") != string::npos || 
+			sFName.find("normal") != string::npos )
 		{
 			// I wonder if I should leave easy fall into the Beginner difficulty... -DaisuMaster
 			out.SetDifficulty( Difficulty_Easy );
 			if( !out.GetMeter() ) out.SetMeter( 4 );
 		}
-		else if( sFName.find("beginner") != string::npos || sFName.find("practice") != string::npos || sFName.find("pr") != string::npos  )
+		else if(sFName.find("beginner") != string::npos || 
+			sFName.find("practice") != string::npos || sFName.find("pr") != string::npos  )
 		{
 			out.SetDifficulty( Difficulty_Beginner );
 			if( !out.GetMeter() ) out.SetMeter( 4 );
@@ -287,10 +302,18 @@ static bool LoadFromKSFFile( const RString &sPath, Steps &out, const Song &song,
 		out.m_StepsType = StepsType_pump_single;
 
 		// Check for "halfdouble" before "double".
-		if( sFName.find("halfdouble") != string::npos || sFName.find("half-double") != string::npos || sFName.find("h_double") != string::npos || sFName.find("hdb") != string::npos )
+		if(sFName.find("halfdouble") != string::npos || 
+		   sFName.find("half-double") != string::npos || 
+		   sFName.find("h_double") != string::npos || 
+		   sFName.find("hdb") != string::npos )
 			out.m_StepsType = StepsType_pump_halfdouble;
 		// Handle bDoublesChart from above as well. -aj
-		else if( sFName.find("double") != string::npos || sFName.find("nightmare") != string::npos || sFName.find("freestyle") != string::npos || sFName.find("db") != string::npos || sFName.find("nm") != string::npos || sFName.find("fs") != string::npos || bDoublesChart )
+		else if(sFName.find("double") != string::npos || 
+			sFName.find("nightmare") != string::npos || 
+			sFName.find("freestyle") != string::npos || 
+			sFName.find("db") != string::npos || 
+			sFName.find("nm") != string::npos || 
+			sFName.find("fs") != string::npos || bDoublesChart )
 			out.m_StepsType = StepsType_pump_double;
 		else if( sFName.find("_1") != string::npos )
 			out.m_StepsType = StepsType_pump_single;
@@ -337,7 +360,10 @@ static bool LoadFromKSFFile( const RString &sPath, Steps &out, const Song &song,
 					if( iHoldStartRow[t] == BeatToNoteRow(prevBeat) )
 						notedata.SetTapNote( t, iHoldStartRow[t], TAP_ORIGINAL_TAP );
 					else
-						notedata.AddHoldNote( t, iHoldStartRow[t], BeatToNoteRow(prevBeat) , TAP_ORIGINAL_HOLD_HEAD );
+						notedata.AddHoldNote(t,
+								     iHoldStartRow[t],
+								     BeatToNoteRow(prevBeat),
+								     TAP_ORIGINAL_HOLD_HEAD );
 				}
 			}
 			break;
@@ -485,6 +511,20 @@ static void LoadTags( const RString &str, Song &out )
 		out.m_sArtist = artist;
 }
 
+static void ProcessTickcounts( const RString & value, int & ticks, TimingData & timing )
+{
+	/* TICKCOUNT will be used below if there are DM compliant BPM changes
+	 * and stops. It will be called again in LoadFromKSFFile for the
+	 * actual steps. */
+	ticks = StringToInt( value );
+	ticks = ticks > 0 ? ticks : 4;
+	// add a tickcount for those using the [Player]
+	// CheckpointsUseTimeSignatures metric. -aj
+	// It's not with timesigs now -DaisuMaster
+	TickcountSegment tcs(0, ticks > ROWS_PER_BEAT ? ROWS_PER_BEAT : ticks);
+	timing.AddTickcountSegment( tcs );
+}
+
 static bool LoadGlobalData( const RString &sPath, Song &out, bool &bKIUCompliant )
 {
 	MsdFile msd;
@@ -563,17 +603,7 @@ static bool LoadGlobalData( const RString &sPath, Song &out, bool &bKIUCompliant
 		}
 		else if ( sValueName=="TICKCOUNT" )
 		{
-			/* TICKCOUNT will be used below if there are DM compliant BPM changes
-			 * and stops. It will be called again in LoadFromKSFFile for the
-			 * actual steps. */
-			iTickCount = StringToInt( sParams[1] );
-			iTickCount = iTickCount > 0 ? iTickCount : 4;
-			// add a tickcount for those using the [Player]
-			// CheckpointsUseTimeSignatures metric. -aj
-			// It's not with timesigs now -DaisuMaster
-			TickcountSegment tcs(0);
-			tcs.SetTicks(iTickCount > ROWS_PER_BEAT ? ROWS_PER_BEAT : iTickCount);
-			out.m_SongTiming.AddTickcountSegment( tcs );
+			ProcessTickcounts(sParams[1], iTickCount, out.m_SongTiming);
 		}
 		else if ( sValueName=="STEP" )
 		{
@@ -659,7 +689,7 @@ static bool LoadGlobalData( const RString &sPath, Song &out, bool &bKIUCompliant
 
 			// This is where the DMRequired test will take place.
 			if (BeginsWith(NoteRowString, "|T") || BeginsWith(NoteRowString, "|B") ||
-				BeginsWith(NoteRowString, "|D") || BeginsWith(NoteRowString, "|E") )
+			    BeginsWith(NoteRowString, "|D") || BeginsWith(NoteRowString, "|E") )
 			{
 				bDMRequired = true;
 				if ( !HandlePipeChars( out.m_SongTiming, NoteRowString, fCurBeat, iTickCount ) )
@@ -695,6 +725,22 @@ void KSFLoader::GetApplicableFiles( const RString &sPath, vector<RString> &out )
 	GetDirListing( sPath + RString("*.ksf"), out );
 }
 
+bool KSFLoader::LoadNoteDataFromSimfile( const RString & cachePath, Steps &out )
+{
+	bool KIUCompliant = false;
+	Song dummy;
+	if (!LoadGlobalData(cachePath, dummy, KIUCompliant))
+		return false;
+	Steps *notes = dummy.CreateSteps();
+	if (LoadFromKSFFile(cachePath, *notes, KIUCompliant))
+	{
+		KIUCompliant = true; // yeah, reusing a variable.
+		out.SetNoteData(notes->GetNoteData());
+	}
+	delete notes;
+	return KIUCompliant;
+}
+
 bool KSFLoader::LoadFromDir( const RString &sDir, Song &out )
 {
 	LOG->Trace( "KSFLoader::LoadFromDir(%s)", sDir.c_str() );
@@ -712,22 +758,26 @@ bool KSFLoader::LoadFromDir( const RString &sDir, Song &out )
 	 * purposes, for that is the "normal", or easiest difficulty.
 	 * Usually. */
 	unsigned files = arrayKSFFileNames.size();
-	if( !LoadGlobalData(out.GetSongDir() + arrayKSFFileNames[files - 1], out, bKIUCompliant) )
+	RString dir = out.GetSongDir();
+	if( !LoadGlobalData(dir + arrayKSFFileNames[files - 1], out, bKIUCompliant) )
 		return false;
 
+	out.m_sSongFileName = dir + arrayKSFFileNames[files - 1];
 	// load the Steps from the rest of the KSF files
 	for( unsigned i=0; i<files; i++ ) 
 	{
 		Steps* pNewNotes = out.CreateSteps();
-		if( !LoadFromKSFFile(out.GetSongDir() + arrayKSFFileNames[i], *pNewNotes, out, bKIUCompliant) )
+		if( !LoadFromKSFFile(dir + arrayKSFFileNames[i],
+				     *pNewNotes,
+				     bKIUCompliant) )
 		{
 			delete pNewNotes;
 			continue;
 		}
-
+		pNewNotes->SetFilename(dir + arrayKSFFileNames[i]);
 		out.AddSteps( pNewNotes );
 	}
-	out.TidyUpData();
+	
 
 	return true;
 }
