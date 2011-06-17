@@ -25,6 +25,7 @@
 #include "NotesLoaderSSC.h"
 #include "NotesLoaderSM.h"
 #include "NotesLoaderSMA.h"
+#include "NotesLoaderDWI.h"
 
 #include <algorithm>
 
@@ -81,6 +82,10 @@ bool Steps::GetNoteDataFromSimfile()
 	{
 		SMALoader loader;
 		return loader.LoadNoteDataFromSimfile(stepFile, *this);
+	}
+	else if (extension == "dwi")
+	{
+		return DWILoader::LoadNoteDataFromSimfile(stepFile, *this);
 	}
 	return false;
 }
