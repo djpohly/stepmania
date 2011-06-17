@@ -1015,12 +1015,11 @@ int main(int argc, char* argv[])
 	// Create game objects
 
 	GAMESTATE	= new GameState;
-	
+
 	RString path = HOOKS->GetCacheDir() + "/" + SpecialFiles::DATABASE_NAME;
 	sqlite3 *db = GAMESTATE->GetDatabase();
-	
-	int rc = sqlite3_open(path.c_str(),
-			      &db);
+
+	int rc = sqlite3_open(path.c_str(), &db);
 	if (rc > 0)
 	{
 		LOG->Warn("Problem opening database!");
