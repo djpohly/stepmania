@@ -1058,6 +1058,75 @@ void BMSLoader::GetApplicableFiles( const RString &sPath, vector<RString> &out )
 	GetDirListing( sPath + RString("*.bml"), out );
 }
 
+bool BMSLoader::LoadNoteDataFromSimfile( const RString & cachePath, Steps & out )
+{
+	Song dummy;
+	// TODO: Simplify this copy/paste from LoadFromDir.
+	
+	vector<NameToData_t> BMSData;
+	BMSData.push_back(NameToData_t());
+	ReadBMSFile(cachePath, BMSData.back());
+	
+	RString commonSubstring;
+	GetCommonTagFromMapList( BMSData, "#title", commonSubstring );
+	
+	Steps *copy = dummy.CreateSteps();
+	
+	copy->SetDifficulty( Difficulty_Medium );
+	RString sTag;
+	if( GetTagFromMap( BMSData[0], "#title", sTag ) && sTag.size() != commonSubstring.size() )
+	{
+		sTag = sTag.substr( commonSubstring.size(), sTag.size() - commonSubstring.size() );
+		sTag.MakeLower();
+		
+		if( sTag.find('l') != sTag.npos )
+		{
+			unsigned lPos = sTag.find('l');
+			if( lPos > 2 && sTag.substr(lPos-2,4) == "solo" )
+			{
+				copy->SetDifficulty( Difficulty_Edit );
+			}
+			else
+			{
+				copy->SetDifficulty( Difficulty_Easy );
+			}
+		}
+		else if( sTag.find('a') != sTag.npos )
+			copy->SetDifficulty( Difficulty_Hard );
+		else if( sTag.find('b') != sTag.npos )
+			copy->SetDifficulty( Difficulty_Beginner );
+	}
+	if( commonSubstring == "" )
+	{
+		copy->SetDifficulty(Difficulty_Medium);
+		RString sTag;
+		if (GetTagFromMap(BMSData[0], "#title#", sTag))
+			SearchForDifficulty(sTag, copy);
+	}
+	ReadGlobalTags( BMSData[0], dummy );
+	if( commonSubstring.size() > 2 && commonSubstring[commonSubstring.size() - 2] == ' ' )
+	{
+		switch( commonSubstring[commonSubstring.size() - 1] )
+		{
+			case '[':
+			case '(':
+			case '<':
+				commonSubstring = commonSubstring.substr(0, commonSubstring.size() - 2);
+			default:
+				break;
+		}
+	}
+	map<RString, int> mapFilenameToKeysoundIndex;
+
+	
+	const bool ok = LoadFromBMSFile( cachePath, BMSData[0], *copy, dummy, mapFilenameToKeysoundIndex );
+	if( ok )
+	{
+		out.SetNoteData(copy->GetNoteData());
+	}
+	return ok;
+}
+
 bool BMSLoader::LoadFromDir( const RString &sDir, Song &out )
 {
 	LOG->Trace( "Song::LoadFromBMSDir(%s)", sDir.c_str() );
@@ -1162,6 +1231,7 @@ bool BMSLoader::LoadFromDir( const RString &sDir, Song &out )
 			iMainDataIndex = i;
 
 	ReadGlobalTags( aBMSData[iMainDataIndex], out );
+	out.m_sSongFileName = out.GetSongDir() + arrayBMSFileNames[iMainDataIndex];
 
 	// The brackets before the difficulty are in common substring, so remove them if it's found.
 	if( commonSubstring.size() > 2 && commonSubstring[commonSubstring.size() - 2] == ' ' )
@@ -1194,6 +1264,7 @@ bool BMSLoader::LoadFromDir( const RString &sDir, Song &out )
 			if( i == static_cast<unsigned>(iMainDataIndex) )
 				out.m_SongTiming = pNewNotes->m_Timing;
 				
+			pNewNotes->SetFilename(out.GetSongDir() + arrayBMSFileNames[i]);
 			out.AddSteps( pNewNotes );
 		}
 		else
