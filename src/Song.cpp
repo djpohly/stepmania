@@ -267,7 +267,11 @@ bool Song::LoadFromSongDir( RString sDir )
 				LOG->UserLog( "Song", sDir, "has no music file either. Ignoring this song directory." );
 				return false;
 			}
-
+			// Make sure we have a future filename figured out.
+			vector<RString> folders;
+			split(sDir, "/", folders);
+			RString songName = folders[2] + ".ssc";
+			this->m_sSongFileName = sDir + songName;
 			// Continue on with a blank Song so that people can make adjustments using the editor.
 		}
 		TidyUpData();
