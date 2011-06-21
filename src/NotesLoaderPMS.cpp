@@ -612,26 +612,29 @@ static void ReadGlobalTags( const NameToData_t &mapNameToData, Song &out, Measur
 		// this is keysound file name.  Looks like "#WAV1A"
 		RString nData = it->second;
 		RString sWavID = sName.Right(2);
+		RString dir = out.GetSongDir();
+		if (dir.empty())
+			dir = Dirname(sPath);
 
 		/* Due to bugs in some programs, many PMS files have a "WAV" extension
 		 * on files in the PMS for files that actually have some other extension.
 		 * Do a search.  Don't do a wildcard search; if sData is "song.wav",
 		 * we might also have "song.png", which we shouldn't match. */
-		if( !IsAFile(out.GetSongDir()+nData) )
+		if( !IsAFile(dir+nData) )
 		{
 			const char *exts[] = { "oga", "ogg", "wav", "mp3", NULL }; // XXX: stop duplicating these everywhere
 			for( unsigned i = 0; exts[i] != NULL; ++i )
 			{
 				RString fn = SetExtension( nData, exts[i] );
-				if( IsAFile(out.GetSongDir()+fn) )
+				if( IsAFile(dir+fn) )
 				{
 					nData = fn;
 					break;
 				}
 			}
 		}
-		if( !IsAFile(out.GetSongDir()+nData) )
-			LOG->UserLog( "Song file", out.GetSongDir(), "references key \"%s\" that can't be found", nData.c_str() );
+		if( !IsAFile(dir+nData) )
+			LOG->UserLog( "Song file", dir, "references key \"%s\" that can't be found", nData.c_str() );
 
 		sWavID.MakeUpper();		// HACK: undo the MakeLower()
 		out.m_vsKeysoundFile.push_back( nData );
