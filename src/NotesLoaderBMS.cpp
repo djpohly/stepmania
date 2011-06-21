@@ -459,13 +459,16 @@ static bool SearchForKeysound( const RString &sPath, RString nDataOriginal, map<
 	 * Do a search. Don't do a wildcard search; if sData is "song.wav",
 	 * we might also have "song.png", which we shouldn't match. */
 	RString nData = nDataOriginal;
-	if( !IsAFile(out.GetSongDir()+nData) )
+	RString dir = out.GetSongDir();
+	if (dir.empty())
+		dir = Dirname(sPath);
+	if( !IsAFile(dir+nData) )
 	{
 		const char *exts[] = { "oga", "ogg", "wav", "mp3", NULL }; // XXX: stop duplicating these everywhere
 		for( unsigned i = 0; exts[i] != NULL; ++i )
 		{
 			RString fn = SetExtension( nData, exts[i] );
-			if( IsAFile(out.GetSongDir()+fn) )
+			if( IsAFile(dir+fn) )
 			{
 				nData = fn;
 				break;
@@ -473,9 +476,9 @@ static bool SearchForKeysound( const RString &sPath, RString nDataOriginal, map<
 		}
 	}
 	
-	if( !IsAFile(out.GetSongDir()+nData) )
+	if( !IsAFile(dir+nData) )
 	{
-		LOG->UserLog( "Song file", out.GetSongDir(), "references key \"%s\" that can't be found", nData.c_str() );
+		LOG->UserLog( "Song file", dir, "references key \"%s\" that can't be found", nData.c_str() );
 		return false;
 	}
 	
