@@ -28,6 +28,7 @@
 #include "NotesLoaderDWI.h"
 #include "NotesLoaderKSF.h"
 #include "NotesLoaderBMS.h"
+#include "NotesLoaderPMS.h"
 
 #include <algorithm>
 
@@ -96,6 +97,10 @@ bool Steps::GetNoteDataFromSimfile()
 	else if (extension == "bms" || extension == "bml" || extension == "bme")
 	{
 		return BMSLoader::LoadNoteDataFromSimfile(stepFile, *this);
+	}
+	else if (extension == "pms")
+	{
+		return PMSLoader::LoadNoteDataFromSimfile(stepFile, *this);
 	}
 	return false;
 }

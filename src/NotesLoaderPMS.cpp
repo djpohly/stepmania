@@ -573,7 +573,7 @@ static bool LoadFromPMSFile( const RString &sPath, const NameToData_t &mapNameTo
 	return true;
 }
 
-static void ReadGlobalTags( const NameToData_t &mapNameToData, Song &out, MeasureToTimeSig_t &sigAdjustmentsOut, map<RString,int> &idToKeySoundIndexOut )
+static void ReadGlobalTags( const RString &sPath, const NameToData_t &mapNameToData, Song &out, MeasureToTimeSig_t &sigAdjustmentsOut, map<RString,int> &idToKeySoundIndexOut )
 {
 	RString sData;
 	if( GetTagFromMap(mapNameToData, "#title", sData) )
@@ -812,6 +812,64 @@ void PMSLoader::GetApplicableFiles( const RString &sPath, vector<RString> &out )
 	GetDirListing( sPath + RString("*.pms"), out );
 }
 
+bool PMSLoader::LoadNoteDataFromSimfile(const RString &cachePath, Steps &out)
+{
+	Song dummy;
+	// TODO: Simplify this copy/paste from LoadFromDir.
+	
+	vector<NameToData_t> BMSData;
+	BMSData.push_back(NameToData_t());
+	ReadPMSFile(cachePath, BMSData.back());
+	
+	RString commonSubstring;
+	GetCommonTagFromMapList( BMSData, "#title", commonSubstring );
+	
+	Steps *copy = dummy.CreateSteps();
+	
+	copy->SetDifficulty( Difficulty_Medium );
+	RString sTag;
+	if( GetTagFromMap( BMSData[0], "#title", sTag ) && sTag.size() != commonSubstring.size() )
+	{
+		sTag = sTag.substr( commonSubstring.size(), sTag.size() - commonSubstring.size() );
+		sTag.MakeLower();
+		
+		if( sTag.find('l') != sTag.npos )
+		{
+			unsigned lPos = sTag.find('l');
+			if( lPos > 2 && sTag.substr(lPos-2,4) == "solo" )
+			{
+				copy->SetDifficulty( Difficulty_Edit );
+			}
+			else
+			{
+				copy->SetDifficulty( Difficulty_Easy );
+			}
+		}
+		else if( sTag.find('a') != sTag.npos )
+			copy->SetDifficulty( Difficulty_Hard );
+		else if( sTag.find('b') != sTag.npos )
+			copy->SetDifficulty( Difficulty_Beginner );
+	}
+	if( commonSubstring == "" )
+	{
+		copy->SetDifficulty(Difficulty_Medium);
+		RString unused;
+		if (GetTagFromMap(BMSData[0], "#title#", sTag))
+			SearchForDifficulty(unused, copy);
+	}
+	MeasureToTimeSig_t sigAdjustments;
+	map<RString,int> idToKeysoundIndex;
+	ReadGlobalTags( cachePath, BMSData[0], dummy, sigAdjustments, idToKeysoundIndex );
+	
+	const bool ok = LoadFromPMSFile( cachePath, BMSData[0], *copy, sigAdjustments, idToKeysoundIndex );
+	if( ok )
+	{
+		out.SetNoteData(copy->GetNoteData());
+	}
+	return ok;
+	
+}
+
 bool PMSLoader::LoadFromDir( const RString &sDir, Song &out )
 {
 	LOG->Trace( "Song::LoadFromPMSDir(%s)", sDir.c_str() );
@@ -917,7 +975,7 @@ bool PMSLoader::LoadFromDir( const RString &sDir, Song &out )
 
 	MeasureToTimeSig_t sigAdjustments;
 	map<RString,int> idToKeysoundIndex;
-	ReadGlobalTags( aPMSData[iMainDataIndex], out, sigAdjustments, idToKeysoundIndex );
+	ReadGlobalTags( sDir, aPMSData[iMainDataIndex], out, sigAdjustments, idToKeysoundIndex );
 
 	// Override what that global tag said about the title if we have a good substring.
 	// Prevents clobbering and catches "MySong (7keys)" / "MySong (Another) (7keys)"
