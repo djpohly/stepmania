@@ -976,6 +976,7 @@ bool PMSLoader::LoadFromDir( const RString &sDir, Song &out )
 	MeasureToTimeSig_t sigAdjustments;
 	map<RString,int> idToKeysoundIndex;
 	ReadGlobalTags( sDir, aPMSData[iMainDataIndex], out, sigAdjustments, idToKeysoundIndex );
+	out.m_sSongFileName = out.GetSongDir() + arrayPMSFileNames[iMainDataIndex];
 
 	// Override what that global tag said about the title if we have a good substring.
 	// Prevents clobbering and catches "MySong (7keys)" / "MySong (Another) (7keys)"
@@ -990,7 +991,10 @@ bool PMSLoader::LoadFromDir( const RString &sDir, Song &out )
 		Steps* pNewNotes = apSteps[i];
 		const bool ok = LoadFromPMSFile( out.GetSongDir() + arrayPMSFileNames[i], aPMSData[i], *pNewNotes, sigAdjustments, idToKeysoundIndex );
 		if( ok )
+		{
+			pNewNotes->SetFilename(out.GetSongDir() + arrayPMSFileNames[i]);
 			out.AddSteps( pNewNotes );
+		}
 		else
 			delete pNewNotes;
 	}
