@@ -41,7 +41,7 @@
  * @brief The internal version of the cache for StepMania.
  *
  * Increment this value to invalidate the current cache. */
-const int FILE_CACHE_VERSION = 183;
+const int FILE_CACHE_VERSION = 184;
 
 /** @brief How long does a song sample last by default? */
 const float DEFAULT_MUSIC_SAMPLE_LENGTH = 12.f;
@@ -888,11 +888,13 @@ bool Song::SaveToSMFile()
 
 bool Song::SaveToSSCFile( RString sPath, bool bSavingCache )
 {
-	LOG->Trace( "Song::SaveToSSCFile('%s')", sPath.c_str() );
+	RString path = SetExtension(sPath, "ssc");
+	
+	LOG->Trace( "Song::SaveToSSCFile('%s')", path.c_str() );
 
 	// If the file exists, make a backup.
-	if( !bSavingCache && IsAFile(sPath) )
-		FileCopy( sPath, sPath + ".old" );
+	if( !bSavingCache && IsAFile(path) )
+		FileCopy( path, path + ".old" );
 
 	vector<Steps*> vpStepsToSave;
 	FOREACH_CONST( Steps*, m_vpSteps, s ) 
@@ -905,16 +907,18 @@ bool Song::SaveToSSCFile( RString sPath, bool bSavingCache )
 		if( pSteps->WasLoadedFromProfile() )
 			continue;
 
+		if (!bSavingCache)
+			pSteps->SetFilename(path);
 		vpStepsToSave.push_back( pSteps );
 	}
 
-	if( !NotesWriterSSC::Write(sPath, *this, vpStepsToSave, bSavingCache) )
+	if( !NotesWriterSSC::Write(path, *this, vpStepsToSave, bSavingCache) )
 		return false;
 
 	if( !bSavingCache && g_BackUpAllSongSaves.Get() )
 	{
-		RString sExt = GetExtension( sPath );
-		RString sBackupFile = SetExtension( sPath, "" );
+		RString sExt = GetExtension( path );
+		RString sBackupFile = SetExtension( path, "" );
 
 		time_t cur_time;
 		time( &cur_time );
@@ -926,10 +930,10 @@ bool Song::SaveToSSCFile( RString sPath, bool bSavingCache )
 		sBackupFile = SetExtension( sBackupFile, sExt );
 		sBackupFile += ssprintf( ".old" );
 
-		if( FileCopy(sPath, sBackupFile) )
-			LOG->Trace( "Backed up %s to %s", sPath.c_str(), sBackupFile.c_str() );
+		if( FileCopy(path, sBackupFile) )
+			LOG->Trace( "Backed up %s to %s", path.c_str(), sBackupFile.c_str() );
 		else
-			LOG->Trace( "Failed to back up %s to %s", sPath.c_str(), sBackupFile.c_str() );
+			LOG->Trace( "Failed to back up %s to %s", path.c_str(), sBackupFile.c_str() );
 	}
 
 	if( !bSavingCache )
