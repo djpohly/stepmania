@@ -274,7 +274,7 @@ bool Song::LoadFromSongDir( RString sDir )
 			this->m_sSongFileName = sDir + songName;
 			// Continue on with a blank Song so that people can make adjustments using the editor.
 		}
-		TidyUpData();
+		TidyUpData(false, true);
 
 		// save a cache file so we don't have to parse it all over again next time
 		
@@ -398,7 +398,7 @@ void FixupPath( RString &path, const RString &sSongPath )
 }
 
 // Songs in BlacklistImages will never be autodetected as song images.
-void Song::TidyUpData( bool bFromCache )
+void Song::TidyUpData( bool fromCache, bool duringCache )
 {
 	// We need to do this before calling any of HasMusic, HasHasCDTitle, etc.
 	ASSERT_M( m_sSongDir.Left(3) != "../", m_sSongDir ); // meaningless
@@ -489,7 +489,7 @@ void Song::TidyUpData( bool bFromCache )
 
 	/* Generate these before we autogen notes, so the new notes can inherit
 	 * their source's values. */
-	ReCalculateRadarValuesAndLastBeat( bFromCache );
+	ReCalculateRadarValuesAndLastBeat( fromCache, true );
 
 	Trim( m_sMainTitle );
 	Trim( m_sSubTitle );
@@ -741,9 +741,9 @@ void Song::TranslateTitles()
 	title.SaveToStrings( m_sMainTitle, m_sSubTitle, m_sArtist, m_sMainTitleTranslit, m_sSubTitleTranslit, m_sArtistTranslit );
 }
 
-void Song::ReCalculateRadarValuesAndLastBeat( bool bFromCache )
+void Song::ReCalculateRadarValuesAndLastBeat(bool fromCache, bool duringCache)
 {
-	if( bFromCache && m_fFirstBeat >= 0 && m_fLastBeat > 0 )
+	if( fromCache && m_fFirstBeat >= 0 && m_fLastBeat > 0 )
 	{
 		// this is loaded from cache, then we just have to calculate the radar values.
 		for( unsigned i=0; i<m_vpSteps.size(); i++ )
@@ -789,9 +789,12 @@ void Song::ReCalculateRadarValuesAndLastBeat( bool bFromCache )
 			fLastBeat  = max( fLastBeat,  m_SongTiming.GetBeatFromElapsedTime(pSteps->m_Timing.GetElapsedTimeFromBeat(tempNoteData.GetLastBeat())) );
 		}
 	wipe_notedata:
-		NoteData dummy;
-		dummy.SetNumTracks(tempNoteData.GetNumTracks());
-		pSteps->SetNoteData(dummy);
+		if (duringCache)
+		{
+			NoteData dummy;
+			dummy.SetNumTracks(tempNoteData.GetNumTracks());
+			pSteps->SetNoteData(dummy);
+		}
 	}
 
 	m_fFirstBeat = fFirstBeat;

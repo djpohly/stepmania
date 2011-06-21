@@ -99,14 +99,20 @@ public:
 	// This one takes the effort to reuse Steps pointers as best as it can
 	bool ReloadFromSongDir( RString sDir );
 
-	/** @brief Call this after loading a song to clean up invalid data. */
-	void TidyUpData( bool bFromCache = false );
+	/**
+	 * @brief Call this after loading a song to clean up invalid data.
+	 * @param fromCache was this data loaded from the cache file?
+	 * @param duringCache was this data loaded during the cache process? */
+	void TidyUpData( bool fromCache = false, bool duringCache = false );
 	
 	/**
 	 * @brief Get the new radar values, and determine the last beat at the same time.
 	 *
-	 * This is called by TidyUpData, after saving the Song. */
-	void ReCalculateRadarValuesAndLastBeat( bool bFromCache = false );
+	 * This is called by TidyUpData, after saving the Song.
+	 * @param fromCache was this data loaded from the cache file?
+	 * @param duringCache was this data loaded during the cache process? */
+	void ReCalculateRadarValuesAndLastBeat(bool fromCache = false,
+					       bool duringCache = false);
 	/**
 	 * @brief Translate any titles that aren't in english.
 	 *
