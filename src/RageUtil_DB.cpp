@@ -14,7 +14,7 @@ Database::Database()
 {
 	m_pDatabase = NULL;
 	m_Connected = connect();
-	
+
 	if( m_Connected == SQLITE_OK )
 	{
 		LOG->Trace("Successfully connected with database '%s'",
@@ -54,7 +54,6 @@ bool Database::query( RString sQuery, int iCols, vector<ColumnTypes> v )
 		if (!this->GetResult().empty())
 		{
 			this->clearResult();
-			
 		}
 		if( sqlite3_prepare_v2(sqlDatabase, sQuery, -1, &sqlStatement, 0) == SQLITE_OK )
 		{
@@ -92,7 +91,7 @@ bool Database::query( RString sQuery, int iCols, vector<ColumnTypes> v )
 							break;
 						}
 					}
-					
+
 					sqlRow.push_back(data);
 				}
 				m_pResult.push_back(sqlRow);
@@ -171,42 +170,42 @@ void Database::CreateTablesIfNeeded()
 			}
 		}
 	}
-	
+
 	this->queryNoResult("DROP TABLE IF EXISTS \"course_songs\";");
 	this->queryNoResult("DROP TABLE IF EXISTS \"courses\";");
 	this->queryNoResult("DROP TABLE IF EXISTS \"steps\";");
 	this->queryNoResult("DROP TABLE IF EXISTS \"songs\";");
 	this->queryNoResult("DROP TABLE IF EXISTS \"globals\";");
-	
+
 	this->BeginTransaction();
-	
+
 /** @brief Provide a way to get out of a transaction on failure. */
 #define RollbackIfFailure if (!this->queryNoResult(sql)) \
 { \
 	this->RollbackTransaction(); \
 	return; \
 }
-	
+
 	// XXX: Is there a better way for multiline RString intros?
-	sql = "CREATE TABLE \"globals\" ";
-	sql += "( \"key\" TEXT NOT NULL UNIQUE, \"value\" TEXT NOT NULL );";
+	sql = "CREATE TABLE \"globals\" " \
+			"( \"key\" TEXT NOT NULL UNIQUE, \"value\" TEXT NOT NULL );";
 	RollbackIfFailure;
-	
+
 	RString base = "INSERT INTO \"globals\" (\"key\", \"value\") VALUES ";
 	sql = base + "('db_version', " + IntToString(DATABASE_VERSION) + ");";
 	RollbackIfFailure;
-	
+
 	sql = base + "('song_cache_version', " + IntToString(FILE_CACHE_VERSION) + ");";
 	RollbackIfFailure;
-	
+
 	sql = base + "('ssc_file_version', " + FloatToString(STEPFILE_VERSION_NUMBER) + ");";
 	RollbackIfFailure;
-	
+
 	const RString blankText = " TEXT NOT NULL DEFAULT '', ";
 	const RString noTextNull = " TEXT NOT NULL, ";
 	const RString PK = "\"ID\" INTEGER PRIMARY KEY AUTOINCREMENT, ";
 	const RString boolFalse = " INTEGER NOT NULL DEFAULT 0, ";
-	
+
 	// songs table
 	sql = "CREATE TABLE \"songs\" ( ";
 	sql += PK + "\"file_hash\"" + noTextNull;
@@ -226,19 +225,18 @@ void Database::CreateTablesIfNeeded()
 	sql += "\"fakes\"" + blankText + "\"labels\"" + blankText;
 	sql += "\"attacks\"" + blankText;
 	sql += "\"offset\" REAL NOT NULL DEFAULT 0);";
-	
+
 	RollbackIfFailure;
-	
+
 	// courses table (probably needs redoing)
 	sql = "CREATE TABLE \"courses\" ( ";
 	sql += PK + "\"banner\"" + blankText + "\"lives\" INTEGER NOT NULL DEFAULT -1, ";
 	sql += "\"course\"" + noTextNull;
 	sql += "\"is_endless\"" + boolFalse;
 	sql += "\"gain_seconds\" REAL NOT NULL DEFAULT -1);";
-	
-	
+
 	RollbackIfFailure;
-	
+
 	// course songs table (which songs are in which course?)
 	sql = "CREATE TABLE \"course_songs\" ( ";
 	sql += PK + "\"course_ID\" INTEGER NOT NULL, \"song_ID\" INTEGER DEFAULT NULL, ";
@@ -247,29 +245,29 @@ void Database::CreateTablesIfNeeded()
 	sql += "\"gain_seconds\" REAL NOT NULL DEFAULT 0, ";
 	sql += "FOREIGN KEY(\"course_ID\") REFERENCES \"courses\"(\"ID\"), ";
 	sql += "FOREIGN KEY(\"song_ID\") REFERENCES \"songs\"(\"ID\") );";
-	
+
 	RollbackIfFailure;
-	
+
 	// steps table
 	sql = "CREATE TABLE \"steps\" ( ";
-	sql += PK + "\"song_ID\" INTEGER NOT NULL, \"step_hash\"" + blankText;
-	sql += "\"is_autogen\"" + boolFalse + "\"steps_type\"" + noTextNull;
-	sql += "\"description\"" + blankText + "\"chart_style\"" + blankText;
-	sql += "\"difficulty\"" + blankText + "\"meter\" INTEGER NOT NULL DEFAULT 1, ";
-	sql += "\"radar_values\"" + blankText + "\"credit\"" + blankText;
-	sql += "\"bpms\"" + blankText + "\"stops\"" + blankText + "\"delays\"" + blankText;
-	sql += "\"warps\"" + blankText + "\"time_signatures\"" + blankText;
-	sql += "\"tickcounts\"" + blankText + "\"combos\"" + blankText;
-	sql += "\"speeds\"" + blankText + "\"scrolls\"" + blankText;
-	sql += "\"fakes\"" + blankText + "\"labels\"" + blankText;
-	sql += "\"attacks\"" + blankText + "\"step_file_name\"" + blankText;	
-	sql += "\"offset\" REAL NOT NULL DEFAULT 0, ";
-	sql += "FOREIGN KEY(\"song_ID\") REFERENCES \"songs\"(\"ID\") );";
-	
+	sql += PK + "\"song_ID\" INTEGER NOT NULL, \"step_hash\"" + blankText \
+			+ "\"is_autogen\"" + boolFalse + "\"steps_type\"" + noTextNull \
+			+ "\"description\"" + blankText + "\"chart_style\"" + blankText \
+			+ "\"difficulty\"" + blankText + "\"meter\" INTEGER NOT NULL DEFAULT 1, " \
+			+ "\"radar_values\"" + blankText + "\"credit\"" + blankText \
+			+ "\"bpms\"" + blankText + "\"stops\"" + blankText + "\"delays\"" + blankText \
+			+ "\"warps\"" + blankText + "\"time_signatures\"" + blankText \
+			+ "\"tickcounts\"" + blankText + "\"combos\"" + blankText \
+			+ "\"speeds\"" + blankText + "\"scrolls\"" + blankText \
+			+ "\"fakes\"" + blankText + "\"labels\"" + blankText \
+			+ "\"attacks\"" + blankText + "\"step_file_name\"" + blankText \
+			+ "\"offset\" REAL NOT NULL DEFAULT 0, " \
+			+ "FOREIGN KEY(\"song_ID\") REFERENCES \"songs\"(\"ID\") );";
+
 	RollbackIfFailure;
-	
+
 #undef RollbackIfFailure
-	
+
 	this->CommitTransaction();
 }
 
