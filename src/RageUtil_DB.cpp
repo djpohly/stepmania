@@ -180,29 +180,43 @@ void Database::CreateTablesIfNeeded()
 	
 	this->BeginTransaction();
 	
+/** @brief Provide a way to get out of a transaction on failure. */
+#define RollbackIfFailure if (!this->queryNoResult(sql)) \
+{ \
+	this->RollbackTransaction(); \
+	return; \
+}
+	
 	// XXX: Is there a better way for multiline RString intros?
 	sql = "CREATE TABLE \"globals\" ";
 	sql += "( \"key\" TEXT NOT NULL UNIQUE, \"value\" TEXT NOT NULL );";
-	if (!this->queryNoResult(sql))
-	{
-		// log error?
-	}
+	RollbackIfFailure;
+	
 	RString base = "INSERT INTO \"globals\" (\"key\", \"value\") VALUES ";
 	sql = base + "('db_version', " + IntToString(DATABASE_VERSION) + ");";
-	if (!this->queryNoResult(sql))
-	{
-		// log error?
-	}
+	RollbackIfFailure;
+	
 	sql = base + "('song_cache_version', " + IntToString(FILE_CACHE_VERSION) + ");";
-	if (!this->queryNoResult(sql))
-	{
-		// log error?
-	}
+	RollbackIfFailure;
+	
 	sql = base + "('ssc_file_version', " + FloatToString(STEPFILE_VERSION_NUMBER) + ");";
-	if (!this->queryNoResult(sql))
-	{
-		// log error?
-	}
+	RollbackIfFailure;
+	
+	const RString blankText = "TEXT NOT NULL DEFAULT '',";
+	
+	// songs table
+	sql = "CREATE TABLE \"songs\" ";
+	sql += "( \"ID\" INTEGER PRIMARY KEY AUTOINCREMENT, \"file_hash\" TEXT NOT NULL, ";
+	sql += "\"version\" REAL NOT NULL DEFAULT " + FloatToString(STEPFILE_VERSION_NUMBER);
+	sql += ", \"song_title\" TEXT NOT NULL, \"song_subtitle\" " + blankText;
+	sql += "\"song_artist\" " + blankText + " \"song_title_translit\" " + blankText;
+	sql += "\"song_subtitle_translit\" " + blankText + "\"song_artist_translit\" " + blankText;
+	
+	sql += "\"offset\" REAL NOT NULL DEFAULT 0);";
+	
+	RollbackIfFailure;
+	
+#undef RollbackIfFailure
 	
 	this->CommitTransaction();
 }
