@@ -14,7 +14,7 @@ typedef vector<QueryRow> QueryResult;
  * @brief The internal version of the database cache for StepMania.
  *
  * Increment this value to invalidate the current cache. */
-const int DATABASE_VERSION = 1;
+const unsigned int DATABASE_VERSION = 1;
 
 /** @brief The controls to access the database. */
 class Database
@@ -79,10 +79,31 @@ public:
 	 * @return the result of the query. */
 	bool RollbackTransaction();
 	
-	bool query( RString sQuery, int& iCols );
+	/**
+	 * @brief Call a query and get an expected result.
+	 * @param sQuery the query to call.
+	 * @param iCols the number of columns expected.
+	 * @return true if successful in calling the query, false otherwise. */
+	bool query( RString sQuery, int iCols );
+	/**
+	 * @brief Call a query. The query returns no results.
+	 * @param sQuery the query to call.
+	 * @return true if successful in calling the query, false otherwise. */
 	bool queryNoResult( RString sQuery );
 	void setCurrentRow( unsigned uRow );
 	const void* getColValue( unsigned uCol );
+	
+	/**
+	 * @brief Retrieve the current result.
+	 * @return the current result. */
+	QueryResult * GetResult() { return m_pResult; }
+	
+	/**
+	 * @brief Set up the new current result.
+	 * @param r the new result. */
+	void SetResult(QueryResult * r) { m_pResult = r; }
+	
+	/** @brief Clear the result when we're done with it. */
 	void clearResult();
 	
 	int getColValueAsInt( unsigned uCol )

@@ -17,9 +17,11 @@ Database::Database()
 	m_Connected = connect();
 	
 	if( m_Connected == SQLITE_OK )
-		LOG->Trace("Successfully connected with database '%s'", SpecialFiles::DATABASE_NAME.c_str());
+		LOG->Trace("Successfully connected with database '%s'",
+			   SpecialFiles::DATABASE_NAME.c_str());
 	else
-		LOG->Warn("Error connecting with database '%s'", SpecialFiles::DATABASE_NAME.c_str());
+		LOG->Warn("Error connecting with database '%s'",
+			  SpecialFiles::DATABASE_NAME.c_str());
 }
 
 Database::~Database()
@@ -41,7 +43,7 @@ void Database::close()
 	sqlite3_close(reinterpret_cast<sqlite3*>(m_pDatabase));
 }
 
-bool Database::query( RString sQuery, int& iCols )
+bool Database::query( RString sQuery, int iCols )
 {
 	bool bReturn = false;
 	if( m_Connected == SQLITE_OK )
@@ -49,7 +51,12 @@ bool Database::query( RString sQuery, int& iCols )
 		ASSERT(m_pDatabase);
 		sqlite3* sqlDatabase = reinterpret_cast<sqlite3*>(m_pDatabase);
 		sqlite3_stmt* sqlStatement;
-		m_pResult = new QueryResult;
+		if (this->GetResult() != NULL)
+		{
+			this->clearResult();
+			this->SetResult(new QueryResult);
+			
+		}
 		if( sqlite3_prepare_v2(sqlDatabase, sQuery, -1, &sqlStatement, 0) == SQLITE_OK )
 		{
 			iCols = sqlite3_column_count(sqlStatement);
@@ -67,7 +74,9 @@ bool Database::query( RString sQuery, int& iCols )
 		}
 		else
 		{
-			LOG->Warn("SQLite Error: %s\n--\nQuery: %s", sqlite3_errmsg(sqlDatabase), sQuery.c_str() );
+			LOG->Warn("SQLite Error: %s\n--\nQuery: %s",
+				  sqlite3_errmsg(sqlDatabase),
+				  sQuery.c_str() );
 		}
 	}
 	return bReturn;
@@ -89,7 +98,9 @@ bool Database::queryNoResult( RString sQuery )
 		}
 		else
 		{
-			LOG->Warn("SQLite Error: %s\n--\nQuery: %s", sqlite3_errmsg(sqlDatabase), sQuery.c_str() );
+			LOG->Warn("SQLite Error: %s\n--\nQuery: %s",
+				  sqlite3_errmsg(sqlDatabase),
+				  sQuery.c_str() );
 		}
 	}
 	return bReturn;
@@ -114,14 +125,31 @@ bool Database::RollbackTransaction()
 
 void Database::CreateTablesIfNeeded()
 {
+	RString sql = "SELECT \"value\" FROM \"globals\" WHERE \"key\" = 'db_version';";
+	if (this->query(sql, 1))
+	{
+		// query worked fine.
+		if (this->m_pResult->size() > 0)
+		{
+			// the table & row exists.
+			this->setCurrentRow(0);
+			if (this->getColValueAsUnsignedInt(0) == DATABASE_VERSION)
+			{
+				// no need to re-create.
+				return;
+			}
+		}
+	}
 	
+	// TODO: Add the tables.
 }
 
 void Database::setCurrentRow( unsigned uRow )
 {
-	ASSERT(m_pResult);
-	ASSERT(uRow < m_pResult->size());
-	m_pCurrentRow = &m_pResult->at(uRow);
+	QueryResult * r = this->GetResult();
+	ASSERT(r);
+	ASSERT(uRow < r->size());
+	m_pCurrentRow = &r->at(uRow);
 }
 
 const void* Database::getColValue( unsigned uCol )
