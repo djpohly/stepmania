@@ -1016,9 +1016,9 @@ int main(int argc, char* argv[])
 	// Create game objects
 
 	GAMESTATE	= new GameState;
-	
+
 	DATABASE = new Database;
-	
+
 	if (DATABASE->GetConnectionResult() != SQLITE_OK)
 	{
 		// log it here too?
