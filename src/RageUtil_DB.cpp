@@ -240,6 +240,7 @@ void Database::CreateTablesIfNeeded()
 	// course songs table (which songs are in which course?)
 	sql = "CREATE TABLE \"course_songs\" ( ";
 	sql += PK + "\"course_ID\" INTEGER NOT NULL, \"song_ID\" INTEGER DEFAULT NULL, ";
+	sql += "\"song_order\" INTEGER NOT NULL DEFAULT 0, ";
 	sql += "\"song_special\"" + blankText + "\"difficulty\"" + blankText;
 	sql += "\"mods\"" + blankText + "\"gain_lives\" INTEGER NOT NULL DEFAULT 0, ";
 	sql += "\"gain_seconds\" REAL NOT NULL DEFAULT 0, ";
