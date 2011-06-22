@@ -68,7 +68,7 @@ class Database
 	int connect();
 	/** @brief Close the database upon its completion. */
 	void close();
-	
+
 	/** @brief Are we connected to the database itself? */
 	int			m_Connected;
 	/** @brief The database pointer itself. */
@@ -77,13 +77,13 @@ class Database
 	QueryResult	m_pResult;
 	/** @brief The row we're iterating over. */
 	QueryRow		m_pCurrentRow;
-	
+
 	/** 
 	 * @brief Check for a specific table and recreate the DB as needed.
 	 *
 	 * This allows for database versioning. */
 	void CreateTablesIfNeeded();
-	
+
 	/**
 	 * @brief Prevent the Database from being copied.
 	 * @param rhs unused. */
@@ -92,36 +92,36 @@ class Database
 	 * @brief Prevent the Database from being assigned.
 	 * @param rhs unused. */
 	Database& operator=(const Database& rhs);
-	
+
 public:
 	/** @brief Set up the database. */
 	Database();
 	/** @brief Tear down the database. */
 	~Database();
-	
+
 	/**
 	 * @brief Get the result of the connection attempt.
 	 * @return the connection result attempt. */
 	int GetConnectionResult() const { return this->m_Connected; }
-	
+
 	/**
 	 * @brief Helper function to start a transaction.
 	 * @param kind the type of transaction.
 	 * @return the result of the query. */
 	bool BeginTransaction( RString kind = "DEFERRED" );
-	
+
 	/**
 	 * @brief Helper function to commit a transaction.
 	 * @return the result of the query. */
 	bool CommitTransaction();
-	
+
 	/**
 	 * @brief Helper function to abort a transaction.
 	 *
 	 * Only call this is something goes horribly wrong.
 	 * @return the result of the query. */
 	bool RollbackTransaction();
-	
+
 	/**
 	 * @brief Call a query and get an expected result.
 	 * @param sQuery the query to call.
@@ -134,20 +134,20 @@ public:
 	 * @return true if successful in calling the query, false otherwise. */
 	bool queryNoResult( RString sQuery );
 	void setCurrentRow( unsigned uRow );
-	
+
 	/**
 	 * @brief Retrieve the current result.
 	 * @return the current result. */
 	QueryResult GetResult() { return m_pResult; }
-	
+
 	/**
 	 * @brief Set up the new current result.
 	 * @param r the new result. */
 	void SetResult(QueryResult r) { m_pResult = r; }
-	
+
 	/** @brief Clear the result when we're done with it. */
 	void clearResult();
-	
+
 	int getColValueAsInt( unsigned uCol )
 	{
 		ASSERT(!m_pCurrentRow.empty());
