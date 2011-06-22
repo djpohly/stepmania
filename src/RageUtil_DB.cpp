@@ -202,16 +202,25 @@ void Database::CreateTablesIfNeeded()
 	sql = base + "('ssc_file_version', " + FloatToString(STEPFILE_VERSION_NUMBER) + ");";
 	RollbackIfFailure;
 	
-	const RString blankText = "TEXT NOT NULL DEFAULT '',";
+	const RString blankText = " TEXT NOT NULL DEFAULT '', ";
 	
 	// songs table
 	sql = "CREATE TABLE \"songs\" ";
 	sql += "( \"ID\" INTEGER PRIMARY KEY AUTOINCREMENT, \"file_hash\" TEXT NOT NULL, ";
 	sql += "\"version\" REAL NOT NULL DEFAULT " + FloatToString(STEPFILE_VERSION_NUMBER);
-	sql += ", \"song_title\" TEXT NOT NULL, \"song_subtitle\" " + blankText;
-	sql += "\"song_artist\" " + blankText + " \"song_title_translit\" " + blankText;
-	sql += "\"song_subtitle_translit\" " + blankText + "\"song_artist_translit\" " + blankText;
-	
+	sql += ", \"song_title\" TEXT NOT NULL, \"song_subtitle\"" + blankText;
+	sql += "\"song_artist\"" + blankText + "\"song_title_translit\"" + blankText;
+	sql += "\"song_subtitle_translit\"" + blankText + "\"song_artist_translit\"" + blankText;
+	sql += "\"genre\"" + blankText + "\"origin\"" + blankText + "\"credit\"" + blankText;
+	sql += "\"banner\"" + blankText + "\"background\"" + blankText + "\"lyrics_path\"" + blankText;
+	sql += "\"cdtitle\"" + blankText + "\"music\"" + blankText;
+	sql += "\"sample_start\" REAL NOT NULL DEFAULT 30, \"sample_length\" REAL NOT NULL DEFAULT 12, ";
+	sql += "\"display_bpm\"" + blankText + "\"selectable\" TEXT NOT NULL DEFAULT 'YES', ";
+	sql += "\"bpms\"" + blankText + "\"stops\"" + blankText + "\"delays\"" + blankText;
+	sql += "\"warps\"" + blankText + "\"time_signatures\"" + blankText;
+	sql += "\"tickcounts\"" + blankText + "\"combos\"" + blankText;
+	sql += "\"speeds\"" + blankText + "\"scrolls\"" + blankText;
+	sql += "\"fakes\"" + blankText + "\"labels\"" + blankText;
 	sql += "\"offset\" REAL NOT NULL DEFAULT 0);";
 	
 	RollbackIfFailure;
