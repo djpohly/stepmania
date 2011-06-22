@@ -229,8 +229,20 @@ void Database::CreateTablesIfNeeded()
 	// courses table (probably needs redoing)
 	sql = "CREATE TABLE \"courses\" ( ";
 	sql += PK + "\"banner\"" + blankText + "\"lives\" INTEGER NOT NULL DEFAULT -1, ";
+	sql += "\"course\" TEXT NOT NULL, ";
 	sql += "\"gain_seconds\" REAL NOT NULL DEFAULT -1, ";
 	sql += "\"is_endless\" INTEGER NOT NULL DEFAULT 0);";
+	
+	RollbackIfFailure;
+	
+	// course songs table (which songs are in which course?)
+	sql = "CREATE TABLE \"course_songs\" ( ";
+	sql += PK + "\"course_ID\" INTEGER NOT NULL, \"song_ID\" INTEGER DEFAULT NULL, ";
+	sql += "\"song_special\"" + blankText + "\"difficulty\"" + blankText;
+	sql += "\"mods\"" + blankText + "\"gain_lives\" INTEGER NOT NULL DEFAULT 0, ";
+	sql += "\"gain_seconds\" REAL NOT NULL DEFAULT 0, ";
+	sql += "FOREIGN KEY(\"course_ID\") REFERENCES \"courses\"(\"ID\"), ";
+	sql += "FOREIGN KEY(\"song_ID\") REFERENCES \"songs\"(\"ID\") )";
 	
 	RollbackIfFailure;
 	
