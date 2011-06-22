@@ -203,10 +203,11 @@ void Database::CreateTablesIfNeeded()
 	RollbackIfFailure;
 	
 	const RString blankText = " TEXT NOT NULL DEFAULT '', ";
+	const RString PK = "\"ID\" INTEGER PRIMARY KEY AUTOINCREMENT, ";
 	
 	// songs table
-	sql = "CREATE TABLE \"songs\" ";
-	sql += "( \"ID\" INTEGER PRIMARY KEY AUTOINCREMENT, \"file_hash\" TEXT NOT NULL, ";
+	sql = "CREATE TABLE \"songs\" ( ";
+	sql += PK + "\"file_hash\" TEXT NOT NULL, ";
 	sql += "\"version\" REAL NOT NULL DEFAULT " + FloatToString(STEPFILE_VERSION_NUMBER);
 	sql += ", \"song_title\" TEXT NOT NULL, \"song_subtitle\"" + blankText;
 	sql += "\"song_artist\"" + blankText + "\"song_title_translit\"" + blankText;
@@ -224,6 +225,15 @@ void Database::CreateTablesIfNeeded()
 	sql += "\"offset\" REAL NOT NULL DEFAULT 0);";
 	
 	RollbackIfFailure;
+	
+	// courses table (probably needs redoing)
+	sql = "CREATE TABLE \"courses\" ( ";
+	sql += PK + "\"banner\"" + blankText + "\"lives\" INTEGER NOT NULL DEFAULT -1, ";
+	sql += "\"gain_seconds\" REAL NOT NULL DEFAULT -1, ";
+	sql += "\"is_endless\" INTEGER NOT NULL DEFAULT 0);";
+	
+	RollbackIfFailure;
+	
 	
 #undef RollbackIfFailure
 	
