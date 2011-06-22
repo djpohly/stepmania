@@ -31,9 +31,9 @@ class Database
 	/** @brief The database pointer itself. */
 	void*			m_pDatabase;
 	/** @brief The result from a query. */
-	QueryResult*	m_pResult;
+	QueryResult	m_pResult;
 	/** @brief The row we're iterating over. */
-	QueryRow*		m_pCurrentRow;
+	QueryRow		m_pCurrentRow;
 	
 	/** 
 	 * @brief Check for a specific table and recreate the DB as needed.
@@ -96,12 +96,12 @@ public:
 	/**
 	 * @brief Retrieve the current result.
 	 * @return the current result. */
-	QueryResult * GetResult() { return m_pResult; }
+	QueryResult GetResult() { return m_pResult; }
 	
 	/**
 	 * @brief Set up the new current result.
 	 * @param r the new result. */
-	void SetResult(QueryResult * r) { m_pResult = r; }
+	void SetResult(QueryResult r) { m_pResult = r; }
 	
 	/** @brief Clear the result when we're done with it. */
 	void clearResult();

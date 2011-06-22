@@ -13,8 +13,6 @@ Database * DATABASE = NULL;
 Database::Database()
 {
 	m_pDatabase = NULL;
-	m_pResult = NULL;
-	m_pCurrentRow = NULL;
 	m_Connected = connect();
 	
 	if( m_Connected == SQLITE_OK )
@@ -31,8 +29,6 @@ Database::Database()
 Database::~Database()
 {
 	close();
-	m_pCurrentRow = NULL;
-	SAFE_DELETE(m_pResult);
 }
 
 int Database::connect()
@@ -55,10 +51,9 @@ bool Database::query( RString sQuery, int iCols )
 		ASSERT(m_pDatabase);
 		sqlite3* sqlDatabase = reinterpret_cast<sqlite3*>(m_pDatabase);
 		sqlite3_stmt* sqlStatement;
-		if (this->GetResult() != NULL)
+		if (!this->GetResult().empty())
 		{
 			this->clearResult();
-			this->SetResult(new QueryResult);
 			
 		}
 		if( sqlite3_prepare_v2(sqlDatabase, sQuery, -1, &sqlStatement, 0) == SQLITE_OK )
@@ -71,7 +66,7 @@ bool Database::query( RString sQuery, int iCols )
 				{
 					sqlRow.push_back(sqlite3_column_blob(sqlStatement, col));
 				}
-				m_pResult->push_back(sqlRow);
+				m_pResult.push_back(sqlRow);
 			}
 			sqlite3_finalize(sqlStatement);
 			bReturn = true;
@@ -133,11 +128,12 @@ void Database::CreateTablesIfNeeded()
 	if (this->query(sql, 1))
 	{
 		// table exists.
-		if (this->m_pResult)
+		if (!this->GetResult().empty())
 		{
 			// row exists.
 			this->setCurrentRow(0);
-			if (this->getColValueAsUnsignedInt(0) == DATABASE_VERSION)
+			unsigned int tmp = this->getColValueAsUnsignedInt(0);
+			if (tmp == DATABASE_VERSION)
 			{
 				// no need to re-create.
 				return;
@@ -182,23 +178,23 @@ void Database::CreateTablesIfNeeded()
 
 void Database::setCurrentRow( unsigned uRow )
 {
-	QueryResult * r = this->GetResult();
-	ASSERT(r);
-	ASSERT(uRow < r->size());
-	m_pCurrentRow = &r->at(uRow);
+	QueryResult r = this->GetResult();
+	ASSERT(!r.empty());
+	ASSERT(uRow < r.size());
+	m_pCurrentRow = r.at(uRow);
 }
 
 const void* Database::getColValue( unsigned uCol )
 {
-	ASSERT(m_pCurrentRow);
-	ASSERT(uCol < m_pCurrentRow->size());
-	return &m_pCurrentRow->at(uCol);
+	ASSERT(!m_pCurrentRow.empty());
+	ASSERT(uCol < m_pCurrentRow.size());
+	return &m_pCurrentRow.at(uCol);
 }
 
 void Database::clearResult()
 {
-	m_pCurrentRow = NULL;
-	SAFE_DELETE(m_pResult);
+	m_pCurrentRow.empty();
+	m_pResult.empty();
 }
 
 /*
