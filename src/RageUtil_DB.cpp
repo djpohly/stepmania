@@ -3,6 +3,7 @@
 #include "RageUtil_DB.h"
 #include "RageUtil.h"
 #include "RageLog.h"
+#include "Song.h" // song & SSC stepfile versions
 #include "arch/arch.h"
 #include "arch/ArchHooks/ArchHooks.h"
 
@@ -17,8 +18,11 @@ Database::Database()
 	m_Connected = connect();
 	
 	if( m_Connected == SQLITE_OK )
+	{
 		LOG->Trace("Successfully connected with database '%s'",
 			   SpecialFiles::DATABASE_NAME.c_str());
+		this->CreateTablesIfNeeded();
+	}
 	else
 		LOG->Warn("Error connecting with database '%s'",
 			  SpecialFiles::DATABASE_NAME.c_str());
@@ -128,10 +132,10 @@ void Database::CreateTablesIfNeeded()
 	RString sql = "SELECT \"value\" FROM \"globals\" WHERE \"key\" = 'db_version';";
 	if (this->query(sql, 1))
 	{
-		// query worked fine.
-		if (this->m_pResult->size() > 0)
+		// table exists.
+		if (this->m_pResult)
 		{
-			// the table & row exists.
+			// row exists.
 			this->setCurrentRow(0);
 			if (this->getColValueAsUnsignedInt(0) == DATABASE_VERSION)
 			{
@@ -141,7 +145,39 @@ void Database::CreateTablesIfNeeded()
 		}
 	}
 	
-	// TODO: Add the tables.
+	this->queryNoResult("DROP TABLE IF EXISTS \"course_songs\";");
+	this->queryNoResult("DROP TABLE IF EXISTS \"courses\";");
+	this->queryNoResult("DROP TABLE IF EXISTS \"steps\";");
+	this->queryNoResult("DROP TABLE IF EXISTS \"songs\";");
+	this->queryNoResult("DROP TABLE IF EXISTS \"globals\";");
+	
+	this->BeginTransaction();
+	
+	// XXX: Is there a better way for multiline RString intros?
+	sql = "CREATE TABLE \"globals\" ";
+	sql += "( \"key\" TEXT NOT NULL UNIQUE, \"value\" TEXT NOT NULL );";
+	if (!this->queryNoResult(sql))
+	{
+		// log error?
+	}
+	RString base = "INSERT INTO \"globals\" (\"key\", \"value\") VALUES ";
+	sql = base + "('db_version', " + IntToString(DATABASE_VERSION) + ");";
+	if (!this->queryNoResult(sql))
+	{
+		// log error?
+	}
+	sql = base + "('song_cache_version', " + IntToString(FILE_CACHE_VERSION) + ");";
+	if (!this->queryNoResult(sql))
+	{
+		// log error?
+	}
+	sql = base + "('ssc_file_version', " + FloatToString(STEPFILE_VERSION_NUMBER) + ");";
+	if (!this->queryNoResult(sql))
+	{
+		// log error?
+	}
+	
+	this->CommitTransaction();
 }
 
 void Database::setCurrentRow( unsigned uRow )
