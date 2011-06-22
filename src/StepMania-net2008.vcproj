@@ -3833,6 +3833,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\RageUtil_DB.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RageUtil_DB.h"
+				>
+			</File>
+			<File
 				RelativePath="RageUtil_FileDB.cpp"
 				>
 			</File>

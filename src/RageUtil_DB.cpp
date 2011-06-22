@@ -4,7 +4,7 @@
 #include "RageUtil.h"
 #include "RageLog.h"
 #include "arch/arch.h"
-#include "ArchHooks.h"
+#include "arch/ArchHooks/ArchHooks.h"
 
 /** @brief Include a global access to the database. */
 Database * DATABASE = NULL;
