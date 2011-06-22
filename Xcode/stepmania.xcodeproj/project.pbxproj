@@ -3912,12 +3912,12 @@
 				AAC23F7E0485E68D005F316C /* RageUtil_CharConversions.cpp */,
 				AAC23F7F0485E68D005F316C /* RageUtil_CharConversions.h */,
 				AAD3D5AB05B5AB4E00014FAC /* RageUtil_CircularBuffer.h */,
+				2BCFDFEE13B163A000DEB953 /* RageUtil_DB.cpp */,
+				2BCFDFED13B163A000DEB953 /* RageUtil_DB.h */,
 				AAF580A704B3E2DC00D02EE9 /* RageUtil_FileDB.cpp */,
 				AAF580A804B3E2DC00D02EE9 /* RageUtil_FileDB.h */,
 				AACA592D07B5E23400763545 /* RageUtil_WorkerThread.cpp */,
 				AACA592E07B5E23400763545 /* RageUtil_WorkerThread.h */,
-				2BCFDFED13B163A000DEB953 /* RageUtil_DB.h */,
-				2BCFDFEE13B163A000DEB953 /* RageUtil_DB.cpp */,
 			);
 			name = Rage;
 			sourceTree = "<group>";
