@@ -25,7 +25,6 @@ struct ColumnData
 	bool isNum;
 	/**
 	 * @brief The text that is stored.
-	 *
 	 * This is not in the union below due to technical issues. */
 	RString text;
 	union 
@@ -35,7 +34,7 @@ struct ColumnData
 		/** @brief the float that is stored. */
 		float f;
 	};
-	
+
 	ColumnData() : type(COL_NULL), isNum(false), text(""), i(0) {}
 	ColumnData(ColumnTypes c) : type(c), isNum(false), text(""), i(0)
 	{
@@ -80,7 +79,6 @@ class Database
 
 	/** 
 	 * @brief Check for a specific table and recreate the DB as needed.
-	 *
 	 * This allows for database versioning. */
 	void CreateTablesIfNeeded();
 
