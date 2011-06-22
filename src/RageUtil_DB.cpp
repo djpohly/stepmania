@@ -43,7 +43,7 @@ void Database::close()
 	sqlite3_close(reinterpret_cast<sqlite3*>(m_pDatabase));
 }
 
-bool Database::query( RString sQuery, int iCols )
+bool Database::query( RString sQuery, int iCols, vector<ColumnTypes> v )
 {
 	bool bReturn = false;
 	if( m_Connected == SQLITE_OK )
@@ -64,7 +64,36 @@ bool Database::query( RString sQuery, int iCols )
 				QueryRow sqlRow;
 				for(int col=0; col<iCols; col++)
 				{
-					sqlRow.push_back(sqlite3_column_blob(sqlStatement, col));
+					ColumnData data(v[col]);
+					switch (v[col])
+					{
+						case COL_INT:
+						case COL_UNSIGNED:
+						{
+							data.i = sqlite3_column_int(sqlStatement, col);
+							break;
+						}
+						case COL_FLOAT:
+						case COL_DOUBLE:
+						{
+							data.f = static_cast<float>
+								(sqlite3_column_double(sqlStatement, col));
+							break;
+						}
+						case COL_STRING:
+						{
+							data.text = reinterpret_cast<const char *>
+								(sqlite3_column_text(sqlStatement, col));
+							break;
+						}
+						case COL_NULL:
+						{
+							// what DOES happen here?
+							break;
+						}
+					}
+					
+					sqlRow.push_back(data);
 				}
 				m_pResult.push_back(sqlRow);
 			}
@@ -125,14 +154,16 @@ bool Database::RollbackTransaction()
 void Database::CreateTablesIfNeeded()
 {
 	RString sql = "SELECT \"value\" FROM \"globals\" WHERE \"key\" = 'db_version';";
-	if (this->query(sql, 1))
+	vector<ColumnTypes> v;
+	v.push_back(COL_STRING);
+	if (this->query(sql, 1, v))
 	{
 		// table exists.
 		if (!this->GetResult().empty())
 		{
 			// row exists.
 			this->setCurrentRow(0);
-			unsigned int tmp = this->getColValueAsUnsignedInt(0);
+			int tmp = StringToInt(this->getColValueAsString(0));
 			if (tmp == DATABASE_VERSION)
 			{
 				// no need to re-create.
@@ -184,21 +215,16 @@ void Database::setCurrentRow( unsigned uRow )
 	m_pCurrentRow = r.at(uRow);
 }
 
-const void* Database::getColValue( unsigned uCol )
-{
-	ASSERT(!m_pCurrentRow.empty());
-	ASSERT(uCol < m_pCurrentRow.size());
-	return &m_pCurrentRow.at(uCol);
-}
-
 void Database::clearResult()
 {
 	m_pCurrentRow.empty();
 	m_pResult.empty();
 }
 
-/*
- * Copyright (c) 2011 Aldo Fregoso
+/**
+ * @file
+ * @author Aldo Fregoso, Jason Felds (c) 2011
+ * @section LICENSE
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a

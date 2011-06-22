@@ -5,8 +5,49 @@
 #include "SpecialFiles.h" // contains database location.
 #include "sqlite3.h"
 
+/** @brief The expected column types for SQLite. */
+enum ColumnTypes
+{
+	COL_INT, /**< We want an integer. */
+	COL_UNSIGNED, /**< We want an unsigned integer. */
+	COL_FLOAT, /**< We want a float value. */
+	COL_DOUBLE, /**< We want a double value. */
+	COL_STRING, /**< We want a string. */
+	COL_NULL /**< We want nothing. */
+};
+
+/** @brief Retrieve our column results. */
+struct ColumnData
+{
+	/** @brief The specific data type. */
+	ColumnTypes type;
+	/** @brief Is the underlying result a number? */
+	bool isNum;
+	/**
+	 * @brief The text that is stored.
+	 *
+	 * This is not in the union below due to technical issues. */
+	RString text;
+	union 
+	{
+		/** @brief The integer that is stored. */
+		int i;
+		/** @brief the float that is stored. */
+		float f;
+	};
+	
+	ColumnData() : type(COL_NULL), isNum(false), text(""), i(0) {}
+	ColumnData(ColumnTypes c) : type(c), isNum(false), text(""), i(0)
+	{
+		if (c < COL_STRING) isNum = true;
+	}
+	ColumnData(ColumnTypes c, RString tmp) : type(c), isNum(false), text(tmp), i(0) {}
+	ColumnData(ColumnTypes c, int tmp) : type(c), isNum(true), text(""), i(tmp) {}
+	ColumnData(ColumnTypes c, float tmp) : type(c), isNum(true), text(""), f(tmp) {}
+};
+
 /** @brief Include a simple way to get the row of a result. */
-typedef vector<const void *> QueryRow;
+typedef vector<ColumnData> QueryRow;
 /** @brief Include a simple way to get the result of a query. */
 typedef vector<QueryRow> QueryResult;
 
@@ -14,7 +55,9 @@ typedef vector<QueryRow> QueryResult;
  * @brief The internal version of the database cache for StepMania.
  *
  * Increment this value to invalidate the current cache. */
-const unsigned int DATABASE_VERSION = 1;
+const int DATABASE_VERSION = 1;
+
+
 
 /** @brief The controls to access the database. */
 class Database
@@ -84,14 +127,13 @@ public:
 	 * @param sQuery the query to call.
 	 * @param iCols the number of columns expected.
 	 * @return true if successful in calling the query, false otherwise. */
-	bool query( RString sQuery, int iCols );
+	bool query( RString sQuery, int iCols, vector<ColumnTypes> v );
 	/**
 	 * @brief Call a query. The query returns no results.
 	 * @param sQuery the query to call.
 	 * @return true if successful in calling the query, false otherwise. */
 	bool queryNoResult( RString sQuery );
 	void setCurrentRow( unsigned uRow );
-	const void* getColValue( unsigned uCol );
 	
 	/**
 	 * @brief Retrieve the current result.
@@ -108,31 +150,29 @@ public:
 	
 	int getColValueAsInt( unsigned uCol )
 	{
-		return reinterpret_cast<int>(getColValue(uCol));
+		ASSERT(!m_pCurrentRow.empty());
+		ASSERT(uCol < m_pCurrentRow.size());
+		return m_pCurrentRow.at(uCol).i;
 	}
-	unsigned getColValueAsUnsignedInt( unsigned uCol )
+	unsigned int getColValueAsUnsignedInt( unsigned uCol )
 	{
-		return reinterpret_cast<unsigned>(getColValue(uCol));
+		return static_cast<unsigned int>(this->getColValueAsInt(uCol));
 	}
 	double getColValueAsDouble( unsigned uCol )
 	{
-		return *(double*)reinterpret_cast<const double*>(getColValue(uCol));
+		return static_cast<double>(this->getColValueAsFloat(uCol));
 	}
 	float getColValueAsFloat( unsigned uCol )
 	{
-		return (float)getColValueAsDouble(uCol);
-	}
-	char* getColValueAsChar( unsigned uCol )
-	{
-		return (char*)reinterpret_cast<const char*>(getColValue(uCol));
+		ASSERT(!m_pCurrentRow.empty());
+		ASSERT(uCol < m_pCurrentRow.size());
+		return m_pCurrentRow.at(uCol).f;
 	}
 	RString getColValueAsString( unsigned uCol )
 	{
-		return RString(getColValueAsChar(uCol));
-	}
-	unsigned char* getColValueAsUnsignedChar( unsigned uCol )
-	{
-		return (unsigned char*)reinterpret_cast<const unsigned char*>(getColValue(uCol));
+		ASSERT(!m_pCurrentRow.empty());
+		ASSERT(uCol < m_pCurrentRow.size());
+		return m_pCurrentRow.at(uCol).text;
 	}
 };
 
@@ -141,8 +181,10 @@ extern Database * DATABASE;
 
 #endif
 
-/*
- * Copyright (c) 2011 Aldo Fregoso
+/**
+ * @file
+ * @author Aldo Fregoso, Jason Felds (c) 2011
+ * @section LICENSE
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
