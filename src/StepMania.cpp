@@ -8,6 +8,7 @@
 #include "RageSoundManager.h"
 #include "GameSoundManager.h"
 #include "RageFile.h"
+#include "RageUtil_DB.h"
 #include "RageInput.h"
 #include "RageTimer.h"
 #include "RageMath.h"
@@ -305,7 +306,7 @@ void ShutdownGame()
 	SAFE_DELETE( SONGINDEX );
 	SAFE_DELETE( SOUND ); // uses GAMESTATE, PREFSMAN
 	SAFE_DELETE( PREFSMAN );
-	sqlite3_close(GAMESTATE->GetDatabase());
+	SAFE_DELETE( DATABASE );
 	SAFE_DELETE( GAMESTATE );
 	SAFE_DELETE( GAMEMAN );
 	SAFE_DELETE( NOTESKIN );
@@ -1015,14 +1016,12 @@ int main(int argc, char* argv[])
 	// Create game objects
 
 	GAMESTATE	= new GameState;
-
-	RString path = HOOKS->GetCacheDir() + "/" + SpecialFiles::DATABASE_NAME;
-	sqlite3 *db = GAMESTATE->GetDatabase();
-
-	int rc = sqlite3_open(path.c_str(), &db);
-	if (rc > 0)
+	
+	DATABASE = new Database;
+	
+	if (DATABASE->GetConnectionResult() != SQLITE_OK)
 	{
-		LOG->Warn("Problem opening database!");
+		// log it here too?
 	}
 
 	// This requires PREFSMAN, for PREFSMAN->m_bShowLoadingWindow.
