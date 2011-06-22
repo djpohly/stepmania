@@ -63,6 +63,7 @@ bool Database::query( RString sQuery, int& iCols )
 				m_pResult->push_back(sqlRow);
 			}
 			sqlite3_finalize(sqlStatement);
+			bReturn = true;
 		}
 		else
 		{
@@ -75,7 +76,7 @@ bool Database::query( RString sQuery, int& iCols )
 bool Database::queryNoResult( RString sQuery )
 {
 	bool bReturn = false;
-	if( m_Connected )
+	if( m_Connected == SQLITE_OK )
 	{
 		ASSERT(m_pDatabase);
 		sqlite3* sqlDatabase = reinterpret_cast<sqlite3*>(m_pDatabase);
@@ -84,6 +85,7 @@ bool Database::queryNoResult( RString sQuery )
 		{
 			sqlite3_step(sqlStatement);
 			sqlite3_finalize(sqlStatement);
+			bReturn = true;
 		}
 		else
 		{
@@ -91,6 +93,28 @@ bool Database::queryNoResult( RString sQuery )
 		}
 	}
 	return bReturn;
+}
+
+bool Database::BeginTransaction(RString kind)
+{
+	if (kind != "DEFERRED" && kind != "IMMEDIATE" && kind != "EXCLUSIVE")
+		kind = "DEFERRED";
+	return this->queryNoResult("BEGIN " + kind + " TRANSACTION;");
+}
+
+bool Database::CommitTransaction()
+{
+	return this->queryNoResult("COMMIT TRANSACTION;");
+}
+
+bool Database::RollbackTransaction()
+{
+	return this->queryNoResult("ROLLBACK TRANSACTION;");
+}
+
+void Database::CreateTablesIfNeeded()
+{
+	
 }
 
 void Database::setCurrentRow( unsigned uRow )

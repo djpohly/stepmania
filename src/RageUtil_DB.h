@@ -35,6 +35,12 @@ class Database
 	/** @brief The row we're iterating over. */
 	QueryRow*		m_pCurrentRow;
 	
+	/** 
+	 * @brief Check for a specific table and recreate the DB as needed.
+	 *
+	 * This allows for database versioning. */
+	void CreateTablesIfNeeded();
+	
 	/**
 	 * @brief Prevent the Database from being copied.
 	 * @param rhs unused. */
@@ -54,6 +60,24 @@ public:
 	 * @brief Get the result of the connection attempt.
 	 * @return the connection result attempt. */
 	int GetConnectionResult() const { return this->m_Connected; }
+	
+	/**
+	 * @brief Helper function to start a transaction.
+	 * @param kind the type of transaction.
+	 * @return the result of the query. */
+	bool BeginTransaction( RString kind = "DEFERRED" );
+	
+	/**
+	 * @brief Helper function to commit a transaction.
+	 * @return the result of the query. */
+	bool CommitTransaction();
+	
+	/**
+	 * @brief Helper function to abort a transaction.
+	 *
+	 * Only call this is something goes horribly wrong.
+	 * @return the result of the query. */
+	bool RollbackTransaction();
 	
 	bool query( RString sQuery, int& iCols );
 	bool queryNoResult( RString sQuery );
