@@ -194,7 +194,6 @@ public:
 	RString GetDisplaySubTitle() const;
 	RString GetDisplayArtist() const;
 
-	// Returns the transliterated titles, if any; otherwise returns the main titles.
 	/**
 	 * @brief Retrieve the transliterated title, or the main title if there is no translit.
 	 * @return the proper title. */

@@ -278,7 +278,7 @@ bool Song::LoadFromSongDir( RString sDir )
 		TidyUpData(false, true);
 
 		// save a cache file so we don't have to parse it all over again next time
-		
+
 		// TODO: Make this use SQLite.
 		if( !SaveToCacheFile() )
 			sCacheFilePath = RString();
