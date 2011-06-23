@@ -1027,17 +1027,17 @@ public:
 	 */
 	bool	m_bHasNegativeBpms;
 	
-	vector<RString> BPMsToVectorString() const;
-	vector<RString> StopsToVectorString() const;
-	vector<RString> DelaysToVectorString() const;
-	vector<RString> TimeSignaturesToVectorString() const;
-	vector<RString> TickcountsToVectorString() const;
-	vector<RString> CombosToVectorString() const;
-	vector<RString> WarpsToVectorString() const;
-	vector<RString> FakesToVectorString() const;
-	vector<RString> SpeedsToVectorString() const;
-	vector<RString> ScrollsToVectorString() const;
-	vector<RString> LabelsToVectorString() const;
+	vector<RString> BPMsToVectorString(int dec = 6) const;
+	vector<RString> StopsToVectorString(int dec = 6) const;
+	vector<RString> DelaysToVectorString(int dec = 6) const;
+	vector<RString> TimeSignaturesToVectorString(int dec = 6) const;
+	vector<RString> TickcountsToVectorString(int dec = 6) const;
+	vector<RString> CombosToVectorString(int dec = 6) const;
+	vector<RString> WarpsToVectorString(int dec = 6) const;
+	vector<RString> FakesToVectorString(int dec = 6) const;
+	vector<RString> SpeedsToVectorString(int dec = 6) const;
+	vector<RString> ScrollsToVectorString(int dec = 6) const;
+	vector<RString> LabelsToVectorString(int dec = 6) const;
 };
 
 #undef COMPARE

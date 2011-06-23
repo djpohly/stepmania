@@ -1656,103 +1656,119 @@ void TimingData::NoteRowToMeasureAndBeat( int iNoteRow, int &iMeasureIndexOut, i
 	return;
 }
 
-vector<RString> TimingData::BPMsToVectorString() const
+vector<RString> TimingData::BPMsToVectorString(int dec) const
 {
+	const RString str = "%.0" + IntToString(dec)
+		+ "f=%.0" + IntToString(dec) + "f";
 	vector<RString> ret;
 	FOREACH_CONST( BPMSegment, m_BPMSegments, iter )
 	{
-		ret.push_back(ssprintf("%f=%f",
+		ret.push_back(ssprintf(str.c_str(),
 				       iter->GetBeat(),
 				       iter->GetBPM()));
 	}
 	return ret;
 }
-vector<RString> TimingData::StopsToVectorString() const
+vector<RString> TimingData::StopsToVectorString(int dec) const
 {
+	const RString str = "%.0" + IntToString(dec)
+		+ "f=%.0" + IntToString(dec) + "f";
 	vector<RString> ret;
 	FOREACH_CONST( StopSegment, m_StopSegments, iter )
 	{
 		if (!iter->GetDelay())
-			ret.push_back(ssprintf("%f=%f",
+			ret.push_back(ssprintf(str.c_str(),
 					       iter->GetBeat(),
 					       iter->GetPause()));
 	}
 	return ret;
 }
-vector<RString> TimingData::DelaysToVectorString() const
+vector<RString> TimingData::DelaysToVectorString(int dec) const
 {
+	const RString str = "%.0" + IntToString(dec)
+		+ "f=%.0" + IntToString(dec) + "f";
 	vector<RString> ret;
 	FOREACH_CONST( StopSegment, m_StopSegments, iter )
 	{
 		if (iter->GetDelay())
-			ret.push_back(ssprintf("%f=%f",
+			ret.push_back(ssprintf(str.c_str(),
 					       iter->GetBeat(),
 					       iter->GetPause()));
 	}
 	return ret;
 }
-vector<RString> TimingData::TimeSignaturesToVectorString() const
+vector<RString> TimingData::TimeSignaturesToVectorString(int dec) const
 {
+	const RString str = "%.0" + IntToString(dec) + "f=%i=%i";
 	vector<RString> ret;
 	FOREACH_CONST( TimeSignatureSegment, m_vTimeSignatureSegments, iter )
 	{
-		ret.push_back(ssprintf("%f=%i=%i",
+		ret.push_back(ssprintf(str.c_str(),
 				       iter->GetBeat(),
 				       iter->GetNum(),
 				       iter->GetDen()));
 	}
 	return ret;
 }
-vector<RString> TimingData::TickcountsToVectorString() const
+vector<RString> TimingData::TickcountsToVectorString(int dec) const
 {
+	const RString str = "%.0" + IntToString(dec) + "f=%i";
 	vector<RString> ret;
 	FOREACH_CONST( TickcountSegment, m_TickcountSegments, iter )
 	{
-		ret.push_back(ssprintf("%f=%i",
+		ret.push_back(ssprintf(str.c_str(),
 				       iter->GetBeat(),
 				       iter->GetTicks()));
 	}
 	return ret;
 }
-vector<RString> TimingData::CombosToVectorString() const
+vector<RString> TimingData::CombosToVectorString(int dec) const
 {
+	const RString str = "%.0" + IntToString(dec) + "f=%i";
 	vector<RString> ret;
 	FOREACH_CONST( ComboSegment, m_ComboSegments, iter )
 	{
-		ret.push_back(ssprintf("%f=%i",
+		ret.push_back(ssprintf(str.c_str(),
 				       iter->GetBeat(),
 				       iter->GetCombo()));
 	}
 	return ret;
 }
-vector<RString> TimingData::WarpsToVectorString() const
+vector<RString> TimingData::WarpsToVectorString(int dec) const
 {
+	const RString str = "%.0" + IntToString(dec)
+		+ "f=%.0" + IntToString(dec) + "f";
 	vector<RString> ret;
 	FOREACH_CONST( WarpSegment, m_WarpSegments, iter )
 	{
-		ret.push_back(ssprintf("%f=%f",
+		ret.push_back(ssprintf(str.c_str(),
 				       iter->GetBeat(),
 				       iter->GetLength()));
 	}
 	return ret;
 }
-vector<RString> TimingData::FakesToVectorString() const
+vector<RString> TimingData::FakesToVectorString(int dec) const
 {
+	const RString str = "%.0" + IntToString(dec)
+		+ "f=%.0" + IntToString(dec) + "f";
 	vector<RString> ret;
 	FOREACH_CONST( FakeSegment, m_FakeSegments, iter )
 	{
-		ret.push_back(ssprintf("%f=%f",
+		ret.push_back(ssprintf(str.c_str(),
 				       iter->GetBeat(),
 				       iter->GetLength()));
 	}
 	return ret;
 }
-vector<RString> TimingData::SpeedsToVectorString() const
+vector<RString> TimingData::SpeedsToVectorString(int dec) const
 {
+	const RString str = "%.0" + IntToString(dec)
+		+ "f=%.0" + IntToString(dec) + "f=%.0"
+		+ IntToString(dec) + "f=%uh";
 	vector<RString> ret;
 	FOREACH_CONST( SpeedSegment, m_SpeedSegments, iter )
 	{
-		ret.push_back(ssprintf("%f=%f=%f=%uh",
+		ret.push_back(ssprintf(str.c_str(),
 				       iter->GetBeat(),
 				       iter->GetRatio(),
 				       iter->GetLength(),
@@ -1760,23 +1776,26 @@ vector<RString> TimingData::SpeedsToVectorString() const
 	}
 	return ret;
 }
-vector<RString> TimingData::ScrollsToVectorString() const
+vector<RString> TimingData::ScrollsToVectorString(int dec) const
 {
+	const RString str = "%.0" + IntToString(dec)
+	+ "f=%.0" + IntToString(dec) + "f";
 	vector<RString> ret;
 	FOREACH_CONST( ScrollSegment, m_ScrollSegments, iter )
 	{
-		ret.push_back(ssprintf("%f=%f",
+		ret.push_back(ssprintf(str.c_str(),
 				       iter->GetBeat(),
 				       iter->GetRatio()));
 	}
 	return ret;
 }
-vector<RString> TimingData::LabelsToVectorString() const
+vector<RString> TimingData::LabelsToVectorString(int dec) const
 {
+	const RString str = "%.0" + IntToString(dec) + "f=%s";
 	vector<RString> ret;
 	FOREACH_CONST( LabelSegment, m_LabelSegments, iter )
 	{
-		ret.push_back(ssprintf("%f=%s",
+		ret.push_back(ssprintf(str.c_str(),
 				       iter->GetBeat(),
 				       iter->GetLabel().c_str()));
 	}
