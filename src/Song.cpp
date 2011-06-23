@@ -917,8 +917,7 @@ bool Song::SaveToSSCFile( RString sPath, bool bSavingCache )
 	
 	if (bSavingCache)
 	{
-		// Will implement below line.
-		//return DATABASE->AddSongToCache(*this,vpStepsToSave);
+		DATABASE->AddSongToCache(*this,vpStepsToSave);
 		return NotesWriterSSC::Write(path, *this, vpStepsToSave, bSavingCache);
 	}
 
