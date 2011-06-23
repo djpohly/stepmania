@@ -83,6 +83,8 @@ class Database
 	 * This allows for database versioning. */
 	void CreateTablesIfNeeded();
 
+	RString EscapeQuote(RString tmp);
+	
 	/**
 	 * @brief Prevent the Database from being copied.
 	 * @param rhs unused. */

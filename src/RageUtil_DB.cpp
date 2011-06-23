@@ -49,6 +49,12 @@ void Database::close()
 	sqlite3_close(reinterpret_cast<sqlite3*>(m_pDatabase));
 }
 
+RString Database::EscapeQuote(RString tmp)
+{
+	tmp.Replace("'", "''");
+	return tmp;
+}
+
 bool Database::query( RString sQuery, int iCols, vector<ColumnTypes> v )
 {
 	bool bReturn = false;
