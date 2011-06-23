@@ -424,6 +424,11 @@ public:
 
 	CachedObject<Song> m_CachedObject;
 
+	RString GetAttackString() const
+	{
+		return join(":", this->m_sAttackString);
+	}
+	
 	// Lua
 	void PushSelf( lua_State *L );
 
