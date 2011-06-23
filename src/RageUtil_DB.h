@@ -55,9 +55,7 @@ typedef vector<QueryRow> QueryResult;
  * @brief The internal version of the database cache for StepMania.
  *
  * Increment this value to invalidate the current cache. */
-const int DATABASE_VERSION = 10;
-
-
+const int DATABASE_VERSION = 11;
 
 /** @brief The controls to access the database. */
 class Database

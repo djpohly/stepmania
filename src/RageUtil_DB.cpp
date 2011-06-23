@@ -4,6 +4,7 @@
 #include "RageFile.h"
 #include "RageUtil.h"
 #include "RageLog.h"
+#include "CryptManager.h"
 #include "arch/arch.h"
 #include "arch/ArchHooks/ArchHooks.h"
 
@@ -235,7 +236,7 @@ void Database::CreateTablesIfNeeded()
 		+ "\"display_bpm\"" + blankText + "\"selectable\" TEXT NOT NULL DEFAULT 'YES', " \
 		+ "\"first_beat\"" + blankFloat + "\"last_beat\"" + blankFloat \
 		+ "\"song_file_name\"" + noTextNull + "\"has_music\"" + boolFalse \
-		+ "\"has_banner\"" + boolFalse + "\"music_length\"" + blankFloat \
+		+ "\"has_banner\"" + boolFalse + "\"has_background\"" + boolFalse + "\"music_length\"" + blankFloat \
 		+ "\"bpms\"" + blankText + "\"stops\"" + blankText + "\"delays\"" + blankText \
 		+ "\"warps\"" + blankText + "\"time_signatures\"" + blankText \
 		+ "\"tickcounts\"" + blankText + "\"combos\"" + blankText \
@@ -307,10 +308,9 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 	// TODO: Finish this.
 	const RString blank = "";
 	const TimingData &timing = s.m_SongTiming;
-	const RString NotYet = "TODO";
-	
+
 	RString displayBPM = "";
-	
+
 	switch (s.m_DisplayBPMType)
 	{
 		case DISPLAY_BPM_SPECIFIED:
@@ -331,6 +331,7 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 			break;
 	}
 	const RString selectable = (s.m_SelectionDisplay == s.SHOW_ALWAYS ? "YES" : "NO");
+	const RString file_hash = CryptManager::GetSHA1ForFile(s.GetSongFilePath());
 
 	const RString bpms = join(",", timing.BPMsToVectorString());
 	const RString stops = join(",", timing.StopsToVectorString());
@@ -351,12 +352,13 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 		+ blank + "\"lyrics_path\", \"cdtitle\", \"music\", \"sample_start\", " \
 		+ blank + "\"sample_length\", \"display_bpm\", \"selectable\", " \
 		+ blank + "\"first_beat\", \"last_beat\", \"song_file_name\", " \
-		+ blank + "\"has_music\", \"has_banner\", \"music_length\", " \
+		+ blank + "\"has_music\", \"has_banner\", \"has_background\", \"music_length\", " \
 		+ blank + "\"bpms\", \"stops\", \"delays\", \"warps\", " \
 		+ blank + "\"time_signatures\", \"tickcounts\", \"combos\", " \
 		+ blank + "\"speeds\", \"scrolls\", \"fakes\", \"labels\", " \
 		+ blank + "\"attacks\", \"offset\") VALUES ('" \
-		+ NotYet + "', '" + this->EscapeQuote(s.m_sMainTitle) + "', '" \
+		+ file_hash + "', '" \
+		+ this->EscapeQuote(s.m_sMainTitle) + "', '" \
 		+ this->EscapeQuote(s.m_sSubTitle) + "', '" \
 		+ this->EscapeQuote(s.m_sArtist) + "', '" \
 		+ this->EscapeQuote(s.m_sMainTitleTranslit) + "', '" \
@@ -378,6 +380,7 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 		+ this->EscapeQuote(s.m_sSongFileName) + "', " \
 		+ IntToString(int(s.m_bHasMusic)) + ", " \
 		+ IntToString(int(s.m_bHasBanner)) + ", " \
+		+ IntToString(int(s.m_bHasBackground)) + ", " \
 		+ FloatToString(s.m_fMusicLengthSeconds) + ", '" \
 		+ bpms + "', '" + stops + "', '" + delays + "', '" \
 		+ warps + "', '" + timeSigs + "', '" + ticks + "', '" \
