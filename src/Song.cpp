@@ -950,14 +950,7 @@ bool Song::SaveToCacheFile()
 {
 	SONGINDEX->AddCacheIndex(m_sSongDir, GetHashForDirectory(m_sSongDir));
 	const RString sPath = GetCacheFilePath();
-	if( !SaveToSSCFile(sPath, true) )
-		return false;
-
-	FOREACH( Steps*, m_vpSteps, pSteps )
-	{
-		//(*pSteps)->SetFilename( sPath );
-	}
-	return true;
+	return SaveToSSCFile(sPath, true);
 }
 
 bool Song::SaveToDWIFile()
