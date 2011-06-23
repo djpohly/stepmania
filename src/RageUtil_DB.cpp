@@ -1,6 +1,7 @@
 #include "global.h"
 
 #include "RageUtil_DB.h"
+#include "RageFile.h"
 #include "RageUtil.h"
 #include "RageLog.h"
 #include "Song.h" // song & SSC stepfile versions
@@ -34,6 +35,9 @@ Database::~Database()
 int Database::connect()
 {
 	RString path = HOOKS->GetCacheDir() + "/" + SpecialFiles::DATABASE_NAME;
+	RageFile f;
+	f.Open(path, RageFile::WRITE);
+	f.Close();
 	return sqlite3_open(path, reinterpret_cast<sqlite3**>(&m_pDatabase));
 }
 
