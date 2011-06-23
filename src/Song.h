@@ -313,12 +313,18 @@ private:
 	 *
 	 * This must be sorted before gameplay. */
 	AutoPtrCopyOnWrite<VBackgroundChange>	m_ForegroundChanges;
+	
+	vector<RString> GetChangesToVectorString(const vector<BackgroundChange> & changes) const;
 public:
 	const vector<BackgroundChange>	&GetBackgroundChanges( BackgroundLayer bl ) const;
 	vector<BackgroundChange>	&GetBackgroundChanges( BackgroundLayer bl );
 	const vector<BackgroundChange>	&GetForegroundChanges() const;
 	vector<BackgroundChange>	&GetForegroundChanges();
 
+	vector<RString> GetBGChanges1ToVectorString() const;
+	vector<RString> GetBGChanges2ToVectorString() const;
+	vector<RString> GetFGChanges1ToVectorString() const;
+	
 	/**
 	 * @brief The list of LyricSegments.
 	 *

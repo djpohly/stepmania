@@ -1170,6 +1170,30 @@ vector<BackgroundChange> &Song::GetForegroundChanges()
 	return *m_ForegroundChanges.Get();
 }
 
+vector<RString> Song::GetChangesToVectorString(const vector<BackgroundChange> & changes) const
+{
+	vector<RString> ret;
+	FOREACH_CONST( BackgroundChange, changes, bgc )
+	{
+		ret.push_back((*bgc).ToString());
+	}
+	return ret;
+}
+
+vector<RString> Song::GetBGChanges1ToVectorString() const
+{
+	return this->GetChangesToVectorString(this->GetBackgroundChanges(BACKGROUND_LAYER_1));
+}
+
+vector<RString> Song::GetBGChanges2ToVectorString() const
+{
+	return this->GetChangesToVectorString(this->GetBackgroundChanges(BACKGROUND_LAYER_2));
+}
+
+vector<RString> Song::GetFGChanges1ToVectorString() const
+{
+	return this->GetChangesToVectorString(this->GetForegroundChanges());
+}
 
 RString GetSongAssetPath( RString sPath, const RString &sSongPath )
 {
