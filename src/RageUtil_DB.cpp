@@ -309,6 +309,29 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 	// TODO: Finish this.
 	const RString blank = "";
 	const TimingData &timing = s.m_SongTiming;
+	const RString NotYet = "TODO";
+	
+	RString displayBPM = "";
+	
+	switch (s.m_DisplayBPMType)
+	{
+		case DISPLAY_BPM_SPECIFIED:
+		{
+			displayBPM = FloatToString(s.m_fSpecifiedBPMMin);
+			if (s.m_fSpecifiedBPMMax != s.m_fSpecifiedBPMMin)
+			{
+				displayBPM += ":" + FloatToString(s.m_fSpecifiedBPMMax);
+			}
+			break;
+		}
+		case DISPLAY_BPM_RANDOM:
+		{
+			displayBPM = "*";
+			break;
+		}
+		default:
+			break;
+	}
 
 	RString sql = "INSERT INTO \"songs\" (\"file_hash\", \"song_title\", " \
 		+ blank + "\"song_subtitle\", \"song_artist\", \"song_title_translit\", " \
@@ -321,7 +344,27 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 		+ blank + "\"bpms\", \"stops\", \"delays\", \"warps\", " \
 		+ blank + "\"time_signatures\", \"tickcounts\", \"combos\", " \
 		+ blank + "\"speeds\", \"scrolls\", \"fakes\", \"labels\", " \
-		+ blank + "\"attacks\", \"offset\") VALUES ();";
+		+ blank + "\"attacks\", \"offset\") VALUES ('" \
+		+ NotYet + "', '" + this->EscapeQuote(s.m_sMainTitle) + "', '" \
+		+ this->EscapeQuote(s.m_sSubTitle) + "', '" \
+		+ this->EscapeQuote(s.m_sArtist) + "', '" \
+		+ this->EscapeQuote(s.m_sMainTitleTranslit) + "', '" \
+		+ this->EscapeQuote(s.m_sSubTitleTranslit) + "', '" \
+		+ this->EscapeQuote(s.m_sArtistTranslit) + "', '" \
+		+ this->EscapeQuote(s.m_sGenre) + "', '" \
+		+ this->EscapeQuote(s.m_sOrigin) + "', '" \
+		+ this->EscapeQuote(s.m_sCredit) + "', '" \
+		+ this->EscapeQuote(s.m_sBannerFile) + "', '" \
+		+ this->EscapeQuote(s.m_sBackgroundFile) + "', '" \
+		+ this->EscapeQuote(s.m_sLyricsFile) + "', '" \
+		+ this->EscapeQuote(s.m_sCDTitleFile) + "', '" \
+		+ this->EscapeQuote(s.m_sMusicFile) + "', " \
+		+ FloatToString(s.m_fMusicSampleStartSeconds) + ", " \
+		+ FloatToString(s.m_fMusicSampleLengthSeconds) + ", '" \
+		+ this->EscapeQuote(displayBPM)
+	
+	;
+//	);";
 
 	return false;
 }
