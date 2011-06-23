@@ -42,7 +42,7 @@
  * @brief The internal version of the cache for StepMania.
  *
  * Increment this value to invalidate the current cache. */
-const int FILE_CACHE_VERSION = 184;
+const int FILE_CACHE_VERSION = 185;
 
 /** @brief How long does a song sample last by default? */
 const float DEFAULT_MUSIC_SAMPLE_LENGTH = 12.f;
@@ -889,7 +889,9 @@ bool Song::SaveToSMFile()
 
 bool Song::SaveToSSCFile( RString sPath, bool bSavingCache )
 {
-	RString path = SetExtension(sPath, "ssc");
+	RString path = sPath;
+	if (!bSavingCache)
+		path = SetExtension(sPath, "ssc");
 	
 	LOG->Trace( "Song::SaveToSSCFile('%s')", path.c_str() );
 
