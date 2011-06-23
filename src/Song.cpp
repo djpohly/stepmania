@@ -208,7 +208,7 @@ static set<RString> BlacklistedImages;
 bool Song::LoadFromSongDir( RString sDir )
 {
 //	LOG->Trace( "Song::LoadFromSongDir(%s)", sDir.c_str() );
-	ASSERT( sDir != "" );
+	ASSERT_M( sDir != "", "Songs can't be loaded from an empty directory!" );
 
 	// make sure there is a trailing slash at the end of sDir
 	if( sDir.Right(1) != "/" )
