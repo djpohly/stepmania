@@ -57,6 +57,13 @@ RString Database::EscapeQuote(RString tmp)
 	return tmp;
 }
 
+/** @brief Provide a way to get out of a transaction on failure. */
+#define RollbackIfFailure if (!this->queryNoResult(sql)) \
+{ \
+this->RollbackTransaction(); \
+return; \
+}
+
 bool Database::query( RString sQuery, int iCols, vector<ColumnTypes> v )
 {
 	bool bReturn = false;
@@ -193,13 +200,6 @@ void Database::CreateTablesIfNeeded()
 
 	this->BeginTransaction();
 
-/** @brief Provide a way to get out of a transaction on failure. */
-#define RollbackIfFailure if (!this->queryNoResult(sql)) \
-{ \
-	this->RollbackTransaction(); \
-	return; \
-}
-
 	// XXX: Is there a better way for multiline RString intros?
 	sql = "CREATE TABLE \"globals\" " \
 			"( \"key\" TEXT NOT NULL UNIQUE, \"value\" TEXT NOT NULL );";
@@ -285,8 +285,6 @@ void Database::CreateTablesIfNeeded()
 
 	RollbackIfFailure;
 
-#undef RollbackIfFailure
-
 	this->CommitTransaction();
 }
 
@@ -334,6 +332,18 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 	}
 	const RString selectable = (s.m_SelectionDisplay == s.SHOW_ALWAYS ? "YES" : "NO");
 
+	const RString bpms = join(",", timing.BPMsToVectorString());
+	const RString stops = join(",", timing.StopsToVectorString());
+	const RString delays = join(",", timing.DelaysToVectorString());
+	const RString warps = join(",", timing.WarpsToVectorString());
+	const RString timeSigs = join(",", timing.TimeSignaturesToVectorString());
+	const RString ticks = join(",", timing.TickcountsToVectorString());
+	const RString combos = join(",", timing.CombosToVectorString());
+	const RString speeds = join(",", timing.SpeedsToVectorString());
+	const RString scrolls = join(",", timing.ScrollsToVectorString());
+	const RString fakes = join(",", timing.FakesToVectorString());
+	const RString labels = join(",", timing.LabelsToVectorString());
+	
 	RString sql = "INSERT INTO \"songs\" (\"file_hash\", \"song_title\", " \
 		+ blank + "\"song_subtitle\", \"song_artist\", \"song_title_translit\", " \
 		+ blank + "\"song_subtitle_translit\", \"song_artist_translit\", " \
@@ -362,19 +372,24 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 		+ this->EscapeQuote(s.m_sMusicFile) + "', " \
 		+ FloatToString(s.m_fMusicSampleStartSeconds) + ", " \
 		+ FloatToString(s.m_fMusicSampleLengthSeconds) + ", '" \
-		+ this->EscapeQuote(displayBPM) + ", '" + selectable + "', "
+		+ this->EscapeQuote(displayBPM) + ", '" + selectable + "', " \
 		+ FloatToString(s.m_fFirstBeat) + ", " \
 		+ FloatToString(s.m_fLastBeat) + ", '" \
-		+ this->EscapeQuote(s.m_sSongFileName) + "', "
-		+ IntToString(int(s.m_bHasMusic)) + ", "
-		+ IntToString(int(s.m_bHasBanner)) + ", "
-		+ FloatToString(s.m_fMusicLengthSeconds) + ", '"
-	
-	;
-//	);";
+		+ this->EscapeQuote(s.m_sSongFileName) + "', " \
+		+ IntToString(int(s.m_bHasMusic)) + ", " \
+		+ IntToString(int(s.m_bHasBanner)) + ", " \
+		+ FloatToString(s.m_fMusicLengthSeconds) + ", '" \
+		+ bpms + "', '" + stops + "', '" + delays + "', '" \
+		+ warps + "', '" + timeSigs + "', '" + ticks + "', '" \
+		+ combos + "', '" + speeds + "', '" + scrolls + "', '" \
+		+ fakes + "', '" + labels + "', '" \
+		+ this->EscapeQuote(s.GetAttackString()) + "', " \
+		+ FloatToString(timing.m_fBeat0OffsetInSeconds) + ");";
 
-	return false;
+	return this->queryNoResult(sql);
 }
+
+#undef RollbackIfFailure
 
 /**
  * @file
