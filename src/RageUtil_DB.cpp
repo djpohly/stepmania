@@ -54,7 +54,7 @@ bool Database::query( RString sQuery, int iCols, vector<ColumnTypes> v )
 	bool bReturn = false;
 	if( m_Connected == SQLITE_OK )
 	{
-		ASSERT(m_pDatabase);
+		ASSERT_M(m_pDatabase, "The database was lost! Unable to continue.");
 		sqlite3* sqlDatabase = reinterpret_cast<sqlite3*>(m_pDatabase);
 		sqlite3_stmt* sqlStatement;
 		if (!this->GetResult().empty())
@@ -120,7 +120,7 @@ bool Database::queryNoResult( RString sQuery )
 	bool bReturn = false;
 	if( m_Connected == SQLITE_OK )
 	{
-		ASSERT(m_pDatabase);
+		ASSERT_M(m_pDatabase, "The database was lost! Unable to continue.");
 		sqlite3* sqlDatabase = reinterpret_cast<sqlite3*>(m_pDatabase);
 		sqlite3_stmt* sqlStatement;
 		if( sqlite3_prepare_v2(sqlDatabase, sQuery, -1, &sqlStatement, 0) == SQLITE_OK )
@@ -299,6 +299,21 @@ void Database::clearResult()
 bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave)
 {
 	// TODO: Finish this.
+	const RString blank = "";
+	const TimingData &timing = s.m_SongTiming;
+	
+	RString sql = "INSERT INTO \"songs\" (\"file_hash\", \"song_title\", " \
+		+ blank + "\"song_subtitle\", \"song_artist\", \"song_title_translit\", " \
+		+ blank + "\"song_subtitle_translit\", \"song_artist_translit\", " \
+		+ blank + "\"genre\", \"origin\", \"credit\", \"banner\", \"background\", " \
+		+ blank + "\"lyrics_path\", \"cdtitle\", \"music\", \"sample_start\", " \
+		+ blank + "\"sample_length\", \"display_bpm\", \"selectable\", " \
+		+ blank + "\"first_beat\", \"last_beat\", \"song_file_name\", " \
+		+ blank + "\"has_music\", \"has_banner\", \"music_length\", " \
+		+ blank + "\"bpms\", \"stops\", \"delays\", \"warps\", " \
+		+ blank + "\"time_signatures\", \"tickcounts\", \"combos\", " \
+		+ blank + "\"speeds\", \"scrolls\", \"fakes\", \"labels\", " \
+		+ blank + "\"attacks\", \"offset\") VALUES ();";
 	
 	return false;
 }
