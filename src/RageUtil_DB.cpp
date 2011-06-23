@@ -34,10 +34,13 @@ Database::~Database()
 
 int Database::connect()
 {
-	RString path = HOOKS->GetCacheDir() + "/" + SpecialFiles::DATABASE_NAME;
-	RageFile f;
-	f.Open(path, RageFile::WRITE);
-	f.Close();
+	RString path = SpecialFiles::CACHE_DIR + SpecialFiles::DATABASE_NAME;
+	if (!DoesFileExist(path))
+	{
+		RageFile f;
+		f.Open(path, RageFile::WRITE);
+	}
+	path = HOOKS->GetCacheDir() + "/" + SpecialFiles::DATABASE_NAME;
 	return sqlite3_open(path, reinterpret_cast<sqlite3**>(&m_pDatabase));
 }
 
