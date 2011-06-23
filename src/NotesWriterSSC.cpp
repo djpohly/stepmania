@@ -209,7 +209,7 @@ static void WriteGlobalTags( RageFile &f, const Song &out )
 	f.Write( "#SELECTABLE:" );
 	switch(out.m_SelectionDisplay)
 	{
-		default: ASSERT(0); // fall through
+		default: ASSERT_M(0, "An invalid selectable value was found for this song!"); // fall through
 		case Song::SHOW_ALWAYS:	f.Write( "YES" );		break;
 		//case Song::SHOW_NONSTOP:	f.Write( "NONSTOP" );	break;
 		case Song::SHOW_NEVER:		f.Write( "NO" );		break;
