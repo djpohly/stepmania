@@ -158,12 +158,29 @@ static void GetTimingTags( vector<RString> &lines, TimingData timing, bool bIsSo
 
 static void WriteTimingTags( RageFile &f, const TimingData &timing, bool bIsSong = false )
 {
-
-	vector<RString> lines;
-	
-	GetTimingTags( lines, timing, bIsSong );
-	
-	f.PutLine( JoinLineList( lines ) );
+	f.PutLine(ssprintf("#BPMS:%s;",
+			   join(",\r\n", timing.BPMsToVectorString()).c_str()));
+	f.PutLine(ssprintf("#STOPS:%s;",
+			   join(",\r\n", timing.StopsToVectorString()).c_str()));
+	f.PutLine(ssprintf("#DELAYS:%s;",
+			   join(",\r\n", timing.DelaysToVectorString()).c_str()));
+	f.PutLine(ssprintf("#WARPS:%s;",
+			   join(",\r\n", timing.WarpsToVectorString()).c_str()));
+	f.PutLine(ssprintf("#TIMESIGNATURES:%s;",
+			   join(",\r\n", timing.TimeSignaturesToVectorString()).c_str()));
+	f.PutLine(ssprintf("#TICKCOUNTS:%s;",
+			   join(",\r\n", timing.TickcountsToVectorString()).c_str()));
+	f.PutLine(ssprintf("#COMBOS:%s;",
+			   join(",\r\n", timing.CombosToVectorString()).c_str()));
+	f.PutLine(ssprintf("#SPEEDS:%s;",
+			   join(",\r\n", timing.SpeedsToVectorString()).c_str()));
+	f.PutLine(ssprintf("#SCROLLS:%s;",
+			   join(",\r\n", timing.ScrollsToVectorString()).c_str()));
+	if (!bIsSong)
+		f.PutLine(ssprintf("#FAKES:%s;",
+				   join(",\r\n", timing.FakesToVectorString()).c_str()));
+	f.PutLine(ssprintf("#LABELS:%s;",
+			   join(",\r\n", timing.LabelsToVectorString()).c_str()));
 
 }
 
