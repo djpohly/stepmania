@@ -18,8 +18,10 @@ const RString SpecialFiles::TYPE_TXT_FILE = "Data/Type.txt";
 const RString SpecialFiles::SONGS_DIR = "Songs/";
 const RString SpecialFiles::COURSES_DIR	= "Courses/";
 const RString SpecialFiles::NOTESKINS_DIR = "NoteSkins/";
+/** @brief The directory containing the database. */
+const RString SpecialFiles::DATABASE_DIR = "Database/";
 /** @brief The name of the database we will be using. */
-const RString SpecialFiles::DATABASE_NAME = "Database/cache.sqlite";
+const RString SpecialFiles::DATABASE_NAME = DATABASE_DIR + "cache.sqlite";
 
 
 /*
