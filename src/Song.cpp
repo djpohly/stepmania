@@ -1,6 +1,7 @@
 #include "global.h"
 #include "Song.h"
 #include "Steps.h"
+#include "RageUtil_DB.h"
 #include "RageUtil.h"
 #include "RageLog.h"
 #include "NoteData.h"
@@ -911,11 +912,18 @@ bool Song::SaveToSSCFile( RString sPath, bool bSavingCache )
 			pSteps->SetFilename(path);
 		vpStepsToSave.push_back( pSteps );
 	}
+	
+	if (bSavingCache)
+	{
+		// Will implement below line.
+		//return DATABASE->AddSongToCache(*this);
+		return NotesWriterSSC::Write(path, *this, vpStepsToSave, bSavingCache);
+	}
 
 	if( !NotesWriterSSC::Write(path, *this, vpStepsToSave, bSavingCache) )
 		return false;
 
-	if( !bSavingCache && g_BackUpAllSongSaves.Get() )
+	if( g_BackUpAllSongSaves.Get() )
 	{
 		RString sExt = GetExtension( path );
 		RString sBackupFile = SetExtension( path, "" );
@@ -936,12 +944,9 @@ bool Song::SaveToSSCFile( RString sPath, bool bSavingCache )
 			LOG->Trace( "Failed to back up %s to %s", path.c_str(), sBackupFile.c_str() );
 	}
 
-	if( !bSavingCache )
-	{
-		// Mark these steps saved to disk.
-		FOREACH( Steps*, vpStepsToSave, s )
-			(*s)->SetSavedToDisk( true );
-	}
+	// Mark these steps saved to disk.
+	FOREACH( Steps*, vpStepsToSave, s )
+		(*s)->SetSavedToDisk( true );
 
 	return true;
 }
