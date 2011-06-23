@@ -39,7 +39,7 @@ int Database::connect()
 		RageFile f;
 		f.Open(path, RageFile::WRITE);
 	}
-	path = HOOKS->GetCacheDir() + "/" + SpecialFiles::DATABASE_PATH;
+	//path = HOOKS->GetCacheDir() + "/" + SpecialFiles::DATABASE_PATH;
 	return sqlite3_open(path, reinterpret_cast<sqlite3**>(&m_pDatabase));
 }
 
@@ -307,7 +307,7 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 	// TODO: Finish this.
 	const RString blank = "";
 	const TimingData &timing = s.m_SongTiming;
-	
+
 	RString sql = "INSERT INTO \"songs\" (\"file_hash\", \"song_title\", " \
 		+ blank + "\"song_subtitle\", \"song_artist\", \"song_title_translit\", " \
 		+ blank + "\"song_subtitle_translit\", \"song_artist_translit\", " \
@@ -320,7 +320,7 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 		+ blank + "\"time_signatures\", \"tickcounts\", \"combos\", " \
 		+ blank + "\"speeds\", \"scrolls\", \"fakes\", \"labels\", " \
 		+ blank + "\"attacks\", \"offset\") VALUES ();";
-	
+
 	return false;
 }
 
