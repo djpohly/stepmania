@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "SpecialFiles.h" // contains database location.
+#include "Song.h" // song & SSC stepfile versions, cache.
 #include "sqlite3.h"
 
 /** @brief The expected column types for SQLite. */
@@ -172,6 +173,8 @@ public:
 		ASSERT(uCol < m_pCurrentRow.size());
 		return m_pCurrentRow.at(uCol).text;
 	}
+	
+	bool AddSongToCache(const Song &s);
 };
 
 /** @brief Be sure that we can access the global variable. */

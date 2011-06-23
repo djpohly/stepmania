@@ -4,7 +4,6 @@
 #include "RageFile.h"
 #include "RageUtil.h"
 #include "RageLog.h"
-#include "Song.h" // song & SSC stepfile versions
 #include "arch/arch.h"
 #include "arch/ArchHooks/ArchHooks.h"
 
@@ -291,6 +290,13 @@ void Database::clearResult()
 {
 	m_pCurrentRow.empty();
 	m_pResult.empty();
+}
+
+bool Database::AddSongToCache(const Song &s)
+{
+	// TODO: Finish this.
+	
+	return false;
 }
 
 /**
