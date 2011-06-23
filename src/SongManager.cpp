@@ -23,6 +23,7 @@
 #include "RageFile.h"
 #include "RageFileManager.h"
 #include "RageLog.h"
+#include "RageUtil_DB.h"
 #include "Song.h"
 #include "SongUtil.h"
 #include "Sprite.h"
@@ -278,6 +279,8 @@ void SongManager::LoadStepManiaSongDir( RString sDir )
 	
 	groupIndex = 0;
 	songIndex = 0;
+	const int maxLimit = 100;
+	DATABASE->BeginTransaction();
 	FOREACH_CONST( RString, arrayGroupDirs, s )	// foreach dir in /Songs/
 	{
 		RString sGroupDirName = *s;	
@@ -313,6 +316,13 @@ void SongManager::LoadStepManiaSongDir( RString sDir )
 			index_entry.push_back( pNewSong );
 			loaded++;
 			songIndex++;
+			
+			if (songIndex % maxLimit == 0)
+			{
+				// let's write every X number of songs.
+				DATABASE->CommitTransaction();
+				DATABASE->BeginTransaction();
+			}
 		}
 
 		LOG->Trace("Loaded %i songs from \"%s\"", loaded, (sDir+sGroupDirName).c_str() );
@@ -329,6 +339,7 @@ void SongManager::LoadStepManiaSongDir( RString sDir )
 		// Load the group sym links (if any)
 		LoadGroupSymLinks(sDir, sGroupDirName);
 	}
+	DATABASE->CommitTransaction();
 
 	if( pLoadingWindow ) {
 		pLoadingWindow->SetIndeterminate( true );
