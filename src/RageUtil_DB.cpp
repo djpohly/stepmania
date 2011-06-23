@@ -233,6 +233,7 @@ void Database::CreateTablesIfNeeded()
 		+ "\"banner\"" + blankText + "\"background\"" + blankText + "\"lyrics_path\"" + blankText \
 		+ "\"cdtitle\"" + blankText + "\"music\"" + blankText \
 		+ "\"sample_start\" REAL NOT NULL DEFAULT 30, \"sample_length\" REAL NOT NULL DEFAULT 12, " \
+		+ "\"bg_changes\"" + blankText + "\"bg_changes2\"" + blankText + "\"fg_changes\"" + blankText \
 		+ "\"display_bpm\"" + blankText + "\"selectable\" TEXT NOT NULL DEFAULT 'YES', " \
 		+ "\"first_beat\"" + blankFloat + "\"last_beat\"" + blankFloat \
 		+ "\"song_file_name\"" + noTextNull + "\"has_music\"" + boolFalse \
@@ -333,6 +334,10 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 	const RString selectable = (s.m_SelectionDisplay == s.SHOW_ALWAYS ? "YES" : "NO");
 	const RString file_hash = BinaryToHex( CryptManager::GetSHA1ForFile(s.GetSongFilePath()) );
 
+	const RString bg1 = join(",", s.GetBGChanges1ToVectorString());
+	const RString bg2 = join(",", s.GetBGChanges2ToVectorString());
+	const RString fg1 = join(",", s.GetFGChanges1ToVectorString());
+	
 	const RString bpms = join(",", timing.BPMsToVectorString());
 	const RString stops = join(",", timing.StopsToVectorString());
 	const RString delays = join(",", timing.DelaysToVectorString());
@@ -350,7 +355,8 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 		+ blank + "\"song_subtitle_translit\", \"song_artist_translit\", " \
 		+ blank + "\"genre\", \"origin\", \"credit\", \"banner\", \"background\", " \
 		+ blank + "\"lyrics_path\", \"cdtitle\", \"music\", \"sample_start\", " \
-		+ blank + "\"sample_length\", \"display_bpm\", \"selectable\", " \
+		+ blank + "\"sample_length\", \"bg_changes\", \"bg_changes2\", \"fg_changes\", " \
+		+ blank + "\"display_bpm\", \"selectable\", " \
 		+ blank + "\"first_beat\", \"last_beat\", \"song_file_name\", " \
 		+ blank + "\"has_music\", \"has_banner\", \"has_background\", \"music_length\", " \
 		+ blank + "\"bpms\", \"stops\", \"delays\", \"warps\", " \
@@ -374,6 +380,9 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 		+ this->EscapeQuote(s.m_sMusicFile) + "', " \
 		+ FloatToString(s.m_fMusicSampleStartSeconds) + ", " \
 		+ FloatToString(s.m_fMusicSampleLengthSeconds) + ", '" \
+		+ this->EscapeQuote(bg1) + "', '" \
+		+ this->EscapeQuote(bg2) + "', '" \
+		+ this->EscapeQuote(fg1) + "', '" \
 		+ this->EscapeQuote(displayBPM) + "', '" + selectable + "', " \
 		+ FloatToString(s.m_fFirstBeat) + ", " \
 		+ FloatToString(s.m_fLastBeat) + ", '" \
