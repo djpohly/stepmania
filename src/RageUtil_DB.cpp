@@ -39,7 +39,6 @@ int Database::connect()
 		RageFile f;
 		f.Open(path, RageFile::WRITE);
 	}
-	//path = HOOKS->GetCacheDir() + "/" + SpecialFiles::DATABASE_PATH;
 	return sqlite3_open(path, reinterpret_cast<sqlite3**>(&m_pDatabase));
 }
 
