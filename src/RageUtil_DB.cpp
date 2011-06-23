@@ -18,12 +18,12 @@ Database::Database()
 	if( m_Connected == SQLITE_OK )
 	{
 		LOG->Trace("Successfully connected with database '%s'",
-			   SpecialFiles::DATABASE_NAME.c_str());
+			   SpecialFiles::DATABASE_PATH.c_str());
 		this->CreateTablesIfNeeded();
 	}
 	else
 		LOG->Warn("Error connecting with database '%s'",
-			  SpecialFiles::DATABASE_NAME.c_str());
+			  SpecialFiles::DATABASE_PATH.c_str());
 }
 
 Database::~Database()
@@ -33,13 +33,13 @@ Database::~Database()
 
 int Database::connect()
 {
-	RString path = SpecialFiles::CACHE_DIR + SpecialFiles::DATABASE_NAME;
+	RString path = SpecialFiles::CACHE_DIR + SpecialFiles::DATABASE_PATH;
 	if (!DoesFileExist(path))
 	{
 		RageFile f;
 		f.Open(path, RageFile::WRITE);
 	}
-	path = HOOKS->GetCacheDir() + "/" + SpecialFiles::DATABASE_NAME;
+	path = HOOKS->GetCacheDir() + "/" + SpecialFiles::DATABASE_PATH;
 	return sqlite3_open(path, reinterpret_cast<sqlite3**>(&m_pDatabase));
 }
 

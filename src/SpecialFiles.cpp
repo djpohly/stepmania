@@ -21,7 +21,7 @@ const RString SpecialFiles::NOTESKINS_DIR = "NoteSkins/";
 /** @brief The directory containing the database. */
 const RString SpecialFiles::DATABASE_DIR = "Database/";
 /** @brief The name of the database we will be using. */
-const RString SpecialFiles::DATABASE_NAME = DATABASE_DIR + "cache.sqlite";
+const RString SpecialFiles::DATABASE_PATH = SpecialFiles::DATABASE_DIR + "cache.sqlite";
 
 
 /*

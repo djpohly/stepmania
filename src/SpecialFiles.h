@@ -37,7 +37,7 @@ namespace SpecialFiles
 	extern const RString NOTESKINS_DIR;
 	extern const RString DATABASE_DIR;
 	/** @brief The filename containing the cache database. */
-	extern const RString DATABASE_NAME;
+	extern const RString DATABASE_PATH;
 }
 
 #endif
