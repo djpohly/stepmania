@@ -331,7 +331,7 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 			break;
 	}
 	const RString selectable = (s.m_SelectionDisplay == s.SHOW_ALWAYS ? "YES" : "NO");
-	const RString file_hash = CryptManager::GetSHA1ForFile(s.GetSongFilePath());
+	const RString file_hash = BinaryToHex( CryptManager::GetSHA1ForFile(s.GetSongFilePath()) );
 
 	const RString bpms = join(",", timing.BPMsToVectorString());
 	const RString stops = join(",", timing.StopsToVectorString());
@@ -344,7 +344,7 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 	const RString scrolls = join(",", timing.ScrollsToVectorString());
 	const RString fakes = join(",", timing.FakesToVectorString());
 	const RString labels = join(",", timing.LabelsToVectorString());
-	
+
 	RString sql = "INSERT INTO \"songs\" (\"file_hash\", \"song_title\", " \
 		+ blank + "\"song_subtitle\", \"song_artist\", \"song_title_translit\", " \
 		+ blank + "\"song_subtitle_translit\", \"song_artist_translit\", " \
@@ -357,7 +357,7 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 		+ blank + "\"time_signatures\", \"tickcounts\", \"combos\", " \
 		+ blank + "\"speeds\", \"scrolls\", \"fakes\", \"labels\", " \
 		+ blank + "\"attacks\", \"offset\") VALUES ('" \
-		+ file_hash + "', '" \
+		+ this->EscapeQuote(file_hash) + "', '" \
 		+ this->EscapeQuote(s.m_sMainTitle) + "', '" \
 		+ this->EscapeQuote(s.m_sSubTitle) + "', '" \
 		+ this->EscapeQuote(s.m_sArtist) + "', '" \
@@ -374,7 +374,7 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 		+ this->EscapeQuote(s.m_sMusicFile) + "', " \
 		+ FloatToString(s.m_fMusicSampleStartSeconds) + ", " \
 		+ FloatToString(s.m_fMusicSampleLengthSeconds) + ", '" \
-		+ this->EscapeQuote(displayBPM) + ", '" + selectable + "', " \
+		+ this->EscapeQuote(displayBPM) + "', '" + selectable + "', " \
 		+ FloatToString(s.m_fFirstBeat) + ", " \
 		+ FloatToString(s.m_fLastBeat) + ", '" \
 		+ this->EscapeQuote(s.m_sSongFileName) + "', " \
