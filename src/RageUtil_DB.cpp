@@ -213,24 +213,24 @@ void Database::CreateTablesIfNeeded()
 	const RString boolFalse = " INTEGER NOT NULL DEFAULT 0, ";
 
 	// songs table
-	sql = "CREATE TABLE \"songs\" ( ";
-	sql += PK + "\"file_hash\"" + noTextNull;
-	sql += "\"version\" REAL NOT NULL DEFAULT " + FloatToString(STEPFILE_VERSION_NUMBER);
-	sql += ", \"song_title\"" + noTextNull + "\"song_subtitle\"" + blankText;
-	sql += "\"song_artist\"" + blankText + "\"song_title_translit\"" + blankText;
-	sql += "\"song_subtitle_translit\"" + blankText + "\"song_artist_translit\"" + blankText;
-	sql += "\"genre\"" + blankText + "\"origin\"" + blankText + "\"credit\"" + blankText;
-	sql += "\"banner\"" + blankText + "\"background\"" + blankText + "\"lyrics_path\"" + blankText;
-	sql += "\"cdtitle\"" + blankText + "\"music\"" + blankText;
-	sql += "\"sample_start\" REAL NOT NULL DEFAULT 30, \"sample_length\" REAL NOT NULL DEFAULT 12, ";
-	sql += "\"display_bpm\"" + blankText + "\"selectable\" TEXT NOT NULL DEFAULT 'YES', ";
-	sql += "\"bpms\"" + blankText + "\"stops\"" + blankText + "\"delays\"" + blankText;
-	sql += "\"warps\"" + blankText + "\"time_signatures\"" + blankText;
-	sql += "\"tickcounts\"" + blankText + "\"combos\"" + blankText;
-	sql += "\"speeds\"" + blankText + "\"scrolls\"" + blankText;
-	sql += "\"fakes\"" + blankText + "\"labels\"" + blankText;
-	sql += "\"attacks\"" + blankText;
-	sql += "\"offset\" REAL NOT NULL DEFAULT 0);";
+	sql = "CREATE TABLE \"songs\" ( " \
+		+ PK + "\"file_hash\"" + noTextNull \
+		+ "\"version\" REAL NOT NULL DEFAULT " + FloatToString(STEPFILE_VERSION_NUMBER) \
+		+ ", \"song_title\"" + noTextNull + "\"song_subtitle\"" + blankText \
+		+ "\"song_artist\"" + blankText + "\"song_title_translit\"" + blankText \
+		+ "\"song_subtitle_translit\"" + blankText + "\"song_artist_translit\"" + blankText \
+		+ "\"genre\"" + blankText + "\"origin\"" + blankText + "\"credit\"" + blankText \
+		+ "\"banner\"" + blankText + "\"background\"" + blankText + "\"lyrics_path\"" + blankText \
+		+ "\"cdtitle\"" + blankText + "\"music\"" + blankText \
+		+ "\"sample_start\" REAL NOT NULL DEFAULT 30, \"sample_length\" REAL NOT NULL DEFAULT 12, " \
+		+ "\"display_bpm\"" + blankText + "\"selectable\" TEXT NOT NULL DEFAULT 'YES', " \
+		+ "\"bpms\"" + blankText + "\"stops\"" + blankText + "\"delays\"" + blankText \
+		+ "\"warps\"" + blankText + "\"time_signatures\"" + blankText \
+		+ "\"tickcounts\"" + blankText + "\"combos\"" + blankText \
+		+ "\"speeds\"" + blankText + "\"scrolls\"" + blankText \
+		+ "\"fakes\"" + blankText + "\"labels\"" + blankText \
+		+ "\"attacks\"" + blankText \
+		+ "\"offset\" REAL NOT NULL DEFAULT 0);";
 
 	RollbackIfFailure;
 
@@ -244,32 +244,32 @@ void Database::CreateTablesIfNeeded()
 	RollbackIfFailure;
 
 	// course songs table (which songs are in which course?)
-	sql = "CREATE TABLE \"course_songs\" ( ";
-	sql += PK + "\"course_ID\" INTEGER NOT NULL, \"song_ID\" INTEGER DEFAULT NULL, ";
-	sql += "\"song_order\" INTEGER NOT NULL DEFAULT 0, ";
-	sql += "\"song_special\"" + blankText + "\"difficulty\"" + blankText;
-	sql += "\"mods\"" + blankText + "\"gain_lives\" INTEGER NOT NULL DEFAULT 0, ";
-	sql += "\"gain_seconds\" REAL NOT NULL DEFAULT 0, ";
-	sql += "FOREIGN KEY(\"course_ID\") REFERENCES \"courses\"(\"ID\"), ";
-	sql += "FOREIGN KEY(\"song_ID\") REFERENCES \"songs\"(\"ID\") );";
+	sql = "CREATE TABLE \"course_songs\" ( " \
+		+ PK + "\"course_ID\" INTEGER NOT NULL, \"song_ID\" INTEGER DEFAULT NULL, " \
+		+ "\"song_order\" INTEGER NOT NULL DEFAULT 0, " \
+		+ "\"song_special\"" + blankText + "\"difficulty\"" + blankText \
+		+ "\"mods\"" + blankText + "\"gain_lives\" INTEGER NOT NULL DEFAULT 0, " \
+		+ "\"gain_seconds\" REAL NOT NULL DEFAULT 0, " \
+		+ "FOREIGN KEY(\"course_ID\") REFERENCES \"courses\"(\"ID\"), " \
+		+ "FOREIGN KEY(\"song_ID\") REFERENCES \"songs\"(\"ID\") );";
 
 	RollbackIfFailure;
 
 	// steps table
-	sql = "CREATE TABLE \"steps\" ( ";
-	sql += PK + "\"song_ID\" INTEGER NOT NULL, \"step_hash\"" + blankText \
-			+ "\"is_autogen\"" + boolFalse + "\"steps_type\"" + noTextNull \
-			+ "\"description\"" + blankText + "\"chart_style\"" + blankText \
-			+ "\"difficulty\"" + blankText + "\"meter\" INTEGER NOT NULL DEFAULT 1, " \
-			+ "\"radar_values\"" + blankText + "\"credit\"" + blankText \
-			+ "\"bpms\"" + blankText + "\"stops\"" + blankText + "\"delays\"" + blankText \
-			+ "\"warps\"" + blankText + "\"time_signatures\"" + blankText \
-			+ "\"tickcounts\"" + blankText + "\"combos\"" + blankText \
-			+ "\"speeds\"" + blankText + "\"scrolls\"" + blankText \
-			+ "\"fakes\"" + blankText + "\"labels\"" + blankText \
-			+ "\"attacks\"" + blankText + "\"step_file_name\"" + blankText \
-			+ "\"offset\" REAL NOT NULL DEFAULT 0, " \
-			+ "FOREIGN KEY(\"song_ID\") REFERENCES \"songs\"(\"ID\") );";
+	sql = "CREATE TABLE \"steps\" ( " \
+		+ PK + "\"song_ID\" INTEGER NOT NULL, \"step_hash\"" + blankText \
+		+ "\"is_autogen\"" + boolFalse + "\"steps_type\"" + noTextNull \
+		+ "\"description\"" + blankText + "\"chart_style\"" + blankText \
+		+ "\"difficulty\"" + blankText + "\"meter\" INTEGER NOT NULL DEFAULT 1, " \
+		+ "\"radar_values\"" + blankText + "\"credit\"" + blankText \
+		+ "\"bpms\"" + blankText + "\"stops\"" + blankText + "\"delays\"" + blankText \
+		+ "\"warps\"" + blankText + "\"time_signatures\"" + blankText \
+		+ "\"tickcounts\"" + blankText + "\"combos\"" + blankText \
+		+ "\"speeds\"" + blankText + "\"scrolls\"" + blankText \
+		+ "\"fakes\"" + blankText + "\"labels\"" + blankText \
+		+ "\"attacks\"" + blankText + "\"step_file_name\"" + blankText \
+		+ "\"offset\" REAL NOT NULL DEFAULT 0, " \
+		+ "FOREIGN KEY(\"song_ID\") REFERENCES \"songs\"(\"ID\") );";
 
 	RollbackIfFailure;
 
