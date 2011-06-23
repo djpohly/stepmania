@@ -174,7 +174,7 @@ public:
 		return m_pCurrentRow.at(uCol).text;
 	}
 	
-	bool AddSongToCache(const Song &s);
+	bool AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave);
 };
 
 /** @brief Be sure that we can access the global variable. */

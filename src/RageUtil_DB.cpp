@@ -292,7 +292,7 @@ void Database::clearResult()
 	m_pResult.empty();
 }
 
-bool Database::AddSongToCache(const Song &s)
+bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave)
 {
 	// TODO: Finish this.
 	
