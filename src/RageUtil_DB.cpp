@@ -332,6 +332,7 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 		default:
 			break;
 	}
+	const RString selectable = (s.m_SelectionDisplay == s.SHOW_ALWAYS ? "YES" : "NO");
 
 	RString sql = "INSERT INTO \"songs\" (\"file_hash\", \"song_title\", " \
 		+ blank + "\"song_subtitle\", \"song_artist\", \"song_title_translit\", " \
@@ -361,7 +362,13 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 		+ this->EscapeQuote(s.m_sMusicFile) + "', " \
 		+ FloatToString(s.m_fMusicSampleStartSeconds) + ", " \
 		+ FloatToString(s.m_fMusicSampleLengthSeconds) + ", '" \
-		+ this->EscapeQuote(displayBPM)
+		+ this->EscapeQuote(displayBPM) + ", '" + selectable + "', "
+		+ FloatToString(s.m_fFirstBeat) + ", " \
+		+ FloatToString(s.m_fLastBeat) + ", '" \
+		+ this->EscapeQuote(s.m_sSongFileName) + "', "
+		+ IntToString(int(s.m_bHasMusic)) + ", "
+		+ IntToString(int(s.m_bHasBanner)) + ", "
+		+ FloatToString(s.m_fMusicLengthSeconds) + ", '"
 	
 	;
 //	);";
