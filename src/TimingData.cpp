@@ -1656,6 +1656,132 @@ void TimingData::NoteRowToMeasureAndBeat( int iNoteRow, int &iMeasureIndexOut, i
 	return;
 }
 
+vector<RString> TimingData::BPMsToVectorString() const
+{
+	vector<RString> ret;
+	FOREACH_CONST( BPMSegment, m_BPMSegments, iter )
+	{
+		ret.push_back(ssprintf("%f=%f",
+				       iter->GetBeat(),
+				       iter->GetBPM()));
+	}
+	return ret;
+}
+vector<RString> TimingData::StopsToVectorString() const
+{
+	vector<RString> ret;
+	FOREACH_CONST( StopSegment, m_StopSegments, iter )
+	{
+		if (!iter->GetDelay())
+			ret.push_back(ssprintf("%f=%f",
+					       iter->GetBeat(),
+					       iter->GetPause()));
+	}
+	return ret;
+}
+vector<RString> TimingData::DelaysToVectorString() const
+{
+	vector<RString> ret;
+	FOREACH_CONST( StopSegment, m_StopSegments, iter )
+	{
+		if (iter->GetDelay())
+			ret.push_back(ssprintf("%f=%f",
+					       iter->GetBeat(),
+					       iter->GetPause()));
+	}
+	return ret;
+}
+vector<RString> TimingData::TimeSignaturesToVectorString() const
+{
+	vector<RString> ret;
+	FOREACH_CONST( TimeSignatureSegment, m_vTimeSignatureSegments, iter )
+	{
+		ret.push_back(ssprintf("%f=%i=%i",
+				       iter->GetBeat(),
+				       iter->GetNum(),
+				       iter->GetDen()));
+	}
+	return ret;
+}
+vector<RString> TimingData::TickcountsToVectorString() const
+{
+	vector<RString> ret;
+	FOREACH_CONST( TickcountSegment, m_TickcountSegments, iter )
+	{
+		ret.push_back(ssprintf("%f=%i",
+				       iter->GetBeat(),
+				       iter->GetTicks()));
+	}
+	return ret;
+}
+vector<RString> TimingData::CombosToVectorString() const
+{
+	vector<RString> ret;
+	FOREACH_CONST( ComboSegment, m_ComboSegments, iter )
+	{
+		ret.push_back(ssprintf("%f=%i",
+				       iter->GetBeat(),
+				       iter->GetCombo()));
+	}
+	return ret;
+}
+vector<RString> TimingData::WarpsToVectorString() const
+{
+	vector<RString> ret;
+	FOREACH_CONST( WarpSegment, m_WarpSegments, iter )
+	{
+		ret.push_back(ssprintf("%f=%f",
+				       iter->GetBeat(),
+				       iter->GetLength()));
+	}
+	return ret;
+}
+vector<RString> TimingData::FakesToVectorString() const
+{
+	vector<RString> ret;
+	FOREACH_CONST( FakeSegment, m_FakeSegments, iter )
+	{
+		ret.push_back(ssprintf("%f=%f",
+				       iter->GetBeat(),
+				       iter->GetLength()));
+	}
+	return ret;
+}
+vector<RString> TimingData::SpeedsToVectorString() const
+{
+	vector<RString> ret;
+	FOREACH_CONST( SpeedSegment, m_SpeedSegments, iter )
+	{
+		ret.push_back(ssprintf("%f=%f=%f=%uh",
+				       iter->GetBeat(),
+				       iter->GetRatio(),
+				       iter->GetLength(),
+				       iter->GetUnit()));
+	}
+	return ret;
+}
+vector<RString> TimingData::ScrollsToVectorString() const
+{
+	vector<RString> ret;
+	FOREACH_CONST( ScrollSegment, m_ScrollSegments, iter )
+	{
+		ret.push_back(ssprintf("%f=%f",
+				       iter->GetBeat(),
+				       iter->GetRatio()));
+	}
+	return ret;
+}
+vector<RString> TimingData::LabelsToVectorString() const
+{
+	vector<RString> ret;
+	FOREACH_CONST( LabelSegment, m_LabelSegments, iter )
+	{
+		ret.push_back(ssprintf("%f=%s",
+				       iter->GetBeat(),
+				       iter->GetLabel().c_str()));
+	}
+	return ret;
+}
 
 // lua start
 #include "LuaBinding.h"
@@ -1672,117 +1798,47 @@ public:
 	static int HasScrollChanges( T* p, lua_State *L )	{ lua_pushboolean(L, p->HasScrollChanges()); return 1; }
 	static int GetWarps( T* p, lua_State *L )
 	{
-		vector<RString> vWarps;
-		FOREACH_CONST( WarpSegment, p->m_WarpSegments, seg )
-		{
-			const float length = seg->GetLength();
-			const float beat = seg->GetBeat();
-			vWarps.push_back( ssprintf("%f=%f", beat, length) );
-		}
-		LuaHelpers::CreateTableFromArray(vWarps, L);
+		LuaHelpers::CreateTableFromArray(p->WarpsToVectorString(), L);
 		return 1;
 	}
 	static int GetFakes( T* p, lua_State *L )
 	{
-		vector<RString> vFakes;
-		FOREACH_CONST( FakeSegment, p->m_FakeSegments, seg )
-		{
-			const float length = seg->GetLength();
-			const float beat = seg->GetBeat();
-			vFakes.push_back( ssprintf("%f=%f", beat, length) );
-		}
-		LuaHelpers::CreateTableFromArray(vFakes, L);
+		LuaHelpers::CreateTableFromArray(p->FakesToVectorString(), L);
 		return 1;
 	}
 	static int GetScrolls( T* p, lua_State *L )
 	{
-		vector<RString> vScrolls;
-		FOREACH_CONST( ScrollSegment, p->m_ScrollSegments, seg )
-		{
-			const float ratio = seg->GetRatio();
-			const float beat = seg->GetBeat();
-			vScrolls.push_back( ssprintf("%f=%f", beat, ratio) );
-		}
-		LuaHelpers::CreateTableFromArray(vScrolls, L);
+		LuaHelpers::CreateTableFromArray(p->ScrollsToVectorString(), L);
 		return 1;
 	}
 	static int GetSpeeds( T* p, lua_State *L )
 	{
-		vector<RString> vSpeeds;
-		FOREACH_CONST( SpeedSegment, p->m_SpeedSegments, seg )
-		{
-			const float length = seg->GetLength();
-			const float ratio = seg->GetRatio();
-			const unsigned short unit = seg->GetUnit();
-			const float beat = seg->GetBeat();
-			vSpeeds.push_back( ssprintf("%f=%f=%f=%uh", beat, ratio, length, unit) );
-		}
-		LuaHelpers::CreateTableFromArray(vSpeeds, L);
+		LuaHelpers::CreateTableFromArray(p->SpeedsToVectorString(), L);
 		return 1;
 	}
 	static int GetTimeSignatures( T* p, lua_State *L )
 	{
-		vector<RString> vTimes;
-		FOREACH_CONST( TimeSignatureSegment, p->m_vTimeSignatureSegments, seg )
-		{
-			const int numerator = seg->GetNum();
-			const int denominator = seg->GetDen();
-			const float beat = seg->GetBeat();
-			vTimes.push_back( ssprintf("%f=%d=%d", beat, numerator, denominator) );
-		}
-		LuaHelpers::CreateTableFromArray(vTimes, L);
+		LuaHelpers::CreateTableFromArray(p->TimeSignaturesToVectorString(), L);
 		return 1;
 	}
 	static int GetCombos( T* p, lua_State *L )
 	{
-		vector<RString> vCombos;
-		FOREACH_CONST( ComboSegment, p->m_ComboSegments, seg )
-		{
-			const int combo = seg->GetCombo();
-			const float beat = seg->GetBeat();
-			vCombos.push_back( ssprintf("%f=%d", beat, combo) );
-		}
-		LuaHelpers::CreateTableFromArray(vCombos, L);
+		LuaHelpers::CreateTableFromArray(p->CombosToVectorString(), L);
 		return 1;
 	}
 	static int GetTickcounts( T* p, lua_State *L )
 	{
-		vector<RString> vTicks;
-		FOREACH_CONST( TickcountSegment, p->m_TickcountSegments, seg )
-		{
-			const int ticks = seg->GetTicks();
-			const float beat = seg->GetBeat();
-			vTicks.push_back( ssprintf("%f=%d", beat, ticks) );
-		}
-		LuaHelpers::CreateTableFromArray(vTicks, L);
+		LuaHelpers::CreateTableFromArray(p->TickcountsToVectorString(), L);
 		return 1;
 	}
 	static int GetStops( T* p, lua_State *L )
 	{
-		vector<RString> vStops;
-		FOREACH_CONST( StopSegment, p->m_StopSegments, seg )
-		{
-			const float fStartBeat = seg->GetBeat();
-			const float fStopLength = seg->GetPause();
-			if(!seg->GetDelay())
-				vStops.push_back( ssprintf("%f=%f", fStartBeat, fStopLength) );
-		}
-
-		LuaHelpers::CreateTableFromArray(vStops, L);
+		LuaHelpers::CreateTableFromArray(p->StopsToVectorString(), L);
 		return 1;
 	}
 	static int GetDelays( T* p, lua_State *L )
 	{
-		vector<RString> vDelays;
-		FOREACH_CONST( StopSegment, p->m_StopSegments, seg )
-		{
-			const float fStartBeat = seg->GetBeat();
-			const float fStopLength = seg->GetPause();
-			if(seg->GetDelay())
-				vDelays.push_back( ssprintf("%f=%f", fStartBeat, fStopLength) );
-		}
-
-		LuaHelpers::CreateTableFromArray(vDelays, L);
+		LuaHelpers::CreateTableFromArray(p->DelaysToVectorString(), L);
 		return 1;
 	}
 	static int GetBPMs( T* p, lua_State *L )
@@ -1799,27 +1855,12 @@ public:
 	}
 	static int GetLabels( T* p, lua_State *L )
 	{
-		vector<RString> vLabels;
-		FOREACH_CONST( LabelSegment, p->m_LabelSegments, seg )
-		{
-			const float fStartRow = seg->GetBeat();
-			const RString sLabel = seg->GetLabel();
-			vLabels.push_back( ssprintf("%f=%s", fStartRow, sLabel.c_str()) );
-		}
-		LuaHelpers::CreateTableFromArray(vLabels, L);
+		LuaHelpers::CreateTableFromArray(p->LabelsToVectorString(), L);
 		return 1;
 	}
 	static int GetBPMsAndTimes( T* p, lua_State *L )
 	{
-		vector<RString> vBPMs;
-		FOREACH_CONST( BPMSegment, p->m_BPMSegments, seg )
-		{
-			const float fStartRow = seg->GetBeat();
-			const float fBPM = seg->GetBPM();
-			vBPMs.push_back( ssprintf("%f=%f", fStartRow, fBPM) );
-		}
-
-		LuaHelpers::CreateTableFromArray(vBPMs, L);
+		LuaHelpers::CreateTableFromArray(p->BPMsToVectorString(), L);
 		return 1;
 	}
 	static int GetActualBPM( T* p, lua_State *L )

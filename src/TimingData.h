@@ -1026,6 +1026,18 @@ public:
 	 * this is moved into TimingData at a future point in time.
 	 */
 	bool	m_bHasNegativeBpms;
+	
+	vector<RString> BPMsToVectorString() const;
+	vector<RString> StopsToVectorString() const;
+	vector<RString> DelaysToVectorString() const;
+	vector<RString> TimeSignaturesToVectorString() const;
+	vector<RString> TickcountsToVectorString() const;
+	vector<RString> CombosToVectorString() const;
+	vector<RString> WarpsToVectorString() const;
+	vector<RString> FakesToVectorString() const;
+	vector<RString> SpeedsToVectorString() const;
+	vector<RString> ScrollsToVectorString() const;
+	vector<RString> LabelsToVectorString() const;
 };
 
 #undef COMPARE
