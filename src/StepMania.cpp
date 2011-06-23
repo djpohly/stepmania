@@ -1017,13 +1017,6 @@ int main(int argc, char* argv[])
 
 	GAMESTATE	= new GameState;
 
-	DATABASE = new Database;
-
-	if (DATABASE->GetConnectionResult() != SQLITE_OK)
-	{
-		// log it here too?
-	}
-
 	// This requires PREFSMAN, for PREFSMAN->m_bShowLoadingWindow.
 	pLoadingWindow = LoadingWindow::Create();
 	if(pLoadingWindow == NULL)
@@ -1074,6 +1067,13 @@ int main(int argc, char* argv[])
 	SOUNDMAN->Init();
 	SOUNDMAN->SetMixVolume();
 	SOUND		= new GameSoundManager;
+	pLoadingWindow->SetText("Preparing database...");
+	DATABASE = new Database;
+	
+	if (DATABASE->GetConnectionResult() != SQLITE_OK)
+	{
+		// log it here too?
+	}
 	pLoadingWindow->SetText("Initializing bookkeeper...");
 	BOOKKEEPER	= new Bookkeeper;
 	pLoadingWindow->SetText("Starting lights subsystem...");
