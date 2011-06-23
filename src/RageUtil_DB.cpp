@@ -208,6 +208,7 @@ void Database::CreateTablesIfNeeded()
 	RollbackIfFailure;
 
 	const RString blankText = " TEXT NOT NULL DEFAULT '', ";
+	const RString blankFloat = " REAL NOT NULL DEFAULT 0, ";
 	const RString noTextNull = " TEXT NOT NULL, ";
 	const RString PK = "\"ID\" INTEGER PRIMARY KEY AUTOINCREMENT, ";
 	const RString boolFalse = " INTEGER NOT NULL DEFAULT 0, ";
@@ -224,6 +225,9 @@ void Database::CreateTablesIfNeeded()
 		+ "\"cdtitle\"" + blankText + "\"music\"" + blankText \
 		+ "\"sample_start\" REAL NOT NULL DEFAULT 30, \"sample_length\" REAL NOT NULL DEFAULT 12, " \
 		+ "\"display_bpm\"" + blankText + "\"selectable\" TEXT NOT NULL DEFAULT 'YES', " \
+		+ "\"first_beat\"" + blankFloat + "\"last_beat\"" + blankFloat \
+		+ "\"song_file_name\"" + noTextNull + "\"has_music\"" + boolFalse \
+		+ "\"has_banner\"" + boolFalse + "\"music_length\"" + blankFloat \
 		+ "\"bpms\"" + blankText + "\"stops\"" + blankText + "\"delays\"" + blankText \
 		+ "\"warps\"" + blankText + "\"time_signatures\"" + blankText \
 		+ "\"tickcounts\"" + blankText + "\"combos\"" + blankText \
@@ -249,7 +253,7 @@ void Database::CreateTablesIfNeeded()
 		+ "\"song_order\" INTEGER NOT NULL DEFAULT 0, " \
 		+ "\"song_special\"" + blankText + "\"difficulty\"" + blankText \
 		+ "\"mods\"" + blankText + "\"gain_lives\" INTEGER NOT NULL DEFAULT 0, " \
-		+ "\"gain_seconds\" REAL NOT NULL DEFAULT 0, " \
+		+ "\"gain_seconds\"" + blankFloat \
 		+ "FOREIGN KEY(\"course_ID\") REFERENCES \"courses\"(\"ID\"), " \
 		+ "FOREIGN KEY(\"song_ID\") REFERENCES \"songs\"(\"ID\") );";
 
@@ -268,7 +272,7 @@ void Database::CreateTablesIfNeeded()
 		+ "\"speeds\"" + blankText + "\"scrolls\"" + blankText \
 		+ "\"fakes\"" + blankText + "\"labels\"" + blankText \
 		+ "\"attacks\"" + blankText + "\"step_file_name\"" + blankText \
-		+ "\"offset\" REAL NOT NULL DEFAULT 0, " \
+		+ "\"offset\"" + blankFloat \
 		+ "FOREIGN KEY(\"song_ID\") REFERENCES \"songs\"(\"ID\") );";
 
 	RollbackIfFailure;
