@@ -65,6 +65,16 @@ this->RollbackTransaction(); \
 return; \
 }
 
+long Database::LastInsertRowID() const
+{
+	if(m_Connected != SQLITE_OK)
+		return -1; // most auto increments don't go negative.
+	ASSERT_M(m_pDatabase, "The database was lost! Unable to continue.");
+	sqlite3* sqlDatabase = reinterpret_cast<sqlite3*>(m_pDatabase);
+	// XXX: 64-bit to 32-bit warning, but the return type is int64.
+	return sqlite3_last_insert_rowid(sqlDatabase);
+}
+
 bool Database::query( RString sQuery, int iCols, vector<ColumnTypes> v )
 {
 	bool bReturn = false;
@@ -406,7 +416,24 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 		+ this->EscapeQuote(keys) + "', " \
 		+ FloatToString(timing.m_fBeat0OffsetInSeconds) + ");";
 
-	return this->queryNoResult(sql);
+	this->queryNoResult(sql);
+	
+	long songID = this->LastInsertRowID();
+	
+	// Now for the steps.
+	const RString base = "INSERT INTO \"steps\" (\"song_ID\", \"step_hash\", " \
+		+ blank + "\"is_autogen\", \"steps_type\", \"description\", \"chart_style\", " \
+		+ blank + "\"difficulty\", \"meter\", \"radar_values\", \"credit\", " \
+		+ blank + "\"bpms\", \"stops\", \"delays\", \"warps\", \"time_signatures\", " \
+		+ blank + "\"tickcounts\", \"combos\", " \
+		+ blank + "\"speeds\", \"scrolls\", \"fakes\", \"labels\", \"attacks\", " \
+		+ blank + "\"step_file_name\", \"offset\") VALUES (;";
+	FOREACH_CONST(Steps*, vpStepsToSave, step)
+	{
+		// TODO: Finish the implementation.
+	}
+	
+	return true;
 }
 
 #undef RollbackIfFailure

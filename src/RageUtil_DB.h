@@ -91,6 +91,8 @@ class Database
 	 * @brief Prevent the Database from being assigned.
 	 * @param rhs unused. */
 	Database& operator=(const Database& rhs);
+	
+	long LastInsertRowID() const;
 
 public:
 	/** @brief Set up the database. */
