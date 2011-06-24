@@ -244,7 +244,7 @@ void Database::CreateTablesIfNeeded()
 		+ "\"tickcounts\"" + blankText + "\"combos\"" + blankText \
 		+ "\"speeds\"" + blankText + "\"scrolls\"" + blankText \
 		+ "\"fakes\"" + blankText + "\"labels\"" + blankText \
-		+ "\"attacks\"" + blankText \
+		+ "\"attacks\"" + blankText + "\"keysounds\"" + blankText \
 		+ "\"offset\" REAL NOT NULL DEFAULT 0);";
 
 	RollbackIfFailure;
@@ -352,6 +352,7 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 	const RString scrolls = join(",", timing.ScrollsToVectorString());
 	const RString fakes = join(",", timing.FakesToVectorString());
 	const RString labels = join(",", timing.LabelsToVectorString());
+	const RString keys = join(",", s.m_vsKeysoundFile);
 
 	RString sql = "INSERT INTO \"songs\" (\"file_hash\", \"song_title\", " \
 		+ blank + "\"song_subtitle\", \"song_artist\", \"song_title_translit\", " \
@@ -366,7 +367,7 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 		+ blank + "\"bpms\", \"stops\", \"delays\", \"warps\", " \
 		+ blank + "\"time_signatures\", \"tickcounts\", \"combos\", " \
 		+ blank + "\"speeds\", \"scrolls\", \"fakes\", \"labels\", " \
-		+ blank + "\"attacks\", \"offset\") VALUES ('" \
+		+ blank + "\"attacks\", \"keysounds\", \"offset\") VALUES ('" \
 		+ this->EscapeQuote(file_hash) + "', '" \
 		+ this->EscapeQuote(s.m_sMainTitle) + "', '" \
 		+ this->EscapeQuote(s.m_sSubTitle) + "', '" \
@@ -401,7 +402,8 @@ bool Database::AddSongToCache(const Song &s, const vector<Steps*>& vpStepsToSave
 		+ warps + "', '" + timeSigs + "', '" + ticks + "', '" \
 		+ combos + "', '" + speeds + "', '" + scrolls + "', '" \
 		+ fakes + "', '" + labels + "', '" \
-		+ this->EscapeQuote(s.GetAttackString()) + "', " \
+		+ this->EscapeQuote(s.GetAttackString()) + "', '" \
+		+ this->EscapeQuote(keys) + "', " \
 		+ FloatToString(timing.m_fBeat0OffsetInSeconds) + ");";
 
 	return this->queryNoResult(sql);

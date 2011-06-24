@@ -326,6 +326,7 @@ public:
 	vector<RString> GetFGChanges1ToVectorString() const;
 	
 	vector<RString> GetInstrumentTracksToVectorString() const;
+	
 	/**
 	 * @brief The list of LyricSegments.
 	 *
