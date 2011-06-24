@@ -1195,6 +1195,21 @@ vector<RString> Song::GetFGChanges1ToVectorString() const
 	return this->GetChangesToVectorString(this->GetForegroundChanges());
 }
 
+vector<RString> Song::GetInstrumentTracksToVectorString() const
+{
+	vector<RString> ret;
+	FOREACH_ENUM(InstrumentTrack, it)
+	{
+		if (this->HasInstrumentTrack(it))
+		{
+			ret.push_back(InstrumentTrackToString(it)
+				      + "="
+				      + this->m_sInstrumentTrackFile[it]);
+		}
+	}
+	return ret;
+}
+
 RString GetSongAssetPath( RString sPath, const RString &sSongPath )
 {
 	if( sPath == "" )
