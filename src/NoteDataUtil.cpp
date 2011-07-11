@@ -850,10 +850,13 @@ RadarStats CalculateRadarStatsFast( const NoteData &in, RadarStats &out )
 	}
 	for( itr = simultaneousMapNoHold.begin(); itr != simultaneousMapNoHold.end(); itr ++ )
 	{
-		out.taps++;
 		if( itr->second >= 2 )
 		{
 			out.jumps ++;
+		}
+		else
+		{
+			out.taps++;
 		}
 	}
 	return out;
