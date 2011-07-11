@@ -251,7 +251,19 @@ int NoteData::GetNumTracksWithTap( int row ) const
 	for( int t=0; t<GetNumTracks(); t++ )
 	{
 		const TapNote &tn = GetTapNote( t, row );
-		if( tn.type == TapNote::tap || tn.type == TapNote::lift )
+		if( tn.type == TapNote::tap  )
+			iNum++;
+	}
+	return iNum;
+}
+
+int NoteData::GetNumTracksWithLift(int row) const
+{
+	int iNum = 0;
+	for( int t=0; t<GetNumTracks(); t++ )
+	{
+		const TapNote &tn = GetTapNote( t, row );
+		if(tn.type == TapNote::lift)
 			iNum++;
 	}
 	return iNum;

@@ -191,6 +191,12 @@ public:
 	bool GetTapFirstEmptyTrack( int row, int &iEmptyTrackOut ) const;	// return false if no non-empty tracks at row
 	bool GetTapLastEmptyTrack( int row, int &iEmptyTrackOut ) const;	// return false if no empty tracks at row
 	int GetNumTracksWithTap( int row ) const;
+	/**
+	 * @brief Get the number of lifts in the chart.
+	 * @param row the row we're in.
+	 * @return the number of lifts.
+	 * */
+	int GetNumTracksWithLift(int row) const;
 	int GetNumTracksWithTapOrHoldHead( int row ) const;
 	int GetFirstTrackWithTap( int row ) const;
 	int GetFirstTrackWithTapOrHoldHead( int row ) const;
