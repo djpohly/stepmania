@@ -197,10 +197,23 @@ public:
 	 * @return the number of lifts.
 	 * */
 	int GetNumTracksWithLift(int row) const;
+	int GetNumTracksWithTapOrLift(int row) const;
 	int GetNumTracksWithTapOrHoldHead( int row ) const;
+	int GetNumTracksWithTapOrLiftOrHoldHead( int row ) const;
+	int GetNumTracksWithLiftOrHoldHead( int row ) const;
+	
 	int GetFirstTrackWithTap( int row ) const;
+	int GetLastTrackWithTap( int row ) const;
+	int GetFirstTrackWithTapOrLift(int row) const;
+	int GetLastTrackWithTapOrLift(int row) const;
+	int GetFirstTrackWithLift(int row) const;
+	int GetLastTrackWithLift(int row) const;
+	int GetFirstTrackWithTapOrLiftOrHoldHead( int row ) const;
+	int GetLastTrackWithTapOrLiftOrHoldHead( int row ) const;
 	int GetFirstTrackWithTapOrHoldHead( int row ) const;
 	int GetLastTrackWithTapOrHoldHead( int row ) const;
+	int GetFirstTrackWithLiftOrHoldHead( int row ) const;
+	int GetLastTrackWithLiftOrHoldHead( int row ) const;
 
 	inline bool IsThereATapAtRow( int row ) const			{ return GetFirstTrackWithTap( row ) != -1; }
 	inline bool IsThereATapOrHoldHeadAtRow( int row ) const		{ return GetFirstTrackWithTapOrHoldHead( row ) != -1; }

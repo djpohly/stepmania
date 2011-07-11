@@ -269,7 +269,43 @@ int NoteData::GetNumTracksWithLift(int row) const
 	return iNum;
 }
 
+int NoteData::GetNumTracksWithTapOrLift( int row ) const
+{
+	int iNum = 0;
+	for( int t=0; t<GetNumTracks(); t++ )
+	{
+		const TapNote &tn = GetTapNote( t, row );
+		if( tn.type == TapNote::tap || tn.type == TapNote::lift  )
+			iNum++;
+	}
+	return iNum;
+}
+
 int NoteData::GetNumTracksWithTapOrHoldHead( int row ) const
+{
+	int iNum = 0;
+	for( int t=0; t<GetNumTracks(); t++ )
+	{
+		const TapNote &tn = GetTapNote( t, row );
+		if( tn.type == TapNote::tap || tn.type == TapNote::hold_head )
+			iNum++;
+	}
+	return iNum;
+}
+
+int NoteData::GetNumTracksWithLiftOrHoldHead( int row ) const
+{
+	int iNum = 0;
+	for( int t=0; t<GetNumTracks(); t++ )
+	{
+		const TapNote &tn = GetTapNote( t, row );
+		if( tn.type == TapNote::lift || tn.type == TapNote::hold_head )
+			iNum++;
+	}
+	return iNum;
+}
+
+int NoteData::GetNumTracksWithTapOrLiftOrHoldHead( int row ) const
 {
 	int iNum = 0;
 	for( int t=0; t<GetNumTracks(); t++ )
@@ -281,7 +317,7 @@ int NoteData::GetNumTracksWithTapOrHoldHead( int row ) const
 	return iNum;
 }
 
-int NoteData::GetFirstTrackWithTap( int row ) const
+int NoteData::GetFirstTrackWithTapOrLift( int row ) const
 {
 	for( int t=0; t<GetNumTracks(); t++ )
 	{
@@ -292,7 +328,62 @@ int NoteData::GetFirstTrackWithTap( int row ) const
 	return -1;
 }
 
-int NoteData::GetFirstTrackWithTapOrHoldHead( int row ) const
+int NoteData::GetLastTrackWithTapOrLift( int row ) const
+{
+	for( int t=GetNumTracks()-1; t>=0; t-- )
+	{
+		const TapNote &tn = GetTapNote( t, row );
+		if( tn.type == TapNote::tap || tn.type == TapNote::lift )
+			return t;
+	}
+	return -1;
+}
+
+int NoteData::GetFirstTrackWithTap( int row ) const
+{
+	for( int t=0; t<GetNumTracks(); t++ )
+	{
+		const TapNote &tn = GetTapNote( t, row );
+		if( tn.type == TapNote::tap )
+			return t;
+	}
+	return -1;
+}
+
+int NoteData::GetLastTrackWithTap( int row ) const
+{
+	for( int t=GetNumTracks()-1; t>=0; t-- )
+	{
+		const TapNote &tn = GetTapNote( t, row );
+		if( tn.type == TapNote::tap )
+			return t;
+	}
+	return -1;
+}
+
+int NoteData::GetFirstTrackWithLift( int row ) const
+{
+	for( int t=0; t<GetNumTracks(); t++ )
+	{
+		const TapNote &tn = GetTapNote( t, row );
+		if( tn.type == TapNote::lift )
+			return t;
+	}
+	return -1;
+}
+
+int NoteData::GetLastTrackWithLift( int row ) const
+{
+	for( int t=GetNumTracks()-1; t>=0; t-- )
+	{
+		const TapNote &tn = GetTapNote( t, row );
+		if( tn.type == TapNote::lift )
+			return t;
+	}
+	return -1;
+}
+
+int NoteData::GetFirstTrackWithTapOrLiftOrHoldHead( int row ) const
 {
 	for( int t=0; t<GetNumTracks(); t++ )
 	{
@@ -303,12 +394,56 @@ int NoteData::GetFirstTrackWithTapOrHoldHead( int row ) const
 	return -1;
 }
 
-int NoteData::GetLastTrackWithTapOrHoldHead( int row ) const
+int NoteData::GetLastTrackWithTapOrLiftOrHoldHead( int row ) const
 {
 	for( int t=GetNumTracks()-1; t>=0; t-- )
 	{
 		const TapNote &tn = GetTapNote( t, row );
 		if( tn.type == TapNote::tap || tn.type == TapNote::lift || tn.type == TapNote::hold_head )
+			return t;
+	}
+	return -1;
+}
+
+int NoteData::GetFirstTrackWithLiftOrHoldHead( int row ) const
+{
+	for( int t=0; t<GetNumTracks(); t++ )
+	{
+		const TapNote &tn = GetTapNote( t, row );
+		if( tn.type == TapNote::lift || tn.type == TapNote::hold_head )
+			return t;
+	}
+	return -1;
+}
+
+int NoteData::GetLastTrackWithLiftOrHoldHead( int row ) const
+{
+	for( int t=GetNumTracks()-1; t>=0; t-- )
+	{
+		const TapNote &tn = GetTapNote( t, row );
+		if( tn.type == TapNote::lift || tn.type == TapNote::hold_head )
+			return t;
+	}
+	return -1;
+}
+
+int NoteData::GetFirstTrackWithTapOrHoldHead( int row ) const
+{
+	for( int t=0; t<GetNumTracks(); t++ )
+	{
+		const TapNote &tn = GetTapNote( t, row );
+		if( tn.type == TapNote::tap || tn.type == TapNote::hold_head )
+			return t;
+	}
+	return -1;
+}
+
+int NoteData::GetLastTrackWithTapOrHoldHead( int row ) const
+{
+	for( int t=GetNumTracks()-1; t>=0; t-- )
+	{
+		const TapNote &tn = GetTapNote( t, row );
+		if( tn.type == TapNote::tap || tn.type == TapNote::hold_head )
 			return t;
 	}
 	return -1;
