@@ -1274,35 +1274,35 @@ void ScreenEdit::UpdateTextInfo()
 	const StepsTypeCategory &cat = GAMEMAN->GetStepsTypeInfo(m_pSteps->m_StepsType).m_StepsTypeCategory;
 	if (cat == StepsTypeCategory_Couple || cat == StepsTypeCategory_Routine)
 	{
-		pair<int, int> tmp = m_NoteDataEdit.GetNumTapNotesTwoPlayer();
+		pair<int, int> tmp = m_pSteps->GetNumTapNotesTwoPlayer();
 		sText += ssprintf(NUM_STEPS_FORMAT_TWO_PLAYER.GetValue(),
 						  TAP_STEPS.GetValue().c_str(),
 						  tmp.first, tmp.second);
-		tmp = m_NoteDataEdit.GetNumJumpsTwoPlayer();
+		tmp = m_pSteps->GetNumJumpsTwoPlayer();
 		sText += ssprintf(NUM_JUMPS_FORMAT_TWO_PLAYER.GetValue(),
 						  JUMPS.GetValue().c_str(),
 						  tmp.first, tmp.second);
-		tmp = m_NoteDataEdit.GetNumHandsTwoPlayer();
+		tmp =m_pSteps->GetNumHandsTwoPlayer();
 		sText += ssprintf(NUM_HANDS_FORMAT_TWO_PLAYER.GetValue(),
 						  HANDS.GetValue().c_str(),
 						  tmp.first, tmp.second);
-		tmp = m_NoteDataEdit.GetNumHoldNotesTwoPlayer();
+		tmp = m_pSteps->GetNumHoldNotesTwoPlayer();
 		sText += ssprintf(NUM_HOLDS_FORMAT_TWO_PLAYER.GetValue(),
 						  HOLDS.GetValue().c_str(),
 						  tmp.first, tmp.second);
-		tmp = m_NoteDataEdit.GetNumMinesTwoPlayer();
+		tmp = m_pSteps->GetNumMinesTwoPlayer();
 		sText += ssprintf(NUM_MINES_FORMAT_TWO_PLAYER.GetValue(),
 						  MINES.GetValue().c_str(),
 						  tmp.first, tmp.second);
-		tmp = m_NoteDataEdit.GetNumRollsTwoPlayer();
+		tmp = m_pSteps->GetNumRollsTwoPlayer();
 		sText += ssprintf(NUM_ROLLS_FORMAT_TWO_PLAYER.GetValue(),
 						  ROLLS.GetValue().c_str(),
 						  tmp.first, tmp.second);
-		tmp = m_NoteDataEdit.GetNumLiftsTwoPlayer();
+		tmp = m_pSteps->GetNumLiftsTwoPlayer();
 		sText += ssprintf(NUM_LIFTS_FORMAT_TWO_PLAYER.GetValue(),
 						  LIFTS.GetValue().c_str(),
 						  tmp.first, tmp.second);
-		tmp = m_NoteDataEdit.GetNumFakesTwoPlayer();
+		tmp = m_pSteps->GetNumFakesTwoPlayer();
 		sText += ssprintf(NUM_FAKES_FORMAT_TWO_PLAYER.GetValue(),
 						  FAKES.GetValue().c_str(),
 						  tmp.first, tmp.second);
@@ -3736,23 +3736,23 @@ void ScreenEdit::HandleMainMenuChoice( MainMenuChoice c, const vector<int> &iAns
 			const StepsTypeCategory &cat = GAMEMAN->GetStepsTypeInfo(pSteps->m_StepsType).m_StepsTypeCategory;
 			if (cat == StepsTypeCategory_Couple || cat == StepsTypeCategory_Routine)
 			{
-				pair<int, int> tmp = m_NoteDataEdit.GetNumTapNotesTwoPlayer();
+				pair<int, int> tmp = pSteps->GetNumTapNotesTwoPlayer();
 				g_StepsData.rows[tap_notes].SetOneUnthemedChoice( ssprintf("%d / %d", tmp.first, tmp.second) );
-				tmp = m_NoteDataEdit.GetNumJumpsTwoPlayer();
+				tmp = pSteps->GetNumJumpsTwoPlayer();
 				g_StepsData.rows[jumps].SetOneUnthemedChoice( ssprintf("%d / %d", tmp.first, tmp.second) );
-				tmp = m_NoteDataEdit.GetNumHandsTwoPlayer();
+				tmp = pSteps->GetNumHandsTwoPlayer();
 				g_StepsData.rows[hands].SetOneUnthemedChoice( ssprintf("%d / %d", tmp.first, tmp.second) );
-				tmp = m_NoteDataEdit.GetNumQuadsTwoPlayer();
+				tmp = pSteps->GetNumQuadsTwoPlayer();
 				g_StepsData.rows[quads].SetOneUnthemedChoice( ssprintf("%d / %d", tmp.first, tmp.second) );
-				tmp = m_NoteDataEdit.GetNumHoldNotesTwoPlayer();
+				tmp = pSteps->GetNumHoldNotesTwoPlayer();
 				g_StepsData.rows[holds].SetOneUnthemedChoice( ssprintf("%d / %d", tmp.first, tmp.second) );
-				tmp = m_NoteDataEdit.GetNumMinesTwoPlayer();
+				tmp = pSteps->GetNumMinesTwoPlayer();
 				g_StepsData.rows[mines].SetOneUnthemedChoice( ssprintf("%d / %d", tmp.first, tmp.second) );
-				tmp = m_NoteDataEdit.GetNumRollsTwoPlayer();
+				tmp = pSteps->GetNumRollsTwoPlayer();
 				g_StepsData.rows[rolls].SetOneUnthemedChoice( ssprintf("%d / %d", tmp.first, tmp.second) );
-				tmp = m_NoteDataEdit.GetNumLiftsTwoPlayer();
+				tmp = pSteps->GetNumLiftsTwoPlayer();
 				g_StepsData.rows[lifts].SetOneUnthemedChoice( ssprintf("%d / %d", tmp.first, tmp.second) );
-				tmp = m_NoteDataEdit.GetNumFakesTwoPlayer();
+				tmp = pSteps->GetNumFakesTwoPlayer();
 				g_StepsData.rows[fakes].SetOneUnthemedChoice( ssprintf("%d / %d", tmp.first, tmp.second) );
 			}
 			else
