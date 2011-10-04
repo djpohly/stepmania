@@ -773,7 +773,7 @@ void NoteDataUtil::LoadTransformedLightsFromTwo( const NoteData &marquee, const 
 	NoteDataUtil::RemoveMines( out );
 }
 
-RadarStats CalculateRadarStatsFast( const Steps &in, RadarStats &out )
+RadarStats CalculateRadarStatsFast( const Steps *in, RadarStats &out )
 {
 	out.taps = 0;
 	out.jumps = 0;
@@ -783,14 +783,14 @@ RadarStats CalculateRadarStatsFast( const Steps &in, RadarStats &out )
 	map<int, int> simultaneousMapNoHold;
 	map<int, int> simultaneousMapTapHoldHead;
 	map<int, int>::iterator itr;
-	const NoteData &nd = in.GetNoteData();
+	const NoteData &nd = in->GetNoteData();
 	for( int t=0; t<nd.GetNumTracks(); t++ )
 	{
 		FOREACH_NONEMPTY_ROW_IN_TRACK_RANGE( nd, t, r, 0, MAX_NOTE_ROW )
 		{
 			/* This function deals strictly with taps, jumps, hands, and quads.
 			 * As such, all rows in here have to be judgable. */
-			if (!in.m_Timing.IsJudgableAtRow(r))
+			if (!in->m_Timing.IsJudgableAtRow(r))
 				continue;
 			
 			const TapNote &tn = nd.GetTapNote(t, r);
@@ -863,7 +863,7 @@ RadarStats CalculateRadarStatsFast( const Steps &in, RadarStats &out )
 	return out;
 }
 
-void NoteDataUtil::CalculateRadarValues( const Steps &in, float fSongSeconds, RadarValues& out )
+void NoteDataUtil::CalculateRadarValues( const Steps *in, float fSongSeconds, RadarValues& out )
 {
 	RadarStats stats;
 	CalculateRadarStatsFast( in, stats );
@@ -881,34 +881,34 @@ void NoteDataUtil::CalculateRadarValues( const Steps &in, float fSongSeconds, Ra
 		case RadarCategory_Chaos:			out[rc] = GetChaosRadarValue( in, fSongSeconds );	break;
 		case RadarCategory_TapsAndHolds:	out[rc] = (float) stats.taps;				break;
 		case RadarCategory_Jumps:			out[rc] = (float) stats.jumps;				break;
-		case RadarCategory_Holds:			out[rc] = (float) in.GetNumHoldNotes();		break;
-		case RadarCategory_Mines:			out[rc] = (float) in.GetNumMines();			break;
-		case RadarCategory_Hands:			out[rc] = (float) in.GetNumHands();			break;
-		case RadarCategory_Rolls:			out[rc] = (float) in.GetNumRolls();			break;
-		case RadarCategory_Lifts:			out[rc] = (float) in.GetNumLifts();			break;
-		case RadarCategory_Fakes:			out[rc] = (float) in.GetNumFakes();			break;
+		case RadarCategory_Holds:			out[rc] = (float) in->GetNumHoldNotes();		break;
+		case RadarCategory_Mines:			out[rc] = (float) in->GetNumMines();			break;
+		case RadarCategory_Hands:			out[rc] = (float) in->GetNumHands();			break;
+		case RadarCategory_Rolls:			out[rc] = (float) in->GetNumRolls();			break;
+		case RadarCategory_Lifts:			out[rc] = (float) in->GetNumLifts();			break;
+		case RadarCategory_Fakes:			out[rc] = (float) in->GetNumFakes();			break;
 		default:	FAIL_M("Non-existant radar category attempted to be set!");
 		}
 	}
 }
 
-float NoteDataUtil::GetStreamRadarValue( const Steps &in, float fSongSeconds )
+float NoteDataUtil::GetStreamRadarValue( const Steps *in, float fSongSeconds )
 {
 	if( !fSongSeconds )
 		return 0.0f;
 	// density of steps
-	int iNumNotes = in.GetNumTapNotes() + in.GetNumHoldNotes();
+	int iNumNotes = in->GetNumTapNotes() + in->GetNumHoldNotes();
 	float fNotesPerSecond = iNumNotes/fSongSeconds;
 	float fReturn = fNotesPerSecond / 7;
 	return min( fReturn, 1.0f );
 }
 
-float NoteDataUtil::GetVoltageRadarValue( const Steps &in, float fSongSeconds )
+float NoteDataUtil::GetVoltageRadarValue( const Steps *in, float fSongSeconds )
 {
 	if( !fSongSeconds )
 		return 0.0f;
 
-	const float fLastBeat = in.GetNoteData().GetLastBeat();
+	const float fLastBeat = in->GetNoteData().GetLastBeat();
 	const float fAvgBPS = fLastBeat / fSongSeconds;
 
 	// peak density of steps
@@ -919,7 +919,7 @@ float NoteDataUtil::GetVoltageRadarValue( const Steps &in, float fSongSeconds )
 
 	for( int i=0; i<=BeatToNoteRow(fLastBeat); i+=BEAT_WINDOW_ROWS )
 	{
-		int iNumNotesThisWindow = in.GetNumTapNotes( i, i+BEAT_WINDOW_ROWS ) + in.GetNumHoldNotes( i, i+BEAT_WINDOW_ROWS );
+		int iNumNotesThisWindow = in->GetNumTapNotes( i, i+BEAT_WINDOW_ROWS ) + in->GetNumHoldNotes( i, i+BEAT_WINDOW_ROWS );
 		float fDensityThisWindow = iNumNotesThisWindow / BEAT_WINDOW;
 		fMaxDensitySoFar = max( fMaxDensitySoFar, fDensityThisWindow );
 	}
@@ -928,32 +928,32 @@ float NoteDataUtil::GetVoltageRadarValue( const Steps &in, float fSongSeconds )
 	return min( fReturn, 1.0f );
 }
 
-float NoteDataUtil::GetAirRadarValue( const Steps &in, float fSongSeconds )
+float NoteDataUtil::GetAirRadarValue( const Steps *in, float fSongSeconds )
 {
 	if( !fSongSeconds )
 		return 0.0f;
 	// number of doubles
-	int iNumDoubles = in.GetNumJumps();
+	int iNumDoubles = in->GetNumJumps();
 	float fReturn = iNumDoubles / fSongSeconds;
 	return min( fReturn, 1.0f );
 }
 
-float NoteDataUtil::GetFreezeRadarValue( const Steps &in, float fSongSeconds )
+float NoteDataUtil::GetFreezeRadarValue( const Steps *in, float fSongSeconds )
 {
 	if( !fSongSeconds )
 		return 0.0f;
 	// number of hold steps
-	float fReturn = in.GetNumHoldNotes() / fSongSeconds;
+	float fReturn = in->GetNumHoldNotes() / fSongSeconds;
 	return min( fReturn, 1.0f );
 }
 
-float NoteDataUtil::GetChaosRadarValue( const Steps &in, float fSongSeconds )
+float NoteDataUtil::GetChaosRadarValue( const Steps *in, float fSongSeconds )
 {
 	if( !fSongSeconds )
 		return 0.0f;
 	// count number of notes smaller than 8ths
 	int iNumChaosNotes = 0;
-	const NoteData &nd = in.GetNoteData();
+	const NoteData &nd = in->GetNoteData();
 	FOREACH_NONEMPTY_ROW_ALL_TRACKS( nd, r )
 	{
 		if( GetNoteType(r) >= NOTE_TYPE_12TH )
