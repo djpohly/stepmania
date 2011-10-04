@@ -585,8 +585,6 @@ int NoteData::GetNumRowsWithSimultaneousPresses( int iMinSimultaneousPresses, in
 	{
 		if( !RowNeedsAtLeastSimultaneousPresses(iMinSimultaneousPresses,r) )
 			continue;
-		if (!GAMESTATE->GetProcessedTimingData()->IsJudgableAtRow(r))
-			continue;
 		iNum++;
 	}
 

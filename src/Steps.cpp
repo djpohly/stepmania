@@ -541,6 +541,27 @@ int Steps::GetNumTapNotes(int startRow, int endRow) const
 	return iNumNotes;
 }
 
+int Steps::GetNumRowsWithSimultaneousPresses(int iMinSimultaneousPresses,
+											 int startRow, int endRow) const
+{
+	/* Count the number of times you have to use your hands.  This includes
+	 * three taps at the same time, a tap while two hold notes are being held,
+	 * etc.  Only count rows that have at least one tap note (hold heads count).
+	 * Otherwise, every row of hold notes counts, so three simultaneous hold
+	 * notes will count as hundreds of "hands". */
+	int iNum = 0;
+	const NoteData &nd = this->GetNoteData();
+	FOREACH_NONEMPTY_ROW_ALL_TRACKS_RANGE( nd, r, startRow, endRow )
+	{
+		if( !nd.RowNeedsAtLeastSimultaneousPresses(iMinSimultaneousPresses,r) )
+			continue;
+		if (this->m_Timing.IsJudgableAtRow(r))
+			continue;
+		iNum++;
+	}
+	return iNum;
+}
+
 
 // lua start
 #include "LuaBinding.h"

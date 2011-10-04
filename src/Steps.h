@@ -200,7 +200,22 @@ public:
 	{
 		return this->GetNumTapNotes(iRow, iRow + 1);
 	}
-	int GetNumJumps(int startRow = 0, int endRow = MAX_NOTE_ROW) const;
+	
+	int GetNumRowsWithSimultaneousPresses(int iMinSimultaneousPresses,
+										  int iStartIndex = 0,
+										  int iEndIndex = MAX_NOTE_ROW) const;
+	int GetNumJumps(int startRow = 0, int endRow = MAX_NOTE_ROW) const
+	{
+		return this->GetNumRowsWithSimultaneousPresses(2, startRow, endRow);
+	}
+	int GetNumHands(int startRow = 0, int endRow = MAX_NOTE_ROW) const
+	{
+		return this->GetNumRowsWithSimultaneousPresses(3, startRow, endRow);
+	}
+	int GetNumQuads(int startRow = 0, int endRow = MAX_NOTE_ROW) const
+	{
+		return this->GetNumRowsWithSimultaneousPresses(4, startRow, endRow);
+	}
 
 private:
 	inline const Steps *Real() const		{ return parent ? parent : this; }
