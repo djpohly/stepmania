@@ -268,6 +268,8 @@ void Steps::CalculateRadarValues( float fMusicLengthSeconds )
 	if( IsAnEdit() )
 		return;
 	*/
+	
+	// TODO: Make new Steps for this? Something will need to be done.
 
 	NoteData tempNoteData;
 	this->GetNoteData( tempNoteData );
@@ -301,7 +303,7 @@ void Steps::CalculateRadarValues( float fMusicLengthSeconds )
 	}
 	else
 	{
-		NoteDataUtil::CalculateRadarValues( tempNoteData, fMusicLengthSeconds, m_CachedRadarValues[0] );
+		NoteDataUtil::CalculateRadarValues( this, fMusicLengthSeconds, m_CachedRadarValues[0] );
 		fill_n( m_CachedRadarValues + 1, NUM_PLAYERS-1, m_CachedRadarValues[0] );
 	}
 }
