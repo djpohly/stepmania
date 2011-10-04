@@ -467,8 +467,7 @@ bool NoteData::IsTap(const TapNote &tn, const int row) const
 
 bool NoteData::IsMine(const TapNote &tn, const int row) const
 {
-	return (tn.type == TapNote::mine
-			&& GAMESTATE->GetProcessedTimingData()->IsJudgableAtRow(row));
+	return (tn.type == TapNote::mine);
 }
 
 bool NoteData::IsLift(const TapNote &tn, const int row) const
