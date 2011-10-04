@@ -2348,12 +2348,11 @@ void ScreenGameplay::SaveStats()
 		const NoteData &nd = pi->m_pPlayer->GetNoteData();
 		PlayerNumber pn = pi->m_pn;
 
-		GAMESTATE->SetProcessedTimingData(&GAMESTATE->m_pCurSteps[pn]->m_Timing);
-		NoteDataUtil::CalculateRadarValues( nd, fMusicLen, rv );
+		Steps *step = GAMESTATE->m_pCurSteps[pn];
+		NoteDataUtil::CalculateRadarValues( step, fMusicLen, rv );
 		pss.m_radarPossible += rv;
 		NoteDataWithScoring::GetActualRadarValues( nd, pss, fMusicLen, rv );
 		pss.m_radarActual += rv;
-		GAMESTATE->SetProcessedTimingData(NULL);
 	}
 }
 
