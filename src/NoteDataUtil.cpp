@@ -790,7 +790,7 @@ RadarStats CalculateRadarStatsFast( const Steps &in, RadarStats &out )
 		{
 			/* This function deals strictly with taps, jumps, hands, and quads.
 			 * As such, all rows in here have to be judgable. */
-			if (!GAMESTATE->GetProcessedTimingData()->IsJudgableAtRow(r))
+			if (!in.m_Timing.IsJudgableAtRow(r))
 				continue;
 			
 			const TapNote &tn = nd.GetTapNote(t, r);
