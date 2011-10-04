@@ -863,34 +863,93 @@ RadarStats CalculateRadarStatsFast( const Steps *in, RadarStats &out )
 	return out;
 }
 
-void NoteDataUtil::CalculateRadarValues( const Steps *in, float fSongSeconds, RadarValues& out )
-{
-	RadarStats stats;
-	CalculateRadarStatsFast( in, stats );
-	
+void NoteDataUtil::CalculateRadarValues( Steps *in, float fSongSeconds, RadarValues& out )
+{	
 	// TODO: Implement a better, cleaner way of doing this since we're now using Steps.
 	StepsTypeCategory cat = in->GetStepsTypeCategory();
 	
-	// The for loop and the assert are used to ensure that all fields of 
-	// RadarValue get set in here.
-	FOREACH_ENUM( RadarCategory, rc )
+	if (cat == StepsTypeCategory_Couple || cat == StepsTypeCategory_Routine)
 	{
-		switch( rc )
+		RadarValues v[NUM_PLAYERS];
+		pair<float, float> stream = GetStreamRadarValueTwoPlayer(in, fSongSeconds);
+		v[0][RadarCategory_Stream] = stream.first;
+		v[1][RadarCategory_Stream] = stream.second;
+		
+		pair<float, float> voltage = GetVoltageRadarValueTwoPlayer(in, fSongSeconds);
+		v[0][RadarCategory_Voltage] = voltage.first;
+		v[1][RadarCategory_Voltage] = voltage.second;
+		
+		pair<float, float> air = GetAirRadarValueTwoPlayer(in, fSongSeconds);
+		v[0][RadarCategory_Air] = air.first;
+		v[1][RadarCategory_Air] = air.second;
+		
+		pair<float, float> freeze = GetFreezeRadarValueTwoPlayer(in, fSongSeconds);
+		v[0][RadarCategory_Freeze] = freeze.first;
+		v[1][RadarCategory_Freeze] = freeze.second;
+		
+		pair<float, float> chaos = GetChaosRadarValueTwoPlayer(in, fSongSeconds);
+		v[0][RadarCategory_Chaos] = chaos.first;
+		v[1][RadarCategory_Chaos] = chaos.second;
+		
+		pair<int, int> steps = in->GetNumTapNotesTwoPlayer();
+		v[0][RadarCategory_TapsAndHolds] = steps.first;
+		v[1][RadarCategory_TapsAndHolds] = steps.second;
+		
+		pair<int, int> jumps = in->GetNumJumpsTwoPlayer();
+		v[0][RadarCategory_Jumps] = jumps.first;
+		v[1][RadarCategory_Jumps] = jumps.second;
+		
+		pair<int, int> holds = in->GetNumHoldNotesTwoPlayer();
+		v[0][RadarCategory_Holds] = holds.first;
+		v[1][RadarCategory_Holds] = holds.second;
+		
+		pair<int, int> mines = in->GetNumMinesTwoPlayer();
+		v[0][RadarCategory_Mines] = mines.first;
+		v[1][RadarCategory_Mines] = mines.second;
+		
+		pair<int, int> hands = in->GetNumHandsTwoPlayer();
+		v[0][RadarCategory_Hands] = hands.first;
+		v[1][RadarCategory_Hands] = hands.second;
+		
+		pair<int, int> rolls = in->GetNumRollsTwoPlayer();
+		v[0][RadarCategory_Rolls] = rolls.first;
+		v[1][RadarCategory_Rolls] = rolls.second;
+		
+		pair<int, int> lifts = in->GetNumLiftsTwoPlayer();
+		v[0][RadarCategory_Lifts] = lifts.first;
+		v[1][RadarCategory_Lifts] = lifts.second;
+		
+		pair<int, int> fakes = in->GetNumFakesTwoPlayer();
+		v[0][RadarCategory_Fakes] = fakes.first;
+		v[1][RadarCategory_Fakes] = fakes.second;
+		
+		in->SetCachedRadarValues(v);
+	}
+	else
+	{
+		RadarStats stats;
+		CalculateRadarStatsFast( in, stats );
+		// The for loop and the assert are used to ensure that all fields of 
+		// RadarValue get set in here.
+		FOREACH_ENUM( RadarCategory, rc )
 		{
-		case RadarCategory_Stream:			out[rc] = GetStreamRadarValue( in, fSongSeconds );	break;	
-		case RadarCategory_Voltage:			out[rc] = GetVoltageRadarValue( in, fSongSeconds );	break;
-		case RadarCategory_Air:				out[rc] = GetAirRadarValue( in, fSongSeconds );		break;
-		case RadarCategory_Freeze:			out[rc] = GetFreezeRadarValue( in, fSongSeconds );	break;
-		case RadarCategory_Chaos:			out[rc] = GetChaosRadarValue( in, fSongSeconds );	break;
-		case RadarCategory_TapsAndHolds:	out[rc] = (float) stats.taps;				break;
-		case RadarCategory_Jumps:			out[rc] = (float) stats.jumps;				break;
-		case RadarCategory_Holds:			out[rc] = (float) in->GetNumHoldNotes();		break;
-		case RadarCategory_Mines:			out[rc] = (float) in->GetNumMines();			break;
-		case RadarCategory_Hands:			out[rc] = (float) in->GetNumHands();			break;
-		case RadarCategory_Rolls:			out[rc] = (float) in->GetNumRolls();			break;
-		case RadarCategory_Lifts:			out[rc] = (float) in->GetNumLifts();			break;
-		case RadarCategory_Fakes:			out[rc] = (float) in->GetNumFakes();			break;
-		default:	FAIL_M("Non-existant radar category attempted to be set!");
+			switch( rc )
+			{
+			case RadarCategory_Stream:			out[rc] = GetStreamRadarValue( in, fSongSeconds );	break;	
+			case RadarCategory_Voltage:			out[rc] = GetVoltageRadarValue( in, fSongSeconds );	break;
+			case RadarCategory_Air:				out[rc] = GetAirRadarValue( in, fSongSeconds );		break;
+			case RadarCategory_Freeze:			out[rc] = GetFreezeRadarValue( in, fSongSeconds );	break;
+			case RadarCategory_Chaos:			out[rc] = GetChaosRadarValue( in, fSongSeconds );	break;
+			case RadarCategory_TapsAndHolds:	out[rc] = (float) stats.taps;				break;
+			case RadarCategory_Jumps:			out[rc] = (float) stats.jumps;				break;
+			case RadarCategory_Holds:			out[rc] = (float) in->GetNumHoldNotes();		break;
+			case RadarCategory_Mines:			out[rc] = (float) in->GetNumMines();			break;
+			case RadarCategory_Hands:			out[rc] = (float) in->GetNumHands();			break;
+			case RadarCategory_Rolls:			out[rc] = (float) in->GetNumRolls();			break;
+			case RadarCategory_Lifts:			out[rc] = (float) in->GetNumLifts();			break;
+			case RadarCategory_Fakes:			out[rc] = (float) in->GetNumFakes();			break;
+			default:	FAIL_M("Non-existant radar category attempted to be set!");
+			}
 		}
 	}
 }

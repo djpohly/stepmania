@@ -76,7 +76,7 @@ namespace NoteDataUtil
 	pair<float, float> GetFreezeRadarValueTwoPlayer(const Steps *in, float songLength);
 	pair<float, float> GetChaosRadarValueTwoPlayer(const Steps *in, float songLength);
 
-	void CalculateRadarValues( const Steps *in, float fSongSeconds, RadarValues& out );
+	void CalculateRadarValues( Steps *in, float fSongSeconds, RadarValues& out );
 
 	/**
 	 * @brief Remove all of the Hold notes.

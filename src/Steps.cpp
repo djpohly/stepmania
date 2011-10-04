@@ -286,6 +286,8 @@ void Steps::CalculateRadarValues( float fMusicLengthSeconds )
 	FOREACH_PlayerNumber( pn )
 		m_CachedRadarValues[pn].Zero();
 
+	//NoteDataUtil::CalculateRadarValues(this, fMusicLengthSeconds, m_
+	
 	if( tempNoteData.IsComposite() )
 	{
 		vector<NoteData> vParts;
