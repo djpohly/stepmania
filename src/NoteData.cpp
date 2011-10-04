@@ -756,8 +756,6 @@ pair<int, int> NoteData::GetNumHoldNotesTwoPlayer( int iStartIndex, int iEndInde
 			if( lBegin->second.type != TapNote::hold_head ||
 			   lBegin->second.subType != TapNote::hold_head_hold )
 				continue;
-			if (!GAMESTATE->GetProcessedTimingData()->IsJudgableAtRow(lBegin->first))
-				continue;
 			if (this->IsPlayer1(t, lBegin->second))
 				num.first++;
 			else
@@ -798,8 +796,6 @@ pair<int, int> NoteData::GetNumRollsTwoPlayer( int iStartIndex, int iEndIndex ) 
 		{
 			if( lBegin->second.type != TapNote::hold_head ||
 			   lBegin->second.subType != TapNote::hold_head_roll )
-				continue;
-			if (!GAMESTATE->GetProcessedTimingData()->IsJudgableAtRow(lBegin->first))
 				continue;
 			if (this->IsPlayer1(t, lBegin->second))
 				num.first++;
