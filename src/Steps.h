@@ -221,6 +221,7 @@ public:
 	int GetNumFakes(int startRow = 0, int endRow = MAX_NOTE_ROW) const;
 	
 	int GetNumHoldNotes(int startRow = 0, int endRow = MAX_NOTE_ROW) const;
+	int GetNumRolls(int startRow = 0, int endRow = MAX_NOTE_ROW) const;
 	
 	// XXX: Is this function unused?
 	int GetNumRowsWithSimultaneousTaps(int minTaps, int startRow = 0,

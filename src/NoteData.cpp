@@ -639,8 +639,6 @@ int NoteData::GetNumRolls( int iStartIndex, int iEndIndex ) const
 			if( lBegin->second.type != TapNote::hold_head ||
 				lBegin->second.subType != TapNote::hold_head_roll )
 				continue;
-			if (!GAMESTATE->GetProcessedTimingData()->IsJudgableAtRow(lBegin->first))
-				continue;
 			iNumRolls++;
 		}
 	}
