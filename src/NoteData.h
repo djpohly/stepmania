@@ -91,6 +91,7 @@ private:
 	// Any blank space in the map is defined to be empty.
 	vector<TrackMap>	m_TapNotes;
 	
+public:
 	/**
 	 * @brief Determine whether this note is for Player 1 or Player 2.
 	 * @param track the track/column the note is in.
@@ -130,7 +131,7 @@ private:
 														   int startRow = 0,
 														   int endRow = MAX_NOTE_ROW) const;
 	
-public:
+
 	void Init();
 
 	int GetNumTracks() const { return m_TapNotes.size(); }

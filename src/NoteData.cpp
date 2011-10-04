@@ -462,8 +462,7 @@ int NoteData::GetLastRow() const
 bool NoteData::IsTap(const TapNote &tn, const int row) const
 {
 	return (tn.type != TapNote::empty && tn.type != TapNote::mine
-			&& tn.type != TapNote::lift && tn.type != TapNote::fake 
-			&& GAMESTATE->GetProcessedTimingData()->IsJudgableAtRow(row));
+			&& tn.type != TapNote::lift && tn.type != TapNote::fake);
 }
 
 bool NoteData::IsMine(const TapNote &tn, const int row) const

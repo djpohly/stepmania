@@ -524,6 +524,23 @@ bool Steps::UsesSplitTiming() const
 	return song->m_SongTiming != this->m_Timing;
 }
 
+int Steps::GetNumTapNotes(int startRow, int endRow) const
+{
+	int iNumNotes = 0;
+	const NoteData &nd = this->GetNoteData();
+	for( int t=0; t<nd.GetNumTracks(); t++ )
+	{
+		FOREACH_NONEMPTY_ROW_IN_TRACK_RANGE( nd, t, r, startRow, endRow )
+		{
+			if (this->m_Timing.IsJudgableAtRow(r))
+				continue;
+			if (nd.IsTap(nd.GetTapNote(t, r), r))
+				iNumNotes++;
+		}
+	}
+	return iNumNotes;
+}
+
 
 // lua start
 #include "LuaBinding.h"
