@@ -477,8 +477,7 @@ bool NoteData::IsLift(const TapNote &tn, const int row) const
 
 bool NoteData::IsFake(const TapNote &tn, const int row) const
 {
-	return (tn.type == TapNote::fake
-			|| !GAMESTATE->GetProcessedTimingData()->IsJudgableAtRow(row));
+	return (tn.type == TapNote::fake);
 }
 
 int NoteData::GetNumTapNotes( int iStartIndex, int iEndIndex ) const

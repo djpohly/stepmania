@@ -596,6 +596,24 @@ int Steps::GetNumLifts(int startRow, int endRow) const
 	return iNumLifts;
 }
 
+int Steps::GetNumFakes(int startRow, int endRow) const
+{
+	int iNumFakes = 0;
+	const NoteData &nd = this->GetNoteData();
+	for( int t=0; t<nd.GetNumTracks(); t++ )
+	{
+		FOREACH_NONEMPTY_ROW_IN_TRACK_RANGE( nd, t, r, startRow, endRow )
+		{
+			if (!this->m_Timing.IsJudgableAtRow(r))
+				iNumFakes++;
+			else if( nd.IsFake(nd.GetTapNote(t, r), r))
+				iNumFakes++;
+		}
+	}
+	
+	return iNumFakes;
+}
+
 // lua start
 #include "LuaBinding.h"
 /** @brief Allow Lua to have access to the Steps. */
