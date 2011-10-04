@@ -57,6 +57,10 @@
 		2B17ABEB1398179E001AE57D /* study.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6C7F04AFD87300D02EE9 /* study.c */; };
 		2B17ABFC139817D5001AE57D /* libpcre-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B17ABE013981756001AE57D /* libpcre-sm5.a */; };
 		2B17ABFD139817D6001AE57D /* libpcre-sm5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B17ABE013981756001AE57D /* libpcre-sm5.a */; };
+		2B275777143AA4C400DC5070 /* StepsWithScoring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B275775143AA4C300DC5070 /* StepsWithScoring.cpp */; };
+		2B275778143AA4C400DC5070 /* StepsWithScoring.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B275776143AA4C400DC5070 /* StepsWithScoring.h */; };
+		2B275779143AA4C400DC5070 /* StepsWithScoring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B275775143AA4C300DC5070 /* StepsWithScoring.cpp */; };
+		2B27577A143AA4C400DC5070 /* StepsWithScoring.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B275776143AA4C400DC5070 /* StepsWithScoring.h */; };
 		2B30D6821315EA7E00044B68 /* MouseDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B30D6801315EA7E00044B68 /* MouseDevice.cpp */; };
 		2B30D6831315EA7E00044B68 /* MouseDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B30D6811315EA7E00044B68 /* MouseDevice.h */; };
 		2B43509513949F37006FA051 /* TimingSegments.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B43509313949F37006FA051 /* TimingSegments.h */; };
@@ -1855,6 +1859,8 @@
 		2B17AB7213980FDF001AE57D /* libpng-1.5.1-sm5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpng-1.5.1-sm5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B17ABC013981521001AE57D /* libglew-sm5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libglew-sm5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B17ABE013981756001AE57D /* libpcre-sm5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpcre-sm5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B275775143AA4C300DC5070 /* StepsWithScoring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StepsWithScoring.cpp; path = ../src/StepsWithScoring.cpp; sourceTree = SOURCE_ROOT; };
+		2B275776143AA4C400DC5070 /* StepsWithScoring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StepsWithScoring.h; path = ../src/StepsWithScoring.h; sourceTree = SOURCE_ROOT; };
 		2B30D6801315EA7E00044B68 /* MouseDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseDevice.cpp; sourceTree = "<group>"; };
 		2B30D6811315EA7E00044B68 /* MouseDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MouseDevice.h; sourceTree = "<group>"; };
 		2B43509313949F37006FA051 /* TimingSegments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimingSegments.h; path = ../src/TimingSegments.h; sourceTree = SOURCE_ROOT; };
@@ -4105,6 +4111,8 @@
 				AAF430FE04DC98BC00D02EE9 /* Steps.h */,
 				AA5C73FB0637A5F000AFB891 /* StepsUtil.cpp */,
 				AA5C73FC0637A5F000AFB891 /* StepsUtil.h */,
+				2B275775143AA4C300DC5070 /* StepsWithScoring.cpp */,
+				2B275776143AA4C400DC5070 /* StepsWithScoring.h */,
 				AA139C4606923EBE00C1F6ED /* Style.cpp */,
 				AA25200D0587225500027ACB /* Style.h */,
 				AA3A706006AA1645006F755E /* StyleUtil.cpp */,
@@ -5263,6 +5271,7 @@
 				2B9C2E90137A138B004C92F3 /* NotesWriterJson.h in Headers */,
 				2B43509513949F37006FA051 /* TimingSegments.h in Headers */,
 				B773AE6E140AAB1800C68DDD /* SpecialDirs.h in Headers */,
+				2B275778143AA4C400DC5070 /* StepsWithScoring.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5669,6 +5678,7 @@
 				AA6C6B110DC6B48C00E7A13E /* InputHandler_MacOSX_HID.h in Headers */,
 				AAC0BFE40E2951EC00F56EEB /* CryptHelpers.h in Headers */,
 				AAFF41A60F5BD4AD00FFDB67 /* ScreenOptionsExportPackage.h in Headers */,
+				2B27577A143AA4C400DC5070 /* StepsWithScoring.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6642,6 +6652,7 @@
 				2BD06FF4137242680018CB9F /* json_writer.cpp in Sources */,
 				2B43509613949F37006FA051 /* TimingSegments.cpp in Sources */,
 				B773AE6D140AAB1800C68DDD /* SpecialDirs.cpp in Sources */,
+				2B275777143AA4C400DC5070 /* StepsWithScoring.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7033,6 +7044,7 @@
 				AA6C6B100DC6B48C00E7A13E /* InputHandler_MacOSX_HID.cpp in Sources */,
 				AAC0BFE30E2951EC00F56EEB /* CryptHelpers.cpp in Sources */,
 				AAFF41A50F5BD4AD00FFDB67 /* ScreenOptionsExportPackage.cpp in Sources */,
+				2B275779143AA4C400DC5070 /* StepsWithScoring.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
