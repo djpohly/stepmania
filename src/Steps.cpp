@@ -270,9 +270,11 @@ void Steps::CalculateRadarValues( float fMusicLengthSeconds )
 	*/
 	
 	// TODO: Make new Steps for this? Something will need to be done.
-
-	NoteData tempNoteData;
-	this->GetNoteData( tempNoteData );
+	Steps *tmpSteps = new Steps();
+	
+	NoteData tempNoteData = this->GetNoteData();
+	tmpSteps->SetNoteData(tempNoteData);
+	//this->GetNoteData( tempNoteData );
 
 	FOREACH_PlayerNumber( pn )
 		m_CachedRadarValues[pn].Zero();
@@ -306,6 +308,8 @@ void Steps::CalculateRadarValues( float fMusicLengthSeconds )
 		NoteDataUtil::CalculateRadarValues( this, fMusicLengthSeconds, m_CachedRadarValues[0] );
 		fill_n( m_CachedRadarValues + 1, NUM_PLAYERS-1, m_CachedRadarValues[0] );
 	}
+	
+	delete tmpSteps;
 }
 
 void Steps::Decompress() const
