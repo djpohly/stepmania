@@ -579,6 +579,23 @@ int Steps::GetNumMines(int startRow, int endRow) const
 	return iNumMines;
 }
 
+int Steps::GetNumLifts(int startRow, int endRow) const
+{
+	int iNumLifts = 0;
+	const NoteData &nd = this->GetNoteData();
+	for( int t=0; t<nd.GetNumTracks(); t++ )
+	{
+		FOREACH_NONEMPTY_ROW_IN_TRACK_RANGE( nd, t, r, startRow, endRow )
+		{
+			if (!this->m_Timing.IsJudgableAtRow(r))
+				continue;
+			if( nd.IsLift(nd.GetTapNote(t, r), r))
+				iNumLifts++;
+		}
+	}
+	return iNumLifts;
+}
+
 // lua start
 #include "LuaBinding.h"
 /** @brief Allow Lua to have access to the Steps. */

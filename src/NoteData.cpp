@@ -472,8 +472,7 @@ bool NoteData::IsMine(const TapNote &tn, const int row) const
 
 bool NoteData::IsLift(const TapNote &tn, const int row) const
 {
-	return (tn.type == TapNote::lift
-			&& GAMESTATE->GetProcessedTimingData()->IsJudgableAtRow(row));
+	return (tn.type == TapNote::lift);
 }
 
 bool NoteData::IsFake(const TapNote &tn, const int row) const

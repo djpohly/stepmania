@@ -217,6 +217,7 @@ public:
 		return this->GetNumRowsWithSimultaneousPresses(4, startRow, endRow);
 	}
 	int GetNumMines(int startRow = 0, int endRow = MAX_NOTE_ROW) const;
+	int GetNumLifts(int startRow = 0, int endRow = MAX_NOTE_ROW) const;
 
 private:
 	inline const Steps *Real() const		{ return parent ? parent : this; }
