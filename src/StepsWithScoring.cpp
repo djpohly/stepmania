@@ -245,7 +245,7 @@ const TapNote &StepsWithScoring::LastTapNoteWithResult( const NoteData &in, unsi
  * taps have been hit), return TNS_None or TNS_Miss. */
 TapNoteScore StepsWithScoring::MinTapNoteScore( const NoteData &in, unsigned row )
 {
-	//LOG->Trace("Hey I'm StepsWithScoring::MinTapNoteScore");
+	// TODO (maybe?): Call IsJudgable with Steps and return TNS_None if not?
 	TapNoteScore score = TNS_W1;
 	for( int t=0; t<in.GetNumTracks(); t++ )
 	{
@@ -255,8 +255,6 @@ TapNoteScore StepsWithScoring::MinTapNoteScore( const NoteData &in, unsigned row
 			continue;
 		score = min( score, tn.result.tns );
 	}
-
-	//LOG->Trace( ssprintf("OMG score is?? %s",TapNoteScoreToString(score).c_str()) );
 	return score;
 }
 
