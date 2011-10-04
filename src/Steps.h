@@ -191,6 +191,16 @@ public:
 	{
 		return join(":", this->m_sAttackString);
 	}
+	
+	/* The following functions are used for calculating more accurate
+	 * radar data due to how TimingData can manipulate arrows to be fake.
+	 * In general, they will access Notedata's functions. */
+	int GetNumTapNotes(int startRow = 0, int endRow = MAX_NOTE_ROW) const;
+	int GetNumTapNotesInRow(int iRow) const
+	{
+		return this->GetNumTapNotes(iRow, iRow + 1);
+	}
+	int GetNumJumps(int startRow = 0, int endRow = MAX_NOTE_ROW) const;
 
 private:
 	inline const Steps *Real() const		{ return parent ? parent : this; }
