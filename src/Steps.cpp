@@ -614,6 +614,30 @@ int Steps::GetNumFakes(int startRow, int endRow) const
 	return iNumFakes;
 }
 
+
+int Steps::GetNumRowsWithSimultaneousTaps(int minTaps, int startRow, int endRow) const
+{
+	int iNum = 0;
+	const NoteData &nd = this->GetNoteData();
+	FOREACH_NONEMPTY_ROW_ALL_TRACKS_RANGE( nd, r, startRow, endRow )
+	{
+		if (!this->m_Timing.IsJudgableAtRow(r))
+			continue;
+		int notesFound = 0;
+		for( int t=0; t<nd.GetNumTracks(); t++ )
+		{
+			const TapNote &tn = nd.GetTapNote(t, r);
+			if( tn.type != TapNote::mine     // mines don't count.
+			   &&  tn.type != TapNote::empty  
+			   &&  tn.type != TapNote::fake)
+				notesFound++;
+		}
+		if( notesFound >= minTaps )
+			iNum++;
+	}
+	return iNum;
+}
+
 // lua start
 #include "LuaBinding.h"
 /** @brief Allow Lua to have access to the Steps. */

@@ -219,6 +219,10 @@ public:
 	int GetNumMines(int startRow = 0, int endRow = MAX_NOTE_ROW) const;
 	int GetNumLifts(int startRow = 0, int endRow = MAX_NOTE_ROW) const;
 	int GetNumFakes(int startRow = 0, int endRow = MAX_NOTE_ROW) const;
+	
+	// XXX: Is this function unused?
+	int GetNumRowsWithSimultaneousTaps(int minTaps, int startRow = 0,
+									   int endRow = MAX_NOTE_ROW) const;
 
 private:
 	inline const Steps *Real() const		{ return parent ? parent : this; }
