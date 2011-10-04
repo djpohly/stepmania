@@ -316,7 +316,7 @@ float GetActualChaosRadarValue( const Steps &in, float fSongSeconds, const Playe
 float GetActualFreezeRadarValue( const Steps &in, float fSongSeconds )
 {
 	// number of hold steps
-	const int iTotalHolds = in.GetNumHoldNotes();
+	const int iTotalHolds = in.GetNumHoldNotes() + in.GetNumRolls();
 	if( iTotalHolds == 0 )
 		return 1.0f;
 
