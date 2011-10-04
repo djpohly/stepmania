@@ -632,6 +632,30 @@ int Steps::GetNumHoldsOfType(TapNote::SubType sub, int startRow, int endRow) con
 	return iNumHolds;
 }
 
+int Steps::GetNumRowsWithTap(int startRow, int endRow) const
+{
+	int iNumNotes = 0;
+	const NoteData &nd = this->GetNoteData();
+	FOREACH_NONEMPTY_ROW_ALL_TRACKS_RANGE( nd, r, startRow, endRow )
+	{
+		if( nd.IsThereATapAtRow(r) && this->m_Timing.IsJudgableAtRow(r) )
+			iNumNotes++;
+	}
+	return iNumNotes;
+}
+
+int Steps::GetNumRowsWithTapOrHoldHead(int startRow, int endRow) const
+{
+	int iNumNotes = 0;
+	const NoteData &nd = this->GetNoteData();
+	FOREACH_NONEMPTY_ROW_ALL_TRACKS_RANGE( nd, r, startRow, endRow )
+	{
+		if( nd.IsThereATapOrHoldHeadAtRow(r) && this->m_Timing.IsJudgableAtRow(r) )
+			iNumNotes++;
+	}
+	return iNumNotes;
+}
+
 int Steps::GetNumRowsWithSimultaneousTaps(int minTaps, int startRow, int endRow) const
 {
 	int iNum = 0;

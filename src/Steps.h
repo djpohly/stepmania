@@ -229,6 +229,9 @@ public:
 		return GetNumHoldsOfType(TapNote::hold_head_roll, startRow, endRow);
 	}
 	
+	int GetNumRowsWithTap(int startRow = 0, int endRow = MAX_NOTE_ROW) const;
+	int GetNumRowsWithTapOrHoldHead(int startRow = 0, int endRow = MAX_NOTE_ROW) const;
+	
 	// XXX: Is this function unused?
 	int GetNumRowsWithSimultaneousTaps(int minTaps, int startRow = 0,
 									   int endRow = MAX_NOTE_ROW) const;
