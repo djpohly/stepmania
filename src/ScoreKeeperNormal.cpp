@@ -19,7 +19,7 @@
 #include "Style.h"
 #include "Song.h"
 #include "TimingData.h"
-#include "NoteDataWithScoring.h"
+#include "StepsWithScoring.h"
 
 
 void PercentScoreWeightInit( size_t /*ScoreEvent*/ i, RString &sNameOut, int &defaultValueOut )
@@ -531,7 +531,7 @@ void ScoreKeeperNormal::HandleTapRowScore( const NoteData &nd, int iRow )
 
 	m_iNumNotesHitThisRow = iNumTapsInRow;
 
-	TapNoteScore scoreOfLastTap = NoteDataWithScoring::LastTapNoteWithResult( nd, iRow ).result.tns;
+	TapNoteScore scoreOfLastTap = StepsWithScoring::LastTapNoteWithResult( nd, iRow ).result.tns;
 	HandleTapNoteScoreInternal( scoreOfLastTap, TNS_W1, iRow );
 	
 	if ( GAMESTATE->GetCurrentGame()->m_bCountNotesSeparately )
@@ -612,7 +612,7 @@ void ScoreKeeperNormal::HandleTapRowScore( const NoteData &nd, int iRow )
 
 	// TODO: Remove indexing with PlayerNumber
 	PlayerNumber pn = m_pPlayerState->m_PlayerNumber;
-	float offset = NoteDataWithScoring::LastTapNoteWithResult( nd, iRow ).result.fTapNoteOffset;
+	float offset = StepsWithScoring::LastTapNoteWithResult( nd, iRow ).result.fTapNoteOffset;
 	NSMAN->ReportScore( pn, scoreOfLastTap,
 			m_pPlayerStageStats->m_iScore,
 			m_pPlayerStageStats->m_iCurCombo, offset );

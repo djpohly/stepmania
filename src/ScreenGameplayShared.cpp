@@ -3,7 +3,7 @@
 #include "GameState.h"
 #include "Player.h"
 #include "NoteDataUtil.h"
-#include "NoteDataWithScoring.h"
+#include "StepsWithScoring.h"
 #include "Song.h"
 #include "StatsManager.h"
 

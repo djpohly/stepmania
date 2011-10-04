@@ -3,7 +3,7 @@
 
 #include "ActorFrame.h"
 #include "HoldJudgment.h"
-#include "NoteDataWithScoring.h"
+#include "StepsWithScoring.h"
 #include "RageSound.h"
 #include "AttackDisplay.h"
 #include "NoteData.h"

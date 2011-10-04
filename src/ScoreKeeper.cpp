@@ -2,7 +2,7 @@
 #include "ScoreKeeper.h"
 #include "NoteData.h"
 #include "PlayerState.h"
-#include "NoteDataWithScoring.h"
+#include "StepsWithScoring.h"
 
 ScoreKeeper::ScoreKeeper( PlayerState *pPlayerState, PlayerStageStats *pPlayerStageStats )
 {
@@ -23,7 +23,7 @@ void ScoreKeeper::GetScoreOfLastTapInRow( const NoteData &nd, int iRow,
 			continue;
 		++iNum;
 	}
-	tnsOut = NoteDataWithScoring::LastTapNoteWithResult( nd, iRow ).result.tns;
+	tnsOut = StepsWithScoring::LastTapNoteWithResult( nd, iRow ).result.tns;
 	iNumTapsInRowOut = iNum;
 }
 
