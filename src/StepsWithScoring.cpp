@@ -331,7 +331,8 @@ float GetActualFreezeRadarValue( const NoteData &in, float fSongSeconds )
 }
 
 
-void StepsWithScoring::GetActualRadarValues( const Steps &in, const PlayerStageStats &pss, float fSongSeconds, RadarValues& out )
+void StepsWithScoring::GetActualRadarValues(const Steps &in, const PlayerStageStats &pss,
+											float fSongSeconds, RadarValues& out )
 {
 	// The for loop and the assert are used to ensure that all fields of 
 	// RadarValue get set in here.
@@ -340,21 +341,72 @@ void StepsWithScoring::GetActualRadarValues( const Steps &in, const PlayerStageS
 	{
 		switch( rc )
 		{
-		case RadarCategory_Stream:		out[rc] = GetActualStreamRadarValue( nd, fSongSeconds );				break;
-		case RadarCategory_Voltage:		out[rc] = GetActualVoltageRadarValue( nd, fSongSeconds, pss );				break;
-		case RadarCategory_Air:			out[rc] = GetActualAirRadarValue( nd, fSongSeconds );					break;
-		case RadarCategory_Freeze:		out[rc] = GetActualFreezeRadarValue( nd, fSongSeconds );				break;
-		case RadarCategory_Chaos:		out[rc] = GetActualChaosRadarValue( nd, fSongSeconds, pss );				break;
-		case RadarCategory_TapsAndHolds:	out[rc] = (float) GetNumNWithScore( nd, TNS_W4, 1 );					break;
-		case RadarCategory_Jumps:		out[rc] = (float) GetNumNWithScore( nd, TNS_W4, 2 );					break;
-		case RadarCategory_Holds:		out[rc] = (float) GetNumHoldNotesWithScore( nd, TapNote::hold_head_hold, HNS_Held );	break;
-		case RadarCategory_Mines:		out[rc] = (float) GetSuccessfulMines( nd );						break;
-		case RadarCategory_Hands:		out[rc] = (float) GetSuccessfulHands( nd );						break;
-		case RadarCategory_Rolls:		out[rc] = (float) GetNumHoldNotesWithScore( nd, TapNote::hold_head_roll, HNS_Held );	break;
-		case RadarCategory_Lifts:		out[rc] = (float) GetSuccessfulLifts( nd, MIN_SCORE_TO_MAINTAIN_COMBO );					break;
-		case RadarCategory_Fakes:		out[rc] = (float) nd.GetNumFakes();							break;
-		//case RadarCategory_Minefields:	out[rc] = (float) GetNumMinefieldsWithScore( in, TapNote::hold_head_mine, HNS_Held );	break;
-		DEFAULT_FAIL( rc );
+			case RadarCategory_Stream:
+			{
+				out[rc] = GetActualStreamRadarValue( nd, fSongSeconds );
+				break;
+			}
+			case RadarCategory_Voltage:
+			{
+				out[rc] = GetActualVoltageRadarValue( nd, fSongSeconds, pss );
+				break;
+			}
+			case RadarCategory_Air:
+			{
+				out[rc] = GetActualAirRadarValue( nd, fSongSeconds );
+				break;
+			}
+			case RadarCategory_Freeze:
+			{
+				out[rc] = GetActualFreezeRadarValue( nd, fSongSeconds );
+				break;
+			}
+			case RadarCategory_Chaos:
+			{
+				out[rc] = GetActualChaosRadarValue( nd, fSongSeconds, pss );
+				break;
+			}
+			case RadarCategory_TapsAndHolds:
+			{
+				out[rc] = (float) GetNumNWithScore( nd, TNS_W4, 1 );
+				break;
+			}
+			case RadarCategory_Jumps:
+			{
+				out[rc] = (float) GetNumNWithScore( nd, TNS_W4, 2 );
+				break;
+			}
+			case RadarCategory_Holds:
+			{
+				out[rc] = (float) GetNumHoldNotesWithScore( nd, TapNote::hold_head_hold, HNS_Held );
+				break;
+			}
+			case RadarCategory_Mines:
+			{
+				out[rc] = (float) GetSuccessfulMines( nd );
+				break;
+			}
+			case RadarCategory_Hands:
+			{
+				out[rc] = (float) GetSuccessfulHands( nd );
+				break;
+			}
+			case RadarCategory_Rolls:
+			{
+				out[rc] = (float) GetNumHoldNotesWithScore( nd, TapNote::hold_head_roll, HNS_Held );
+				break;
+			}
+			case RadarCategory_Lifts:
+			{
+				out[rc] = (float) GetSuccessfulLifts( nd, MIN_SCORE_TO_MAINTAIN_COMBO );
+				break;
+			}
+			case RadarCategory_Fakes:
+			{
+				out[rc] = (float) nd.GetNumFakes();
+				break;
+			}
+			DEFAULT_FAIL( rc );
 		}
 	}
 }
