@@ -773,7 +773,7 @@ void NoteDataUtil::LoadTransformedLightsFromTwo( const NoteData &marquee, const 
 	NoteDataUtil::RemoveMines( out );
 }
 
-RadarStats CalculateRadarStatsFast( const NoteData &in, RadarStats &out )
+RadarStats CalculateRadarStatsFast( const Steps &in, RadarStats &out )
 {
 	out.taps = 0;
 	out.jumps = 0;
@@ -783,16 +783,17 @@ RadarStats CalculateRadarStatsFast( const NoteData &in, RadarStats &out )
 	map<int, int> simultaneousMapNoHold;
 	map<int, int> simultaneousMapTapHoldHead;
 	map<int, int>::iterator itr;
-	for( int t=0; t<in.GetNumTracks(); t++ )
+	const NoteData &nd = in.GetNoteData();
+	for( int t=0; t<nd.GetNumTracks(); t++ )
 	{
-		FOREACH_NONEMPTY_ROW_IN_TRACK_RANGE( in, t, r, 0, MAX_NOTE_ROW )
+		FOREACH_NONEMPTY_ROW_IN_TRACK_RANGE( nd, t, r, 0, MAX_NOTE_ROW )
 		{
 			/* This function deals strictly with taps, jumps, hands, and quads.
 			 * As such, all rows in here have to be judgable. */
 			if (!GAMESTATE->GetProcessedTimingData()->IsJudgableAtRow(r))
 				continue;
 			
-			const TapNote &tn = in.GetTapNote(t, r);
+			const TapNote &tn = nd.GetTapNote(t, r);
 			switch( tn.type )
 			{
 				case TapNote::mine:
@@ -822,9 +823,9 @@ RadarStats CalculateRadarStatsFast( const NoteData &in, RadarStats &out )
 			{
 				int searchStartRow = r + 1;
 				int searchEndRow   = r + tn.iDuration;
-				FOREACH_NONEMPTY_ROW_ALL_TRACKS_RANGE( in, rr, searchStartRow, searchEndRow )
+				FOREACH_NONEMPTY_ROW_ALL_TRACKS_RANGE( nd, rr, searchStartRow, searchEndRow )
 				{
-					switch( in.GetTapNote(t, rr).type )
+					switch( nd.GetTapNote(t, rr).type )
 					{
 						case TapNote::mine:
 						case TapNote::empty:
@@ -862,7 +863,7 @@ RadarStats CalculateRadarStatsFast( const NoteData &in, RadarStats &out )
 	return out;
 }
 
-void NoteDataUtil::CalculateRadarValues( const NoteData &in, float fSongSeconds, RadarValues& out )
+void NoteDataUtil::CalculateRadarValues( const Steps &in, float fSongSeconds, RadarValues& out )
 {
 	RadarStats stats;
 	CalculateRadarStatsFast( in, stats );
@@ -891,7 +892,7 @@ void NoteDataUtil::CalculateRadarValues( const NoteData &in, float fSongSeconds,
 	}
 }
 
-float NoteDataUtil::GetStreamRadarValue( const NoteData &in, float fSongSeconds )
+float NoteDataUtil::GetStreamRadarValue( const Steps &in, float fSongSeconds )
 {
 	if( !fSongSeconds )
 		return 0.0f;
@@ -902,12 +903,12 @@ float NoteDataUtil::GetStreamRadarValue( const NoteData &in, float fSongSeconds 
 	return min( fReturn, 1.0f );
 }
 
-float NoteDataUtil::GetVoltageRadarValue( const NoteData &in, float fSongSeconds )
+float NoteDataUtil::GetVoltageRadarValue( const Steps &in, float fSongSeconds )
 {
 	if( !fSongSeconds )
 		return 0.0f;
 
-	const float fLastBeat = in.GetLastBeat();
+	const float fLastBeat = in.GetNoteData().GetLastBeat();
 	const float fAvgBPS = fLastBeat / fSongSeconds;
 
 	// peak density of steps
@@ -927,7 +928,7 @@ float NoteDataUtil::GetVoltageRadarValue( const NoteData &in, float fSongSeconds
 	return min( fReturn, 1.0f );
 }
 
-float NoteDataUtil::GetAirRadarValue( const NoteData &in, float fSongSeconds )
+float NoteDataUtil::GetAirRadarValue( const Steps &in, float fSongSeconds )
 {
 	if( !fSongSeconds )
 		return 0.0f;
@@ -937,7 +938,7 @@ float NoteDataUtil::GetAirRadarValue( const NoteData &in, float fSongSeconds )
 	return min( fReturn, 1.0f );
 }
 
-float NoteDataUtil::GetFreezeRadarValue( const NoteData &in, float fSongSeconds )
+float NoteDataUtil::GetFreezeRadarValue( const Steps &in, float fSongSeconds )
 {
 	if( !fSongSeconds )
 		return 0.0f;
@@ -946,14 +947,14 @@ float NoteDataUtil::GetFreezeRadarValue( const NoteData &in, float fSongSeconds 
 	return min( fReturn, 1.0f );
 }
 
-float NoteDataUtil::GetChaosRadarValue( const NoteData &in, float fSongSeconds )
+float NoteDataUtil::GetChaosRadarValue( const Steps &in, float fSongSeconds )
 {
 	if( !fSongSeconds )
 		return 0.0f;
 	// count number of notes smaller than 8ths
 	int iNumChaosNotes = 0;
-
-	FOREACH_NONEMPTY_ROW_ALL_TRACKS( in, r )
+	const NoteData &nd = in.GetNoteData();
+	FOREACH_NONEMPTY_ROW_ALL_TRACKS( nd, r )
 	{
 		if( GetNoteType(r) >= NOTE_TYPE_12TH )
 			iNumChaosNotes++;

@@ -7,6 +7,7 @@
 class PlayerOptions;
 struct RadarValues;
 class NoteData;
+class Steps;
 class Song;
 struct AttackArray;
 
@@ -63,13 +64,13 @@ namespace NoteDataUtil
 	void InsertHoldTails( NoteData &inout );
 
 	// radar values - return between 0.0 and 1.2
-	float GetStreamRadarValue( const NoteData &in, float fSongSeconds );
-	float GetVoltageRadarValue( const NoteData &in, float fSongSeconds );
-	float GetAirRadarValue( const NoteData &in, float fSongSeconds );
-	float GetFreezeRadarValue( const NoteData &in, float fSongSeconds );
-	float GetChaosRadarValue( const NoteData &in, float fSongSeconds );
+	float GetStreamRadarValue( const Steps &in, float fSongSeconds );
+	float GetVoltageRadarValue( const Steps &in, float fSongSeconds );
+	float GetAirRadarValue( const Steps &in, float fSongSeconds );
+	float GetFreezeRadarValue( const Steps &in, float fSongSeconds );
+	float GetChaosRadarValue( const Steps &in, float fSongSeconds );
 
-	void CalculateRadarValues( const NoteData &in, float fSongSeconds, RadarValues& out );
+	void CalculateRadarValues( const Steps &in, float fSongSeconds, RadarValues& out );
 
 	/**
 	 * @brief Remove all of the Hold notes.
