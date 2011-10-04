@@ -9,7 +9,6 @@
 #include "RageUtil.h"
 #include "RageLog.h"
 #include "XmlFile.h"
-#include "GameState.h" // blame radar calculations.
 #include "Foreach.h"
 #include "RageUtil_AutoPtr.h"
 
