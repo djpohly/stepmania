@@ -2343,16 +2343,16 @@ void ScreenGameplay::SaveStats()
 	{
 		/* Note that adding stats is only meaningful for the counters (eg. RadarCategory_Jumps),
 		 * not for the percentages (RadarCategory_Air). */
-		RadarValues rv;
+		RadarValues rv[NUM_PLAYERS];
 		PlayerStageStats &pss = *pi->GetPlayerStageStats();
 		const NoteData &nd = pi->m_pPlayer->GetNoteData();
 		PlayerNumber pn = pi->m_pn;
 
 		Steps *step = GAMESTATE->m_pCurSteps[pn];
 		NoteDataUtil::CalculateRadarValues( step, fMusicLen, rv );
-		pss.m_radarPossible += rv;
-		NoteDataWithScoring::GetActualRadarValues( nd, pss, fMusicLen, rv );
-		pss.m_radarActual += rv;
+		pss.m_radarPossible += rv[pn];
+		NoteDataWithScoring::GetActualRadarValues( nd, pss, fMusicLen, rv[pn] );
+		pss.m_radarActual += rv[pn];
 	}
 }
 

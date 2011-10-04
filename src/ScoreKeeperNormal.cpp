@@ -113,13 +113,14 @@ void ScoreKeeperNormal::Load(
 
 		const Style* pStyle = GAMESTATE->GetCurrentStyle();
 		NoteData nd;
-		pStyle->GetTransformedNoteDataForStyle( m_pPlayerState->m_PlayerNumber, ndTemp, nd );
+		PlayerNumber pn = m_pPlayerState->m_PlayerNumber;
+		pStyle->GetTransformedNoteDataForStyle( pn, ndTemp, nd );
 
 		/* Compute RadarValues before applying any user-selected mods. Apply
 		 * Course mods and count them in the "pre" RadarValues because they're
 		 * forced and not chosen by the user. */
 		NoteDataUtil::TransformNoteData( nd, aa, pSteps->m_StepsType, pSong );
-		RadarValues rvPre;
+		RadarValues rvPre[NUM_PLAYERS];
 		NoteDataUtil::CalculateRadarValues( pSteps, pSong->m_fMusicLengthSeconds, rvPre );
 
 		/* Apply user transforms to find out how the notes will really look.
@@ -130,11 +131,11 @@ void ScoreKeeperNormal::Load(
 		 * the last call to StoreSelectedOptions and the modifiers list, but that'd
 		 * mean moving the queues in ScreenGameplay to GameState ... */
 		NoteDataUtil::TransformNoteData( nd, m_pPlayerState->m_PlayerOptions.GetStage(), pSteps->m_StepsType );
-		RadarValues rvPost;
+		RadarValues rvPost[NUM_PLAYERS];
 		NoteDataUtil::CalculateRadarValues( pSteps, pSong->m_fMusicLengthSeconds, rvPost );
 		
-		iTotalPossibleDancePoints += this->GetPossibleDancePoints( rvPre, rvPost );
-		iTotalPossibleGradePoints += this->GetPossibleGradePoints( rvPre, rvPost );
+		iTotalPossibleDancePoints += this->GetPossibleDancePoints( rvPre[pn], rvPost[pn] );
+		iTotalPossibleGradePoints += this->GetPossibleGradePoints( rvPre[pn], rvPost[pn] );
 	}
 
 	m_pPlayerStageStats->m_iPossibleDancePoints = iTotalPossibleDancePoints;

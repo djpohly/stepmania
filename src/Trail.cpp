@@ -115,16 +115,17 @@ const RadarValues &Trail::GetRadarValues() const
 			{
 				NoteData nd;
 				pSteps->GetNoteData( nd );
-				RadarValues rv_orig;
+				RadarValues rv_orig[NUM_PLAYERS];
 				NoteDataUtil::CalculateRadarValues( pSteps, e->pSong->m_fMusicLengthSeconds, rv_orig );
 				PlayerOptions po;
 				po.FromString( e->Modifiers );
 				if( po.ContainsTransformOrTurn() )
 					NoteDataUtil::TransformNoteData( nd, po, pSteps->m_StepsType );
 				NoteDataUtil::TransformNoteData( nd, e->Attacks, pSteps->m_StepsType, e->pSong );
-				RadarValues transformed_rv;
+				RadarValues transformed_rv[NUM_PLAYERS];
 				NoteDataUtil::CalculateRadarValues( pSteps, e->pSong->m_fMusicLengthSeconds, transformed_rv );
-				rv += transformed_rv;
+				// KLUDGE: Assume first player here.
+				rv += transformed_rv[PLAYER_1];
 			}
 			else
 			{

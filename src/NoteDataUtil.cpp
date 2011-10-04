@@ -863,7 +863,7 @@ RadarStats CalculateRadarStatsFast( const Steps *in, RadarStats &out )
 	return out;
 }
 
-void NoteDataUtil::CalculateRadarValues( Steps *in, float fSongSeconds, RadarValues& out )
+void NoteDataUtil::CalculateRadarValues( const Steps *in, float fSongSeconds, RadarValues out[NUM_PLAYERS] )
 {	
 	// TODO: Implement a better, cleaner way of doing this since we're now using Steps.
 	StepsTypeCategory cat = in->GetStepsTypeCategory();
@@ -922,8 +922,6 @@ void NoteDataUtil::CalculateRadarValues( Steps *in, float fSongSeconds, RadarVal
 		pair<int, int> fakes = in->GetNumFakesTwoPlayer();
 		v[0][RadarCategory_Fakes] = fakes.first;
 		v[1][RadarCategory_Fakes] = fakes.second;
-		
-		in->SetCachedRadarValues(v);
 	}
 	else
 	{
@@ -935,20 +933,72 @@ void NoteDataUtil::CalculateRadarValues( Steps *in, float fSongSeconds, RadarVal
 		{
 			switch( rc )
 			{
-			case RadarCategory_Stream:			out[rc] = GetStreamRadarValue( in, fSongSeconds );	break;	
-			case RadarCategory_Voltage:			out[rc] = GetVoltageRadarValue( in, fSongSeconds );	break;
-			case RadarCategory_Air:				out[rc] = GetAirRadarValue( in, fSongSeconds );		break;
-			case RadarCategory_Freeze:			out[rc] = GetFreezeRadarValue( in, fSongSeconds );	break;
-			case RadarCategory_Chaos:			out[rc] = GetChaosRadarValue( in, fSongSeconds );	break;
-			case RadarCategory_TapsAndHolds:	out[rc] = (float) stats.taps;				break;
-			case RadarCategory_Jumps:			out[rc] = (float) stats.jumps;				break;
-			case RadarCategory_Holds:			out[rc] = (float) in->GetNumHoldNotes();		break;
-			case RadarCategory_Mines:			out[rc] = (float) in->GetNumMines();			break;
-			case RadarCategory_Hands:			out[rc] = (float) in->GetNumHands();			break;
-			case RadarCategory_Rolls:			out[rc] = (float) in->GetNumRolls();			break;
-			case RadarCategory_Lifts:			out[rc] = (float) in->GetNumLifts();			break;
-			case RadarCategory_Fakes:			out[rc] = (float) in->GetNumFakes();			break;
-			default:	FAIL_M("Non-existant radar category attempted to be set!");
+				case RadarCategory_Stream:
+				{
+					out[PLAYER_1][rc] = out[PLAYER_2][rc] = GetStreamRadarValue( in, fSongSeconds );
+					break;
+				}
+				case RadarCategory_Voltage:
+				{
+					out[PLAYER_1][rc] = out[PLAYER_2][rc] = GetVoltageRadarValue( in, fSongSeconds );
+					break;
+				}
+				case RadarCategory_Air:
+				{
+					out[PLAYER_1][rc] = out[PLAYER_2][rc] = GetAirRadarValue( in, fSongSeconds );
+					break;
+				}
+				case RadarCategory_Freeze:
+				{
+					out[PLAYER_1][rc] = out[PLAYER_2][rc] = GetFreezeRadarValue( in, fSongSeconds );
+					break;
+				}
+				case RadarCategory_Chaos:
+				{
+					out[PLAYER_1][rc] = out[PLAYER_2][rc] = GetChaosRadarValue( in, fSongSeconds );
+					break;
+				}
+				case RadarCategory_TapsAndHolds:
+				{
+					out[PLAYER_1][rc] = out[PLAYER_2][rc] = (float) stats.taps;
+					break;
+				}
+				case RadarCategory_Jumps:
+				{
+					out[PLAYER_1][rc] = out[PLAYER_2][rc] = (float) stats.jumps;
+					break;
+				}
+				case RadarCategory_Holds:
+				{
+					out[PLAYER_1][rc] = out[PLAYER_2][rc] = (float) in->GetNumHoldNotes();
+					break;
+				}
+				case RadarCategory_Mines:
+				{
+					out[PLAYER_1][rc] = out[PLAYER_2][rc] = (float) in->GetNumMines();
+					break;
+				}
+				case RadarCategory_Hands:
+				{
+					out[PLAYER_1][rc] = out[PLAYER_2][rc] =  (float) in->GetNumHands();
+					break;
+				}
+				case RadarCategory_Rolls:
+				{
+					out[PLAYER_1][rc] = out[PLAYER_2][rc] = (float) in->GetNumRolls();
+					break;
+				}
+				case RadarCategory_Lifts:
+				{
+					out[PLAYER_1][rc] = out[PLAYER_2][rc] = (float) in->GetNumLifts();
+					break;
+				}
+				case RadarCategory_Fakes:
+				{
+					out[PLAYER_1][rc] = out[PLAYER_2][rc] = (float) in->GetNumFakes();
+					break;
+				}
+				default:	FAIL_M("Non-existant radar category attempted to be set!");
 			}
 		}
 	}

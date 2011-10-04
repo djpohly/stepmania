@@ -274,51 +274,10 @@ void Steps::CalculateRadarValues( float fMusicLengthSeconds )
 		return;
 	*/
 	
-	// TODO: Make new Steps for this? Something will need to be done.
-	// TODO: (Also) look into a copy constructor.
-	Steps *tmpSteps = new Steps();
-	
-	NoteData tempNoteData = this->GetNoteData();
-	tmpSteps->SetNoteData(tempNoteData);
-	tmpSteps->m_StepsType = this->m_StepsType;
-	//this->GetNoteData( tempNoteData );
-
 	FOREACH_PlayerNumber( pn )
 		m_CachedRadarValues[pn].Zero();
 
-	//NoteDataUtil::CalculateRadarValues(this, fMusicLengthSeconds, m_
-	
-	if( tempNoteData.IsComposite() )
-	{
-		vector<NoteData> vParts;
-
-		NoteDataUtil::SplitCompositeNoteData( tempNoteData, vParts );
-		for( size_t pn = 0; pn < min(vParts.size(), size_t(NUM_PLAYERS)); ++pn )
-			NoteDataUtil::CalculateRadarValues( vParts[pn], fMusicLengthSeconds, m_CachedRadarValues[pn] );
-	}
-	else if (this->GetStepsTypeCategory() == StepsTypeCategory_Couple)
-	{
-		NoteData p1 = tempNoteData;
-		// XXX: Assumption that couple will always have an even number of notes.
-		const int tracks = tempNoteData.GetNumTracks() / 2;
-		p1.SetNumTracks(tracks);
-		NoteDataUtil::CalculateRadarValues(p1,
-										   fMusicLengthSeconds,
-										   m_CachedRadarValues[PLAYER_1]);
-		// at this point, p2 is tempNoteData.
-		NoteDataUtil::ShiftTracks(tempNoteData, tracks);
-		tempNoteData.SetNumTracks(tracks);
-		NoteDataUtil::CalculateRadarValues(tempNoteData,
-										   fMusicLengthSeconds,
-										   m_CachedRadarValues[PLAYER_2]);
-	}
-	else
-	{
-		NoteDataUtil::CalculateRadarValues( this, fMusicLengthSeconds, m_CachedRadarValues[0] );
-		fill_n( m_CachedRadarValues + 1, NUM_PLAYERS-1, m_CachedRadarValues[0] );
-	}
-	
-	delete tmpSteps;
+	NoteDataUtil::CalculateRadarValues(this, fMusicLengthSeconds, m_CachedRadarValues);
 }
 
 void Steps::Decompress() const
