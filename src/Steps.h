@@ -192,6 +192,8 @@ public:
 		return join(":", this->m_sAttackString);
 	}
 	
+	StepsTypeCategory GetStepsTypeCategory() const;
+	
 	/* The following functions are used for calculating more accurate
 	 * radar data due to how TimingData can manipulate arrows to be fake.
 	 * In general, they will access Notedata's functions. */

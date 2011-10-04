@@ -868,6 +868,9 @@ void NoteDataUtil::CalculateRadarValues( const Steps *in, float fSongSeconds, Ra
 	RadarStats stats;
 	CalculateRadarStatsFast( in, stats );
 	
+	// TODO: Implement a better, cleaner way of doing this since we're now using Steps.
+	StepsTypeCategory cat = in->GetStepsTypeCategory();
+	
 	// The for loop and the assert are used to ensure that all fields of 
 	// RadarValue get set in here.
 	FOREACH_ENUM( RadarCategory, rc )

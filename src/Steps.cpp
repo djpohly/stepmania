@@ -249,6 +249,11 @@ void Steps::TidyUpData()
 		SetMeter( int(PredictMeter()) );
 }
 
+StepsTypeCategory Steps::GetStepsTypeCategory() const
+{
+	return GAMEMAN->GetStepsTypeInfo(this->m_StepsType).m_StepsTypeCategory;
+}
+
 void Steps::CalculateRadarValues( float fMusicLengthSeconds )
 {
 	// If we're autogen, don't calculate values.  GetRadarValues will take from our parent.
@@ -270,10 +275,12 @@ void Steps::CalculateRadarValues( float fMusicLengthSeconds )
 	*/
 	
 	// TODO: Make new Steps for this? Something will need to be done.
+	// TODO: (Also) look into a copy constructor.
 	Steps *tmpSteps = new Steps();
 	
 	NoteData tempNoteData = this->GetNoteData();
 	tmpSteps->SetNoteData(tempNoteData);
+	tmpSteps->m_StepsType = this->m_StepsType;
 	//this->GetNoteData( tempNoteData );
 
 	FOREACH_PlayerNumber( pn )
@@ -287,7 +294,7 @@ void Steps::CalculateRadarValues( float fMusicLengthSeconds )
 		for( size_t pn = 0; pn < min(vParts.size(), size_t(NUM_PLAYERS)); ++pn )
 			NoteDataUtil::CalculateRadarValues( vParts[pn], fMusicLengthSeconds, m_CachedRadarValues[pn] );
 	}
-	else if (GAMEMAN->GetStepsTypeInfo(this->m_StepsType).m_StepsTypeCategory == StepsTypeCategory_Couple)
+	else if (this->GetStepsTypeCategory() == StepsTypeCategory_Couple)
 	{
 		NoteData p1 = tempNoteData;
 		// XXX: Assumption that couple will always have an even number of notes.
