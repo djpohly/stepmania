@@ -621,8 +621,6 @@ int NoteData::GetNumHoldNotes( int iStartIndex, int iEndIndex ) const
 			if( lBegin->second.type != TapNote::hold_head ||
 				lBegin->second.subType != TapNote::hold_head_hold )
 				continue;
-			if (!GAMESTATE->GetProcessedTimingData()->IsJudgableAtRow(lBegin->first))
-				continue;
 			iNumHolds++;
 		}
 	}

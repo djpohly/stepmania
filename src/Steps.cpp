@@ -614,6 +614,24 @@ int Steps::GetNumFakes(int startRow, int endRow) const
 	return iNumFakes;
 }
 
+int Steps::GetNumHoldNotes( int startRow, int endRow ) const
+{
+	int iNumHolds = 0;
+	const NoteData &nd = this->GetNoteData();
+	FOREACH_NONEMPTY_ROW_ALL_TRACKS_RANGE(nd, r, startRow, endRow)
+	{
+		if (!this->m_Timing.IsJudgableAtRow(r))
+			continue;
+		for (int t=0; t<nd.GetNumTracks(); t++)
+		{
+			const TapNote &tn = nd.GetTapNote(t, r);
+			if (tn.type == TapNote::hold_head && tn.subType == TapNote::hold_head_hold)
+				iNumHolds++;
+		}
+	}
+	return iNumHolds;
+}
+
 
 int Steps::GetNumRowsWithSimultaneousTaps(int minTaps, int startRow, int endRow) const
 {
