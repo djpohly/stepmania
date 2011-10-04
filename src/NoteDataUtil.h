@@ -69,6 +69,12 @@ namespace NoteDataUtil
 	float GetAirRadarValue( const Steps *in, float fSongSeconds );
 	float GetFreezeRadarValue( const Steps *in, float fSongSeconds );
 	float GetChaosRadarValue( const Steps *in, float fSongSeconds );
+	
+	pair<float, float> GetStreamRadarValueTwoPlayer(const Steps *in, float songLength);
+	pair<float, float> GetVoltageRadarValueTwoPlayer(const Steps *in, float songLength);
+	pair<float, float> GetAirRadarValueTwoPlayer(const Steps *in, float songLength);
+	pair<float, float> GetFreezeRadarValueTwoPlayer(const Steps *in, float songLength);
+	pair<float, float> GetChaosRadarValueTwoPlayer(const Steps *in, float songLength);
 
 	void CalculateRadarValues( const Steps *in, float fSongSeconds, RadarValues& out );
 

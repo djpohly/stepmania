@@ -906,6 +906,20 @@ float NoteDataUtil::GetStreamRadarValue( const Steps *in, float fSongSeconds )
 	return min( fReturn, 1.0f );
 }
 
+pair<float, float> NoteDataUtil::GetStreamRadarValueTwoPlayer(const Steps *in, float songLength)
+{
+	pair<float, float> num(0, 0);
+	if (!songLength)
+		return num;
+	pair<int, int> numNotes = in->GetNumTapNotesTwoPlayer();
+	pair<int, int> numHolds = in->GetNumHoldNotesTwoPlayer();
+	pair<int, int> totalNotes = make_pair(numNotes.first + numHolds.first, numNotes.second + numNotes.second);
+	// TODO: Optimize by turning into multiplication?
+	num.first = min( (totalNotes.first / songLength) / 7, 1.0f);
+	num.second = min( (totalNotes.second / songLength) / 7, 1.0f);
+	return num;
+}
+
 float NoteDataUtil::GetVoltageRadarValue( const Steps *in, float fSongSeconds )
 {
 	if( !fSongSeconds )
@@ -931,6 +945,36 @@ float NoteDataUtil::GetVoltageRadarValue( const Steps *in, float fSongSeconds )
 	return min( fReturn, 1.0f );
 }
 
+pair<float, float> NoteDataUtil::GetVoltageRadarValueTwoPlayer( const Steps *in, float songLength )
+{
+	pair<float, float> num(0, 0);
+	if(!songLength)
+		return num;
+	
+	const float fLastBeat = in->GetNoteData().GetLastBeat();
+	const float fAvgBPS = fLastBeat / songLength;
+	
+	// peak density of steps
+	pair<float, float> maxDensity(0, 0);
+	
+	const float BEAT_WINDOW = 8;
+	const int BEAT_WINDOW_ROWS = BeatToNoteRow( BEAT_WINDOW );
+	
+	for( int i=0; i<=BeatToNoteRow(fLastBeat); i+=BEAT_WINDOW_ROWS )
+	{
+		pair<int, int> numNotes = in->GetNumTapNotesTwoPlayer(i, i + BEAT_WINDOW_ROWS);
+		pair<int, int> numHolds = in->GetNumHoldNotesTwoPlayer(i, i + BEAT_WINDOW_ROWS);
+		pair<int, int> totalNotes = make_pair(numNotes.first + numHolds.first, numNotes.second + numNotes.second);
+		
+		maxDensity.first = max(maxDensity.first, totalNotes.first / BEAT_WINDOW);
+		maxDensity.second = max(maxDensity.second, totalNotes.second / BEAT_WINDOW);
+	}
+	num.first = min(1.0f, maxDensity.first * fAvgBPS / 10);
+	num.second = min(1.0f, maxDensity.second * fAvgBPS / 10);
+	
+	return num;
+}
+
 float NoteDataUtil::GetAirRadarValue( const Steps *in, float fSongSeconds )
 {
 	if( !fSongSeconds )
@@ -941,6 +985,18 @@ float NoteDataUtil::GetAirRadarValue( const Steps *in, float fSongSeconds )
 	return min( fReturn, 1.0f );
 }
 
+pair<float, float> NoteDataUtil::GetAirRadarValueTwoPlayer( const Steps *in, float songLength )
+{
+	pair<float, float> num(0, 0);
+	if (songLength)
+	{
+		pair<int, int> jumps = in->GetNumJumpsTwoPlayer();
+		num.first = min(1.0f, jumps.first / songLength);
+		num.second = min(1.0f, jumps.second / songLength);
+	}
+	return num;
+}
+
 float NoteDataUtil::GetFreezeRadarValue( const Steps *in, float fSongSeconds )
 {
 	if( !fSongSeconds )
@@ -948,6 +1004,19 @@ float NoteDataUtil::GetFreezeRadarValue( const Steps *in, float fSongSeconds )
 	// number of hold steps
 	float fReturn = in->GetNumHoldNotes() / fSongSeconds;
 	return min( fReturn, 1.0f );
+}
+
+pair<float, float> NoteDataUtil::GetFreezeRadarValueTwoPlayer( const Steps *in, float songLength )
+{
+	pair<float, float> num(0, 0);
+	if (songLength)
+	{
+		// TODO: Make this count rolls as well due to StepsWithScoring?
+		pair<int, int> holds = in->GetNumHoldNotesTwoPlayer();
+		num.first = min(1.0f, holds.first / songLength);
+		num.second = min(1.0f, holds.second / songLength);
+	}
+	return num;
 }
 
 float NoteDataUtil::GetChaosRadarValue( const Steps *in, float fSongSeconds )
@@ -965,6 +1034,55 @@ float NoteDataUtil::GetChaosRadarValue( const Steps *in, float fSongSeconds )
 
 	float fReturn = iNumChaosNotes / fSongSeconds * 0.5f;
 	return min( fReturn, 1.0f );
+}
+
+pair<float, float> NoteDataUtil::GetChaosRadarValueTwoPlayer( const Steps *in, float songLength )
+{
+	pair<float, float> num(0, 0);
+	if (songLength)
+	{
+		// count all notes smaller than 8ths, provided it can be hit.
+		pair<int, int> chaosNotes(0, 0);
+		const NoteData &nd = in->GetNoteData();
+		FOREACH_NONEMPTY_ROW_ALL_TRACKS(nd, r)
+		{
+			if (!in->m_Timing.IsJudgableAtRow(r))
+				continue;
+			if (GetNoteType(r) >= NOTE_TYPE_12TH)
+			{
+				// KLUDGE: One mention per row, regardless of note type. This includes mines?
+				// KLUDGE: (Also) complicated for loop much? Not the most traditional.
+				bool found1 = false;
+				bool found2 = false;
+				for (int t=0; t<nd.GetNumTracks() && !found1 && !found2; t++)
+				{
+					const TapNote &tn = nd.GetTapNote(t, r);
+					if (tn.type != TapNote::empty)
+					{
+						if (nd.IsPlayer1(t, tn))
+						{
+							if (!found1)
+							{
+								found1 = true;
+								chaosNotes.first++;
+							}
+						}
+						else
+						{
+							if (!found2)
+							{
+								found2 = true;
+								chaosNotes.second++;
+							}
+						}
+					}
+				}
+			}
+		}
+		num.first = min(1.0f, chaosNotes.first / songLength * 0.5f);
+		num.second = min(1.0f, chaosNotes.second / songLength * 0.5f);
+	}
+	return num;
 }
 
 void NoteDataUtil::RemoveHoldNotes( NoteData &in, int iStartIndex, int iEndIndex )
