@@ -156,7 +156,7 @@ LuaReference.cpp LuaReference.h \
 LuaExpressionTransform.cpp LuaExpressionTransform.h \
 LyricsLoader.cpp LyricsLoader.h \
 ModsGroup.cpp ModsGroup.h \
-NoteData.cpp NoteData.h NoteDataUtil.cpp NoteDataUtil.h NoteDataWithScoring.cpp NoteDataWithScoring.h \
+NoteData.cpp NoteData.h NoteDataUtil.cpp NoteDataUtil.h \
 NoteTypes.cpp NoteTypes.h NotesLoader.cpp NotesLoader.h \
 NotesLoaderBMS.cpp NotesLoaderBMS.h NotesLoaderDWI.cpp NotesLoaderDWI.h \
 NotesLoaderJson.cpp NotesLoaderJson.h NotesLoaderKSF.cpp NotesLoaderKSF.h \
@@ -179,7 +179,8 @@ ScoreKeeperShared.cpp ScoreKeeperShared.h \
 Song.cpp Song.h SongCacheIndex.cpp SongCacheIndex.h \
 SongOptions.cpp SongOptions.h SongUtil.cpp SongUtil.h StageStats.cpp StageStats.h Steps.cpp Steps.h \
 SoundEffectControl.cpp SoundEffectControl.h \
-StepsUtil.cpp StepsUtil.h Style.cpp Style.h StyleUtil.cpp StyleUtil.h \
+StepsUtil.cpp StepsUtil.h StepsWithScoring.cpp StepsWithScoring.h \
+Style.cpp Style.h StyleUtil.cpp StyleUtil.h \
 SubscriptionManager.h \
 TimingData.cpp TimingData.h TimingSegments.cpp TimingSegments.h \
 ThemeMetric.h \
