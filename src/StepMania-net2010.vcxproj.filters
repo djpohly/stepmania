@@ -495,6 +495,9 @@
     <ClCompile Include="StepsUtil.cpp">
       <Filter>Data Structures</Filter>
     </ClCompile>
+    <ClCompile Include="StepsWithScoring.cpp">
+      <Filter>Data Structures</Filter>
+    </ClCompile>
     <ClCompile Include="Style.cpp">
       <Filter>Data Structures</Filter>
     </ClCompile>
@@ -580,9 +583,6 @@
       <Filter>Data Structures\NoteData</Filter>
     </ClCompile>
     <ClCompile Include="NoteDataUtil.cpp">
-      <Filter>Data Structures\NoteData</Filter>
-    </ClCompile>
-    <ClCompile Include="NoteDataWithScoring.cpp">
       <Filter>Data Structures\NoteData</Filter>
     </ClCompile>
     <ClCompile Include="NotesWriterDWI.cpp">
@@ -2003,6 +2003,9 @@
     <ClInclude Include="StepsUtil.h">
       <Filter>Data Structures</Filter>
     </ClInclude>
+    <ClInclude Include="StepsWithScoring.h">
+      <Filter>Data Structures</Filter>
+    </ClInclude>
     <ClInclude Include="Style.h">
       <Filter>Data Structures</Filter>
     </ClInclude>
@@ -2094,9 +2097,6 @@
       <Filter>Data Structures\NoteData</Filter>
     </ClInclude>
     <ClInclude Include="NoteDataUtil.h">
-      <Filter>Data Structures\NoteData</Filter>
-    </ClInclude>
-    <ClInclude Include="NoteDataWithScoring.h">
       <Filter>Data Structures\NoteData</Filter>
     </ClInclude>
     <ClInclude Include="NotesWriterDWI.h">

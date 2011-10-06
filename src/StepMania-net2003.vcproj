@@ -955,12 +955,6 @@ cl /Zl /nologo /c verstub.cpp /Fo&quot;$(IntDir)&quot;\
 				RelativePath="NoteDataUtil.h">
 			</File>
 			<File
-				RelativePath="NoteDataWithScoring.cpp">
-			</File>
-			<File
-				RelativePath="NoteDataWithScoring.h">
-			</File>
-			<File
 				RelativePath="NotesLoader.cpp">
 			</File>
 			<File
@@ -1175,6 +1169,12 @@ cl /Zl /nologo /c verstub.cpp /Fo&quot;$(IntDir)&quot;\
 			</File>
 			<File
 				RelativePath="StepsUtil.h">
+			</File>
+			<File
+				RelativePath="StepsWithScoring.cpp">
+			</File>
+			<File
+				RelativePath="StepsWithScoring.h">
 			</File>
 			<File
 				RelativePath="Style.cpp">

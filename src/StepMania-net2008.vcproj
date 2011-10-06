@@ -1509,6 +1509,14 @@
 				>
 			</File>
 			<File
+				RelativePath="StepsWithScoring.cpp"
+				>
+			</File>
+			<File
+				RelativePath="StepsWithScoring.h"
+				>
+			</File>
+			<File
 				RelativePath="Style.cpp"
 				>
 			</File>
@@ -1765,14 +1773,6 @@
 				</File>
 				<File
 					RelativePath="NoteDataUtil.h"
-					>
-				</File>
-				<File
-					RelativePath="NoteDataWithScoring.cpp"
-					>
-				</File>
-				<File
-					RelativePath="NoteDataWithScoring.h"
 					>
 				</File>
 			</Filter>
