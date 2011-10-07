@@ -1270,7 +1270,7 @@ void ScreenEdit::UpdateTextInfo()
 			break;
 	}
 	
-	const StepsTypeCategory &cat = GAMEMAN->GetStepsTypeInfo(m_pSteps->m_StepsType).m_StepsTypeCategory;
+	const StepsTypeCategory &cat = m_pSteps->GetStepsTypeCategory();
 	if (cat == StepsTypeCategory_Couple || cat == StepsTypeCategory_Routine)
 	{
 		pair<int, int> tmp = m_pSteps->GetNumTapNotesTwoPlayer();
@@ -1308,6 +1308,7 @@ void ScreenEdit::UpdateTextInfo()
 	}
 	else
 	{
+		// XXX: These calculations are not working right.
 		sText += ssprintf( NUM_STEPS_FORMAT.GetValue(), TAP_STEPS.GetValue().c_str(), m_pSteps->GetNumTapNotes() );
 		sText += ssprintf( NUM_JUMPS_FORMAT.GetValue(), JUMPS.GetValue().c_str(), m_pSteps->GetNumJumps() );
 		sText += ssprintf( NUM_HANDS_FORMAT.GetValue(), HANDS.GetValue().c_str(), m_pSteps->GetNumHands() );
