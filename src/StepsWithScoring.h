@@ -23,7 +23,7 @@ namespace StepsWithScoring
 	const TapNote &LastTapNoteWithResult( const NoteData &in, unsigned iRow );
 
 	void GetActualRadarValues( const Steps *in, const PlayerStageStats &pss, 
-				  float fSongSeconds, RadarValues& out );
+				  const PlayerNumber pn, float fSongSeconds, RadarValues& out );
 };
 
 #endif

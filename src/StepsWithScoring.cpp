@@ -28,6 +28,26 @@ int GetNumTapNotesWithScore( const NoteData &in, TapNoteScore tns, int iStartInd
 
 	return iNumSuccessfulTapNotes;
 }
+	
+int GetNumTapNotesWithScoreTwoPlayer(const NoteData &in, TapNoteScore tns, const PlayerNumber pn,
+									 int iStartIndex = 0, int iEndIndex = MAX_NOTE_ROW )
+{ 
+	int iNumSuccessfulTapNotes = 0;
+	for( int t=0; t<in.GetNumTracks(); t++ )
+	{
+		FOREACH_NONEMPTY_ROW_IN_TRACK_RANGE( in, t, r, iStartIndex, iEndIndex )
+		{
+			const TapNote &tn = in.GetTapNote(t, r);
+			if( tn.result.tns >= tns )
+			{
+				if ((in.IsPlayer1(t, tn) && pn == PLAYER_1) || pn == PLAYER_2)
+					iNumSuccessfulTapNotes++;
+			}
+		}
+	}
+	
+	return iNumSuccessfulTapNotes;
+}
 
 int GetNumNWithScore( const NoteData &in, TapNoteScore tns, int MinTaps, int iStartRow = 0, int iEndRow = MAX_NOTE_ROW )
 {
@@ -266,13 +286,30 @@ bool StepsWithScoring::IsRowCompletelyJudged( const NoteData &in, unsigned row )
 namespace
 {
 // Return the ratio of actual to possible Bs.
-float GetActualStreamRadarValue( const Steps *in, float fSongSeconds )
+float GetActualStreamRadarValue( const Steps *in, float fSongSeconds, const PlayerNumber pn )
 {
-	int iTotalSteps = in->GetNumTapNotes();
+	StepsTypeCategory cat = in->GetStepsTypeCategory();
+	int iTotalSteps;
+	if (cat == StepsTypeCategory_Routine || cat == StepsTypeCategory_Couple)
+	{
+		pair<int, int> totalStepsBoth = in->GetNumTapNotesTwoPlayer();
+		iTotalSteps = (pn == PLAYER_1 ? totalStepsBoth.first : totalStepsBoth.second);
+	}
+	else
+	{
+		iTotalSteps = in->GetNumTapNotes();
+	}
 	if( iTotalSteps == 0 )
 		return 1.0f;
 
-	const int iW2s = GetNumTapNotesWithScore( in->GetNoteData(), TNS_W2 );
+	
+	int iW2s;
+	if (cat == StepsTypeCategory_Routine || cat == StepsTypeCategory_Couple)
+	{
+		iW2s = GetNumTapNotesWithScoreTwoPlayer(in->GetNoteData(), TNS_W2, pn);
+	}
+	else
+		iW2s = GetNumTapNotesWithScore( in->GetNoteData(), TNS_W2 );
 	return clamp( float(iW2s)/iTotalSteps, 0.0f, 1.0f );
 }
 
@@ -330,7 +367,8 @@ float GetActualFreezeRadarValue( const Steps *in, float fSongSeconds )
 
 
 void StepsWithScoring::GetActualRadarValues(const Steps *in, const PlayerStageStats &pss,
-											float fSongSeconds, RadarValues& out )
+											const PlayerNumber pn, float fSongSeconds,
+											RadarValues& out )
 {
 	// The for loop and the assert are used to ensure that all fields of 
 	// RadarValue get set in here.
@@ -341,7 +379,7 @@ void StepsWithScoring::GetActualRadarValues(const Steps *in, const PlayerStageSt
 		{
 			case RadarCategory_Stream:
 			{
-				out[rc] = GetActualStreamRadarValue( in, fSongSeconds );
+				out[rc] = GetActualStreamRadarValue( in, fSongSeconds, pn );
 				break;
 			}
 			case RadarCategory_Voltage:

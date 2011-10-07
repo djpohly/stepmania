@@ -2351,7 +2351,7 @@ void ScreenGameplay::SaveStats()
 		Steps *step = GAMESTATE->m_pCurSteps[pn];
 		NoteDataUtil::CalculateRadarValues( step, fMusicLen, rv );
 		pss.m_radarPossible += rv[pn];
-		StepsWithScoring::GetActualRadarValues( step, pss, fMusicLen, rv[pn] );
+		StepsWithScoring::GetActualRadarValues( step, pss, pn, fMusicLen, rv[pn] );
 		pss.m_radarActual += rv[pn];
 	}
 }
