@@ -27,7 +27,6 @@ extern "C" int SM_main( int argc, char *argv[] );
 #define NO_GL_FLUSH
 
 #if defined(__ppc__)
-# define BACKTRACE_LOOKUP_METHOD_DARWIN_DYLD
 # define BACKTRACE_METHOD_POWERPC_DARWIN
 #elif defined(__i386__)
 # define CPU_X86
