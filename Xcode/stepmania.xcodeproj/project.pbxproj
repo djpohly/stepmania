@@ -7905,7 +7905,6 @@
 					"-falign-loops=16",
 				);
 				PRODUCT_NAME = StepMania;
-				SDKROOT = macosx10.6;
 				SYMROOT = "$(SRCROOT)/..";
 				WRAPPER_EXTENSION = app;
 			};
@@ -7936,7 +7935,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_STRICT_ALIASING = YES;
 				GCC_UNROLL_LOOPS = YES;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -7989,7 +7988,6 @@
 					NO_MP3_SUPPORT,
 					WITHOUT_NETWORKING,
 				);
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/Frameworks/ffmpeg.framework/Headers",
@@ -8018,7 +8016,6 @@
 					"-fno-exceptions",
 				);
 				PRODUCT_NAME = StepMania;
-				SDKROOT = macosx10.6;
 				SYMROOT = "$(SRCROOT)/..";
 				WRAPPER_EXTENSION = app;
 			};
@@ -8039,7 +8036,6 @@
 					NO_MP3_SUPPORT,
 					WITHOUT_NETWORKING,
 				);
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/Frameworks/ffmpeg.framework/Headers",
@@ -8068,7 +8064,6 @@
 					"-fno-exceptions",
 				);
 				PRODUCT_NAME = StepMania;
-				SDKROOT = macosx10.6;
 				SYMROOT = "$(SRCROOT)/..";
 				WRAPPER_EXTENSION = app;
 			};
@@ -8091,7 +8086,6 @@
 					WITHOUT_NETWORKING,
 					"$(value)",
 				);
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/Frameworks/ffmpeg.framework/Headers",
@@ -8120,7 +8114,6 @@
 					"-fno-exceptions",
 				);
 				PRODUCT_NAME = StepMania;
-				SDKROOT = macosx10.6;
 				SYMROOT = "$(SRCROOT)/..";
 				WRAPPER_EXTENSION = app;
 			};
@@ -8261,7 +8254,6 @@
 				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = "tommath-sm5";
-				SDKROOT = macosx10.6;
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Native;
@@ -8277,7 +8269,6 @@
 				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = "tommath-sm5";
-				SDKROOT = macosx10.6;
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Universal;
@@ -8295,7 +8286,6 @@
 				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = "tommath-sm5";
-				SDKROOT = macosx10.6;
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = Debug;
@@ -8517,7 +8507,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_STRICT_ALIASING = YES;
 				GCC_UNROLL_LOOPS = YES;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -8597,7 +8587,6 @@
 					"-falign-loops=16",
 				);
 				PRODUCT_NAME = StepMania;
-				SDKROOT = macosx10.6;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "$(SRCROOT)/..";
 				WRAPPER_EXTENSION = app;
@@ -8644,7 +8633,6 @@
 					NO_MP3_SUPPORT,
 					WITHOUT_NETWORKING,
 				);
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../src",
 					"$(SRCROOT)/Frameworks/ffmpeg.framework/Headers",
@@ -8673,7 +8661,6 @@
 					"-fno-exceptions",
 				);
 				PRODUCT_NAME = StepMania;
-				SDKROOT = macosx10.6;
 				SYMROOT = "$(SRCROOT)/..";
 				WRAPPER_EXTENSION = app;
 			};
@@ -8755,7 +8742,6 @@
 				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = "tommath-sm5";
-				SDKROOT = macosx10.6;
 				SYMROOT = "$(SRCROOT)/build";
 			};
 			name = PerformanceDebug;
@@ -8839,7 +8825,6 @@
 					"-falign-loops=16",
 				);
 				PRODUCT_NAME = StepMania;
-				SDKROOT = macosx10.6;
 				SYMROOT = "$(SRCROOT)/..";
 				WRAPPER_EXTENSION = app;
 			};
@@ -8868,7 +8853,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_STRICT_ALIASING = YES;
 				GCC_UNROLL_LOOPS = YES;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -8968,7 +8953,6 @@
 					"-falign-loops=16",
 				);
 				PRODUCT_NAME = StepMania;
-				SDKROOT = macosx10.6;
 				SYMROOT = "$(SRCROOT)/..";
 				WRAPPER_EXTENSION = app;
 			};
@@ -8997,7 +8981,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_STRICT_ALIASING = YES;
 				GCC_UNROLL_LOOPS = YES;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
