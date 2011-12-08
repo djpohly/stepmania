@@ -26,6 +26,7 @@ Thumbs.db
 GameData.smzip
 config.log
 config.status
+extern/lpng1246/projects/xcode/build/
 *.pbxuser
 *.user
 *.mode1v3
