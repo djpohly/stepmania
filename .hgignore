@@ -27,6 +27,8 @@ GameData.smzip
 config.log
 config.status
 extern/lpng1246/projects/xcode/build/
+Xcode/JPEG/jpeg-sm5/build/
+Xcode/JPEG/jpeg/build/
 *.pbxuser
 *.user
 *.mode1v3

@@ -1659,9 +1659,9 @@
 		B75CE3B6137963350076A82D /* SongPosition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75CE3B4137963350076A82D /* SongPosition.cpp */; };
 		B76ADB2D1490BD3A0044E878 /* libpng.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76ADB2B1490BC920044E878 /* libpng.framework */; };
 		B76ADB3F1490C8340044E878 /* libpng.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B76ADB2B1490BC920044E878 /* libpng.framework */; };
+		B76D550F14925AD600D6CE30 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B76D550E14925ACA00D6CE30 /* libjpeg.a */; };
 		B773AE6D140AAB1800C68DDD /* SpecialDirs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B773AE6B140AAB1800C68DDD /* SpecialDirs.cpp */; };
 		B773AE6E140AAB1800C68DDD /* SpecialDirs.h in Headers */ = {isa = PBXBuildFile; fileRef = B773AE6C140AAB1800C68DDD /* SpecialDirs.h */; };
-		B7D5C93A1491361500862DD1 /* libjpeg_link.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B76ADB2E1490C1D70044E878 /* libjpeg_link.a */; };
 		EE879B60132DEE720078FDDC /* RageDisplay_Legacy_Helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE879B5C132DEE720078FDDC /* RageDisplay_Legacy_Helpers.cpp */; };
 		EE879B61132DEE720078FDDC /* RageDisplay_Legacy_Helpers.h in Headers */ = {isa = PBXBuildFile; fileRef = EE879B5D132DEE720078FDDC /* RageDisplay_Legacy_Helpers.h */; };
 		EE879B62132DEE720078FDDC /* RageDisplay_Legacy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE879B5E132DEE720078FDDC /* RageDisplay_Legacy.cpp */; };
@@ -1798,6 +1798,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 8D07F2C80486CC7A007CD1D0;
 			remoteInfo = libpng;
+		};
+		B76D550D14925ACA00D6CE30 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B76D54CA149258AD00D6CE30 /* jpeg-sm5.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B76D54DA14925A6300D6CE30;
+			remoteInfo = jpeg;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -3087,6 +3094,7 @@
 		B75CE3B4137963350076A82D /* SongPosition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SongPosition.cpp; path = ../src/SongPosition.cpp; sourceTree = SOURCE_ROOT; };
 		B76ADB231490BC920044E878 /* libpng.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpng.xcodeproj; path = ../extern/lpng1246/projects/xcode/libpng.xcodeproj; sourceTree = "<group>"; };
 		B76ADB2E1490C1D70044E878 /* libjpeg_link.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjpeg_link.a; sourceTree = "<group>"; };
+		B76D54CA149258AD00D6CE30 /* jpeg-sm5.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "jpeg-sm5.xcodeproj"; path = "JPEG/jpeg-sm5/jpeg-sm5.xcodeproj"; sourceTree = "<group>"; };
 		B773AE6B140AAB1800C68DDD /* SpecialDirs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpecialDirs.cpp; path = archutils/Darwin/SpecialDirs.cpp; sourceTree = "<group>"; };
 		B773AE6C140AAB1800C68DDD /* SpecialDirs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpecialDirs.h; path = archutils/Darwin/SpecialDirs.h; sourceTree = "<group>"; };
 		EE879B5C132DEE720078FDDC /* RageDisplay_Legacy_Helpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RageDisplay_Legacy_Helpers.cpp; path = ../src/RageDisplay_Legacy_Helpers.cpp; sourceTree = SOURCE_ROOT; };
@@ -3143,7 +3151,7 @@
 				AA230EB106043704002672F3 /* AudioUnit.framework in Frameworks */,
 				AAA8E0030696984300FCE1F9 /* CoreAudio.framework in Frameworks */,
 				AA77E8B108B6ABD500FA24CA /* vecLib.framework in Frameworks */,
-				B7D5C93A1491361500862DD1 /* libjpeg_link.a in Frameworks */,
+				B76D550F14925AD600D6CE30 /* libjpeg.a in Frameworks */,
 				AA21E47B0A9826CD00684CEA /* libogg_link.a in Frameworks */,
 				AA21E47D0A9826CD00684CEA /* libtheora_link.a in Frameworks */,
 				AA21E47E0A9826CD00684CEA /* libvorbis_link.a in Frameworks */,
@@ -3279,6 +3287,7 @@
 		29B97314FDCFA39411CA2CEA /* SDL App */ = {
 			isa = PBXGroup;
 			children = (
+				B76D54CA149258AD00D6CE30 /* jpeg-sm5.xcodeproj */,
 				B76ADB231490BC920044E878 /* libpng.xcodeproj */,
 				2BDB87261371F7FF00E6FD3A /* extern */,
 				AA6EFF7404770F8B005F316C /* Actors */,
@@ -5134,6 +5143,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		B76D54CB149258AD00D6CE30 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B76D550E14925ACA00D6CE30 /* libjpeg.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		EE879B8E132E06C50078FDDC /* glew-1.5.8 */ = {
 			isa = PBXGroup;
 			children = (
@@ -5967,6 +5984,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = B76D54CB149258AD00D6CE30 /* Products */;
+					ProjectRef = B76D54CA149258AD00D6CE30 /* jpeg-sm5.xcodeproj */;
+				},
+				{
 					ProductGroup = B76ADB241490BC920044E878 /* Products */;
 					ProjectRef = B76ADB231490BC920044E878 /* libpng.xcodeproj */;
 				},
@@ -5996,6 +6017,13 @@
 			fileType = wrapper.framework;
 			path = libpng.framework;
 			remoteRef = B76ADB2A1490BC920044E878 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B76D550E14925ACA00D6CE30 /* libjpeg.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libjpeg.a;
+			remoteRef = B76D550D14925ACA00D6CE30 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -7959,13 +7987,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LINKER_DISPLAYS_MANGLED_NAMES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
-				MACOSX_DEPLOYMENT_TARGET_i386 = 10.5;
-				MACOSX_DEPLOYMENT_TARGET_ppc = 10.5;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				SDKROOT = macosx10.6;
-				SDKROOT_i386 = "";
-				SDKROOT_ppc = "";
 				SHARED_PRECOMPS_DIR = "/Library/Caches/com.apple.Xcode.$(UID)/SharedPrecompiledHeaders/$(PRODUCT_NAME)/$(CONFIGURATION)";
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = "non-global";
@@ -8531,13 +8555,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LINKER_DISPLAYS_MANGLED_NAMES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
-				MACOSX_DEPLOYMENT_TARGET_i386 = 10.5;
-				MACOSX_DEPLOYMENT_TARGET_ppc = 10.5;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				SDKROOT = macosx10.6;
-				SDKROOT_i386 = "";
-				SDKROOT_ppc = "";
 				SHARED_PRECOMPS_DIR = "/Library/Caches/com.apple.Xcode.$(UID)/SharedPrecompiledHeaders/$(PRODUCT_NAME)/$(CONFIGURATION)";
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
@@ -8877,13 +8897,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LINKER_DISPLAYS_MANGLED_NAMES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
-				MACOSX_DEPLOYMENT_TARGET_i386 = 10.5;
-				MACOSX_DEPLOYMENT_TARGET_ppc = 10.5;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				SDKROOT = macosx10.6;
-				SDKROOT_i386 = "";
-				SDKROOT_ppc = "";
 				SHARED_PRECOMPS_DIR = "/Library/Caches/com.apple.Xcode.$(UID)/SharedPrecompiledHeaders/$(PRODUCT_NAME)/$(CONFIGURATION)";
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
@@ -9005,13 +9021,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LINKER_DISPLAYS_MANGLED_NAMES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
-				MACOSX_DEPLOYMENT_TARGET_i386 = 10.5;
-				MACOSX_DEPLOYMENT_TARGET_ppc = 10.5;
 				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				SDKROOT = macosx10.6;
-				SDKROOT_i386 = "";
-				SDKROOT_ppc = "";
 				SHARED_PRECOMPS_DIR = "/Library/Caches/com.apple.Xcode.$(UID)/SharedPrecompiledHeaders/$(PRODUCT_NAME)/$(CONFIGURATION)";
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
