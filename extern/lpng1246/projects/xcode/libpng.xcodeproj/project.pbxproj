@@ -278,8 +278,7 @@
 				"MACOSX_DEPLOYMENT_TARGET[arch=i386]" = 10.6;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.2;
 				SDKROOT = macosx10.6;
-				"SDKROOT[arch=i386]" = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
-				SDKROOT_ppc = "$(DEVELOPER_SDK_DIR)/MacOSX10.3.9.sdk";
+				VALID_ARCHS = "i386 x86_64";
 				ZERO_LINK = NO;
 			};
 			name = Debug;
