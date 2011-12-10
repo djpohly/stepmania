@@ -13,11 +13,7 @@
 #  pragma warning(disable: 4611) /* interaction between '_setjmp' and C++ object destruction is non-portable */
 #  endif // _MSC_VER
 #else
-#if defined (__MACOSX__)
-#  include <../extern/lpng1246/png.h>
-#else
 #  include <../extern/libpng/include/png.h>
-#endif
 #endif
 
 namespace

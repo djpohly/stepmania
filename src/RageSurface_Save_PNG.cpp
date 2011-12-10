@@ -13,11 +13,7 @@
 #pragma warning(disable: 4611) /* interaction between '_setjmp' and C++ object destruction is non-portable */
 #endif
 #else
-#if defined(MACOSX)
-#include <../extern/lpng1246/png.h>
-#else
 #include <../extern/libpng/include/png.h>
-#endif
 #endif
 
 static void SafePngError( png_struct *pPng, const RString &sStr )
