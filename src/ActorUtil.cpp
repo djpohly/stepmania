@@ -442,6 +442,18 @@ namespace
 		lua_pushboolean( L, IsRegistered(SArg(1)) );
 		return 1;
 	}
+	static int LoadAllCommands( lua_State *L )
+	{
+		Actor *p = Luna<Actor>::check( L, 1 );
+		ActorUtil::LoadAllCommands( p, SArg(2) );
+		return 0;
+	}
+	static int LoadAllCommandsFromName( lua_State *L )
+	{
+		Actor *p = Luna<Actor>::check( L, 1 );
+		ActorUtil::LoadAllCommandsFromName( *p, SArg(2), SArg(3) );
+		return 0;
+	}
 	static int LoadAllCommandsAndSetXY( lua_State *L )
 	{
 		Actor *p = Luna<Actor>::check( L, 1 );
@@ -454,6 +466,8 @@ namespace
 		LIST_METHOD( GetFileType ),
 		LIST_METHOD( ResolvePath ),
 		LIST_METHOD( IsRegisteredClass ),
+		LIST_METHOD( LoadAllCommands ),
+		LIST_METHOD( LoadAllCommandsFromName ), 
 		LIST_METHOD( LoadAllCommandsAndSetXY ),
 		{ NULL, NULL }
 	};

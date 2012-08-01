@@ -48,6 +48,7 @@ function GameCompatibleModes()
 		beat = "5Keys,7Keys,10Keys,14Keys,Versus5,Versus7",
 		kb7 = "KB7",
 		para = "Single",
+		maniax = "Single,Double,Versus",
 		-- todo: add versus modes for technomotion
 		techno = "Single4,Single5,Single8,Double4,Double5,Double8",
 		lights = "Single" -- lights shouldn't be playable
@@ -123,6 +124,7 @@ local ComboThresholds = {
 	beat	= { Hit = 1, Miss = 0, Fail = -1 },
 	kb7		= { Hit = 1, Miss = 0, Fail = -1 },
 	para	= { Hit = 2, Miss = 0, Fail = -1 },
+	maniax	= { Hit = 5, Miss = 0, Fail = -1 },
 	-------------------------------------------
 	default	= { Hit = 2, Miss = 2, Fail = -1 }
 }

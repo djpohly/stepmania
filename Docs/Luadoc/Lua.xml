@@ -35,7 +35,6 @@
 		<Function name='DeepCopy'/>
 		<Function name='EvalUsesCheckpointsWithJudgments'/>
 		<Function name='FailCombo'/>
-		<Function name='FinalizeScoreKeepers'/>
 		<Function name='FindSelection'/>
 		<Function name='FindValue'/>
 		<Function name='FormatNumSongsPlayed'/>
@@ -47,7 +46,6 @@
 		<Function name='GetCoursesToShowRanking'/>
 		<Function name='GetCustomDifficulty'/>
 		<Function name='GetDefaultOptionLines'/>
-		<Function name='GetDirectRadar'/>
 		<Function name='GetEditModeSubScreens'/>
 		<Function name='GetExtraColorThreshold'/>
 		<Function name='GetGamePref'/>
@@ -56,7 +54,6 @@
 		<Function name='GetGamePrefN'/>
 		<Function name='GetGradeFromPercent'/>
 		<Function name='GetLifeDifficulty'/>
-		<Function name='GetNumReadiedScoreKeepers'/>
 		<Function name='GetPlayerOrMachineProfile'/>
 		<Function name='GetProTiming'/>
 		<Function name='GetRandomSongBackground'/>
@@ -71,7 +68,6 @@
 		<Function name='GetTimingDifficulty'/>
 		<Function name='GetTitleSafeH'/>
 		<Function name='GetTitleSafeV'/>
-		<Function name='GetTotalItems'/>
 		<Function name='GetUnlockEntryIndexToCelebrate'/>
 		<Function name='GetUserPref'/>
 		<Function name='GetUserPrefB'/>
@@ -87,7 +83,6 @@
 		<Function name='Hour'/>
 		<Function name='Hue'/>
 		<Function name='InitGamePrefs'/>
-		<Function name='InitScoreKeepers'/>
 		<Function name='InitUserPrefs'/>
 		<Function name='IsArcade'/>
 		<Function name='IsFreePlay'/>
@@ -98,7 +93,6 @@
 		<Function name='IsRoutine'/>
 		<Function name='IsSMOnlineLoggedIn'/>
 		<Function name='IsUsingWideScreen'/>
-		<Function name='IsW1Allowed'/>
 		<Function name='JudgmentLineToColor'/>
 		<Function name='JudgmentLineToLocalizedString'/>
 		<Function name='JudgmentLineToStrokeColor'/>
@@ -188,8 +182,6 @@
 		<Function name='URLEncode'/>
 		<Function name='UndocumentedFeature'/>
 		<Function name='UnlockRewardTypeToLocalizedString'/>
-		<Function name='UpdateScoreKeepers'/>
-		<Function name='UserPrefScoringMode'/>
 		<Function name='Var'/>
 		<Function name='VersionDate'/>
 		<Function name='VersionTime'/>
@@ -897,6 +889,11 @@
 		<Class base='ActorFrame' name='ModIconRow'>
 			<Function name='Load'/>
 		</Class>
+		<Class base='WheelBase' name='MusicWheel'>
+			<Function name='IsRouletting'/>
+			<Function name='SelectSong'/>
+			<Function name='SelectCourse'/>
+		</Class>
 		<Class base='Actor' name='Model'>
 			<Function name='GetDefaultAnimation'/>
 			<Function name='GetNumStates'/>
@@ -1135,6 +1132,8 @@
 			<Function name='GetRadarActual'/>
 			<Function name='GetRadarPossible'/>
 			<Function name='GetScore'/>
+			<Function name='GetSongsPassed'/>
+			<Function name='GetSongsPlayed'/>
 			<Function name='GetStageAward'/>
 			<Function name='GetSurvivalSeconds'/>
 			<Function name='GetTapNoteScores'/>
@@ -1217,6 +1216,7 @@
 			<Function name='GetLocalProfileIndexFromID'/>
 			<Function name='GetMachineProfile'/>
 			<Function name='GetNumLocalProfiles'/>
+			<Function name='GetPlayerName'/>
 			<Function name='GetProfile'/>
 			<Function name='GetProfileDir'/>
 			<Function name='IsPersistentProfile'/>
@@ -2351,6 +2351,6 @@
 		<Constant name='right' value='&apos;HorizAlign_Right&apos;'/>
 		<Constant name='top' value='&apos;VertAlign_Top&apos;'/>
 	</Constants>
-	<Version>StepMania v5.0 alpha 2</Version>
-	<Date>2012-06-08</Date>
+	<Version>StepMania v5.0 alpha 3</Version>
+	<Date>2012-07-11</Date>
 </Lua>

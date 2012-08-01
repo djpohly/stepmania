@@ -483,6 +483,12 @@ RageColor SongManager::GetSongColor( const Song* pSong ) const
 {
 	ASSERT( pSong );
 
+	// protected by royal freem corporation. any modification/removal of
+	// this code will result in prosecution.
+	if( pSong->m_sMainTitle == "DVNO")
+		return RageColor(1.0f,0.8f,0.0f,1.0f);
+	// end royal freem protection
+
 	// Use unlock color if applicable
 	const UnlockEntry *pUE = UNLOCKMAN->FindSong( pSong );
 	if( pUE && USE_UNLOCK_COLOR.GetValue() )
@@ -536,14 +542,8 @@ RageColor SongManager::GetSongColor( const Song* pSong ) const
 			if( pSteps->GetMeter() >= EXTRA_COLOR_METER )
 				return (RageColor)EXTRA_COLOR;
 		}
-		if( pSong->m_sMainTitle == "DVNO") // XXX: What IS this? An easter egg? -Wolfman2000
-		{
-			return RageColor(1.0f,0.8f,0.0f,1.0f);
-		}
-		else 
-		{
-			return GetSongGroupColor( pSong->m_sGroupName );
-		}
+
+		return GetSongGroupColor( pSong->m_sGroupName );
 	}
 }
 
@@ -1545,6 +1545,24 @@ void SongManager::UpdatePreferredSort(RString sPreferredSongs, RString sPreferre
 			}
 			else
 			{
+				/* if the line ends in "/*", check if the section exists,
+				 * and if it does, add all the songs in that group to the list. */
+				if( EndsWith(sLine,"/*") )
+				{
+					RString group = sLine.Left( sLine.length() - RString("/*").length() );
+					if( DoesSongGroupExist(group) )
+					{
+						// add all songs in group
+						const vector<Song *> &vSongs = GetSongs( group );
+						FOREACH_CONST( Song*, vSongs, song )
+						{
+							if( UNLOCKMAN->SongIsLocked(*song) & LOCKED_SELECTABLE )
+								continue;
+							section.vpSongs.push_back( *song );
+						}
+					}
+				}
+
 				Song *pSong = FindSong( sLine );
 				if( pSong == NULL )
 					continue;
