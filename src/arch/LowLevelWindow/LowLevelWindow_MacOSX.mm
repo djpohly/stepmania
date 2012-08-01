@@ -10,6 +10,7 @@
 #import <OpenGL/OpenGL.h>
 #import <OpenGL/gl.h>
 #import <mach-o/dyld.h>
+#import <AppKit/NSGraphics.h>
 
 // Bad header!
 extern "C" {
@@ -528,7 +529,7 @@ void LowLevelWindow_MacOSX::SetActualParamsFromMode( CFDictionaryRef mode )
 		m_CurrentParams.height = int(size.height);
 	}
 
-	m_CurrentParams.bpp = CGDisplayBitsPerPixel( kCGDirectMainDisplay );
+	m_CurrentParams.bpp = NSBitsPerPixelFromDepth( 0 );
 }
 
 static int GetIntValue( CFTypeRef r )
