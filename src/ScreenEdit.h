@@ -589,6 +589,7 @@ public:
 		fake,
 		copy_full_timing,
 		paste_full_timing,
+		create_step_timing,
 		erase_step_timing,
 		NUM_TIMING_DATA_INFORMATION_CHOICES
 	};

@@ -99,6 +99,7 @@ AutoScreenMessage( SM_BackFromSpeedWaitChange );
 AutoScreenMessage( SM_BackFromSpeedModeChange );
 AutoScreenMessage( SM_BackFromScrollChange );
 AutoScreenMessage( SM_BackFromFakeChange );
+AutoScreenMessage( SM_DoCreateStepTiming );
 AutoScreenMessage( SM_DoEraseStepTiming );
 AutoScreenMessage( SM_DoSaveAndExit );
 AutoScreenMessage( SM_DoExit );
@@ -858,6 +859,9 @@ static MenuDef g_TimingDataInformation(
 		true, EditMode_Full, true, true, 0, NULL ),
 	MenuRowDef(ScreenEdit::paste_full_timing,
 		"Paste timing data",
+		true, EditMode_Full, true, true, 0, NULL ),
+	MenuRowDef(ScreenEdit::create_step_timing,
+		"Create step timing",
 		true, EditMode_Full, true, true, 0, NULL ),
 	MenuRowDef(ScreenEdit::erase_step_timing,
 		"Erase step timing",
@@ -3917,10 +3921,26 @@ void ScreenEdit::HandleScreenMessage( const ScreenMessage SM )
 			SetDirty( false );
 		}
 	}
+	else if( SM == SM_DoCreateStepTiming )
+	{
+		if( ScreenPrompt::s_LastAnswer == ANSWER_YES )
+		{
+			// Precondition: this chart does not have steps timing
+			ASSERT(m_pSteps->m_Timing.empty());
+
+			SaveUndo();
+			// Copy Song Timing to create Steps Timing
+			m_pSteps->m_Timing = m_pSong->m_SongTiming;
+			SetDirty( true );
+		}
+	}
 	else if( SM == SM_DoEraseStepTiming )
 	{
 		if( ScreenPrompt::s_LastAnswer == ANSWER_YES )
 		{
+			// Precondition: this chart has steps timing
+			ASSERT(!m_pSteps->m_Timing.empty());
+
 			SaveUndo();
 			m_pSteps->m_Timing.Clear();
 			SetDirty( true );
@@ -4252,6 +4272,9 @@ void ScreenEdit::DisplayTimingMenu()
 	// g_TimingDataInformation.rows[speed_percent].bEnabled = !bIsSelecting;
 	g_TimingDataInformation.rows[speed_wait].bEnabled = bHasSpeedOnThisRow;
 	g_TimingDataInformation.rows[speed_mode].bEnabled = bHasSpeedOnThisRow;
+
+	g_TimingDataInformation.rows[create_step_timing].bEnabled = m_pSteps->m_Timing.empty();
+	g_TimingDataInformation.rows[erase_step_timing].bEnabled = !m_pSteps->m_Timing.empty();
 
 	EditMiniMenu( &g_TimingDataInformation, SM_BackFromTimingDataInformation );
 }
@@ -5206,6 +5229,7 @@ static LocalizedString ENTER_SPEED_WAIT_VALUE			( "ScreenEdit", "Enter a new Spe
 static LocalizedString ENTER_SPEED_MODE_VALUE			( "ScreenEdit", "Enter a new Speed mode value." );
 static LocalizedString ENTER_SCROLL_VALUE		( "ScreenEdit", "Enter a new Scroll value." );
 static LocalizedString ENTER_FAKE_VALUE				( "ScreenEdit", "Enter a new Fake value." );
+static LocalizedString CONFIRM_TIMING_CREATE			( "ScreenEdit", "Are you sure you want to create per-chart timing data?" );
 static LocalizedString CONFIRM_TIMING_ERASE			( "ScreenEdit", "Are you sure you want to erase this chart's timing data?" );
 void ScreenEdit::HandleTimingDataInformationChoice( TimingDataInformationChoice c, const vector<int> &iAnswers )
 {
@@ -5342,9 +5366,12 @@ void ScreenEdit::HandleTimingDataInformationChoice( TimingDataInformationChoice 
 		SetDirty(true);
 		break;
 	}
+	case create_step_timing:
+		ScreenPrompt::Prompt( SM_DoCreateStepTiming, CONFIRM_TIMING_CREATE, PROMPT_YES_NO, ANSWER_NO );
+		break;
 	case erase_step_timing:
 		ScreenPrompt::Prompt( SM_DoEraseStepTiming, CONFIRM_TIMING_ERASE , PROMPT_YES_NO, ANSWER_NO );
-	break;
+		break;
 		
 	}
 }
