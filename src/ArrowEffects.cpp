@@ -90,8 +90,7 @@ void ArrowEffects::Update()
 	FOREACH_EnabledPlayer( pn )
 	{
 		const Style::ColumnInfo* pCols = pStyle->m_ColumnInfo[pn];
-		const SongPosition &position = GAMESTATE->m_bIsUsingStepTiming
-		? GAMESTATE->m_pPlayerState[pn]->m_Position : GAMESTATE->m_Position;
+		const SongPosition &position = GAMESTATE->m_pPlayerState[pn]->m_Position;
 
 		PerPlayerData &data = g_EffectData[pn];
 		
@@ -246,7 +245,7 @@ float ArrowEffects::GetYOffset( const PlayerState* pPlayerState, int iCol, float
 	bIsPastPeakOut = true;
 
 	float fYOffset = 0;
-	const SongPosition &position = pPlayerState->GetDisplayedPosition();
+	const SongPosition &position = pPlayerState->m_Position;
 	
 	float fSongBeat = position.m_fSongBeatVisible;
 	

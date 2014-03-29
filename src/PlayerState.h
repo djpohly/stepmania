@@ -54,7 +54,6 @@ public:
 	// Music statistics:
 	SongPosition m_Position;
 
-	const SongPosition &GetDisplayedPosition() const;
 	const TimingData   &GetDisplayedTiming()   const;
 
 	/**

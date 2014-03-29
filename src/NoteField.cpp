@@ -244,7 +244,7 @@ void NoteField::Update( float fDeltaTime )
 	ActorFrame::Update( fDeltaTime );
 
 	// update m_fBoardOffsetPixels, m_fCurrentBeatLastUpdate, m_fYPosCurrentBeatLastUpdate
-	const float fCurrentBeat = m_pPlayerState->GetDisplayedPosition().m_fSongBeat;
+	const float fCurrentBeat = m_pPlayerState->m_Position.m_fSongBeat;
 	bool bTweeningOn = m_sprBoard->GetCurrentDiffuseAlpha() >= 0.98  &&  m_sprBoard->GetCurrentDiffuseAlpha() < 1.00;	// HACK
 	if( !bTweeningOn  &&  m_fCurrentBeatLastUpdate != -1 )
 	{
@@ -711,7 +711,7 @@ static int GetNumNotesRange( const PlayerState* pPlayerState, float fLow, float 
 float FindFirstDisplayedBeat( const PlayerState* pPlayerState, int iDrawDistanceAfterTargetsPixels )
 {
 	
-	float fLow = 0, fHigh = pPlayerState->GetDisplayedPosition().m_fSongBeat;
+	float fLow = 0, fHigh = pPlayerState->m_Position.m_fSongBeat;
 	
 	bool bHasCache = pPlayerState->m_CacheNoteStat.size() > 0;
 	
@@ -734,7 +734,7 @@ float FindFirstDisplayedBeat( const PlayerState* pPlayerState, int iDrawDistance
 		float fPeakYOffset;
 		float fYOffset = ArrowEffects::GetYOffset( pPlayerState, 0, fMid, fPeakYOffset, bIsPastPeakYOffset, true );
 
-		if( fYOffset < iDrawDistanceAfterTargetsPixels || ( bHasCache && GetNumNotesRange( pPlayerState, fMid, pPlayerState->GetDisplayedPosition().m_fSongBeat ) > MAX_NOTES_AFTER ) ) // off screen / too many notes
+		if( fYOffset < iDrawDistanceAfterTargetsPixels || ( bHasCache && GetNumNotesRange( pPlayerState, fMid, pPlayerState->m_Position.m_fSongBeat ) > MAX_NOTES_AFTER ) ) // off screen / too many notes
 		{
 			fFirstBeatToDraw = fMid; // move towards fSongBeat
 			fLow = fMid;
@@ -755,8 +755,8 @@ float FindLastDisplayedBeat( const PlayerState* pPlayerState, int iDrawDistanceB
 	// Probe for last note to draw. Worst case is 0.25x + boost.
 	// Adjust search distance so that notes don't pop onto the screen.
 	float fSearchDistance = 10;
-	float fLastBeatToDraw = pPlayerState->GetDisplayedPosition().m_fSongBeat+fSearchDistance;
-	float fSpeedMultiplier = pPlayerState->GetDisplayedTiming().GetDisplayedSpeedPercent(pPlayerState->GetDisplayedPosition().m_fSongBeatVisible, pPlayerState->GetDisplayedPosition().m_fMusicSecondsVisible);
+	float fLastBeatToDraw = pPlayerState->m_Position.m_fSongBeat+fSearchDistance;
+	float fSpeedMultiplier = pPlayerState->GetDisplayedTiming().GetDisplayedSpeedPercent(pPlayerState->m_Position.m_fSongBeatVisible, pPlayerState->m_Position.m_fMusicSecondsVisible);
 
 	const int NUM_ITERATIONS = 20;
 
@@ -784,7 +784,7 @@ float FindLastDisplayedBeat( const PlayerState* pPlayerState, int iDrawDistanceB
 
 	if( fSpeedMultiplier < 0.75 )
 	{
-		fLastBeatToDraw = min(fLastBeatToDraw, pPlayerState->GetDisplayedPosition().m_fSongBeat + 16);
+		fLastBeatToDraw = min(fLastBeatToDraw, pPlayerState->m_Position.m_fSongBeat + 16);
 	}
 
 	return fLastBeatToDraw;
@@ -1258,7 +1258,7 @@ void NoteField::DrawPrimitives()
 				displayCols->display[c].DrawHold( tn, c, iStartRow, bIsHoldingNote, Result, bUseAdditionColoring, bIsInSelectionRange ? fSelectedRangeGlow : m_fPercentFadeToFail, 
 					m_fYReverseOffsetPixels, (float) iDrawDistanceAfterTargetsPixels, (float) iDrawDistanceBeforeTargetsPixels, iDrawDistanceBeforeTargetsPixels, FADE_BEFORE_TARGETS_PERCENT );
 
-				bool bNoteIsUpcoming = NoteRowToBeat(iStartRow) > m_pPlayerState->GetDisplayedPosition().m_fSongBeat;
+				bool bNoteIsUpcoming = NoteRowToBeat(iStartRow) > m_pPlayerState->m_Position.m_fSongBeat;
 				bAnyUpcomingInThisCol |= bNoteIsUpcoming;
 			}
 		}
@@ -1300,7 +1300,7 @@ void NoteField::DrawPrimitives()
 				continue; // skip
 
 			ASSERT_M( NoteRowToBeat(q) > -2000, ssprintf("%i %i %i, %f %f", q, iLastRowToDraw, 
-							iFirstRowToDraw, m_pPlayerState->GetDisplayedPosition().m_fSongBeat, m_pPlayerState->GetDisplayedPosition().m_fMusicSeconds) );
+							iFirstRowToDraw, m_pPlayerState->m_Position.m_fSongBeat, m_pPlayerState->m_Position.m_fMusicSeconds) );
 
 			// See if there is a hold step that begins on this index.
 			// Only do this if the noteskin cares.
@@ -1349,7 +1349,7 @@ void NoteField::DrawPrimitives()
 					m_fYReverseOffsetPixels, iDrawDistanceAfterTargetsPixels, iDrawDistanceBeforeTargetsPixels, 
 					FADE_BEFORE_TARGETS_PERCENT );
 
-			bool bNoteIsUpcoming = NoteRowToBeat(q) > m_pPlayerState->GetDisplayedPosition().m_fSongBeat;
+			bool bNoteIsUpcoming = NoteRowToBeat(q) > m_pPlayerState->m_Position.m_fSongBeat;
 			bAnyUpcomingInThisCol |= bNoteIsUpcoming;
 
 			DISPLAY->ClearZBuffer();
