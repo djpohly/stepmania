@@ -101,6 +101,7 @@ AutoScreenMessage( SM_BackFromScrollChange );
 AutoScreenMessage( SM_BackFromFakeChange );
 AutoScreenMessage( SM_DoCreateStepTiming );
 AutoScreenMessage( SM_DoEraseStepTiming );
+AutoScreenMessage( SM_DoCopyTimingToSong );
 AutoScreenMessage( SM_DoSaveAndExit );
 AutoScreenMessage( SM_DoExit );
 AutoScreenMessage( SM_SaveSuccessful );
@@ -865,6 +866,9 @@ static MenuDef g_TimingDataInformation(
 		true, EditMode_Full, true, true, 0, NULL ),
 	MenuRowDef(ScreenEdit::erase_step_timing,
 		"Erase step timing",
+		true, EditMode_Full, true, true, 0, NULL ),
+	MenuRowDef(ScreenEdit::copy_timing_to_song,
+		"Copy step timing to song",
 		true, EditMode_Full, true, true, 0, NULL )
 );
 
@@ -3946,6 +3950,18 @@ void ScreenEdit::HandleScreenMessage( const ScreenMessage SM )
 			SetDirty( true );
 		}
 	}
+	else if( SM == SM_DoCopyTimingToSong )
+	{
+		if( ScreenPrompt::s_LastAnswer == ANSWER_YES )
+		{
+			// Precondition: this chart has steps timing
+			ASSERT(!m_pSteps->m_Timing.empty());
+
+			SaveUndo();
+			m_pSong->m_SongTiming = m_pSteps->m_Timing;
+			SetDirty( true );
+		}
+	}
 	else if( SM == SM_DoSaveAndExit ) // just asked "save before exiting? yes, no, cancel"
 	{
 		switch( ScreenPrompt::s_LastAnswer )
@@ -4275,6 +4291,7 @@ void ScreenEdit::DisplayTimingMenu()
 
 	g_TimingDataInformation.rows[create_step_timing].bEnabled = m_pSteps->m_Timing.empty();
 	g_TimingDataInformation.rows[erase_step_timing].bEnabled = !m_pSteps->m_Timing.empty();
+	g_TimingDataInformation.rows[copy_timing_to_song].bEnabled = !m_pSteps->m_Timing.empty();
 
 	EditMiniMenu( &g_TimingDataInformation, SM_BackFromTimingDataInformation );
 }
@@ -5231,6 +5248,7 @@ static LocalizedString ENTER_SCROLL_VALUE		( "ScreenEdit", "Enter a new Scroll v
 static LocalizedString ENTER_FAKE_VALUE				( "ScreenEdit", "Enter a new Fake value." );
 static LocalizedString CONFIRM_TIMING_CREATE			( "ScreenEdit", "Are you sure you want to create per-chart timing data?" );
 static LocalizedString CONFIRM_TIMING_ERASE			( "ScreenEdit", "Are you sure you want to erase this chart's timing data?" );
+static LocalizedString CONFIRM_TIMING_COPY			( "ScreenEdit", "Are you sure you want to overwrite the song timing data?" );
 void ScreenEdit::HandleTimingDataInformationChoice( TimingDataInformationChoice c, const vector<int> &iAnswers )
 {
 	switch( c )
@@ -5372,7 +5390,9 @@ void ScreenEdit::HandleTimingDataInformationChoice( TimingDataInformationChoice 
 	case erase_step_timing:
 		ScreenPrompt::Prompt( SM_DoEraseStepTiming, CONFIRM_TIMING_ERASE , PROMPT_YES_NO, ANSWER_NO );
 		break;
-		
+	case copy_timing_to_song:
+		ScreenPrompt::Prompt( SM_DoCopyTimingToSong, CONFIRM_TIMING_COPY, PROMPT_YES_NO, ANSWER_NO );
+		break;
 	}
 }
 

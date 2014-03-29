@@ -591,6 +591,7 @@ public:
 		paste_full_timing,
 		create_step_timing,
 		erase_step_timing,
+		copy_timing_to_song,
 		NUM_TIMING_DATA_INFORMATION_CHOICES
 	};
 	
