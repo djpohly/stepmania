@@ -2191,7 +2191,7 @@ bool ScreenEdit::InputEdit( const InputEventPlus &input, EditButton EditB )
 			}
 
 			float fNewBPM = fBPM + fDelta;
-			GetAppropriateTimingForUpdate().SetBPMAtBeat( GetBeat(), fNewBPM );
+			GetAppropriateTiming().SetBPMAtBeat( GetBeat(), fNewBPM );
 			(fDelta>0 ? m_soundValueIncrease : m_soundValueDecrease).Play();
 			SetDirty( true );
 		}
@@ -2219,7 +2219,7 @@ bool ScreenEdit::InputEdit( const InputEventPlus &input, EditButton EditB )
 			}
 
 			// is there a StopSegment on the current row?
-			TimingData & timing = GetAppropriateTimingForUpdate();
+			TimingData & timing = GetAppropriateTiming();
 			StopSegment *seg = timing.GetStopSegmentAtRow( GetRow() );
 			int i = timing.GetSegmentIndexAtRow(SEGMENT_STOP, GetRow());
 			if (i == -1 || seg->GetRow() != GetRow()) // invalid
@@ -2265,7 +2265,7 @@ bool ScreenEdit::InputEdit( const InputEventPlus &input, EditButton EditB )
 			}
 			
 			// is there a StopSegment on the current row?
-			TimingData & timing = GetAppropriateTimingForUpdate();
+			TimingData & timing = GetAppropriateTiming();
 			DelaySegment *seg = timing.GetDelaySegmentAtRow( GetRow() );
 			int i = timing.GetSegmentIndexAtRow(SEGMENT_DELAY, GetRow());
 			if (i == -1 || seg->GetRow() != GetRow()) // invalid
@@ -2308,9 +2308,9 @@ bool ScreenEdit::InputEdit( const InputEventPlus &input, EditButton EditB )
 				else
 					fDelta *= 40;
 			}
-			GetAppropriateTimingForUpdate().m_fBeat0OffsetInSeconds += fDelta;
+			GetAppropriateTiming().m_fBeat0OffsetInSeconds += fDelta;
 			(fDelta>0 ? m_soundValueIncrease : m_soundValueDecrease).Play();
-			if (GAMESTATE->m_bIsUsingStepTiming)
+			if (!GAMESTATE->m_pCurSteps[PLAYER_1]->m_Timing.empty())
 			{
 				GAMESTATE->m_pCurSteps[PLAYER_1]->m_Attacks.UpdateStartTimes(fDelta);
 			}
@@ -2931,8 +2931,8 @@ bool ScreenEdit::InputPlay( const InputEventPlus &input, EditButton EditB )
 					fOffsetDelta *= 40;
 			}
 
-			GetAppropriateTimingForUpdate().m_fBeat0OffsetInSeconds += fOffsetDelta;
-			if (!GAMESTATE->m_bIsUsingStepTiming)
+			GetAppropriateTiming().m_fBeat0OffsetInSeconds += fOffsetDelta;
+			if (GAMESTATE->m_pCurSteps[PLAYER_1]->m_Timing.empty())
 			{
 				GAMESTATE->m_pCurSong->m_fMusicSampleStartSeconds += fOffsetDelta;
 			}
@@ -2987,16 +2987,12 @@ void ScreenEdit::TransitionEditState( EditState em )
 
 		case STATE_PLAYING:
 			AdjustSync::HandleSongEnd();
-			if (!GAMESTATE->m_bIsUsingStepTiming)
-				GAMESTATE->m_pCurSteps[PLAYER_1]->m_Timing = backupStepTiming;
 			if( AdjustSync::IsSyncDataChanged() )
 				ScreenSaveSync::PromptSaveSync();
 			break;
 
 		case STATE_RECORDING:
 			SetDirty( true );
-			if (!GAMESTATE->m_bIsUsingStepTiming)
-				GAMESTATE->m_pCurSteps[PLAYER_1]->m_Timing = backupStepTiming;
 			SaveUndo();
 
 			// delete old TapNotes in the range
@@ -3049,14 +3045,6 @@ void ScreenEdit::TransitionEditState( EditState em )
 
 		GAMESTATE->m_bGameplayLeadIn.Set( false );
 		
-		if (!GAMESTATE->m_bIsUsingStepTiming)
-		{
-			// Substitute the song timing for the step timing during
-			// previuw if we're in song mode
-			backupStepTiming = GAMESTATE->m_pCurSteps[PLAYER_1]->m_Timing;
-			GAMESTATE->m_pCurSteps[PLAYER_1]->m_Timing.Clear();
-		}
-
 		/* Reset the note skin, in case preferences have changed. */
 		// XXX
 		// GAMESTATE->ResetNoteSkins();
@@ -3321,12 +3309,12 @@ void ScreenEdit::HandleScreenMessage( const ScreenMessage SM )
 	{
 		float fBeat0 = StringToFloat( ScreenTextEntry::s_sLastAnswer );
 
-		TimingData &timing = GetAppropriateTimingForUpdate();
+		TimingData &timing = GetAppropriateTiming();
 		float old = timing.m_fBeat0OffsetInSeconds;
 		timing.m_fBeat0OffsetInSeconds = fBeat0;
 		float delta = timing.m_fBeat0OffsetInSeconds - old;
 
-		if (GAMESTATE->m_bIsUsingStepTiming)
+		if (!GAMESTATE->m_pCurSteps[PLAYER_1]->m_Timing.empty())
 		{
 			GAMESTATE->m_pCurSteps[PLAYER_1]->m_Attacks.UpdateStartTimes(delta);
 		}
@@ -3343,7 +3331,7 @@ void ScreenEdit::HandleScreenMessage( const ScreenMessage SM )
 		float fBPM = StringToFloat( ScreenTextEntry::s_sLastAnswer );
 
 		if( fBPM > 0 )
-			GetAppropriateTimingForUpdate().AddSegment( BPMSegment(GetRow(), fBPM) );
+			GetAppropriateTiming().AddSegment( BPMSegment(GetRow(), fBPM) );
 
 		SetDirty( true );
 	}
@@ -3352,7 +3340,7 @@ void ScreenEdit::HandleScreenMessage( const ScreenMessage SM )
 		float fStop = StringToFloat( ScreenTextEntry::s_sLastAnswer );
 
 		if( fStop >= 0 )
-			GetAppropriateTimingForUpdate().AddSegment( StopSegment(GetRow(), fStop) );
+			GetAppropriateTiming().AddSegment( StopSegment(GetRow(), fStop) );
 
 		SetDirty( true );
 	}
@@ -3361,7 +3349,7 @@ void ScreenEdit::HandleScreenMessage( const ScreenMessage SM )
 		float fDelay = StringToFloat( ScreenTextEntry::s_sLastAnswer );
 
 		if( fDelay >= 0 )
-			GetAppropriateTimingForUpdate().AddSegment( DelaySegment(GetRow(), fDelay) );
+			GetAppropriateTiming().AddSegment( DelaySegment(GetRow(), fDelay) );
 
 		SetDirty( true );
 	}
@@ -3370,7 +3358,7 @@ void ScreenEdit::HandleScreenMessage( const ScreenMessage SM )
 		int iTick = StringToInt( ScreenTextEntry::s_sLastAnswer );
 
 		if ( iTick >= 0 && iTick <= ROWS_PER_BEAT )
-			GetAppropriateTimingForUpdate().AddSegment( TickcountSegment( GetRow(), iTick) );
+			GetAppropriateTiming().AddSegment( TickcountSegment( GetRow(), iTick) );
 
 		SetDirty( true );
 	}
@@ -3379,7 +3367,7 @@ void ScreenEdit::HandleScreenMessage( const ScreenMessage SM )
 		int iCombo, iMiss;
 
 		if (sscanf(ScreenTextEntry::s_sLastAnswer.c_str(), " %d / %d ", &iCombo, &iMiss) == 2)
-			GetAppropriateTimingForUpdate().AddSegment( ComboSegment(GetRow(), iCombo, iMiss) );
+			GetAppropriateTiming().AddSegment( ComboSegment(GetRow(), iCombo, iMiss) );
 
 		SetDirty( true );
 	}
@@ -3392,7 +3380,7 @@ void ScreenEdit::HandleScreenMessage( const ScreenMessage SM )
 			// XXX: these should be in the NotesWriters where they're needed.
 			sLabel.Replace("=", "_");
 			sLabel.Replace(",", "_");
-			GetAppropriateTimingForUpdate().AddSegment( LabelSegment(GetRow(), sLabel) );
+			GetAppropriateTiming().AddSegment( LabelSegment(GetRow(), sLabel) );
 			SetDirty( true );
 		}
 	}
@@ -3401,14 +3389,14 @@ void ScreenEdit::HandleScreenMessage( const ScreenMessage SM )
 		float fWarp = StringToFloat( ScreenTextEntry::s_sLastAnswer );
 		if( fWarp >= 0 ) // allow 0 to kill a warp.
 		{
-			GetAppropriateTimingForUpdate().SetWarpAtBeat( GetBeat(), fWarp );
+			GetAppropriateTiming().SetWarpAtBeat( GetBeat(), fWarp );
 			SetDirty( true );
 		}
 	}
 	else if( SM == SM_BackFromSpeedPercentChange && !ScreenTextEntry::s_bCancelledLast )
 	{
 		float fNum = StringToFloat( ScreenTextEntry::s_sLastAnswer );
-		GetAppropriateTimingForUpdate().SetSpeedPercentAtBeat( GetBeat(), fNum );
+		GetAppropriateTiming().SetSpeedPercentAtBeat( GetBeat(), fNum );
 		SetDirty( true );
 	}
 	else if ( SM == SM_BackFromSpeedWaitChange && !ScreenTextEntry::s_bCancelledLast )
@@ -3416,7 +3404,7 @@ void ScreenEdit::HandleScreenMessage( const ScreenMessage SM )
 		float fDen = StringToFloat( ScreenTextEntry::s_sLastAnswer );
 		if( fDen >= 0)
 		{
-			GetAppropriateTimingForUpdate().SetSpeedWaitAtBeat( GetBeat(), fDen );
+			GetAppropriateTiming().SetSpeedWaitAtBeat( GetBeat(), fDen );
 		}
 		SetDirty( true );
 	}
@@ -3424,11 +3412,11 @@ void ScreenEdit::HandleScreenMessage( const ScreenMessage SM )
 	{
 		if( ScreenTextEntry::s_sLastAnswer.substr(0, 1) == "b" || ScreenTextEntry::s_sLastAnswer.substr(0, 1) == "B" )
 		{
-			GetAppropriateTimingForUpdate().SetSpeedModeAtBeat( GetBeat(), SpeedSegment::UNIT_BEATS );
+			GetAppropriateTiming().SetSpeedModeAtBeat( GetBeat(), SpeedSegment::UNIT_BEATS );
 		}
 		else if( ScreenTextEntry::s_sLastAnswer.substr(0, 1) == "s" || ScreenTextEntry::s_sLastAnswer.substr(0, 1) == "S" )
 		{
-			GetAppropriateTimingForUpdate().SetSpeedModeAtBeat( GetBeat(), SpeedSegment::UNIT_SECONDS );
+			GetAppropriateTiming().SetSpeedModeAtBeat( GetBeat(), SpeedSegment::UNIT_SECONDS );
 		}
 		else
 		{
@@ -3437,14 +3425,14 @@ void ScreenEdit::HandleScreenMessage( const ScreenMessage SM )
 			SpeedSegment::BaseUnit unit = (tmp == 0 ) ?
 			  SpeedSegment::UNIT_BEATS : SpeedSegment::UNIT_SECONDS;
 
-			GetAppropriateTimingForUpdate().SetSpeedModeAtBeat( GetBeat(), unit );
+			GetAppropriateTiming().SetSpeedModeAtBeat( GetBeat(), unit );
 		}
 		SetDirty( true );
 	}
 	else if( SM == SM_BackFromScrollChange && !ScreenTextEntry::s_bCancelledLast )
 	{
 		float fNum = StringToFloat( ScreenTextEntry::s_sLastAnswer );
-		GetAppropriateTimingForUpdate().SetScrollAtBeat( GetBeat(), fNum );
+		GetAppropriateTiming().SetScrollAtBeat( GetBeat(), fNum );
 		SetDirty( true );
 	}
 	else if ( SM == SM_BackFromFakeChange && !ScreenTextEntry::s_bCancelledLast )
@@ -3452,7 +3440,7 @@ void ScreenEdit::HandleScreenMessage( const ScreenMessage SM )
 		float fFake = StringToFloat( ScreenTextEntry::s_sLastAnswer );
 		if( fFake >= 0 ) // allow 0 to kill a fake.
 		{
-			GetAppropriateTimingForUpdate().AddSegment( FakeSegment(GetRow(), fFake) );
+			GetAppropriateTiming().AddSegment( FakeSegment(GetRow(), fFake) );
 			SetDirty( true );
 		}
 	}
@@ -4199,56 +4187,28 @@ static void ChangeStepsMaxBPM(const RString &sNew)
 	step->SetMaxBPM(StringToFloat(sNew));
 }
 
-const TimingData & ScreenEdit::GetAppropriateTiming() const
+TimingData & ScreenEdit::GetAppropriateTiming() const
 {
-	if( GAMESTATE->m_bIsUsingStepTiming )
+	if( !GAMESTATE->m_pCurSteps[PLAYER_1]->m_Timing.empty() )
 	{
 		return *m_pSteps->GetTimingData();
 	}
 	return m_pSong->m_SongTiming;
 }
 
-TimingData & ScreenEdit::GetAppropriateTimingForUpdate()
-{
-	if( GAMESTATE->m_bIsUsingStepTiming )
-	{
-		// Copy from song if there is no step timing
-		if( m_pSteps->m_Timing.empty() )
-			m_pSteps->m_Timing = m_pSong->m_SongTiming;
-		return m_pSteps->m_Timing;
-	}
-	return m_pSong->m_SongTiming;
-}
-
 SongPosition & ScreenEdit::GetAppropriatePosition() const
 {
-	if (GAMESTATE->m_bIsUsingStepTiming)
-	{
-		return GAMESTATE->m_pPlayerState[PLAYER_1]->m_Position;
-	}
-	return GAMESTATE->m_Position;
+	return GAMESTATE->m_pPlayerState[PLAYER_1]->m_Position;
 }
 
 inline void ScreenEdit::SetBeat(float fBeat)
 {
-	if( !GAMESTATE->m_bIsUsingStepTiming )
-	{
-		GAMESTATE->m_Position.m_fSongBeat = fBeat;
-		GAMESTATE->m_pPlayerState[PLAYER_1]->m_Position.m_fSongBeat = m_pSteps->GetTimingData()->GetBeatFromElapsedTime(m_pSong->m_SongTiming.GetElapsedTimeFromBeat(fBeat));
-	}
-	else
-	{
-		GAMESTATE->m_pPlayerState[PLAYER_1]->m_Position.m_fSongBeat = fBeat;
-		GAMESTATE->m_Position.m_fSongBeat = m_pSong->m_SongTiming.GetBeatFromElapsedTime(m_pSteps->GetTimingData()->GetElapsedTimeFromBeat(fBeat));
-	}
+	GAMESTATE->m_pPlayerState[PLAYER_1]->m_Position.m_fSongBeat = fBeat;
+	GAMESTATE->m_Position.m_fSongBeat = m_pSong->m_SongTiming.GetBeatFromElapsedTime(m_pSteps->GetTimingData()->GetElapsedTimeFromBeat(fBeat));
 }
 
 inline float ScreenEdit::GetBeat()
 {
-	if( !GAMESTATE->m_bIsUsingStepTiming )
-	{
-		return GAMESTATE->m_Position.m_fSongBeat;
-	}
 	return GAMESTATE->m_pPlayerState[PLAYER_1]->m_Position.m_fSongBeat;
 }
 
@@ -4747,7 +4707,7 @@ void ScreenEdit::HandleAlterMenuChoice(AlterMenuChoice c, const vector<int> &iAn
 			NoteDataUtil::ScaleRegion( m_NoteDataEdit, fScale, iStartIndex, iEndIndex );
 			
 			// scale timing data
-			GetAppropriateTimingForUpdate().ScaleRegion(fScale, 
+			GetAppropriateTiming().ScaleRegion(fScale, 
 							   m_NoteFieldEdit.m_iBeginMarker, 
 							   m_NoteFieldEdit.m_iEndMarker, true );
 			
@@ -4790,9 +4750,9 @@ void ScreenEdit::HandleAlterMenuChoice(AlterMenuChoice c, const vector<int> &iAn
 						 m_NoteFieldEdit.m_iEndMarker-m_NoteFieldEdit.m_iBeginMarker
 						 );
 			// For TimingData, it makes more sense not to offset by a row
-			GetAppropriateTimingForUpdate().DeleteRows( m_NoteFieldEdit.m_iBeginMarker,
+			GetAppropriateTiming().DeleteRows( m_NoteFieldEdit.m_iBeginMarker,
 							  m_NoteFieldEdit.m_iEndMarker-m_NoteFieldEdit.m_iBeginMarker );
-			GetAppropriateTimingForUpdate().SetStopAtRow( m_NoteFieldEdit.m_iBeginMarker, fStopLength );
+			GetAppropriateTiming().SetStopAtRow( m_NoteFieldEdit.m_iBeginMarker, fStopLength );
 			m_NoteFieldEdit.m_iBeginMarker = -1;
 			m_NoteFieldEdit.m_iEndMarker = -1;
 			break;
@@ -4810,9 +4770,9 @@ void ScreenEdit::HandleAlterMenuChoice(AlterMenuChoice c, const vector<int> &iAn
 						 m_NoteFieldEdit.m_iBeginMarker,
 						 m_NoteFieldEdit.m_iEndMarker-m_NoteFieldEdit.m_iBeginMarker
 						 );
-			GetAppropriateTimingForUpdate().DeleteRows( m_NoteFieldEdit.m_iBeginMarker,
+			GetAppropriateTiming().DeleteRows( m_NoteFieldEdit.m_iBeginMarker,
 							  m_NoteFieldEdit.m_iEndMarker-m_NoteFieldEdit.m_iBeginMarker );
-			GetAppropriateTimingForUpdate().SetDelayAtRow( m_NoteFieldEdit.m_iBeginMarker, fStopLength );
+			GetAppropriateTiming().SetDelayAtRow( m_NoteFieldEdit.m_iBeginMarker, fStopLength );
 			m_NoteFieldEdit.m_iBeginMarker = -1;
 			m_NoteFieldEdit.m_iEndMarker = -1;
 			break;
@@ -4821,7 +4781,7 @@ void ScreenEdit::HandleAlterMenuChoice(AlterMenuChoice c, const vector<int> &iAn
 		{
 			float startBeat = NoteRowToBeat(m_NoteFieldEdit.m_iBeginMarker);
 			float lengthBeat = NoteRowToBeat(m_NoteFieldEdit.m_iEndMarker) - startBeat;
-			GetAppropriateTimingForUpdate().SetWarpAtBeat(startBeat,lengthBeat);
+			GetAppropriateTiming().SetWarpAtBeat(startBeat,lengthBeat);
 			SetDirty(true);
 			break;
 		}
@@ -4854,7 +4814,7 @@ void ScreenEdit::HandleAlterMenuChoice(AlterMenuChoice c, const vector<int> &iAn
 		{
 			int startRow = m_NoteFieldEdit.m_iBeginMarker;
 			float lengthBeat = NoteRowToBeat(m_NoteFieldEdit.m_iEndMarker) - NoteRowToBeat(startRow);
-			GetAppropriateTimingForUpdate().AddSegment( FakeSegment(startRow,lengthBeat) );
+			GetAppropriateTiming().AddSegment( FakeSegment(startRow,lengthBeat) );
 			SetDirty(true);
 			break;
 		}
@@ -4997,12 +4957,12 @@ void ScreenEdit::HandleAreaMenuChoice( AreaMenuChoice c, const vector<int> &iAns
 				NoteTypeToRow((NoteType)iAnswers[c]) : 48);
 			break;
 		case shift_pauses_forward:
-			GetAppropriateTimingForUpdate().InsertRows( GetRow(),
+			GetAppropriateTiming().InsertRows( GetRow(),
 				iAnswers.size() > 0 ? 
 				NoteTypeToRow((NoteType)iAnswers[c]) : 48);
 			break;
 		case shift_pauses_backward:
-			GetAppropriateTimingForUpdate().DeleteRows( GetRow(),
+			GetAppropriateTiming().DeleteRows( GetRow(),
 			  iAnswers.size() > 0 ? 
 			  NoteTypeToRow((NoteType)iAnswers[c]) : 48);
 			break;
@@ -5010,18 +4970,18 @@ void ScreenEdit::HandleAreaMenuChoice( AreaMenuChoice c, const vector<int> &iAns
 		case convert_pause_to_beat:
 		{
 			float fStopSeconds = GetAppropriateTiming().GetStopAtRow(GetRow());
-			GetAppropriateTimingForUpdate().SetStopAtBeat( GetBeat() , 0 );
+			GetAppropriateTiming().SetStopAtBeat( GetBeat() , 0 );
 
 			float fStopBeats = fStopSeconds * GetAppropriateTiming().GetBPMAtBeat( GetBeat() ) / 60;
 
 			// don't move the step from where it is, just move everything later
 			NoteDataUtil::InsertRows( m_NoteDataEdit, GetRow() + 1, BeatToNoteRow(fStopBeats) );
-			GetAppropriateTimingForUpdate().InsertRows( GetRow() + 1, BeatToNoteRow(fStopBeats) );
+			GetAppropriateTiming().InsertRows( GetRow() + 1, BeatToNoteRow(fStopBeats) );
 		}
 		break;
 		case convert_delay_to_beat:
 		{
-			TimingData &timing = GetAppropriateTimingForUpdate();
+			TimingData &timing = GetAppropriateTiming();
 			float pause = timing.GetDelayAtRow(GetRow());
 			timing.SetDelayAtRow(GetRow(), 0);
 
@@ -5373,7 +5333,7 @@ void ScreenEdit::HandleTimingDataInformationChoice( TimingDataInformationChoice 
 	}
 	case paste_full_timing:
 	{
-		if (GAMESTATE->m_bIsUsingStepTiming)
+		if (!GAMESTATE->m_pCurSteps[PLAYER_1]->m_Timing.empty())
 		{
 			GAMESTATE->m_pCurSteps[PLAYER_1]->m_Timing = clipboardFullTiming;
 		}

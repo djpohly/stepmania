@@ -684,7 +684,7 @@ private:
 	/**
 	 * @brief Retrieve the appropriate TimingData based on GAMESTATE.
 	 * @return the proper TimingData. */
-	const TimingData & GetAppropriateTiming() const;
+	TimingData & GetAppropriateTiming() const;
 	/**
 	 * @brief Retrieve the appropriate TimingData to use for updating. */
 	TimingData & GetAppropriateTimingForUpdate();
