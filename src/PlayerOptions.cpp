@@ -76,6 +76,7 @@ void PlayerOptions::Init()
 	ZERO( m_bTransforms );
 	m_bMuteOnError = false;
 	m_sNoteSkin = "";
+	m_fVisualDelay = 0.0f;
 }
 
 void PlayerOptions::Approach( const PlayerOptions& other, float fDeltaSeconds )
@@ -120,6 +121,7 @@ void PlayerOptions::Approach( const PlayerOptions& other, float fDeltaSeconds )
 	DO_COPY( m_FailType );
 	DO_COPY( m_MinTNSToHideNotes );
 	DO_COPY( m_sNoteSkin );
+	DO_COPY( m_fVisualDelay );
 #undef APPROACH
 #undef DO_COPY
 }
@@ -323,6 +325,11 @@ void PlayerOptions::GetMods( vector<RString> &AddTo, bool bForceNoteSkin ) const
 		RString s = m_sNoteSkin;
 		Capitalize( s );
 		AddTo.push_back( s );
+	}
+
+	if( m_fVisualDelay >= 0.00001f )
+	{
+		AddTo.push_back(ssprintf("%.4f visualdelay", m_fVisualDelay));
 	}
 }
 
@@ -540,6 +547,7 @@ bool PlayerOptions::FromOneModString( const RString &sOneMod, RString &sErrorOut
 	{
 		m_sNoteSkin = CommonMetrics::DEFAULT_NOTESKIN_NAME;
 	}
+	else if( sBit == "visualdelay" )			m_fVisualDelay = level * 100.0f;
 	else if( sBit == "randomspeed" ) 			SET_FLOAT( fRandomSpeed )
 	else if( sBit == "failarcade" || 
 		 sBit == "failimmediate" )			m_FailType = FailType_Immediate;
@@ -781,6 +789,7 @@ bool PlayerOptions::operator==( const PlayerOptions &other ) const
 	COMPARE(m_fPlayerAutoPlay);
 	COMPARE(m_fPerspectiveTilt);
 	COMPARE(m_fSkew);
+	COMPARE(m_fVisualDelay);
 	// The noteskin name needs to be compared case-insensitively because the
 	// manager forces lowercase, but some obscure part of PlayerOptions
 	// uppercases the first letter.  The previous code that used != probably
@@ -830,6 +839,7 @@ PlayerOptions& PlayerOptions::operator=(PlayerOptions const& other)
 	CPY_SPEED(fPlayerAutoPlay);
 	CPY_SPEED(fPerspectiveTilt);
 	CPY_SPEED(fSkew);
+	CPY(m_fVisualDelay);
 	if(!other.m_sNoteSkin.empty() &&
 		NOTESKIN->DoesNoteSkinExist(other.m_sNoteSkin))
 	{
@@ -1014,6 +1024,7 @@ RString PlayerOptions::GetSavedPrefsString() const
 	SAVE( m_bTransforms[TRANSFORM_NOFAKES] );
 	SAVE( m_bMuteOnError );
 	SAVE( m_sNoteSkin );
+	SAVE( m_fVisualDelay );
 #undef SAVE
 	return po_prefs.GetString();
 }
@@ -1129,6 +1140,7 @@ public:
 	FLOAT_INTERFACE(Tilt, PerspectiveTilt, true);
 	FLOAT_INTERFACE(Passmark, Passmark, true); // Passmark is not sanity checked to the [0, 1] range because LifeMeterBar::IsFailing is the only thing that uses it, and it's used in a <= test.  Any theme passing a value outside the [0, 1] range probably expects the result they get. -Kyz
 	FLOAT_INTERFACE(RandomSpeed, RandomSpeed, true);
+	FLOAT_NO_SPEED_INTERFACE(VisualDelay, VisualDelay, true);
 	BOOL_INTERFACE(TurnNone, Turns[PlayerOptions::TURN_NONE]);
 	BOOL_INTERFACE(Mirror, Turns[PlayerOptions::TURN_MIRROR]);
 	BOOL_INTERFACE(Backwards, Turns[PlayerOptions::TURN_BACKWARDS]);
@@ -1509,6 +1521,7 @@ public:
 		ADD_METHOD(Skew);
 		ADD_METHOD(Passmark);
 		ADD_METHOD(RandomSpeed);
+		ADD_METHOD(VisualDelay);
 		ADD_METHOD(TurnNone);
 		ADD_METHOD(Mirror);
 		ADD_METHOD(Backwards);

@@ -62,6 +62,7 @@ public:
 		m_fSkew(0), m_SpeedfSkew(1.0f),
 		m_fPassmark(0), m_SpeedfPassmark(1.0f),
 		m_fRandomSpeed(0), m_SpeedfRandomSpeed(1.0f),
+		m_fVisualDelay(0.0f),
 		m_bMuteOnError(false), m_FailType(FailType_Immediate),
 		m_MinTNSToHideNotes(PREFSMAN->m_MinTNSToHideNotes)
 	{
@@ -214,6 +215,9 @@ public:
 	float		m_fPassmark,			m_SpeedfPassmark;
 
 	float	m_fRandomSpeed,			m_SpeedfRandomSpeed;
+
+	/* Additional visual delay by player preference */
+	float   m_fVisualDelay;
 
 	bool		m_bTurns[NUM_TURNS];
 	bool		m_bTransforms[NUM_TRANSFORMS];
