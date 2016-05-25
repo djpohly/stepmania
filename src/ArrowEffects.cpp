@@ -284,7 +284,9 @@ float ArrowEffects::GetYOffset( const PlayerState* pPlayerState, int iCol, float
 	bIsPastPeakOut = true;
 
 	float fYOffset = 0;
-	const SongPosition &position = pPlayerState->GetDisplayedPosition();
+	SongPosition position = pPlayerState->GetDisplayedPosition();
+	position.UpdateSongPosition(position.m_fMusicSeconds - curr_options->m_fVisualDelay,
+			pPlayerState->GetDisplayedTiming());
 	
 	float fSongBeat = position.m_fSongBeatVisible;
 	
